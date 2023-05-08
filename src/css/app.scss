@@ -1,0 +1,32 @@
+// app global css in SCSS form
+
+body {
+  font-family: "Merriweather Sans", sans-serif !important;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+.font-1 {
+  font-family: "Merriweather Sans", sans-serif;
+}
+
+.q-icon.fa-solid,
+.q-item__label.text-bold.font-1 {
+  font-size: 18px;
+}
+
+.q-item__section.column.q-item__section--side {
+  align-items: center;
+}
+
+.q-toolbar__title {
+  font-size: 18px;
+}
+
+.absolute-full, .fullscreen, .fixed-full {
+  top: 50px;
+}
+
+.q-drawer {
+  top: 50px;
+}
