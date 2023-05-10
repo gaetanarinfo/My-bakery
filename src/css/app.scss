@@ -880,7 +880,7 @@ header .navigation-mobile #menu-main-menu li > a {
 }
 
 .last-bakery .column-inner .wrapper {
-  background: url(https://warethemes.com/wordpress/bready/wp-content/uploads/2018/09/home-product.jpg);
+  background: url("../../public/home-product.jpg");
   background-position: 50% 50% !important;
   background-size: cover !important;
 }
@@ -1248,8 +1248,7 @@ header .navigation-mobile #menu-main-menu li > a {
 }
 
 .contact .background-p {
-  background: url(https://warethemes.com/wordpress/bready/wp-content/uploads/2018/09/delivery-form.jpg)
-    50% 2px;
+  background: url("../../public/delivery-form.jpg") 50% 2px;
 }
 
 .contact .background-p .pre-container {
