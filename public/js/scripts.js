@@ -21,6 +21,9 @@ if (screen.height >= 1024) {
     $('.fadeIn3').fadeIn(600)
     $('.fadeIn4').fadeIn(600)
     $('.fadeIn5').fadeIn(600)
+    $('.fadeIn6').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
+    $('.fadeIn8').fadeIn(600)
   }, 2500)
 
   setTimeout(() => {
@@ -29,8 +32,21 @@ if (screen.height >= 1024) {
     $('.fadeIn3').fadeIn(1000)
     $('.fadeIn4').fadeIn(1000)
     $('.fadeIn5').fadeIn(1000)
+    $('.fadeIn6').fadeIn(1000)
+    $('.fadeIn7').fadeIn(1000)
+    $('.fadeIn8').fadeIn(1000)
   }, 3500)
 }
+
+// Header
+
+$(window).scroll(function () {
+  if ($(this).scrollTop() >= 300) {
+    $('header').addClass('navigation-sticky navigation-unpin')
+  } else {
+    $('header').removeClass('navigation-sticky navigation-unpin')
+  }
+})
 
 // Scroll Fade in
 
@@ -59,6 +75,24 @@ if (screen.height >= 1024) {
         $('.fadeIn5').fadeIn(600)
       }, 300)
     }
+
+    if ($(this).scrollTop() >= 1300) {
+      setTimeout(() => {
+        $('.fadeIn6').fadeIn(600)
+      }, 300)
+    }
+
+    if ($(this).scrollTop() >= 1300) {
+      setTimeout(() => {
+        $('.fadeIn7').fadeIn(600)
+      }, 300)
+    }
+
+    if ($(this).scrollTop() >= 1600) {
+      setTimeout(() => {
+        $('.fadeIn8').fadeIn(600)
+      }, 300)
+    }
   })
 }
 
@@ -79,6 +113,13 @@ setTimeout(() => {
 
   const carousel = new bootstrap.Carousel(myCarousel, {
     interval: 3500,
+    wrap: true
+  })
+
+  const sliderCarousel = document.querySelector('.slider-bakery')
+
+  const carouselBakery = new bootstrap.Carousel(sliderCarousel, {
+    interval: 2000,
     wrap: true
   })
 }, 3500)
