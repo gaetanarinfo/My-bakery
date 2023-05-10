@@ -4,7 +4,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { QSpinnerBall } from 'quasar'
+import { QSpinnerClock } from 'quasar'
 
 export default defineComponent({
   name: 'App',
@@ -18,9 +18,9 @@ export default defineComponent({
     // eslint-disable-next-line space-before-function-paren
     showLoading() {
       this.$q.loading.show({
-        spinner: QSpinnerBall,
-        spinnerColor: 'orange',
-        spinnerSize: 100
+        spinner: QSpinnerClock,
+        spinnerColor: 'light-green',
+        spinnerSize: 75
       })
 
       // hiding in 2s

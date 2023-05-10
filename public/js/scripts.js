@@ -1,16 +1,66 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
 // General
 
-setTimeout(() => {
-  $('body').removeClass('loading')
-  $('.fadeIn').fadeIn(600)
-}, 2500)
+if (screen.height >= 1024) {
+  setTimeout(() => {
+    $('body').removeClass('loading')
+    $('.fadeIn').fadeIn(600)
+  }, 2500)
 
-setTimeout(() => {
-  $('.fadeIn').fadeIn(1000)
-}, 3500)
+  setTimeout(() => {
+    $('.fadeIn').fadeIn(1000)
+  }, 3500)
+} else {
+  setTimeout(() => {
+    $('body').removeClass('loading')
+    $('.fadeIn').fadeIn(600)
+    $('.fadeIn2').fadeIn(600)
+    $('.fadeIn3').fadeIn(600)
+    $('.fadeIn4').fadeIn(600)
+    $('.fadeIn5').fadeIn(600)
+  }, 2500)
+
+  setTimeout(() => {
+    $('.fadeIn').fadeIn(1000)
+    $('.fadeIn2').fadeIn(1000)
+    $('.fadeIn3').fadeIn(1000)
+    $('.fadeIn4').fadeIn(1000)
+    $('.fadeIn5').fadeIn(1000)
+  }, 3500)
+}
+
+// Scroll Fade in
+
+if (screen.height >= 1024) {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() >= 50) {
+      setTimeout(() => {
+        $('.fadeIn2').fadeIn(600)
+      }, 300)
+    }
+
+    if ($(this).scrollTop() >= 400) {
+      setTimeout(() => {
+        $('.fadeIn3').fadeIn(600)
+      }, 300)
+    }
+
+    if ($(this).scrollTop() >= 700) {
+      setTimeout(() => {
+        $('.fadeIn4').fadeIn(600)
+      }, 300)
+    }
+
+    if ($(this).scrollTop() >= 1000) {
+      setTimeout(() => {
+        $('.fadeIn5').fadeIn(600)
+      }, 300)
+    }
+  })
+}
 
 // Header menu
 
@@ -22,11 +72,50 @@ $(document).on('click', '.menu-toggle', function (e) {
   $('#menu-main-menu').fadeToggle(300)
 })
 
-// Sliders home
+// Slider home
 
-const myCarousel = document.querySelector('#sliders')
+setTimeout(() => {
+  const myCarousel = document.querySelector('#sliders')
 
-const carousel = new bootstrap.Carousel(myCarousel, {
-  interval: 1000,
-  wrap: true
+  const carousel = new bootstrap.Carousel(myCarousel, {
+    interval: 3500,
+    wrap: true
+  })
+}, 3500)
+
+// Slider ratings
+
+$(document).on('click', '.dot', function (e) {
+  e.preventDefault()
+
+  const id = $(this).data('slide')
+
+  setTimeout(() => {
+    $(document).find('div.card-p').fadeOut(300)
+  }, 300)
+
+  setTimeout(() => {
+    $('#slide-' + id).fadeIn(300)
+  }, 600)
+
+  $(document).find('div.dot').removeClass('active')
+  $(this).addClass('active')
+})
+
+// FOOTER
+
+// Back to top
+
+$(window).scroll(function () {
+  if ($(this).scrollTop() >= 300) {
+    $('#back-top').addClass('active')
+  } else {
+    $('#back-top').removeClass('active')
+  }
+})
+
+$(document).on('click', '#back-top', function (e) {
+  e.preventDefault()
+  console.log('test')
+  $('html, body').animate({ scrollTop: 0 }, 600)
 })

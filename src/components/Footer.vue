@@ -1,5 +1,5 @@
 <template name="FooterComponent">
-  <div></div>
+  <div id="back-top" class=""><i class="fa fa-angle-up"></i></div>
 </template>
 
 <script>
