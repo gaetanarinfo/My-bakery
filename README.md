@@ -1,6 +1,6 @@
 # My bakery (my-bakery)
 
-Application de vote des meilleurs boulangeries présente en France.Application de vote des meilleurs boulangeries présente en France.Application de vote des meilleures boulangeries présente en France.
+Retrouvez toutes les meilleures boulangeries en France sur My bakery.
 
 ## Install the dependencies
 ```bash

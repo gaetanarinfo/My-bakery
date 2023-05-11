@@ -1,5 +1,37 @@
 <template name="HeaderComponent">
-  <header class="fadeIn">
+  <div class="searchbox">
+
+    <div class="searchbox-remove">
+      <i class="fa fa-remove"></i>
+    </div>
+
+    <div class="container">
+
+      <header>
+
+        <p>Entrer un mot clé :</p>
+
+        <form id="search-header-product">
+
+          <input type="text" class="form-control">
+
+          <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+
+        </form>
+
+      </header>
+
+      <div class="searchbox-result"></div>
+
+      <footer class="text-center"></footer>
+
+    </div>
+
+  </div>
+
+  <header class="fadeIn header">
     <nav class="navigation">
 
       <div class="hn-container">
@@ -10,9 +42,9 @@
 
             <li class="menu-item"><a href="/" class="active" aria-current="page">Accueil</a></li>
 
-            <li class="menu-item"><a href="#">À propos de nous</a></li>
+            <li class="menu-item"><a href="#" class="scroll-click" data-scroll="a-propos">À propos de nous</a></li>
 
-            <li class="menu-item"><a href="#">Contact</a></li>
+            <li class="menu-item"><a href="#" class="scroll-click" data-scroll="contact">Contact</a></li>
 
           </ul>
 
@@ -28,9 +60,9 @@
 
           <ul class="menu-right">
 
-            <li class="menu-item"><a href="/" aria-current="page">Classement</a></li>
+            <li class="menu-item"><a href="/" class="scroll-click" data-scroll="classement">Classement</a></li>
 
-            <li class="menu-item"><a href="#">Blog</a></li>
+            <li class="menu-item"><a href="#" class="scroll-click" data-scroll="blog">Blog</a></li>
 
             <li class="menu-item"><a href="#">Espace membre</a></li>
 
@@ -38,7 +70,7 @@
 
           <div class="actions">
 
-            <a href="#"><i class="icono-search"></i></a>
+            <a href="#" class="search-btn"><i class="icono-search"></i></a>
 
           </div>
 
@@ -63,23 +95,23 @@
           </li>
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">À propos de nous</a>
+            <a href="#" class="scroll-click" data-scroll="a-propos">À propos de nous</a>
           </li>
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">Contact</a>
+            <a href="#" class="scroll-click" data-scroll="contact">Contact</a>
           </li>
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">Classement</a>
+            <a href="#" class="scroll-click" data-scroll="classement">Classement</a>
           </li>
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">Blog</a>
+            <a href="#" class="scroll-click" data-scroll="blog">Blog</a>
           </li>
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">Espace membre</a>
+            <a href="#">Espace membre</a>
           </li>
 
         </ul>
@@ -87,7 +119,7 @@
         <div class="menu-toggle"><span></span></div>
 
         <div class="actions">
-          <a href="#"><i class="icono-search"></i></a>
+          <a href="#" class="search-btn"><i class="icono-search"></i></a>
         </div>
 
       </div>

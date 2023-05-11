@@ -1,5 +1,5 @@
 <template name="SectionHome7">
-  <div class="section fadeIn7 contact">
+  <div id="contact" class="section fadeIn7 contact">
 
     <div class="background-p">
 
@@ -16,7 +16,7 @@
                 <h4>NOS BUREAU EN FRANCE</h4>
                 <h5>125 avenue Félix Geneslay 72100 Le Mans, France</h5>
 
-                <p><i class="fa fa-envelope"></i><a href="mailto:contact@my-bakery.com">contact@my-bakery.com</a></p>
+                <p><i class="fa fa-envelope"></i><a href="mailto:contact@my-bakery.fr">contact@my-bakery.fr</a></p>
 
                 <p><i class="fa fa-phone-square"></i>+33 6-15-75-93-02</p>
 
@@ -45,7 +45,7 @@
                 <input class="form-control" name="lastname" type="text" placeholder="">
               </div>
 
-              <div class="form-group">
+              <div class="form-group">￼
                 <label>Adresse email <sup>*</sup></label>
                 <input class="form-control" name="email" type="email" placeholder="">
               </div>

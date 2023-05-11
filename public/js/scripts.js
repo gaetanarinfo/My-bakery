@@ -1,7 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 // General
 
 if (screen.height >= 1024) {
@@ -159,4 +155,46 @@ $(document).on('click', '#back-top', function (e) {
   e.preventDefault()
   console.log('test')
   $('html, body').animate({ scrollTop: 0 }, 600)
+})
+
+// Header SearchBox
+
+setTimeout(() => {
+  $('.search-btn').on('click', function (e) {
+    e.preventDefault()
+
+    $('.searchbox').addClass('active')
+    $('body').css({
+      overflow: 'hidden'
+    })
+  })
+
+  $('.searchbox-remove').on('click', function (e) {
+    e.preventDefault()
+
+    $('.searchbox').removeClass('active')
+    $('body').css({
+      overflow: 'auto'
+    })
+  })
+}, 2500)
+
+// Scroll click
+
+$(document).on('click', '.scroll-click', function (e) {
+  e.preventDefault()
+
+  $('.fadeIn2').fadeIn(600)
+  $('.fadeIn3').fadeIn(600)
+  $('.fadeIn4').fadeIn(600)
+  $('.fadeIn5').fadeIn(600)
+  $('.fadeIn6').fadeIn(600)
+  $('.fadeIn7').fadeIn(600)
+  $('.fadeIn8').fadeIn(600)
+
+  const scroll = $(this).data('scroll')
+
+  $([document.documentElement, document.body]).animate({
+    scrollTop: $('#' + scroll).offset().top
+  }, 'slow')
 })

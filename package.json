@@ -1,12 +1,11 @@
 {
   "name": "my-bakery",
   "version": "0.0.1",
-  "description": "Application de vote des meilleurs boulangeries présente en France.Application de vote des meilleurs boulangeries présente en France.Application de vote des meilleures boulangeries présente en France.",
+  "description": "Retrouvez toutes les meilleures boulangeries en France sur My bakery.",
   "productName": "My bakery",
   "author": "Seigneur Gaëtan",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build"
@@ -15,20 +14,16 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
     "core-js": "^3.6.5",
+    "pinia": "^2.0.36",
     "quasar": "^2.12.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "vue-i18n": "^9.3.0-beta.17",
+    "vue-moment": "^4.1.0",
+    "vue-router": "^4.0.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app-webpack": "^3.0.0",
-    "eslint": "^8.10.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "eslint-webpack-plugin": "^3.1.1"
+    "@quasar/app-webpack": "^3.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

@@ -15,7 +15,6 @@ export default defineComponent({
   components: {
   },
 
-  // eslint-disable-next-line space-before-function-paren
   setup() {
 
   }

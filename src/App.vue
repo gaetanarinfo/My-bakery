@@ -8,14 +8,14 @@ import { QSpinnerClock } from 'quasar'
 
 export default defineComponent({
   name: 'App',
-  // eslint-disable-next-line space-before-function-paren
+
   data() {
     return {
       show: false
     }
   },
   methods: {
-    // eslint-disable-next-line space-before-function-paren
+
     showLoading() {
       this.$q.loading.show({
         spinner: QSpinnerClock,
@@ -30,7 +30,7 @@ export default defineComponent({
       }, 2000)
     }
   },
-  // eslint-disable-next-line space-before-function-paren
+
   beforeUnmount() {
     setTimeout(() => {
       this.$q.loading.hide()
@@ -38,7 +38,7 @@ export default defineComponent({
   },
   computed: {
   },
-  // eslint-disable-next-line space-before-function-paren
+
   mounted() {
     this.showLoading()
   }
