@@ -1,4 +1,4 @@
-# My bakery (my-bakery)
+# My bakery - classement des meilleurs boulangerie de France (my-bakery)
 
 Retrouvez toutes les meilleures boulangeries en France sur My bakery.
 

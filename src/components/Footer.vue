@@ -39,13 +39,13 @@
 
               </ul>
 
-              <div class="text-center mb-3 grid-app">
+              <div v-if="plateformApp" class="text-center mb-3 grid-app">
                 <a href="" class="google-play">
                   <img src="google-play.png" alt="Google play">
                 </a>
               </div>
 
-              <div class="text-center grid-app">
+              <div v-if="plateformApp" class="text-center grid-app">
                 <a href="" class="app-store">
                   <img src="app-store.png" alt="Apple store">
                 </a>
@@ -59,23 +59,27 @@
 
             <div class="widget-newsletter-footer text-center">
 
-              <form class="form-newsletter">
+              <form id="form-newsletter" class="form-newsletter">
 
                 <h4>Recevez des nouvelles et &amp; offre</h4>
 
                 <div class="form-group">
 
-                  <input class="form-control" name="email" type="text" placeholder="Votre adresse email...">
+                  <input v-model="emailNewsletter" id="email_newsletter" name="email_newsletter" class="form-control" type="email"
+                    placeholder="Votre adresse email...">
 
-                  <button>S'abonner</button>
+                  <button id="submit_newsletter" v-bind:class="submit !== false ? '' : 'disabled'"
+                    @click="submitNewsletter" type="submit">S'abonner</button>
 
                 </div>
 
+                <span class="error-text email_newsletter_error"></span>
+
                 <p>* Ne vous inquiétez pas, nous ne spammons jamais</p>
 
-                <p>&nbsp;</p>
-
               </form>
+
+              <q-inner-loading :showing="visible" />
 
             </div>
 
@@ -163,8 +167,11 @@
 
       <div class="container">
 
-        <p>© Copyright par <strong>Gaëtan Seigneur</strong>. Concu par<a href="https://portfolio-gaetan.fr"> Dev72.</a>
+        <p>© Copyright par <strong>Gaëtan Seigneur - {{ moment().format('YYYY') }}</strong>. Concu par<a
+            href="https://portfolio-gaetan.fr"> Dev72</a>.
         </p>
+
+        <p class="mt-1">Plateforme <span class="plateform">{{ plateform }}</span> - Version {{ version }}</p>
 
       </div>
 
@@ -177,9 +184,163 @@
 
 <script>
 import { defineComponent } from 'vue'
+import useValidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+import $ from 'jquery'
+import { useQuasar } from 'quasar'
+import { ref } from 'vue'
+import axios from 'axios'
+import moment from 'moment'
 
 export default defineComponent({
   name: 'FooterComponent',
-  props: {}
+  setup() {
+
+    const $q = useQuasar()
+    const visible = ref(false)
+    const showSimulatedReturnData = ref(true)
+
+    $q.notify.registerType('success-form', {
+      icon: 'fa-solid fa-check',
+      progress: false,
+      color: 'green-6',
+      textColor: 'white',
+      classes: 'glossy',
+      timeout: 3500
+    })
+
+    $q.notify.registerType('error-form', {
+      icon: 'fa-solid fa-xmark',
+      progress: false,
+      color: 'red-6',
+      textColor: 'white',
+      classes: 'glossy',
+      timeout: 3500
+    })
+
+    return {
+      plateform: $q.platform.is.name,
+      version: process.env.VERSION,
+      plateformApp: $q.platform.is.desktop,
+      visible,
+      moment: moment,
+      showSimulatedReturnData,
+      showTextLoading() {
+        visible.value = true
+        showSimulatedReturnData.value = false
+
+        setTimeout(() => {
+          visible.value = false
+          showSimulatedReturnData.value = true
+        }, 3000)
+      },
+      showNotif() {
+        $q.notify({
+          type: 'success-form',
+          message: 'Votre demande de d\'inscrition à notre lettre d\'actualité à bien été pris en compte.'
+        })
+      },
+      errorNotif(message = null) {
+        $q.notify({
+          type: 'error-form',
+          message: message ? message : 'Une erreur est survenue dans le formulaire.'
+        })
+      }
+    }
+  },
+  data () {
+    $(document).on('keyup', '#form-newsletter', function (e) {
+
+      if ($('#email_newsletter').val().length >= 2) {
+        $('#submit_newsletter').removeClass('disabled')
+      } else {
+        $('#submit_newsletter').addClass('disabled')
+      }
+
+    })
+
+    return {
+      v$: useValidate(),
+      submit: false,
+      emailNewsletter: null
+    }
+  },
+  methods: {
+    submitNewsletter(e) {
+      e.preventDefault();
+
+      this.v$.$validate() // checks all inputs
+
+      let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+      let valid = reg.test(this.emailNewsletter)
+
+      if (valid) {
+
+        $('.' + 'email_newsletter' + '_error').removeAttr()
+        $('.' + 'email_newsletter' + '_error').text("");
+
+        if (!this.v$.$error) {
+
+          axios.post(process.env.WEBSITE + '/newsletter', { 'emailNewsletter': this.emailNewsletter })
+            .then((res) => {
+
+              if (res.data.success === true) {
+
+                this.showNotif()
+
+                setTimeout(() => {
+                  $(document).find('.error-text').text('')
+                  $(document).find('.error-text').removeAttr()
+                  $('#form-newsletter').find('input').val('')
+                  this.submit = false
+                  $('#submit_newsletter').addClass('disabled')
+
+                  this.email = null
+
+                }, 3500);
+
+              } else {
+                this.errorNotif(res.data.message)
+              }
+
+            })
+            .catch((error) => {
+              this.errorNotif()
+            })
+
+        } else {
+
+          this.submit = false
+
+          if (this.emailNewsletter) {
+
+            this.submit = true
+
+            return true
+          }
+
+          if (!this.emailNewsletter) {
+            $('.' + 'email_newsletter' + '_error').attr('style', 'display: block')
+            $('.' + 'email_newsletter' + '_error').text("Le champs adresse email est obligatoire !");
+          } else {
+            $('.' + 'email_newsletter' + '_error').removeAttr()
+            $('.' + 'email_newsletter' + '_error').text("");
+          }
+
+        }
+
+      } else {
+
+        $('.' + 'email_newsletter' + '_error').attr('style', 'display: block')
+        $('.' + 'email_newsletter' + '_error').text("Le champs adresse email n'est pas valide !");
+
+      }
+    }
+  },
+  validations() {
+    return {
+      emailNewsletter: { required },
+    }
+  }
 })
 </script>

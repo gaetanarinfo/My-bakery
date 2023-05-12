@@ -11,6 +11,21 @@
       name="viewport"
       content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
     />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://my-bakery.fr">
+  <meta property="og:title" content="<%= productName %>">
+  <meta property="og:description" content="<%= productDescription %>">
+  <meta property="og:image" content="https://portfolio-gaetan.fr/img/bg_image_1.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://my-bakery.fr">
+  <meta property="twitter:title" content="<%= productName %>">
+  <meta property="twitter:description" content="<%= productDescription %>">
+  <meta property="twitter:image" content="https://portfolio-gaetan.fr/img/bg_image_1.jpg">
+
+  <link rel="canonical" href="https://my-bakery.fr">
 
     <link
       rel="icon"
@@ -56,8 +71,6 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
-
-    <script src="js/scripts.js"></script>
 
     <script
       src="https://kit.fontawesome.com/6650c3fdcf.js"

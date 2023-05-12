@@ -6,7 +6,8 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-const { configure } = require('quasar/wrappers')
+const { configure } = require('quasar/wrappers'),
+  envparser = require('./src/config/envparser.js')
 
 module.exports = configure(function (ctx) {
   return {
@@ -46,10 +47,12 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
     build: {
-      vueRouterMode: 'hash' // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
+
+      env: envparser(),
+      publicPath: ctx.prod ? process.env.WEBSITE : '',
 
       // transpile: false,
-      // publicPath: '/',
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
@@ -94,13 +97,14 @@ module.exports = configure(function (ctx) {
 
       // Quasar plugins
       plugins: [
+        'Notify',
         'Loading'
       ]
     },
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: 'all',
 
     // https://v2.quasar.dev/quasar-cli-webpack/developing-ssr/configuring-ssr
     ssr: {
@@ -130,8 +134,8 @@ module.exports = configure(function (ctx) {
       // if using workbox in InjectManifest mode
 
       manifest: {
-        name: 'My bakery',
-        short_name: 'My bakery',
+        name: 'My bakery - classement des meilleurs boulangerie de France',
+        short_name: 'My bakery - classement des meilleurs boulangerie de France',
         description: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.',
         display: 'standalone',
         orientation: 'portrait',

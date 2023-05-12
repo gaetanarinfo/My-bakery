@@ -31,7 +31,7 @@
 
                     <div class="thumbnail">
 
-                      <a :href="'#/blog/' + blog.url"></a>
+                      <a :href="'#/blog/' + blog.url" :title="blog.title"></a>
 
                       <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
 
@@ -39,20 +39,28 @@
 
                     <div class="content text-start">
 
-                      <span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le {{ moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+                      <span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le {{
+                        moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</span>
 
                       <h3 class="title">{{ blog.title }}</h3>
 
                       <span class="author">Par <span>{{ blog.author }}</span></span>
-                      <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span v-if="blog.views >= 2">s</span></span>
+                      <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span
+                          v-if="blog.views >= 2">s</span></span>
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a :href="'#/blog/' + blog.url" class="btn btn-bakery">Lire la suite</a>
+                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
 
                     </div>
 
                   </article>
+
+                </div>
+
+                <div class="mt-3">
+
+                  <a href="#/blog" class="btn btn-bakery">Voir les autres articles</a>
 
                 </div>
 

@@ -55,7 +55,7 @@
 
                       </div>
 
-                      <a class="title">{{ bakery.title }}</a>
+                      <a :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
 
                     </div>
 
@@ -69,7 +69,6 @@
                           <a href="#" v-if="bakery.counter_devanture !== 0" v-for="note in 5" :key="note"
                             :data-rating-value="note" :data-rating-text="note"
                             v-bind:class="note > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture) ? '' : 'br-selected'"></a>
-
 
                           <a href="#" v-if="bakery.counter_devanture === 0" v-for="note in 5" :key="note" class=""></a>
 
@@ -201,9 +200,6 @@ import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 
-const note_g = 0,
-  moyenne = 0
-
 export default defineComponent({
   name: 'SectionHome4',
 
@@ -220,9 +216,7 @@ export default defineComponent({
 
     return {
       bakerys,
-      moment: moment,
-      note_g: note_g,
-      moyenne: moyenne
+      moment: moment
     }
   }
 })

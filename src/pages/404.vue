@@ -1,31 +1,36 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+  <HeaderComponent />
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
+  <div class="p-404">
 
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+    <div class="container">
+
+      <h1>404</h1>
+
+      <h3>PAGE NON TROUVÉE</h3>
+
+      <p>Nous recherchons votre page … mais nous ne la trouvons pas</p>
+
+      <p>&nbsp;</p>
+
+      <a class="btn btn-bakery btn-lg" href="/">Accueil</a>
+
+      <div class="p-404-image"><img
+          src="404.jpg" alt="Boulangerie"></div>
+
     </div>
+
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import HeaderComponent from 'components/Header.vue'
 
 export default defineComponent({
-  name: 'ErrorNotFound'
+  name: '404',
+  components: {
+    HeaderComponent
+  }
 })
 </script>

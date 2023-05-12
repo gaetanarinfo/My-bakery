@@ -4,11 +4,11 @@ if (screen.height >= 1024) {
   setTimeout(() => {
     $('body').removeClass('loading')
     $('.fadeIn').fadeIn(600)
-  }, 2500)
+  }, 3500)
 
   setTimeout(() => {
     $('.fadeIn').fadeIn(1000)
-  }, 3500)
+  }, 4500)
 } else {
   setTimeout(() => {
     $('body').removeClass('loading')
@@ -20,7 +20,7 @@ if (screen.height >= 1024) {
     $('.fadeIn6').fadeIn(600)
     $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
-  }, 2500)
+  }, 1000)
 
   setTimeout(() => {
     $('.fadeIn').fadeIn(1000)
@@ -31,18 +31,8 @@ if (screen.height >= 1024) {
     $('.fadeIn6').fadeIn(1000)
     $('.fadeIn7').fadeIn(1000)
     $('.fadeIn8').fadeIn(1000)
-  }, 3500)
+  }, 1000)
 }
-
-// Header
-
-$(window).scroll(function () {
-  if ($(this).scrollTop() >= 300) {
-    $('header').addClass('navigation-sticky navigation-unpin')
-  } else {
-    $('header').removeClass('navigation-sticky navigation-unpin')
-  }
-})
 
 // Scroll Fade in
 
@@ -108,7 +98,7 @@ setTimeout(() => {
   const myCarousel = document.querySelector('#sliders')
 
   const carousel = new bootstrap.Carousel(myCarousel, {
-    interval: 3500,
+    interval: 4500,
     wrap: true
   })
 
@@ -177,7 +167,7 @@ setTimeout(() => {
       overflow: 'auto'
     })
   })
-}, 2500)
+}, 4000)
 
 // Scroll click
 

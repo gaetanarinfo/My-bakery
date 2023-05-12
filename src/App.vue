@@ -4,7 +4,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { QSpinnerClock } from 'quasar'
+import { QSpinnerBox } from 'quasar'
 
 export default defineComponent({
   name: 'App',
@@ -18,8 +18,9 @@ export default defineComponent({
 
     showLoading() {
       this.$q.loading.show({
-        spinner: QSpinnerClock,
-        spinnerColor: 'light-green',
+        spinner: QSpinnerBox,
+        spinnerColor: 'blue-6',
+        backgroundColor: 'white',
         spinnerSize: 75
       })
 
@@ -27,14 +28,14 @@ export default defineComponent({
       setTimeout(() => {
         this.$q.loading.hide()
         this.show = true
-      }, 2000)
+      }, 3500)
     }
   },
 
   beforeUnmount() {
     setTimeout(() => {
       this.$q.loading.hide()
-    }, 2000)
+    }, 3500)
   },
   computed: {
   },
