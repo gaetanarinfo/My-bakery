@@ -1041,7 +1041,7 @@ a:hover {
 }
 
 .last-bakery .column-inner .wrapper .bloc {
-  padding: 5rem 0 0;
+  padding: 5rem 0;
 }
 
 @media all and (max-width: 768px) {
@@ -1084,6 +1084,7 @@ a:hover {
 .last-bakery .column-inner .wrapper .bloc .section:last-child .bakery .title {
   font-size: 24px;
   color: #000;
+  text-align: left;
   outline: none;
   text-decoration: none;
   transition: all 0.4s ease;
@@ -1121,6 +1122,7 @@ a:hover {
   .location {
   font-size: 16px;
   text-transform: uppercase;
+  text-align: left;
   color: #4e3939;
   font-weight: 500;
   margin-top: 1rem !important;
@@ -1573,8 +1575,14 @@ a:hover {
 /* FOOTER */
 
 footer.footer .footer-content {
-  padding: 80px 0;
+  padding: 5rem 0;
   background-color: #22202e;
+}
+
+@media all and (max-width: 768px) {
+  footer.footer .footer-content {
+    padding: 2rem 0;
+  }
 }
 
 footer.footer .footer-content .widget {
@@ -1859,7 +1867,7 @@ footer.footer .footer-copyright p a:hover {
   right: 30px;
   width: 40px;
   height: 40px;
-  z-index: 10000;
+  z-index: 9999999;
   background-color: transparent;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -1959,26 +1967,42 @@ footer.footer .footer-copyright p a:hover {
   max-width: 100%;
 }
 
-/* BLOG */
+/* ALL PAGES */
 
-.blog.background {
+.bb.background {
   background: url(https://warethemes.com/wordpress/bready/wp-content/uploads/2019/05/page-header-2.png);
   background-position: 50% 50% !important;
   background-size: cover !important;
   position: relative;
-  min-height: 21.875rem;
+  min-height: 100%;
   vertical-align: top;
 }
 
-.blog .content {
+@media all and (max-width: 768px) {
+  .bb.background {
+    min-height: 100%;
+  }
+}
+
+.bb .content {
   margin: 0 auto;
-  padding-top: 12.5rem;
+  padding: 7rem 0;
+  display: flex;
   max-width: 1170px;
   text-align: center;
   height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-.blog h1 {
+@media all and (max-width: 768px) {
+  .bb .content {
+    padding: 5.5rem 0;
+  }
+}
+
+.bb h1 {
   margin-bottom: 20px;
   font-size: 48px;
   font-weight: bold;
@@ -1990,18 +2014,21 @@ footer.footer .footer-copyright p a:hover {
   color: #000;
 }
 
-.blog .b-breadcrumb {
-  margin-bottom: 5px;
+@media all and (max-width: 768px) {
+  .bb h1 {
+    font-size: 28px;
+    line-height: 2.25rem;
+  }
 }
 
-.blog .b-breadcrumb .breadcrumb {
+.bb .b-breadcrumb .breadcrumb {
   margin: 0;
   padding: 0;
   background-color: transparent;
   display: block;
 }
 
-.blog .b-breadcrumb .breadcrumb li {
+.bb .b-breadcrumb .breadcrumb li {
   font-size: 16px;
   color: #000;
   font-weight: 400;
@@ -2009,18 +2036,19 @@ footer.footer .footer-copyright p a:hover {
   padding: 0 0.25rem;
 }
 
-.blog .b-breadcrumb .breadcrumb a {
+.bb .b-breadcrumb .breadcrumb a {
   font-size: 16px;
   color: #000;
   outline: none;
   text-decoration: none;
 }
 
-.blog .breadcrumb > .active {
-  color: #777;
+.bb .breadcrumb > .active {
+  color: #d7b05e !important;
+  font-weight: 500 !important;
 }
 
-.blog .b-breadcrumb .breadcrumb li.active:before {
+.bb .b-breadcrumb .breadcrumb li.active:before {
   font-family: FontAwesome;
   content: "\f105";
   color: #000;

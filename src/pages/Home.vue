@@ -14,7 +14,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import HeaderComponent from 'components/Header.vue'
+import HeaderComponent from 'components/home/Header.vue'
 import FooterComponent from 'components/Footer.vue'
 import SliderComponent from 'components/Slider.vue'
 import SectionsHome from 'components/SectionsHome.vue'
@@ -32,8 +32,8 @@ export default defineComponent({
     SectionsHome
   },
   mounted() {
-    // Header
 
+    // Header
     $(window).scroll(function () {
       if ($(this).scrollTop() >= 300) {
         $('header').addClass('navigation-sticky navigation-unpin')
@@ -41,6 +41,7 @@ export default defineComponent({
         $('header').removeClass('navigation-sticky navigation-unpin')
       }
     })
+
   }
 })
 </script>

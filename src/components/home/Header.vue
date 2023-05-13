@@ -43,7 +43,7 @@
 
             <li class="menu-item"><a role="button" v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="a-propos">À propos de nous</a></li>
 
-            <li class="menu-item"><a href="#/contact" v-bind:class="this.$route.path === '/contact' ? 'active' : ''">Contact</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/contact' : ''" class="scroll-click" v-bind:class="this.$route.path === '/contact' ? 'active' : ''" data-scroll="contact">Contact</a></li>
 
           </ul>
 
@@ -59,11 +59,11 @@
 
           <ul class="menu-right">
 
-            <li class="menu-item"><a href="#/classement" v-bind:class="this.$route.path === '/classement' ? 'active' : ''">Classement</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/classement  ' : ''" v-bind:class="this.$route.path === '/classement' ? 'active' : ''" class="scroll-click" data-scroll="classement">Classement</a></li>
 
-            <li class="menu-item"><a href="#/blog" v-bind:class="this.$route.path === '/blog' ? 'active' : ''">Blog</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/blog' : ''" v-bind:class="this.$route.path === '/blog' ? 'active' : ''"  class="scroll-click" data-scroll="blog">Blog</a></li>
 
-            <li class="menu-item"><a href="#/login" v-bind:class="this.$route.path === '/login' ? 'active' : ''">Espace membre</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/login' : ''" v-bind:class="this.$route.path === '/login' ? 'active' : ''" >Espace membre</a></li>
 
           </ul>
 

@@ -1,5 +1,5 @@
 <template name="BlogComponent">
-  <div class="background fadeIn2 blog">
+  <div class="background fadeIn2 bb">
 
     <div class="content">
 
@@ -102,7 +102,7 @@
 
               </div>
 
-              <q-inner-loading size="50px" color="blue-5" :showing="visible" />
+              <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
 
             </div>
 
@@ -329,6 +329,16 @@ export default defineComponent({
       this.countBlog()
     }, 1000);
 
+    // Header
+
+    $(window).scroll(function () {
+      if ($(this).scrollTop() >= 300) {
+        $('header').removeClass('navigation-sticky navigation-unpin')
+      } else {
+        $('header').removeClass('navigation-sticky navigation-unpin')
+      }
+    })
+
     $('.header').addClass('h-blog')
     $('body').removeClass('loading')
     $('.fadeIn').fadeIn(600)
@@ -367,14 +377,6 @@ export default defineComponent({
     })
 
     // Header menu
-
-    $(document).on('click', '.menu-toggle', function (e) {
-      e.preventDefault()
-
-      $(this).toggleClass('active')
-
-      $('#menu-main-menu').fadeToggle(300)
-    })
 
     setTimeout(() => {
       $('.search-btn').on('click', function (e) {

@@ -31,7 +31,18 @@
 
                     <div>
 
-                      <div class="carousel slide slider-bakery carousel-fade" data-ride="carousel">
+                      <div :id="'carouselBakery' + bakery.id" class="carousel slide slider-bakery carousel-fade"
+                        data-ride="carousel">
+
+                        <div class="carousel-indicators">
+
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+
+                        </div>
 
                         <div class="carousel-inner">
 
@@ -52,6 +63,18 @@
                           </div>
 
                         </div>
+
+                        <button class="carousel-control-prev" type="button"
+                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button"
+                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
 
                       </div>
 
@@ -115,7 +138,8 @@
 
                           <a href="#" v-if="bakery.counter_prix === 0" v-for="note3 in 5" :key="note3" class=""></a>
 
-                          <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{ Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
+                          <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
+                            Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
                           }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
@@ -136,7 +160,8 @@
 
                           <a href="#" v-if="bakery.counter_choix === 0" v-for="note4 in 5" :key="note4" class=""></a>
 
-                          <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{ Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
+                          <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
+                            Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
                           }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
@@ -178,6 +203,12 @@
                     </div>
 
                   </div>
+
+                </div>
+
+                <div class="mt-3 text-center">
+
+                  <a href="#/classement" class="btn btn-bakery">Voir les autres boulangeries</a>
 
                 </div>
 
