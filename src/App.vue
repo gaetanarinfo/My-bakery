@@ -28,14 +28,14 @@ export default defineComponent({
       setTimeout(() => {
         this.$q.loading.hide()
         this.show = true
-      }, 3500)
+      }, 2500)
     }
   },
 
   beforeUnmount() {
     setTimeout(() => {
       this.$q.loading.hide()
-    }, 3500)
+    }, 2500)
   },
   computed: {
   },

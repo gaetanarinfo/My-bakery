@@ -35,7 +35,7 @@
 
                 <div class="section text-center">
 
-                  <div id="blocGrid" v-show="showSimulatedReturnData" class="row">
+                  <div id="blocGrids" v-show="showSimulatedReturnData" class="row">
 
                   </div>
 
@@ -59,7 +59,7 @@
 
   </div>
 
-  <header class="fadeIn header">
+  <header class="header">
     <nav class="navigation">
 
       <div class="hn-container">
@@ -92,17 +92,19 @@
           <ul class="menu-right">
 
             <li class="menu-item"><a @click="this.$router.push('/classement');"
-                v-bind:class="this.$route.path === '/classement' ? 'active btn-target' : 'btn-target'">Classement</a></li>
+                v-bind:class="this.$route.path === '/classement' ? 'active' : 'btn-target'">Classement</a></li>
 
             <li class="menu-item"><a @click="this.$router.push('/blog');"
-                v-bind:class="this.$route.path === '/blog' ? 'active btn-target' : 'btn-target'">Blog</a></li>
+                v-bind:class="this.$route.path === '/blog' ? 'active' : 'btn-target'">Blog</a></li>
 
             <li class="menu-item"><a @click="this.$router.push('/login');"
-                v-bind:class="this.$route.path === '/login' ? 'active btn-target' : 'btn-target'">Espace membre</a></li>
+                v-bind:class="this.$route.path === '/login' ? 'active' : 'btn-target'">Connexion</a></li>
 
           </ul>
 
           <div class="actions">
+
+            <a @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
 
             <a href="#" class="search-btn"><i class="icono-search"></i></a>
 
@@ -216,7 +218,7 @@ export default defineComponent({
           axios.get(process.env.WEBSITE + '/search/' + search.trim())
             .then((res) => {
 
-              $('.searchbox-result #blocGrid').html('')
+              $('.searchbox-result #blocGrids').html('')
 
               if (res.data.searchAll.length != 0) {
 
@@ -230,13 +232,13 @@ export default defineComponent({
                     vues = ''
                   }
 
-                  $('.searchbox-result #blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery btn-target">Lire la suite</a></div></article></div>')
+                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
                 })
 
               } else {
 
-                $('.searchbox-result #blocGrid').html('<div class="alert alert-info">Aucun article n\'a été trouvé.</div>')
+                $('.searchbox-result #blocGrids').html('<div class="alert alert-info">Aucun article n\'a été trouvé.</div>')
 
               }
 

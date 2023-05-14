@@ -36,9 +36,9 @@ export default defineComponent({
     // Header
     $(window).scroll(function () {
       if ($(this).scrollTop() >= 300) {
-        $('header').addClass('navigation-sticky navigation-unpin')
+        $('fadeIn.header').addClass('navigation-sticky navigation-unpin')
       } else {
-        $('header').removeClass('navigation-sticky navigation-unpin')
+        $('fadeIn.header').removeClass('navigation-sticky navigation-unpin')
       }
     })
 

@@ -19,7 +19,7 @@ setTimeout(() => {
     e.preventDefault()
   })
 
-}, 3500);
+}, 2500);
 
 // Header menu
 
@@ -65,7 +65,7 @@ setTimeout(() => {
     interval: 2000,
     wrap: true
   })
-}, 3500)
+}, 2500)
 
 // Slider ratings
 
@@ -100,7 +100,6 @@ $(window).scroll(function () {
 
 $(document).on('click', '#back-top', function (e) {
   e.preventDefault()
-  console.log('test')
   $('html, body').animate({ scrollTop: 0 })
 })
 

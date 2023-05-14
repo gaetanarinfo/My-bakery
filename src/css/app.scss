@@ -39,6 +39,14 @@ a:hover {
   color: #cd9b33;
 }
 
+.b-80 {
+  padding-bottom: 5rem;
+}
+
+.b-80 {
+  padding-top: 5rem;
+}
+
 .fadeIn,
 .fadeIn2,
 .fadeIn3,
@@ -701,6 +709,10 @@ a:hover {
   }
 }
 
+.header a {
+  cursor: pointer;
+}
+
 /* HOME */
 
 #sliders {
@@ -1307,6 +1319,26 @@ a:hover {
   margin: 1rem 0 0.5rem 0;
 }
 
+.last-bakery .content {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #333434;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  white-space: inherit;
+}
+
+.last-bakery .content::before {
+  content: "\f061";
+  font: normal normal normal 20px/1 FontAwesome;
+  position: relative;
+  left: -16px;
+  font-size: 14px;
+  color: #8b7a7a;
+}
+
 /* BLOG */
 
 .last-blog article {
@@ -1874,6 +1906,10 @@ footer.footer .footer-copyright p a:hover {
   }
 }
 
+.footer ul li a {
+  cursor: pointer;
+}
+
 .email_newsletter_error {
   margin-bottom: 1rem;
   margin-top: 0;
@@ -2065,7 +2101,7 @@ footer.footer .footer-copyright p a:hover {
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
-  line-height: 0.79;
+  line-height: 1.1em;
   letter-spacing: normal;
   text-align: center;
   color: #000;
@@ -2219,4 +2255,57 @@ footer.footer .footer-copyright p a:hover {
   font-weight: 500;
   padding: 2rem 0;
   font-family: inherit;
+}
+
+/* MY BAKERYS */
+
+.b-table-whishlist thead > tr > th:first-child {
+  text-align: left;
+}
+
+.b-table-whishlist thead > tr > th {
+  text-align: center;
+}
+
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+.b-table thead > tr > th {
+  font-family: "Kaushan Script", cursive;
+  font-size: 18px;
+  font-weight: 700;
+  color: #515356;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.table > :not(:last-child) > :last-child > * {
+  border-bottom-color: #e5e5e5;
+}
+
+.b-table-whishlist tbody > tr > td:last-child {
+  width: 150px;
+}
+
+.b-table-whishlist tbody > tr > td:first-child {
+  width: 30%;
+  text-align: left;
+}
+
+.b-table-whishlist tbody > tr > td {
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}
+
+.b-table tbody > tr > td {
+  vertical-align: middle;
+  padding: 30px 10px;
+}
+
+.b-table > tbody {
+  vertical-align: inherit;
+  border-bottom: transparent;
 }

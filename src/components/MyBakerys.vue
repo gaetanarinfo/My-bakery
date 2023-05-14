@@ -1,9 +1,9 @@
-<template name="BlogComponent">
+<template name="MyBakerys">
   <div class="background fadeIn2 bb background2">
 
     <div class="content">
 
-      <h1>Notre blog</h1>
+      <h1>Liste de souhaits</h1>
 
       <div class="b-breadcrumb">
 
@@ -13,7 +13,7 @@
 
             <li><a href="/">Accueil</a></li>
 
-            <li class="active">Blog</li>
+            <li class="active">Liste de souhaits</li>
 
           </ol>
 
@@ -25,89 +25,47 @@
 
   </div>
 
-  <div id="blog" class="section fadeIn3 last-blog">
+  <div class="section fadeIn3">
 
-    <div class="column-inner">
+    <div class="ps-content b-80 b-80">
 
-      <div class="wrapper">
+      <div class="container">
 
-        <div class="bloc container">
+        <div class="table-responsive">
 
-          <div class="hp-container">
+          <table class="table b-table b-table-whishlist">
 
-            <div class="section text-center">
+            <thead>
 
-              <div v-show="showSimulatedReturnData" id="blocGrid" class="row">
+              <tr>
 
-                <div v-show="showSimulatedReturnData" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
-                  v-for="blog in blogsAll" :key="blog.id">
+                <th>Nom</th>
 
-                  <article>
+                <th>Date de création</th>
 
-                    <div class="thumbnail">
+                <th>Vue(s)</th>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title"></a>
+                <th>Actions</th>
 
-                      <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
+              </tr>
 
-                    </div>
+            </thead>
 
-                    <div class="content text-start">
+            <tbody>
 
-                      <span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le {{
-                        moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+              <tr>
 
-                      <h3 class="title">{{ blog.title }}</h3>
+                <td colspan="4">
 
-                      <span class="author">Par <span>{{ blog.author }}</span></span>
-                      <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span
-                          v-if="blog.views >= 2">s</span></span>
+                  <div class="alert alert-info">Aucune boulangerie n'est présente dans votre liste.</div>
 
-                      <p>{{ blog.small_content }}</p>
+                </td>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la
-                        suite</a>
+              </tr>
 
-                    </div>
+            </tbody>
 
-                  </article>
-
-                </div>
-
-              </div>
-
-              <div class="mt-5" v-show="showSimulatedReturnData">
-
-                <div class="b-pagination">
-
-                  <ul class="pagination">
-
-                    <li>
-                      <a role="button" v-bind:class="this.current === 1 ? 'disabled' : ''"
-                        @click="chargeBlog(this.current - 1)"><i class="fa fa-angle-left"></i></a>
-                    </li>
-
-                    <li v-for="page in max" :key="page" v-bind:class="current === page ? 'active' : ''">
-                      <a role="button" @click="chargeBlog(page)">{{ page }}</a>
-                    </li>
-
-                    <li>
-                      <a role="button"
-                        v-bind:class="this.current === Math.round(this.blogsAllCount / 9) ? 'disabled' : ''"
-                        @click="chargeBlog(this.current + 1)"><i class="fa fa-angle-right"></i></a>
-                    </li>
-
-                  </ul>
-
-                </div>
-
-              </div>
-
-              <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
-
-            </div>
-
-          </div>
+          </table>
 
         </div>
 
@@ -236,11 +194,8 @@ import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 import { ref } from 'vue'
-import axios from 'axios'
 
 moment.locale('fr')
-
-var counter = 1
 
 export default defineComponent({
   name: 'BlogcComponent',
@@ -278,66 +233,11 @@ export default defineComponent({
       showSimulatedReturnData,
     }
   },
-  data() {
-    return {
-      current: ref(1),
-      max: 1,
-    }
-  },
   methods: {
-    chargeBlog(getPage) {
-
-      axios.get(process.env.WEBSITE + '/blogs-page/' + getPage)
-        .then((res) => {
-
-          this.current = getPage
-
-          $('#blocGrid').html('')
-
-          $([document.documentElement, document.body]).animate({
-            scrollTop: $('#blocGrid').offset().top
-          }, 'slow')
-
-          this.showTextLoading()
-
-          $.each(res.data.blogsAll, function (index, blog) {
-
-            var vues = ''
-
-            if (blog.vue >= 2) {
-              vues = '<span>s</span>'
-            } else {
-              vues = ''
-            }
-
-            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
-
-          })
-
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-
-    },
-    countBlog() {
-      if (counter <= 1) {
-        setTimeout(() => {
-          if (this.blogsAll.length <= 8) this.max = 1;
-          else this.max = Math.round(this.blogsAllCount / 9);
-          counter++;
-        }, 300);
-      }
-    }
   },
   mounted() {
 
-
     $('#menu-main-menu').removeAttr('style')
-
-    setTimeout(() => {
-      this.countBlog()
-    }, 1000);
 
     // Header menu
 
@@ -437,3 +337,4 @@ export default defineComponent({
   }
 })
 </script>
+

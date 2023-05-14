@@ -80,6 +80,10 @@
 
                       <a :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
 
+                      <div>
+                        <p class="content">{{ bakery.small_content }}</p>
+                      </div>
+
                     </div>
 
                     <div>
@@ -199,7 +203,17 @@
                     </div>
 
                     <div class="text-end mt-3">
-                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery btn-target">En savoir +</a>
+
+                      <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) === -1" @click="saveBakeryList(bakery.id)"
+                        :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                          class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                      <a v-else-if="Cookies.get('bakerysList').indexOf(bakery.id) !== -1"
+                        @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 delete-list-' + bakery.id"><i
+                          class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
+
+                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+
                     </div>
 
                   </div>
@@ -208,7 +222,8 @@
 
                 <div class="mt-3 text-center">
 
-                  <a @click="this.$router.push('/classement');" class="btn btn-bakery btn-target">Voir les autres boulangeries</a>
+                  <a @click="this.$router.push('/classement');" class="btn btn-bakery">Voir les autres
+                    boulangeries</a>
 
                 </div>
 
@@ -230,6 +245,7 @@
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
+import { Cookies } from 'quasar'
 
 export default defineComponent({
   name: 'SectionHome4',
@@ -246,9 +262,44 @@ export default defineComponent({
     })
 
     return {
+      Cookies: Cookies,
       bakerys,
       moment: moment
     }
+  },
+  methods: {
+    saveBakeryList(id) {
+
+      const bakerysList = Cookies.has('bakerysList'),
+        cookies = Cookies.get('bakerysList')
+
+      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger me-2"></i> Supprimer')
+
+      if ($(document).find('.bakery-list-' + id).length !== 0) {
+
+        if (!bakerysList) {
+          Cookies.set('bakerysList', id, { expires: 30000 })
+        } else {
+          Cookies.set('bakerysList', Cookies.get('bakerysList') + '-' + id)
+        }
+
+      } else {
+
+        var total = cookies.replace('-' + id, '');
+
+        Cookies.set('bakerysList', total);
+
+        if (cookie.split('-').length === 1) {
+          Cookies.remove('bakerysList');
+        }
+
+        $('.delete-bakery-list-' + id).remove()
+
+      }
+
+      $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass()
+
+    },
   }
 })
 </script>
