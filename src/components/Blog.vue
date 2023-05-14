@@ -1,5 +1,5 @@
 <template name="BlogComponent">
-  <div class="background fadeIn2 bb">
+  <div class="background fadeIn2 bb background2">
 
     <div class="content">
 
@@ -65,7 +65,8 @@
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
+                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery btn-target">Lire la
+                        suite</a>
 
                     </div>
 
@@ -128,6 +129,12 @@
 
 .h-blog {
   min-height: 200px;
+}
+
+@media all and (max-width: 768px) {
+  .h-blog {
+    min-height: 100%;
+  }
 }
 
 #blog {
@@ -303,7 +310,7 @@ export default defineComponent({
               vues = ''
             }
 
-            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
+            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery btn-target">Lire la suite</a></div></article></div>')
 
           })
 
@@ -325,9 +332,46 @@ export default defineComponent({
   },
   mounted() {
 
+
+    $('#menu-main-menu').removeAttr('style')
+
     setTimeout(() => {
       this.countBlog()
     }, 1000);
+
+    // Header menu
+
+    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
+      e.preventDefault()
+
+      $(this).addClass('active')
+
+      $('#menu-main-menu').fadeIn(300)
+
+    })
+
+    $(document).on('click', '.menu-toggle-2.active', function (e) {
+      e.preventDefault()
+
+      $(this).removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
+
+    $(document).on('click', '#menu-main-menu .menu-item', function (e) {
+
+      $('.menu-toggle-2').removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
+
+    $(document).on('click', '#blog .btn-target', function (e) {
+      e.preventDefault()
+      var url = $(this).attr('href')
+      location.href = url
+    })
 
     // Header
 

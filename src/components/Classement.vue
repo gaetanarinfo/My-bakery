@@ -1,5 +1,5 @@
 <template name="ClassementComponent">
-  <div class="background fadeIn2 bb">
+  <div class="background fadeIn2 bb background1">
 
     <div class="content">
 
@@ -21,6 +21,42 @@
 
       </div>
 
+      <div class="form-order">
+
+        <div>
+          <h3>
+            Trier les boulangeries
+          </h3>
+        </div>
+
+        <form>
+
+          <div class="form-group">
+
+            <label for="">Trier par mot clé</label>
+
+            <span class="select">
+              <input v-model="search" type="text" @keyup="chargeBakery(this.current, this.search, this.location)"
+                class="form-control" placeholder="Entrer un mot clé...">
+            </span>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="">Trier par adresse</label>
+
+            <span class="select">
+              <input v-model="location" type="text" @keyup="chargeBakery(this.current, this.search, this.location)"
+                class="form-control" placeholder="Entrer une adresse...">
+            </span>
+
+          </div>
+
+        </form>
+
+      </div>
+
     </div>
 
   </div>
@@ -39,7 +75,7 @@
 
               <div v-show="showSimulatedReturnData" id="blocGrid" class="row">
 
-                <div class="col-lg-6 bakery" v-for="bakery in bakerysAll" :key="bakery.id">
+                <div class="col-lg-4 col-md-4 bakery" v-for="bakery in bakerysAll" :key="bakery.id">
 
                   <div class="row">
 
@@ -213,7 +249,7 @@
                     </div>
 
                     <div class="text-end mt-3">
-                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery btn-target">En savoir +</a>
                     </div>
 
                   </div>
@@ -230,17 +266,19 @@
 
                     <li>
                       <a role="button" v-bind:class="this.current === 1 ? 'disabled' : ''"
-                        @click="chargeBakery(this.current - 1)"><i class="fa fa-angle-left"></i></a>
+                        @click="chargeBakery(this.current - 1, this.search, this.location)"><i
+                          class="fa fa-angle-left"></i></a>
                     </li>
 
                     <li v-for="page in max" :key="page" v-bind:class="current === page ? 'active' : ''">
-                      <a role="button" @click="chargeBakery(page)">{{ page }}</a>
+                      <a role="button" @click="chargeBakery(page, this.search, this.location)">{{ page }}</a>
                     </li>
 
                     <li>
                       <a role="button"
-                        v-bind:class="this.current === Math.round(this.bakerysAllCount / 8) ? 'disabled' : ''"
-                        @click="chargeBakery(this.current + 1)"><i class="fa fa-angle-right"></i></a>
+                        v-bind:class="this.current === Math.round(this.bakerysAllCount / 9) ? 'disabled' : ''"
+                        @click="chargeBakery(this.current + 1, this.search, this.location)"><i
+                          class="fa fa-angle-right"></i></a>
                     </li>
 
                   </ul>
@@ -249,7 +287,9 @@
 
               </div>
 
-              <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
+              <div v-show="paginationData">
+                <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
+              </div>
 
             </div>
 
@@ -265,6 +305,24 @@
 </template>
 
 <style lang="css">
+.bb .content {
+  margin: 0 auto;
+  padding: 4rem 0;
+  display: flex;
+  max-width: 1170px;
+  text-align: center;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+@media all and (max-width: 768px) {
+  .bb .content {
+    padding: 2rem 2rem;
+  }
+}
+
 .disabled {
   pointer-events: none;
 }
@@ -300,6 +358,12 @@
   display: inline-block;
   margin-right: 15px;
   text-align: center;
+}
+
+@media all and (max-width: 768px) {
+  .b-pagination .pagination li {
+    margin-bottom: 1rem;
+  }
 }
 
 .b-pagination .pagination li>a:before,
@@ -394,6 +458,8 @@ import axios from 'axios'
 moment.locale('fr')
 
 var counter = 1
+const search = '',
+  location = ''
 
 export default defineComponent({
   name: 'ClassementComponent',
@@ -401,6 +467,7 @@ export default defineComponent({
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
+    const paginationData = ref(true)
 
     const bakerysAll = computed(() => {
       return store.state.bakerysAll
@@ -410,8 +477,13 @@ export default defineComponent({
       return store.state.bakerysAllCount
     })
 
+    const regions = computed(() => {
+      return store.state.regions
+    })
+
     onMounted(() => {
       store.dispatch('fetchBakerysAll')
+      store.dispatch('fetchRegions')
     })
 
     return {
@@ -422,11 +494,15 @@ export default defineComponent({
         setTimeout(() => {
           visible.value = false
           showSimulatedReturnData.value = true
-        }, 3000)
+        }, 1500)
       },
       bakerysAll,
       bakerysAllCount,
+      regions,
       visible,
+      paginationData,
+      search: search,
+      location: location,
       moment: moment,
       showSimulatedReturnData,
     }
@@ -438,141 +514,444 @@ export default defineComponent({
     }
   },
   methods: {
-    chargeBakery(getPage) {
+    chargeBakery(getPage, search = null, location = null) {
 
-      axios.get(process.env.WEBSITE + '/bakerys-page/' + getPage)
-        .then((res) => {
+      if (search.trim() != "" && location.trim() != "" && this.search.length >= 3 && this.location.length >= 3) {
+        this.showTextLoading()
+      }
 
-          this.current = getPage
+      if (search.trim() == "" && location.trim() != "" && this.location.length >= 3) {
+        this.showTextLoading()
+      }
 
-          $('#blocGrid').html('')
+      if (search.trim() != "" && location == "" && this.search.length >= 3) {
+        this.showTextLoading()
+      }
 
-          $([document.documentElement, document.body]).animate({
-            scrollTop: $('#blocGrid').offset().top
-          }, 'slow')
+      setTimeout(() => {
+        if (search.trim() != "" && location.trim() != "" && this.search.length >= 3 && this.location.length >= 3) {
 
-          this.showTextLoading()
+          axios.get(process.env.WEBSITE + '/bakerys-page-search-location/' + getPage + '/' + search.trim() + '/' + location.trim())
+            .then((res) => {
 
-          $.each(res.data.bakerysAll, function (index, bakery) {
+              this.current = getPage
 
-            // Commentaire
-            if (bakery.author_comment != null) {
-              var bloc_comment = '<div v-if="bakery.author_comment !== null"><p class="last-ratings">Par <strong>' + bakery.author_comment + '</strong> - <span>le ' + moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') + '</span></p><p class="last-ratings">' + bakery.content_comment + '</p></div>'
-            }
+              $('#blocGrid').html('')
+              $('.b-pagination').hide()
 
-            // Commentaire
-            if (bakery.author_comment == null) {
-              var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
-            }
+              if (search == null || location == null) {
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#blocGrid').offset().top
+                }, 'slow')
+              }
 
-            var devanture = '',
-              proprete = '',
-              prix = '',
-              choix = ''
+              if (res.data.bakerysAll.length != 0) {
 
-            // Devanture si + de 0
-            if (bakery.counter_devanture != 0) {
-              for (let i = 1; i <= 5; i++) {
+                $.each(res.data.bakerysAll, function (index, bakery) {
 
-                if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
-                  devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                } else {
-                  devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
-                }
+                  // Commentaire
+                  if (bakery.author_comment != null) {
+                    var bloc_comment = '<div v-if="bakery.author_comment !== null"><p class="last-ratings">Par <strong>' + bakery.author_comment + '</strong> - <span>le ' + moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') + '</span></p><p class="last-ratings">' + bakery.content_comment + '</p></div>'
+                  }
+
+                  // Commentaire
+                  if (bakery.author_comment == null) {
+                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                  }
+
+                  var devanture = '',
+                    proprete = '',
+                    prix = '',
+                    choix = ''
+
+                  // Devanture si + de 0
+                  if (bakery.counter_devanture != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Proprete si + de 0
+                  if (bakery.counter_proprete != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Prix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Choix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3"><a href="#/bakery/' + bakery.url + '" class="btn btn-bakery btn-target">En savoir +</a></div></div></div>')
+
+                })
+
+              } else {
+
+                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
 
               }
-            } else {
-              for (let i = 1; i <= 5; i++) {
 
-                if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
-                } else {
-                  devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                }
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+
+        if (search.trim() == "" && location.trim() != "" && this.location.length >= 3) {
+
+          axios.get(process.env.WEBSITE + '/bakerys-page-location/' + getPage + '/' + location.trim())
+            .then((res) => {
+
+              this.current = getPage
+
+              if (search == null || location == null) {
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#blocGrid').offset().top
+                }, 'slow')
+              }
+
+              $('#blocGrid').html('')
+              $('.b-pagination').hide()
+
+              if (res.data.bakerysAll.length != 0) {
+
+                $.each(res.data.bakerysAll, function (index, bakery) {
+
+                  // Commentaire
+                  if (bakery.author_comment != null) {
+                    var bloc_comment = '<div v-if="bakery.author_comment !== null"><p class="last-ratings">Par <strong>' + bakery.author_comment + '</strong> - <span>le ' + moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') + '</span></p><p class="last-ratings">' + bakery.content_comment + '</p></div>'
+                  }
+
+                  // Commentaire
+                  if (bakery.author_comment == null) {
+                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                  }
+
+                  var devanture = '',
+                    proprete = '',
+                    prix = '',
+                    choix = ''
+
+                  // Devanture si + de 0
+                  if (bakery.counter_devanture != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Proprete si + de 0
+                  if (bakery.counter_proprete != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Prix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Choix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3"><a href="#/bakery/' + bakery.url + '" class="btn btn-bakery btn-target">En savoir +</a></div></div></div>')
+
+                })
+
+              } else {
+
+                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
 
               }
-            }
 
-            // Proprete si + de 0
-            if (bakery.counter_proprete != 0) {
-              for (let i = 1; i <= 5; i++) {
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
 
-                if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
-                  proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                } else {
-                  proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
-                }
+        if (search.trim() != "" && location.trim() == "" && this.search.length >= 3) {
+          axios.get(process.env.WEBSITE + '/bakerys-page/' + getPage + '/' + search.trim())
+            .then((res) => {
+
+              this.current = getPage
+
+              $('#blocGrid').html('')
+              $('.b-pagination').hide()
+
+              if (search == null || location == null) {
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#blocGrid').offset().top
+                }, 'slow')
+              }
+
+              if (res.data.bakerysAll.length != 0) {
+
+                $.each(res.data.bakerysAll, function (index, bakery) {
+
+                  // Commentaire
+                  if (bakery.author_comment != null) {
+                    var bloc_comment = '<div v-if="bakery.author_comment !== null"><p class="last-ratings">Par <strong>' + bakery.author_comment + '</strong> - <span>le ' + moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') + '</span></p><p class="last-ratings">' + bakery.content_comment + '</p></div>'
+                  }
+
+                  // Commentaire
+                  if (bakery.author_comment == null) {
+                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                  }
+
+                  var devanture = '',
+                    proprete = '',
+                    prix = '',
+                    choix = ''
+
+                  // Devanture si + de 0
+                  if (bakery.counter_devanture != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Proprete si + de 0
+                  if (bakery.counter_proprete != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Prix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Choix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3"><a href="#/bakery/' + bakery.url + '" class="btn btn-bakery btn-target">En savoir +</a></div></div></div>')
+
+                })
+
+              } else {
+
+                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
 
               }
-            } else {
-              for (let i = 1; i <= 5; i++) {
 
-                if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
-                } else {
-                  proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                }
-
-              }
-            }
-
-            // Prix si + de 0
-            if (bakery.counter_prix != 0) {
-              for (let i = 1; i <= 5; i++) {
-
-                if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
-                  prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                } else {
-                  prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
-                }
-
-              }
-            } else {
-              for (let i = 1; i <= 5; i++) {
-
-                if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
-                } else {
-                  prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                }
-
-              }
-            }
-
-            // Choix si + de 0
-            if (bakery.counter_prix != 0) {
-              for (let i = 1; i <= 5; i++) {
-
-                if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
-                  choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                } else {
-                  choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
-                }
-
-              }
-            } else {
-              for (let i = 1; i <= 5; i++) {
-
-                if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
-                } else {
-                  choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
-                }
-
-              }
-            }
-
-            $('#blocGrid').append('<div class="col-lg-6 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3"><a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
-
-          })
-
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+      }, 1500);
 
     },
     countBakery() {
       if (counter <= 1) {
         setTimeout(() => {
-          if (this.bakerysAll.length <= 7) this.max = 1;
-          else this.max = Math.round(this.bakerysAllCount / 8);
+          if (this.bakerysAll.length <= 8) this.max = 1;
+          else this.max = Math.round(this.bakerysAllCount / 9);
           counter++;
         }, 300);
       }
@@ -580,9 +959,37 @@ export default defineComponent({
   },
   mounted() {
 
+    $('#menu-main-menu').removeAttr('style')
+
     setTimeout(() => {
       this.countBakery()
     }, 1000);
+
+    // Header menu
+
+    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
+      e.preventDefault()
+
+      $(this).addClass('active')
+
+      $('#menu-main-menu').fadeIn(300)
+
+    })
+
+    $(document).on('click', '.menu-toggle-2.active', function (e) {
+      e.preventDefault()
+
+      $(this).removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
+
+    $(document).on('click', '#blog .btn-target', function (e) {
+      e.preventDefault()
+      var url = $(this).attr('href')
+      location.href = url
+    })
 
     // Header
 

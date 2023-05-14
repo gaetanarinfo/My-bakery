@@ -50,7 +50,7 @@
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
+                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery btn-target">Lire la suite</a>
 
                     </div>
 
@@ -60,7 +60,7 @@
 
                 <div class="mt-3">
 
-                  <a href="#/blog" class="btn btn-bakery">Voir les autres articles</a>
+                  <a @click="this.$router.push('/blog');" class="btn btn-bakery btn-target">Voir les autres articles</a>
 
                 </div>
 

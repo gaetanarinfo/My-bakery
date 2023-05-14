@@ -199,7 +199,7 @@
                     </div>
 
                     <div class="text-end mt-3">
-                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery btn-target">En savoir +</a>
                     </div>
 
                   </div>
@@ -208,7 +208,7 @@
 
                 <div class="mt-3 text-center">
 
-                  <a href="#/classement" class="btn btn-bakery">Voir les autres boulangeries</a>
+                  <a @click="this.$router.push('/classement');" class="btn btn-bakery btn-target">Voir les autres boulangeries</a>
 
                 </div>
 

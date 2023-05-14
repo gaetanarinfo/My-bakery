@@ -10,7 +10,9 @@ export default createStore({
     blogs: [],
     blogsAll: [],
     blogsAllCount: 0,
-    ratings: []
+    ratings: [],
+    regions: [],
+    searchAll: [],
   },
   getters: {
     getBakerys: (state) => state.bakerys,
@@ -19,7 +21,9 @@ export default createStore({
     getBlogs: (state) => state.blogs,
     getBlogsAll: (state) => state.blogsAll,
     getBlogsAllCount: (state) => state.blogsAllCount,
-    getRatings: (state) => state.ratings
+    getRatings: (state) => state.ratings,
+    getRegions: (state) => state.regions,
+    getsearchAll: (state) => state.searchAll,
   },
   actions: {
 
@@ -71,6 +75,16 @@ export default createStore({
         console.log(error)
       }
     },
+    async fetchSearchAll({ commit }) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/search')
+
+        this.searchAll = getUrl.data.searchAll
+        commit('SET_SEARCH_ALL', getUrl.data.searchAll)
+      } catch (error) {
+        console.log(error)
+      }
+    },
 
     // Vote du site internet
     async fetchRatings({ commit }) {
@@ -82,7 +96,20 @@ export default createStore({
       } catch (error) {
         console.log(error)
       }
-    }
+    },
+
+    // Régions
+    async fetchRegions({ commit }) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/regions')
+
+        this.regions = getUrl.data.regions
+        commit('SET_REGIONS', getUrl.data.regions)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
   },
   mutations: {
 
@@ -112,6 +139,15 @@ export default createStore({
 
     SET_RATINGS(state, ratings) {
       state.ratings = ratings
-    }
+    },
+
+    SET_REGIONS(state, regions) {
+      state.regions = regions
+    },
+
+    SET_SEARCH_ALL(state, searchAll) {
+      state.searchAll = searchAll
+    },
+
   }
 })

@@ -116,35 +116,30 @@
                     </li>
 
                     <li>
-                      <a href="#" class="scroll-click" data-scroll="a-propos"><i
-                          class="fa-solid fa-chevron-right me-1"></i> À propos de nous</a>
-                    </li>
-
-                    <li>
-                      <a href="#" class="scroll-click" data-scroll="contact"><i
+                      <a @click="this.$router.push('/contact');"><i
                           class="fa-solid fa-chevron-right me-1"></i> Contact</a>
                     </li>
 
                     <li>
-                      <a href="#" class="scroll-click" data-scroll="classement"><i
+                      <a @click="this.$router.push('/classement');"><i
                           class="fa-solid fa-chevron-right me-1"></i> Classement</a>
                     </li>
 
                     <li>
-                      <a href="#" class="scroll-click" data-scroll="blog"><i class="fa-solid fa-chevron-right me-1"></i>
+                      <a @click="this.$router.push('/blog');" class="scroll-click" data-scroll="blog"><i class="fa-solid fa-chevron-right me-1"></i>
                         Blog</a>
                     </li>
 
                     <li>
-                      <a href="#"><i class="fa-solid fa-chevron-right me-1"></i> Espace membre</a>
+                      <a @click="this.$router.push('/login');"><i class="fa-solid fa-chevron-right me-1"></i> Espace membre</a>
                     </li>
 
                     <li>
-                      <a href="#"><i class="fa-solid fa-chevron-right me-1"></i> Conditions générales d'utilisation</a>
+                      <a @click="this.$router.push('/cgu');"><i class="fa-solid fa-chevron-right me-1"></i> Conditions générales d'utilisation</a>
                     </li>
 
                     <li>
-                      <a href="#"><i class="fa-solid fa-chevron-right me-1"></i> Politique de confidentialité</a>
+                      <a @click="this.$router.push('/politique-confidentialite');"><i class="fa-solid fa-chevron-right me-1"></i> Politique de confidentialité</a>
                     </li>
 
                   </ul>

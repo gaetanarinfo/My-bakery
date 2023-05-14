@@ -19,7 +19,7 @@ import FooterComponent from 'components/Footer.vue'
 import SliderComponent from 'components/Slider.vue'
 import SectionsHome from 'components/SectionsHome.vue'
 
-import scripts from "../../public/js/scripts.js";
+import scripts from "../js/home";
 
 scripts
 

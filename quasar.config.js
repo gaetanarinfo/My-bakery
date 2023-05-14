@@ -50,7 +50,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       env: envparser(),
-      publicPath: ctx.prod ? process.env.WEBSITE : '',
+      publicPath: ctx.prod ? process.env.WEBSITE_LOCAL : '',
 
       // transpile: false,
 
@@ -78,7 +78,13 @@ module.exports = configure(function (ctx) {
       server: {
         type: 'http'
       },
+      allowedHosts: ['my-bakery.fr', 'localhost'],
       port: 8080,
+      headers: {
+        'Access-Control-Allow-Methods': 'GET, POST',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Origin': '*',
+      },
       open: true // opens browser window automatically
     },
 
@@ -97,6 +103,7 @@ module.exports = configure(function (ctx) {
 
       // Quasar plugins
       plugins: [
+        'Meta',
         'Notify',
         'Loading'
       ]
