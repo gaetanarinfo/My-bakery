@@ -11,6 +11,8 @@
 
   <Section6 />
 
+  <Section8 />
+
   <Section7 />
 </template>
 
@@ -22,6 +24,7 @@ import Section3 from 'components/home/sections/Section3.vue'
 import Section4 from 'components/home/sections/Section4.vue'
 import Section5 from 'components/home/sections/Section5.vue'
 import Section6 from 'components/home/sections/Section6.vue'
+import Section8 from 'components/home/sections/Section8.vue'
 import Section7 from 'components/home/sections/Section7.vue'
 
 export default defineComponent({
@@ -32,6 +35,7 @@ export default defineComponent({
     Section3,
     Section4,
     Section5,
+    Section8,
     Section6,
     Section7
   }

@@ -80,17 +80,336 @@
 
                     <div class="br-widget">
 
-                      <a role="button" v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4"
-                        :data-rating-value="note4" :data-rating-text="note4"
+                      <a v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4" :data-rating-value="note4"
+                        :data-rating-text="note4"
                         v-bind:class="note4 > Math.round(bakery.counter_choix * 5 / bakery.sum_choix) ? '' : 'br-selected'"></a>
 
-                      <a role="button" :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_choix === 0" v-for="note4 in 5" :key="note4" class=""></a>
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_choix === 0"
+                        v-for="note4 in 5" :key="note4" class=""></a>
 
                       <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
                       }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="short-desc">
+
+                  <p>{{ bakery.small_content }}</p>
+
+                </div>
+
+                <div class="simple-action grid-mobile text-end">
+
+                  <div v-if="Cookies.has('bakerysList') !== false">
+
+                    <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
+                      :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
+                        class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
+
+                    <a v-else @click="saveBakeryList(bakery.id)"
+                      :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                        class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                  </div>
+
+                  <div v-else>
+
+                    <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                        class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                  </div>
+
+                </div>
+
+                <div class="sharing">
+
+                  <p class="text-right">Partager sur :
+
+                    <a :href="'https://www.facebook.com/sharer/sharer.php?u=https://my-bakery.fr' + $route.fullPath"><i
+                        class="fa fa-facebook"></i></a>
+
+                    <a :href="'https://twitter.com/share?url=https://my-bakery.fr' + $route.fullPath + '&text=' + bakery.title + '&via=my-bakery'"
+                      onclick="window.open(this.href);return false;"><i class="fa fa-twitter"></i></a>
+
+                    <a
+                      :href="'https://www.linkedin.com/shareArticle?mini=true&url=https://my-bakery.fr' + $route.fullPath + '&text=' + bakery.title"><i
+                        class="fa fa-linkedin"></i></a>
+
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="bakery-content">
+
+            <ul class="tab-list" role="tablist">
+
+              <li class="active" id="btn_description">
+
+                <a aria-controls="tab_description" role="tab" data-toggle="tab" aria-expanded="true">Description</a>
+
+              </li>
+
+              <li class="" id="btn_reviews">
+
+                <a aria-controls="tab_reviews" role="tab" data-toggle="tab" aria-expanded="false">Avis
+                  ({{ bakeryComments.length }})</a>
+
+              </li>
+
+            </ul>
+
+          </div>
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" role="tabpanel" id="tab_description" v-html="bakery.content">
+            </div>
+
+            <div class="tab-pane" role="tabpanel" id="tab_reviews">
+
+              <div id="reviews">
+
+                <div v-if="bakeryComments.length !== 0" id="comments">
+
+                  <p class="mb-20">{{ bakeryComments.length }} avis pour <strong>{{ bakery.title }}</strong></p>
+
+                  <div class="commentlist">
+
+                    <div class="bypostauthor bs-review">
+
+                      <div v-for="bakeryComment in bakeryComments" v-bind:id="bakeryComment.id"
+                        :id="'comment' + bakeryComment.id" class="comment-container">
+
+                        <div class="bs-review-thumbnail">
+                          <img :alt="bakeryComment.author" src="users/028cac9c481f4f5c4269f34ace3667a0.png" height="80"
+                            width="80" loading="lazy">
+                        </div>
+
+                        <div class="bs-review-content">
+
+                          <header>
+
+                            <p class="meta mb-0">
+                              Par <a>{{ bakeryComment.author }}</a> - {{ moment(bakeryComment.created_at).format('DD MMMM YYYY à H: mm') }}
+                            </p>
+
+                          </header>
+
+                          <div class="description">
+
+                            <p class="mb-0">{{ bakeryComment.content }}</p>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div id="review-form-rapper">
+
+                  <div class="bs-bakery-review">
+
+                    <div class="row">
+
+                      <div class="bs-form-bakery-review">
+
+                        <div class="col-xs-12">
+
+                          <h4>AJOUTEZ VOTRE AVIS</h4>
+
+                          <form id="form-comment">
+
+                            <input type="hidden" :value="bakery.url" id="url" name="url">
+
+                            <p class="comment-notes"><span id="email-notes">Votre adresse e-mail ne sera pas
+                                publié.</span> <span class="required-field-message" aria-hidden="true">Champs obligatoires
+                                sont marqués<span class="required" aria-hidden="true">*</span></span></p>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                              <div class="form-group">
+
+                                <label for="rating">Devanture du magasin <sup>*</sup></label>
+
+                                <div class="devanture">
+
+                                  <div class="br-widget">
+
+                                    <input type="hidden" id="devanture" name="devanture">
+
+                                    <a role="button" v-for="note in 5" :key="note" data-name="devanture"
+                                      :data-rating-value="note" :data-rating-text="note"></a>
+
+                                    <div class="br-current-rating">0</div>
+
+                                    <span span class="error-text devanture_error"></span>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                              <div class="form-group">
+
+                                <label for="rating">Propreté du magasin <sup>*</sup></label>
+
+                                <div class="proprete">
+
+                                  <div class="br-widget">
+
+                                    <input type="hidden" id="proprete" name="proprete">
+
+                                    <a role="button" v-for="note in 5" :key="note" data-name="proprete"
+                                      :data-rating-value="note" :data-rating-text="note"></a>
+
+                                    <div class="br-current-rating">0</div>
+
+                                    <span span class="error-text proprete_error"></span>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                              <div class="form-group">
+
+                                <label for="rating">Prix des produits <sup>*</sup></label>
+
+                                <div class="prix">
+
+                                  <div class="br-widget">
+
+                                    <input type="hidden" id="prix" name="prix">
+
+                                    <a role="button" v-for="note in 5" :key="note" data-name="prix"
+                                      :data-rating-value="note" :data-rating-text="note"></a>
+
+                                    <div class="br-current-rating">0</div>
+
+                                    <span span class="error-text prix_error"></span>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                              <div class="form-group">
+
+                                <label for="rating">Choix des produits <sup>*</sup></label>
+
+                                <div class="choix">
+
+                                  <div class="br-widget">
+
+                                    <input type="hidden" id="choix" name="choix">
+
+                                    <a role="button" v-for="note in 5" :key="note" data-name="choix"
+                                      :data-rating-value="note" :data-rating-text="note"></a>
+
+                                    <div class="br-current-rating">0</div>
+
+                                    <span span class="error-text choix_error"></span>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                              <div class="form-group">
+
+                                <label for="comment">Votre avis <sup>*</sup></label>
+
+                                <textarea v-model="comment" id="comment" class="form-control" name="comment" cols="45"
+                                  rows="8"></textarea>
+
+                                <span class="error-text comment_error"></span>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                              <div class="form-group">
+
+                                <label for="author">Votre nom <sup>*</sup></label>
+
+                                <input v-model="author" id="author" name="author" type="text" size="30"
+                                  class="form-control" aria-required="true">
+
+                                <span class="error-text author_error"></span>
+
+                              </div>
+
+                              <div class="form-group">
+
+                                <label for="emailComment">Adresse email <sup>*</sup></label>
+
+                                <input v-model="emailComment" id="emailComment" name="emailComment" type="email"
+                                  class="form-control" size="30" aria-required="true">
+
+                                <span class="error-text email_error"></span>
+
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                              <div class="form-group">
+
+                                <button type="submit" v-bind:class="submit !== false ? '' : 'disabled'"
+                                  @click="submitComment" class="submit btn btn-bakery">Valider<i class="ps-icon-next"></i>
+                                </button>
+
+                              </div>
+
+                            </div>
+
+                          </form>
+
+                        </div>
+
+                      </div>
 
                     </div>
 
@@ -259,11 +578,15 @@
 
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
+import { useQuasar } from 'quasar'
+import useValidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import { useStore } from 'vuex'
 import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import { useRoute } from 'vue-router';
+import axios from 'axios'
 
 moment.locale('fr')
 
@@ -279,9 +602,14 @@ export default defineComponent({
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
     const paginationData = ref(true)
+    const $q = useQuasar()
 
     const bakery = computed(() => {
       return store.state.bakery
+    })
+
+    const bakeryComments = computed(() => {
+      return store.state.bakeryComments
     })
 
     onMounted(() => {
@@ -289,6 +617,24 @@ export default defineComponent({
         {
           'url': route.params.url
         })
+    })
+
+    $q.notify.registerType('success-form', {
+      icon: 'fa-solid fa-check',
+      progress: false,
+      color: 'green-6',
+      textColor: 'white',
+      classes: 'glossy',
+      timeout: 3500
+    })
+
+    $q.notify.registerType('error-form', {
+      icon: 'fa-solid fa-xmark',
+      progress: false,
+      color: 'red-6',
+      textColor: 'white',
+      classes: 'glossy',
+      timeout: 3500
     })
 
     return {
@@ -302,17 +648,49 @@ export default defineComponent({
         }, 1500)
       },
       bakery,
+      bakeryComments,
       Cookies: Cookies,
       visible,
       paginationData,
       moment: moment,
       showSimulatedReturnData,
+      showNotifComment() {
+        $q.notify({
+          type: 'success-form',
+          message: 'Votre avis a bien été ajouté.'
+        })
+      },
+      errorNotifComment(message = null) {
+        $q.notify({
+          type: 'error-form',
+          message: message ? message : 'Une erreur est survenue dans le formulaire.'
+        })
+      }
     }
   },
   data() {
+
+    $(document).on('change', '#form-comment', function (e) {
+
+      var emailComment = $('#emailComment').val(),
+        author = $('#author').val(),
+        comment = $('#comment').val()
+
+      if (emailComment.length >= 2 && comment.length >= 2 && author.length >= 2) {
+        $('#form-comment button').removeClass('disabled')
+      } else {
+        $('#form-comment button').addClass('disabled')
+      }
+
+    })
+
     return {
-      current: ref(1),
-      max: 1,
+      v$: useValidate(),
+      submit: false,
+      url: null,
+      comment: null,
+      author: null,
+      emailComment: null
     }
   },
   methods: {
@@ -370,6 +748,154 @@ export default defineComponent({
       }
 
     },
+    submitComment(e) {
+      e.preventDefault();
+
+      this.v$.$validate() // checks all inputs
+
+      let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+      let valid = reg.test(this.emailComment)
+
+      if (valid) {
+
+        $('.' + 'email' + '_error').removeAttr()
+        $('.' + 'email' + '_error').text("");
+
+        if (!this.v$.$error && $('#devanture').val().length >= 1 && $('#prix').val().length >= 1 && $('#choix').val().length >= 1 && $('#proprete').val().length >= 1) {
+
+          axios.post(process.env.WEBSITE + '/bakery-comment', {
+            'url': $('#url').val(),
+            'devanture': $('#devanture').val(),
+            'proprete': $('#proprete').val(),
+            'prix': $('#prix').val(),
+            'choix': $('#choix').val(),
+            'email': this.emailComment,
+            'author': this.author,
+            'comment': this.comment,
+          })
+            .then((res) => {
+
+              if (res.data.success === true) {
+
+                this.showNotifComment()
+
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('.commentlist').offset().top
+                }, 300)
+
+                setTimeout(() => {
+                  $('#tab_reviews .commentlist .bypostauthor').prepend('<div class="comment-container"><div class="bs-review-thumbnail"><img :alt="' + this.author + '" src="users/028cac9c481f4f5c4269f34ace3667a0.png" height="80"width="80" loading="lazy"></div><div class="bs-review-content"><header><p class="meta mb-0">Par <a>' + this.author + '</a> - ' + moment().format('DD MMMM YYYY à H: mm') + '</p></header><div class="description"><p class="mb-0">' + this.comment + '</p></div></div></div>').hide().fadeIn(600)
+                }, 600);
+
+                setTimeout(() => {
+                  $(document).find('.error-text').text('')
+                  $(document).find('.error-text').removeAttr()
+                  $('#form-comment').find('input').val('')
+                  this.submit = false
+                  $('#form-comment button').addClass('disabled')
+                  $(document).find('#form-comment a.br-active').removeClass('br-active')
+                  this.devanture = null
+                  this.proprete = null
+                  this.prix = null
+                  this.choix = null
+                  this.emailComment = null
+                  this.author = null
+                  this.comment = null
+
+                }, 3500);
+
+              } else {
+                this.errorNotifComment(res.data.message)
+              }
+
+            })
+            .catch((error) => {
+              this.errorNotifComment()
+            })
+
+        } else {
+
+          this.submit = false
+
+          if (this.emailComment && this.author && this.comment && $('#devanture').val().length >= 1 && $('#prix').val().length >= 1 && $('#choix').val().length >= 1 && $('#proprete').val().length >= 1) {
+
+            this.submit = true
+
+            return true
+          }
+
+          if (!this.comment) {
+            $('.' + 'comment' + '_error').attr('style', 'display: block')
+            $('.' + 'comment' + '_error').text("Le champs commentaire est obligatoire !");
+          } else {
+            $('.' + 'comment' + '_error').removeAttr()
+            $('.' + 'comment' + '_error').text("");
+          }
+
+          if (!this.author) {
+            $('.' + 'author' + '_error').attr('style', 'display: block')
+            $('.' + 'author' + '_error').text("Le champs nom est obligatoire !");
+          } else {
+            $('.' + 'author' + '_error').removeAttr()
+            $('.' + 'author' + '_error').text("");
+          }
+
+          if (!this.emailComment) {
+            $('.' + 'email' + '_error').attr('style', 'display: block')
+            $('.' + 'email' + '_error').text("Le champs adresse email est obligatoire !");
+          } else {
+            $('.' + 'email' + '_error').removeAttr()
+            $('.' + 'email' + '_error').text("");
+          }
+
+          if ($('#devanture').val().length <= 0) {
+            $('.' + 'devanture' + '_error').attr('style', 'display: block')
+            $('.' + 'devanture' + '_error').text("Votre note pour la devanture est obligatoire !");
+          } else {
+            $('.' + 'devanture' + '_error').removeAttr()
+            $('.' + 'devanture' + '_error').text("");
+          }
+
+          if ($('#choix').val().length <= 0) {
+            $('.' + 'choix' + '_error').attr('style', 'display: block')
+            $('.' + 'choix' + '_error').text("Votre note pour le choix des produits est obligatoire !");
+          } else {
+            $('.' + 'choix' + '_error').removeAttr()
+            $('.' + 'choix' + '_error').text("");
+          }
+
+          if ($('#proprete').val().length <= 0) {
+            $('.' + 'proprete' + '_error').attr('style', 'display: block')
+            $('.' + 'proprete' + '_error').text("Votre note pour la propreté du magasin des produits est obligatoire !");
+          } else {
+            $('.' + 'proprete' + '_error').removeAttr()
+            $('.' + 'proprete' + '_error').text("");
+          }
+
+          if ($('#prix').val().length <= 0) {
+            $('.' + 'prix' + '_error').attr('style', 'display: block')
+            $('.' + 'prix' + '_error').text("Votre note pour le prix est obligatoire !");
+          } else {
+            $('.' + 'prix' + '_error').removeAttr()
+            $('.' + 'prix' + '_error').text("");
+          }
+
+        }
+
+      } else {
+
+        $('.' + 'email' + '_error').attr('style', 'display: block')
+        $('.' + 'email' + '_error').text("Le champs adresse email n'est pas valide !");
+
+      }
+    }
+  },
+  validations() {
+    return {
+      comment: { required },
+      author: { required },
+      emailComment: { required }
+    }
   },
   mounted() {
 
@@ -495,13 +1021,41 @@ export default defineComponent({
         focusOnSelect: true
       });
 
+      $('#btn_description').on('click', function (e) {
+
+        e.preventDefault()
+
+        $(this).addClass('active')
+        $('#tab_description').addClass('active')
+
+        $('#btn_reviews').removeClass('active')
+        $('#tab_reviews').removeClass('active')
+
+      })
+
+      $('#btn_reviews').on('click', function (e) {
+
+        e.preventDefault()
+
+        $(this).addClass('active')
+        $('#tab_reviews').addClass('active')
+
+        $('#btn_description').removeClass('active')
+        $('#tab_description').removeClass('active')
+
+      })
+
     }, 100)
 
-    $(document).on('click', '.br-widget a', function (e) {
+    $(document).on('click', '.bs-form-bakery-review .br-widget a', function (e) {
 
       e.preventDefault()
 
-      var rating = $(this).data('rating-value')
+      var rating = $(this).data('rating-value'),
+        name = $(this).data('name')
+
+      $('#' + name).val(rating)
+      $('#' + name).removeAttr('class')
 
       $(this).addClass('br-active')
       $(this).prevAll().addClass('br-active')

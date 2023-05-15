@@ -5,6 +5,7 @@ import axios from 'axios'
 export default createStore({
   state: {
     bakery: [],
+    bakeryComments: [],
     bakerys: [],
     bakerysAll: [],
     bakerysAllCount: [],
@@ -17,6 +18,7 @@ export default createStore({
   },
   getters: {
     getBakery: (state) => state.bakery,
+    getBakeryComments: (state) => state.bakeryComments,
     getBakerys: (state) => state.bakerys,
     getBakerysAll: (state) => state.bakerysAll,
     getBakerysAllCount: (state) => state.bakerysAllCount,
@@ -67,6 +69,10 @@ export default createStore({
           localStorage.setItem('image', 'https://my-bakery.fr/' + getUrl.data.bakery.image)
 
           commit('SET_BAKERY', getUrl.data.bakery)
+
+          this.bakeryComments = getUrl.data.bakeryComments
+
+          commit('SET_BAKERY_COMMENTS', getUrl.data.bakeryComments)
 
         }else{
           this.$router.push('/bakerys')
@@ -142,6 +148,14 @@ export default createStore({
 
     SET_BAKERYS(state, bakerys) {
       state.bakerys = bakerys
+    },
+
+    SET_BAKERY(state, bakery) {
+      state.bakery = bakery
+    },
+
+    SET_BAKERY_COMMENTS(state, bakeryComments) {
+      state.bakeryComments = bakeryComments
     },
 
     SET_BAKERYS_ALL(state, bakerysAll) {

@@ -322,7 +322,7 @@
 
                     </div>
 
-                    <div class="text-end mt-3">
+                    <div class="text-end mt-3 grid-mobile">
 
                       <div v-if="Cookies.has('bakerysList') !== false">
 
