@@ -92,20 +92,19 @@
 
           <ul class="menu-right">
 
-            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/classement  ' : ''"
-                v-bind:class="this.$route.path === '/classement' ? 'active' : ''" class="scroll-click"
-                data-scroll="classement">Classement</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/bakerys  ' : ''"
+                v-bind:class="this.$route.path === '/bakerys' ? 'active' : ''" class="scroll-click"
+                data-scroll="classement">Boulangeries</a></li>
 
             <li class="menu-item"><a :href="this.$route.path !== '/' ? '#/blog' : ''"
                 v-bind:class="this.$route.path === '/blog' ? 'active' : ''" class="scroll-click"
                 data-scroll="blog">Blog</a></li>
 
-            <li class="menu-item"><a @click="this.$router.push('/login');"
-                v-bind:class="this.$route.path === '/login' ? 'active' : ''">Connexion</a></li>
-
           </ul>
 
           <div class="actions">
+
+            <a role="button"><i class="icono-user"></i></a>
 
             <a @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
 
@@ -142,15 +141,11 @@
           </li>
 
           <li class="menu-item">
-            <a href="#" class="scroll-click" data-scroll="classement">Classement</a>
+            <a href="#" class="scroll-click" data-scroll="classement">Boulangeries</a>
           </li>
 
           <li class="menu-item">
             <a href="#" class="scroll-click" data-scroll="blog">Blog</a>
-          </li>
-
-          <li class="menu-item">
-            <a href="#">Espace membre</a>
           </li>
 
         </ul>
@@ -158,7 +153,13 @@
         <div class="menu-toggle"><span></span></div>
 
         <div class="actions">
+
+          <a role="button"><i class="icono-user"></i></a>
+
+          <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
+
           <a href="#" class="search-btn"><i class="icono-search"></i></a>
+
         </div>
 
       </div>

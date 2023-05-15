@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export default createStore({
   state: {
+    bakery: [],
     bakerys: [],
     bakerysAll: [],
     bakerysAllCount: [],
@@ -11,10 +12,11 @@ export default createStore({
     blogsAll: [],
     blogsAllCount: 0,
     ratings: [],
-    regions: [],
     searchAll: [],
+    bakerysFavorites: []
   },
   getters: {
+    getBakery: (state) => state.bakery,
     getBakerys: (state) => state.bakerys,
     getBakerysAll: (state) => state.bakerysAll,
     getBakerysAllCount: (state) => state.bakerysAllCount,
@@ -22,15 +24,16 @@ export default createStore({
     getBlogsAll: (state) => state.blogsAll,
     getBlogsAllCount: (state) => state.blogsAllCount,
     getRatings: (state) => state.ratings,
-    getRegions: (state) => state.regions,
-    getsearchAll: (state) => state.searchAll,
+    getSearchAll: (state) => state.searchAll,
+    getBakerysFavorites: (state) => state.bakerysFavorites,
   },
   actions: {
 
     // Liste des boulangeries en France
-    async fetchBakerys({ commit }) {
+    async fetchBakerys({ commit, state }, data) {
       try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys')
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys/' + data.limite)
 
         this.bakerys = getUrl.data.bakerys
         commit('SET_BAKERYS', getUrl.data.bakerys)
@@ -49,6 +52,29 @@ export default createStore({
       } catch (error) {
         console.log(error)
       }
+    },
+    async fetchBakery({ commit, state }, data) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/bakery/' + data.url)
+
+        if (getUrl.data.bakery !== undefined) {
+
+          this.bakery = getUrl.data.bakery
+
+          localStorage.setItem('title', getUrl.data.bakery.title)
+          localStorage.setItem('description', getUrl.data.bakery.small_content)
+          localStorage.setItem('url', 'https://my-bakery.fr/#/bakery/' + getUrl.data.bakery.url)
+          localStorage.setItem('image', 'https://my-bakery.fr/' + getUrl.data.bakery.image)
+
+          commit('SET_BAKERY', getUrl.data.bakery)
+
+        }else{
+          this.$router.push('/bakerys')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
     },
 
     // Liste des articles sur le blog
@@ -98,13 +124,14 @@ export default createStore({
       }
     },
 
-    // Régions
-    async fetchRegions({ commit }) {
+    // Listes des boulangeries en favoris
+    async fetchBakerysFavorites({ commit, state }, data) {
       try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/regions')
+        const getUrl = await axios.get(process.env.WEBSITE + '/favorites/' + data.favorites)
 
-        this.regions = getUrl.data.regions
-        commit('SET_REGIONS', getUrl.data.regions)
+        this.favorites = getUrl.data.favorites
+        console.log(getUrl.data.favorites);
+        commit('SET_FAVORITES', getUrl.data.favorites)
       } catch (error) {
         console.log(error)
       }
@@ -141,12 +168,16 @@ export default createStore({
       state.ratings = ratings
     },
 
-    SET_REGIONS(state, regions) {
-      state.regions = regions
-    },
-
     SET_SEARCH_ALL(state, searchAll) {
       state.searchAll = searchAll
+    },
+
+    SET_FAVORITES(state, bakerysFavorites) {
+      state.bakerysFavorites = bakerysFavorites
+    },
+
+    SET_BAKERY(state, bakery) {
+      state.bakery = bakery
     },
 
   }

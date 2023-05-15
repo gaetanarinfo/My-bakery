@@ -30,18 +30,6 @@ export default defineComponent({
     FooterComponent,
     SliderComponent,
     SectionsHome
-  },
-  mounted() {
-
-    // Header
-    $(window).scroll(function () {
-      if ($(this).scrollTop() >= 300) {
-        $('fadeIn.header').addClass('navigation-sticky navigation-unpin')
-      } else {
-        $('fadeIn.header').removeClass('navigation-sticky navigation-unpin')
-      }
-    })
-
   }
 })
 </script>

@@ -21,6 +21,16 @@ setTimeout(() => {
 
 }, 2500);
 
+// Header
+$(window).scroll(function () {
+  if ($(this).scrollTop() >= 300) {
+    $('.fadeIn.header').addClass('navigation-sticky navigation-unpin')
+  } else {
+    $('.fadeIn.header').removeClass('navigation-sticky navigation-unpin')
+  }
+})
+
+
 // Header menu
 
 $(document).on('click', '.menu-toggle:not(.active)', function (e) {

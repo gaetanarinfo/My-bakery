@@ -204,15 +204,28 @@
 
                     <div class="text-end mt-3">
 
-                      <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) === -1" @click="saveBakeryList(bakery.id)"
-                        :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                          class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+                      <div v-if="Cookies.has('bakerysList') !== false">
 
-                      <a v-else-if="Cookies.get('bakerysList').indexOf(bakery.id) !== -1"
-                        @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 delete-list-' + bakery.id"><i
-                          class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
+                        <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
+                          :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
 
-                      <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a v-else @click="saveBakeryList(bakery.id)"
+                          :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+
+                      </div>
+
+                      <div v-else>
+
+                        <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+
+                      </div>
 
                     </div>
 
@@ -222,7 +235,7 @@
 
                 <div class="mt-3 text-center">
 
-                  <a @click="this.$router.push('/classement');" class="btn btn-bakery">Voir les autres
+                  <a @click="this.$router.push('/bakerys');" class="btn btn-bakery">Voir les autres
                     boulangeries</a>
 
                 </div>
@@ -258,7 +271,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      store.dispatch('fetchBakerys')
+      store.dispatch('fetchBakerys', { 'limite': 4 })
     })
 
     return {
@@ -287,17 +300,34 @@ export default defineComponent({
 
         var total = cookies.replace('-' + id, '');
 
-        Cookies.set('bakerysList', total);
+        if (cookies.indexOf(id + '-') != -1) {
 
-        if (cookie.split('-').length === 1) {
+          var total = cookies.replace(id + '-', '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        } else if (cookies.indexOf('-' + id) != -1) {
+
+          var total = cookies.replace('-' + id, '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        }
+
+        if (cookies.split('-').length === 1) {
           Cookies.remove('bakerysList');
         }
 
-        $('.delete-bakery-list-' + id).remove()
+        $('.delete-bakery-list-' + id).removeClass('delete-bakery-list-' + id).addClass('bakery-list-' + id)
+        $('.bakery-list-' + id).removeClass('delete-bakery-list').addClass('bakery-list')
 
       }
 
-      $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass()
+      $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass('delete-bakery-list-' + id)
 
     },
   }

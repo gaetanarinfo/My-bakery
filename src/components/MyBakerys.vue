@@ -33,15 +33,17 @@
 
         <div class="table-responsive">
 
-          <table class="table b-table b-table-whishlist">
+          <table id="table-list" class="table b-table b-table-whishlist">
 
             <thead>
 
               <tr>
 
+                <th></th>
+
                 <th>Nom</th>
 
-                <th>Date de création</th>
+                <th>Description</th>
 
                 <th>Vue(s)</th>
 
@@ -53,11 +55,53 @@
 
             <tbody>
 
-              <tr>
+              <tr v-if="!Cookies.has('bakerysList')">
 
-                <td colspan="4">
+                <td colspan="5">
 
                   <div class="alert alert-info">Aucune boulangerie n'est présente dans votre liste.</div>
+
+                </td>
+
+              </tr>
+
+              <tr v-for="favorite in bakerysFavorites" v-bind:id="'tr-' + favorite.id">
+
+                <td colspan="2">
+
+                  <div class="grid-t-m">
+
+                    <div class="image">
+                      <img :src="'bakerys/' + favorite.image" width="90" height="90" alt="">
+                    </div>
+
+                    <div class="title">
+                      <h5>{{ favorite.title }}</h5>
+                      <p class="location">{{ favorite.adresse + ' ' + favorite.ville + ' ' + favorite.cp }}</p>
+                    </div>
+
+                  </div>
+
+                </td>
+
+                <td>
+                  <p class="small-content">{{ favorite.small_content }}</p>
+                </td>
+
+                <td>
+                  <p class="text-center" v-if="favorite.views !== 0"><b>{{ favorite.views }}</b> vue(s)</p>
+                  <p class="text-center" v-else><b>0</b> vue</p>
+                </td>
+
+                <td>
+
+                  <div>
+
+                    <a role="button" :data-id="favorite.id" @click="removeFavorite(favorite.id)">
+                      <i class="icono-trash text-danger"></i>
+                    </a>
+
+                  </div>
 
                 </td>
 
@@ -66,6 +110,255 @@
             </tbody>
 
           </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="classement-my-bakerys" class="section last-bakery">
+
+    <div class="column-inner">
+
+      <div class="wrapper">
+
+        <div class="bloc container">
+
+          <div class="hp-container">
+
+            <div class="section text-center">
+
+              <h2 class="title">Ces boulangeries pourrait vous intéresser&nbsp;!</h2>
+
+              <p>&nbsp;</p>
+
+              <div>
+                <img class="delicious" src="floral.png" alt="Delicieux">
+              </div>
+
+            </div>
+
+            <div class="section">
+
+              <div class="row">
+
+                <div class="col-lg-4 col-md-4 bakery" v-for="bakery in bakerys" :key="bakery.id">
+
+                  <div class="row">
+
+                    <div>
+
+                      <div :id="'carouselBakery' + bakery.id" class="carousel slide slider-bakery carousel-fade"
+                        data-ride="carousel">
+
+                        <div class="carousel-indicators">
+
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+
+                        </div>
+
+                        <div class="carousel-inner">
+
+                          <div class="carousel-item active">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" alt="First slide">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" alt="Second slide">
+                            </a>
+
+                          </div>
+
+                        </div>
+
+                        <button class="carousel-control-prev" type="button"
+                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button"
+                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+
+                      </div>
+
+                      <a :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
+
+                      <div>
+                        <p class="content">{{ bakery.small_content }}</p>
+                      </div>
+
+                    </div>
+
+                    <div>
+                      <div class="devanture">
+
+                        <span>Devanture du magasin :</span>
+
+                        <div class="br-widget">
+
+                          <a href="#" v-if="bakery.counter_devanture !== 0" v-for="note in 5" :key="note"
+                            :data-rating-value="note" :data-rating-text="note"
+                            v-bind:class="note > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture) ? '' : 'br-selected'"></a>
+
+                          <a href="#" v-if="bakery.counter_devanture === 0" v-for="note in 5" :key="note" class=""></a>
+
+                          <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
+                            Math.round(bakery.counter_devanture * 5 /
+                              bakery.sum_devanture) }}</div>
+
+                          <div class="br-current-rating" v-else>0</div>
+                        </div>
+
+                      </div>
+
+                      <div class="proprete">
+
+                        <span>Propreté du magasin :</span>
+
+                        <div class="br-widget">
+
+                          <a href="#" v-if="bakery.counter_proprete !== 0" v-for="note2 in 5" :key="note2"
+                            :data-rating-value="note2" :data-rating-text="note2"
+                            v-bind:class="note2 > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete) ? '' : 'br-selected'"></a>
+
+                          <a href="#" v-if="bakery.counter_proprete === 0" v-for="note2 in 5" :key="note2" class=""></a>
+
+                          <div class="br-current-rating" v-if="bakery.counter_proprete !== 0">{{
+                            Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)
+                          }}</div>
+
+                          <div class="br-current-rating" v-else>0</div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="prix">
+
+                        <span>Prix des produits :</span>
+
+                        <div class="br-widget">
+
+                          <a href="#" v-if="bakery.counter_prix !== 0" v-for="note3 in 5" :key="note3"
+                            :data-rating-value="note3" :data-rating-text="note3"
+                            v-bind:class="note3 > Math.round(bakery.counter_prix * 5 / bakery.sum_prix) ? '' : 'br-selected'"></a>
+
+                          <a href="#" v-if="bakery.counter_prix === 0" v-for="note3 in 5" :key="note3" class=""></a>
+
+                          <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
+                            Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
+                          }}</div>
+
+                          <div class="br-current-rating" v-else>0</div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="choix">
+
+                        <span>Choix des produits :</span>
+
+                        <div class="br-widget">
+
+                          <a href="#" v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4"
+                            :data-rating-value="note4" :data-rating-text="note4"
+                            v-bind:class="note4 > Math.round(bakery.counter_choix * 5 / bakery.sum_choix) ? '' : 'br-selected'"></a>
+
+                          <a href="#" v-if="bakery.counter_choix === 0" v-for="note4 in 5" :key="note4" class=""></a>
+
+                          <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
+                            Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
+                          }}</div>
+
+                          <div class="br-current-rating" v-else>0</div>
+
+                        </div>
+
+                      </div>
+
+                      <p class="location">
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse + ' ' + bakery.cp + ' ' +
+                          bakery.ville }}
+                      </p>
+
+                      <div class="text-end">
+
+                        <p class="mb-1"><strong>Dernier commentaire :</strong></p>
+
+                        <div v-if="bakery.author_comment !== null">
+
+                          <p class="last-ratings">Par <strong>{{ bakery.author_comment }}</strong> - <span>le {{
+                            moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') }}</span></p>
+
+                          <p class="last-ratings">{{ bakery.content_comment }}</p>
+
+                        </div>
+
+                        <div class="empty-comments" v-else>
+
+                          Aucun commentaire pour cette boulangerie !
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="text-end mt-3">
+
+                      <div v-if="Cookies.has('bakerysList') !== false">
+
+                        <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
+                          :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
+
+                        <a v-else @click="saveBakeryList(bakery.id)"
+                          :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+
+                      </div>
+
+                      <div v-else>
+
+                        <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+
+                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -194,8 +487,11 @@ import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 import { ref } from 'vue'
+import { Cookies } from 'quasar'
 
 moment.locale('fr')
+
+var bakerysFavorites = ''
 
 export default defineComponent({
   name: 'BlogcComponent',
@@ -204,17 +500,29 @@ export default defineComponent({
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
 
-    const blogsAll = computed(() => {
-      return store.state.blogsAll
-    })
-
-    const blogsAllCount = computed(() => {
-      return store.state.blogsAllCount
+    const bakerys = computed(() => {
+      return store.state.bakerys
     })
 
     onMounted(() => {
-      store.dispatch('fetchBlogsAll')
+      store.dispatch('fetchBakerys', { 'limite': 3 })
     })
+
+    if (Cookies.has('bakerysList')) {
+
+      bakerysFavorites = computed(() => {
+        return store.state.bakerysFavorites
+      })
+
+      onMounted(() => {
+        store.dispatch('fetchBakerysFavorites', {
+          'favorites': Cookies.get('bakerysList')
+        })
+      })
+
+    } else {
+      bakerysFavorites = []
+    }
 
     return {
       showTextLoading() {
@@ -226,14 +534,103 @@ export default defineComponent({
           showSimulatedReturnData.value = true
         }, 3000)
       },
-      blogsAll,
-      blogsAllCount,
       visible,
       moment: moment,
+      Cookies: Cookies,
+      bakerys,
+      bakerysFavorites,
       showSimulatedReturnData,
     }
   },
   methods: {
+    saveBakeryList(id) {
+
+      const bakerysList = Cookies.has('bakerysList'),
+        cookies = Cookies.get('bakerysList')
+
+      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger me-2"></i> Supprimer')
+
+      if ($(document).find('.bakery-list-' + id).length !== 0) {
+
+        if (!bakerysList) {
+          Cookies.set('bakerysList', id, { expires: 30000 })
+        } else {
+          Cookies.set('bakerysList', Cookies.get('bakerysList') + '-' + id)
+        }
+
+      } else {
+
+        var total = cookies.replace('-' + id, '');
+
+        if (cookies.indexOf(id + '-') != -1) {
+
+          var total = cookies.replace(id + '-', '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        } else if (cookies.indexOf('-' + id) != -1) {
+
+          var total = cookies.replace('-' + id, '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        }
+
+        if (cookies.split('-').length === 1) {
+          Cookies.remove('bakerysList');
+        }
+
+        $('.delete-bakery-list-' + id).removeClass('delete-bakery-list-' + id).addClass('bakery-list-' + id)
+        $('.bakery-list-' + id).removeClass('delete-bakery-list').addClass('bakery-list')
+
+      }
+
+      $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass('delete-bakery-list-' + id)
+
+    },
+    removeFavorite(id) {
+
+      if (Cookies.has('bakerysList')) {
+
+        var cookies = Cookies.get('bakerysList')
+
+        var total = cookies.replace('-' + id, '')
+
+        if (cookies.indexOf(id + '-') != -1) {
+
+          var total = cookies.replace(id + '-', '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        } else if (cookies.indexOf('-' + id) != -1) {
+
+          var total = cookies.replace('-' + id, '');
+          Cookies.set('bakerysList', total, {
+            secure: true,
+            sameSite: 'None'
+          });
+
+        }
+
+        if (cookies.split('-').length === 1) {
+          Cookies.remove('bakerysList')
+          $('#table-list tbody tr').html('<td colspan="5"><div class="alert alert-info">Aucune boulangerie n\'est présente dans votre liste.</div></td>')
+        } else {
+          $('#tr-' + id).fadeOut(600)
+          setTimeout(() => {
+            $('#tr-' + id).remove()
+          }, 600);
+        }
+
+      }
+
+    }
   },
   mounted() {
 

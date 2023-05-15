@@ -121,8 +121,8 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/classement');"><i
-                          class="fa-solid fa-chevron-right me-1"></i> Classement</a>
+                      <a @click="this.$router.push('/bakerys');"><i
+                          class="fa-solid fa-chevron-right me-1"></i> Boulangeries</a>
                     </li>
 
                     <li>
