@@ -1,33 +1,34 @@
 <template name="SectionHome7">
-  <div id="bakery-list" class="section fadeIn6">
+  <div id="bakery-list" class="section fadeIn9">
 
     <div class="column-inner">
 
       <div class="wrapper">
 
-        <div class="bloc container">
+        <div class="site-features">
 
-          <div class="hp-container">
+          <div class="container">
 
-            <div class="section text-center">
+            <div class="bloc container">
 
-              <h2 class="title">Votre boulangerie n'est pas listée</h2>
+              <div class="hp-container">
 
-              <p class="description"></p>
+                <div class="section text-center">
 
-              <div>
-                <img class="delicious" src="floral.png" alt="Delicieux">
+                  <h2 class="title">Pourquoi recommander My Bakery ?</h2>
+
+                  <p class="description"></p>
+
+                  <div>
+                    <img class="delicious" src="floral.png" alt="Delicieux">
+                  </div>
+
+                </div>
+
               </div>
 
             </div>
 
-          </div>
-
-        </div>
-
-        <div class="site-features">
-
-          <div class="container">
 
             <div class="row">
 
@@ -46,7 +47,7 @@
                       </h4>
 
                       <p>Ajouter autant de boulangerie que vous désirez, notre application est payante pour nous
-                        rémunérer.</p>
+                        rémunérer, ce qui permet de faire avancer le développement de My Bakery.</p>
 
                     </div>
 
@@ -70,7 +71,8 @@
                         Qualité des annonces
                       </h4>
 
-                      <p>La qualité des annonces de boulangerie sur My bakery est primordiale, notre équipe veille au grain.</p>
+                      <p>La qualité des annonces de boulangerie sur My bakery est primordiale, notre équipe veille au
+                        grain. Nous vérifions chaque avis utilisateur, nous vous garantissons une totale transparence.</p>
 
                     </div>
 
@@ -94,7 +96,9 @@
                         Avis des boulangeries
                       </h4>
 
-                      <p>Les avis sont honnêtes et authentiques sur My bakery, alors choisissez la bonne boulangerie.</p>
+                      <p>Les avis sont honnêtes et authentiques sur My bakery, vous pouvez alors choisir une bonne
+                        boulangerie en fermant les yeux. Cela nous tient à coeur de vous faire partager de merveilleux
+                        moment.</p>
 
                     </div>
 
@@ -119,9 +123,6 @@
 
 <script>
 import { defineComponent } from 'vue'
-import moment from 'moment'
-
-moment.locale('fr')
 
 export default defineComponent({
   name: 'SectionHome8',

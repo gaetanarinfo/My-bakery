@@ -59,7 +59,9 @@ a:hover {
 .fadeIn5,
 .fadeIn6,
 .fadeIn7,
-.fadeIn8 {
+.fadeIn8,
+.fadeIn9,
+.fadeIn10 {
   display: none;
 }
 
@@ -3026,7 +3028,7 @@ footer.footer .footer-copyright p a:hover {
   margin-bottom: 20px;
   font-size: 70px;
   color: #000;
-  font-family: 'Bakery';
+  font-family: "Bakery";
 }
 
 .bs-block-iconbox h4 {
@@ -3047,4 +3049,53 @@ footer.footer .footer-copyright p a:hover {
 
 .bs-block-iconbox p {
   font-size: 16px;
+}
+
+/* SECTION 9 */
+
+#bakery-add .site-features {
+  padding-top: 0;
+}
+
+#bakery-add {
+  margin-bottom: 0;
+}
+
+#bakery-add p {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #000;
+}
+
+#bakery-add .row .col-lg-6:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#bakery-add .row .col-lg-6 .button {
+  text-align: center;
+}
+
+#bakery-add .row .col-lg-6 .signature {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+#bakery-add .row .col-lg-6 small {
+  padding-bottom: 15px;
+  text-align: center;
+  font-size: 16px;
+  display: block;
+  color: #767676;
+}
+
+@media all and (max-width: 48rem) {
+  #bakery-add .row .col-lg-6:last-child {
+    margin-top: 2rem;
+  }
+
+  #bakery-add p {
+    text-align: center;
+  }
 }

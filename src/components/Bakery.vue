@@ -152,6 +152,10 @@
 
           </div>
 
+          <GoogleMapLoader :mapConfig="mapConfig" :apiKey="apiKey">
+
+          </GoogleMapLoader>
+
           <div class="bakery-content">
 
             <ul class="tab-list" role="tablist">
@@ -578,6 +582,7 @@
 
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
+import GoogleMapLoader from 'components/GoogleMapLoader'
 import { useQuasar } from 'quasar'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -596,6 +601,9 @@ slick_css
 
 export default defineComponent({
   name: 'BakeryComponent',
+  components: {
+    GoogleMapLoader,
+  },
   setup() {
     const route = useRoute();
     const store = useStore()
@@ -685,6 +693,7 @@ export default defineComponent({
     })
 
     return {
+      apiKey: process.env.GOOGLE_API_KEY,
       v$: useValidate(),
       submit: false,
       url: null,
@@ -692,6 +701,20 @@ export default defineComponent({
       author: null,
       emailComment: null
     }
+  },
+  computed: {
+    mapConfig() {
+      return {
+        center: {lat: 47.978893, lng: 0.208783 },
+        zoom: 18,
+        fullscreenControl: true,
+        clickableIcons: true,
+        streetViewControl: false,
+        marker: [
+        { id: 'a', image: this.bakery.image, caption: this.bakery.title, content: this.bakery.small_content, address: this.bakery.adresse + ' ' + this.bakery.ville + ' ' + this.bakery.cp, position: { lat: 47.978893, lng: 0.208783 } },
+      ],
+      }
+    },
   },
   methods: {
     saveBakeryList(id) {
@@ -1045,7 +1068,9 @@ export default defineComponent({
 
       })
 
+
     }, 100)
+
 
     $(document).on('click', '.bs-form-bakery-review .br-widget a', function (e) {
 
@@ -1060,6 +1085,7 @@ export default defineComponent({
       $(this).addClass('br-active')
       $(this).prevAll().addClass('br-active')
       $(this).nextAll().removeClass('br-active')
+
     })
 
   }

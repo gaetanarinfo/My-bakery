@@ -10,6 +10,8 @@ setTimeout(() => {
   $('.fadeIn6').fadeIn(600)
   $('.fadeIn7').fadeIn(600)
   $('.fadeIn8').fadeIn(600)
+  $('.fadeIn9').fadeIn(600)
+  $('.fadeIn10').fadeIn(600)
 
   $('.carousel-control-prev').on('click', function (e) {
     e.preventDefault()
