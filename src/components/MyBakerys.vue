@@ -72,7 +72,7 @@
                   <div class="grid-t-m">
 
                     <div class="image">
-                      <img :src="'bakerys/' + favorite.image" width="90" height="90" alt="">
+                      <img :src="favorite.image" width="90" height="90" alt="">
                     </div>
 
                     <div class="title">
@@ -169,7 +169,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" alt="First slide">
+                              <img class="d-block w-100" :src="bakery.image" alt="First slide">
                             </a>
 
                           </div>
@@ -177,7 +177,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" alt="Second slide">
+                              <img class="d-block w-100" :src="bakery.image_2" alt="Second slide">
                             </a>
 
                           </div>
@@ -295,8 +295,7 @@
                       </div>
 
                       <p class="location">
-                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse + ' ' + bakery.cp + ' ' +
-                          bakery.ville }}
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse  }}
                       </p>
 
                       <div class="text-end">

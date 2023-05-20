@@ -92,6 +92,12 @@
                           <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
                             aria-label="Slide 2"></button>
 
+                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+
+                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
+                            aria-label="Slide 4"></button>
+
                         </div>
 
                         <div class="carousel-inner">
@@ -99,7 +105,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" alt="First slide">
+                              <img class="d-block w-100" :src="bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -107,7 +113,23 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" alt="Second slide">
+                              <img class="d-block w-100" :src="bakery.image_2" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="bakery.image_3" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -227,8 +249,7 @@
                       </div>
 
                       <p class="location">
-                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse + ' ' + bakery.cp + ' ' +
-                          bakery.ville }}
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse }}
                       </p>
 
                       <div class="text-end">
@@ -334,6 +355,13 @@
 </template>
 
 <style lang="css">
+.last-bakery .column-inner .wrapper .bloc .section:last-child img {
+  max-width: 100%;
+  cursor: pointer;
+  width: 100%;
+  height: 300px;
+}
+
 .bb .content {
   margin: 0 auto;
   padding: 4rem 0;
@@ -742,7 +770,7 @@ export default defineComponent({
                     }
                   }
 
-                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
 
                 })
 

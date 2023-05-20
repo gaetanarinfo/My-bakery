@@ -14,11 +14,13 @@ export default createStore({
     blogsAllCount: 0,
     ratings: [],
     searchAll: [],
-    bakerysFavorites: []
+    bakerysFavorites: [],
+    bakeryHours: []
   },
   getters: {
     getBakery: (state) => state.bakery,
     getBakeryComments: (state) => state.bakeryComments,
+    getBakeryHours: (state) => state.bakeryHours,
     getBakerys: (state) => state.bakerys,
     getBakerysAll: (state) => state.bakerysAll,
     getBakerysAllCount: (state) => state.bakerysAllCount,
@@ -63,16 +65,31 @@ export default createStore({
 
           this.bakery = getUrl.data.bakery
 
+          localStorage.removeItem('title')
+          localStorage.removeItem('description')
+          localStorage.removeItem('url')
+          localStorage.removeItem('image')
+          localStorage.removeItem('lat')
+          localStorage.removeItem('lng')
+          localStorage.removeItem('adresse')
+
           localStorage.setItem('title', getUrl.data.bakery.title)
           localStorage.setItem('description', getUrl.data.bakery.small_content)
           localStorage.setItem('url', 'https://my-bakery.fr/#/bakery/' + getUrl.data.bakery.url)
-          localStorage.setItem('image', 'https://my-bakery.fr/' + getUrl.data.bakery.image)
+          localStorage.setItem('image', getUrl.data.bakery.image)
+          localStorage.setItem('lat', getUrl.data.bakery.lat)
+          localStorage.setItem('lng', getUrl.data.bakery.lng)
+          localStorage.setItem('adresse', getUrl.data.bakery.adresse)
 
           commit('SET_BAKERY', getUrl.data.bakery)
 
           this.bakeryComments = getUrl.data.bakeryComments
 
           commit('SET_BAKERY_COMMENTS', getUrl.data.bakeryComments)
+
+          this.bakeryHours = getUrl.data.bakeryHours
+
+          commit('SET_BAKERY_HOURS', getUrl.data.bakeryHours)
 
         }else{
           this.$router.push('/bakerys')
@@ -192,6 +209,10 @@ export default createStore({
 
     SET_BAKERY(state, bakery) {
       state.bakery = bakery
+    },
+
+    SET_BAKERY_HOURS(state, bakeryHours) {
+      state.bakeryHours = bakeryHours
     },
 
   }

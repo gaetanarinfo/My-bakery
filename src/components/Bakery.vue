@@ -37,15 +37,19 @@
 
           <div class="row">
 
-            <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
               <div class="thumbnail">
 
                 <div class="slick-slider">
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="bakery.image" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_2" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="bakery.image_2" :alt="bakery.title"></a>
+
+                  <a href="" tabindex="0"><img :src="bakery.image_3" :alt="bakery.title"></a>
+
+                  <a href="" tabindex="0"><img :src="bakery.image_4" :alt="bakery.title"></a>
 
                 </div>
 
@@ -56,11 +60,19 @@
                 <div class="slick-nav">
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image" :alt="bakery.title" />
+                    <img :src="bakery.image" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image_2" :alt="bakery.title" />
+                    <img :src="bakery.image_2" :alt="bakery.title" />
+                  </div>
+
+                  <div class="item" style="width: 98px;">
+                    <img :src="bakery.image_3" :alt="bakery.title" />
+                  </div>
+
+                  <div class="item" style="width: 98px;">
+                    <img :src="bakery.image_4" :alt="bakery.title" />
                   </div>
 
                 </div>
@@ -69,7 +81,7 @@
 
             </div>
 
-            <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
               <div class="info">
                 <h2>{{ bakery.title }}</h2>
@@ -97,6 +109,18 @@
 
                   </div>
 
+                </div>
+
+                <div>
+                  <p>{{ bakery.adresse }}</p>
+                </div>
+
+                <div>
+                  <p><i class="fa-solid fa-phone me-1"></i>{{ bakery.phone }}</p>
+                </div>
+
+                <div>
+                  <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non' : 'oui' }}</span></p>
                 </div>
 
                 <div class="short-desc">
@@ -173,6 +197,12 @@
 
               </li>
 
+              <li class="" id="btn_hours">
+
+                <a aria-controls="tab_hours" role="tab" data-toggle="tab" aria-expanded="false">Horaire d'ouverture</a>
+
+              </li>
+
             </ul>
 
           </div>
@@ -207,7 +237,8 @@
                           <header>
 
                             <p class="meta mb-0">
-                              Par <a>{{ bakeryComment.author }}</a> - {{ moment(bakeryComment.created_at).format('DD MMMM YYYY à H: mm') }}
+                              Par <a>{{ bakeryComment.author }}</a> -
+                              {{ moment(bakeryComment.created_at).format("DD MMMM YYYY à H: mm") }}
                             </p>
 
                           </header>
@@ -425,6 +456,44 @@
 
             </div>
 
+            <div class="tab-pane" role="tabpanel" id="tab_hours">
+
+              <div id="reviews">
+
+                <div id="review-form-rapper">
+
+                  <div class="bs-bakery-review">
+
+                    <div class="row">
+
+                      <div class="bs-form-bakery-review">
+
+                        <div class="col-xs-12">
+
+                          <ul class="bakeryHour">
+
+                            <li v-for="bakeryHour in bakeryHours" v-bind:id="bakeryHour.id">
+                              <div>{{ bakeryHour.date }}</div>
+                              <div v-if="bakeryHour.active !== 0">{{ bakeryHour.am }}</div>
+                              <div v-else>Fermé</div>
+                            </li>
+
+                          </ul>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
@@ -620,6 +689,10 @@ export default defineComponent({
       return store.state.bakeryComments
     })
 
+    const bakeryHours = computed(() => {
+      return store.state.bakeryHours
+    })
+
     onMounted(() => {
       store.dispatch('fetchBakery',
         {
@@ -657,6 +730,7 @@ export default defineComponent({
       },
       bakery,
       bakeryComments,
+      bakeryHours,
       Cookies: Cookies,
       visible,
       paginationData,
@@ -705,14 +779,14 @@ export default defineComponent({
   computed: {
     mapConfig() {
       return {
-        center: {lat: 47.978893, lng: 0.208783 },
+        center: { lat: parseFloat(localStorage.getItem('lat')), lng: parseFloat(localStorage.getItem('lng')) },
         zoom: 18,
         fullscreenControl: true,
         clickableIcons: true,
         streetViewControl: false,
         marker: [
-        { id: 'a', image: this.bakery.image, caption: this.bakery.title, content: this.bakery.small_content, address: this.bakery.adresse + ' ' + this.bakery.ville + ' ' + this.bakery.cp, position: { lat: 47.978893, lng: 0.208783 } },
-      ],
+          { id: 'a', image: localStorage.getItem('image'), caption: localStorage.getItem('title'), content: localStorage.getItem('description'), address: localStorage.getItem('adresse'), position: { lat: parseFloat(localStorage.getItem('lat')), lng: parseFloat(localStorage.getItem('lng')) } },
+        ],
       }
     },
   },
@@ -1037,7 +1111,7 @@ export default defineComponent({
       });
 
       $('.slick-nav').slick({
-        slidesToShow: 2,
+        slidesToShow: 4,
         slidesToScroll: 1,
         asNavFor: '.slick-slider',
         centerMode: true,
@@ -1053,6 +1127,8 @@ export default defineComponent({
 
         $('#btn_reviews').removeClass('active')
         $('#tab_reviews').removeClass('active')
+        $('#btn_hours').removeClass('active')
+        $('#tab_hours').removeClass('active')
 
       })
 
@@ -1065,6 +1141,23 @@ export default defineComponent({
 
         $('#btn_description').removeClass('active')
         $('#tab_description').removeClass('active')
+        $('#btn_hours').removeClass('active')
+        $('#tab_hours').removeClass('active')
+      })
+
+      $('#btn_hours').on('click', function (e) {
+
+        e.preventDefault()
+
+        $(this).addClass('active')
+        $('#tab_hours').addClass('active')
+
+        $('#btn_description').removeClass('active')
+        $('#tab_description').removeClass('active')
+        $('#btn_description').removeClass('active')
+        $('#tab_description').removeClass('active')
+        $('#btn_reviews').removeClass('active')
+        $('#tab_reviews').removeClass('active')
 
       })
 

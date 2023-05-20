@@ -42,6 +42,12 @@
                           <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
                             aria-label="Slide 2"></button>
 
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
+                            aria-label="Slide 4"></button>
+
                         </div>
 
                         <div class="carousel-inner">
@@ -49,7 +55,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" alt="First slide">
+                              <img class="d-block w-100" :src="bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -57,7 +63,23 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" alt="Second slide">
+                              <img class="d-block w-100" :src="bakery.image_2" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="bakery.image_3" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -175,8 +197,7 @@
                       </div>
 
                       <p class="location">
-                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse + ' ' + bakery.cp + ' ' +
-                          bakery.ville }}
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse  }}
                       </p>
 
                       <div class="text-end">
