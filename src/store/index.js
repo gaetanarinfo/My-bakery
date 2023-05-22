@@ -15,7 +15,9 @@ export default createStore({
     ratings: [],
     searchAll: [],
     bakerysFavorites: [],
-    bakeryHours: []
+    bakeryHours: [],
+    blog: [],
+    blog_tags: []
   },
   getters: {
     getBakery: (state) => state.bakery,
@@ -24,6 +26,8 @@ export default createStore({
     getBakerys: (state) => state.bakerys,
     getBakerysAll: (state) => state.bakerysAll,
     getBakerysAllCount: (state) => state.bakerysAllCount,
+    getBlog: (state) => state.blog,
+    getBlogTags: (state) => state.blog_tags,
     getBlogs: (state) => state.blogs,
     getBlogsAll: (state) => state.blogsAll,
     getBlogsAllCount: (state) => state.blogsAllCount,
@@ -91,7 +95,7 @@ export default createStore({
 
           commit('SET_BAKERY_HOURS', getUrl.data.bakeryHours)
 
-        }else{
+        } else {
           this.$router.push('/bakerys')
         }
       } catch (error) {
@@ -130,6 +134,35 @@ export default createStore({
 
         this.searchAll = getUrl.data.searchAll
         commit('SET_SEARCH_ALL', getUrl.data.searchAll)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async fetchBlog({ commit, state }, data) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/blogs/' + data.url)
+
+        if (getUrl.data.blog !== undefined) {
+
+          localStorage.removeItem('article-title')
+          localStorage.removeItem('article-description')
+          localStorage.removeItem('article-url')
+          localStorage.removeItem('article-image')
+
+          localStorage.setItem('article-title', getUrl.data.blog.title)
+          localStorage.setItem('article-description', getUrl.data.blog.small_content)
+          localStorage.setItem('article-url', 'https://my-bakery.fr/#/blogs/' + getUrl.data.blog.url)
+          localStorage.setItem('article-image', 'https://my-bakery.fr/blogs/' + getUrl.data.blog.image)
+
+          this.blog = getUrl.data.blog
+          this.blog_tags = getUrl.data.tags
+
+          commit('SET_BLOG', getUrl.data.blog)
+          commit('SET_BLOG_TAGS', getUrl.data.tags)
+
+        } else {
+          this.$router.push('/blogs')
+        }
       } catch (error) {
         console.log(error)
       }
@@ -185,6 +218,14 @@ export default createStore({
 
     SET_BLOGS(state, blogs) {
       state.blogs = blogs
+    },
+
+    SET_BLOG(state, blog) {
+      state.blog = blog
+    },
+
+    SET_BLOG_TAGS(state, blog_tags) {
+      state.blog_tags = blog_tags
     },
 
     SET_BLOGS_ALL(state, blogsAll) {

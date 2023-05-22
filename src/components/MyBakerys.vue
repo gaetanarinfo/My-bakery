@@ -162,6 +162,12 @@
                           <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
                             aria-label="Slide 2"></button>
 
+                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+
+                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
+                            aria-label="Slide 4"></button>
+
                         </div>
 
                         <div class="carousel-inner">
@@ -169,7 +175,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image" alt="First slide">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -177,7 +183,23 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_2" alt="Second slide">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
+                            </a>
+
+                          </div>
+
+                          <div class="carousel-item">
+
+                            <a :href="'#/bakery/' + bakery.url">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -295,7 +317,7 @@
                       </div>
 
                       <p class="location">
-                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse  }}
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse }}
                       </p>
 
                       <div class="text-end">
@@ -369,6 +391,13 @@
 </template>
 
 <style lang="css">
+.last-bakery .column-inner .wrapper .bloc .section:last-child img {
+  max-width: 100%;
+  cursor: pointer;
+  width: 100%;
+  height: 300px;
+}
+
 .disabled {
   pointer-events: none;
 }
@@ -676,6 +705,7 @@ export default defineComponent({
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
     $('.fadeIn3').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
 
     // Scroll click

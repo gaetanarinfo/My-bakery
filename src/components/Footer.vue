@@ -116,7 +116,7 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/contact');"><i
+                      <a v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="contact"><i
                           class="fa-solid fa-chevron-right me-1"></i> Contact</a>
                     </li>
 

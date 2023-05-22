@@ -3,6 +3,8 @@
 
   <BakerysComponent />
 
+  <Section7 />
+
   <FooterComponent />
 </template>
 
@@ -11,6 +13,7 @@ import { defineComponent } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import BakerysComponent from 'components/Bakerys.vue'
 import FooterComponent from 'components/Footer.vue'
+import Section7 from 'components/home/sections/Section7.vue'
 
 export default defineComponent({
   name: 'Bakerys',
@@ -19,7 +22,8 @@ export default defineComponent({
   components: {
     HeaderComponent,
     BakerysComponent,
-    FooterComponent
+    FooterComponent,
+    Section7
   }
 })
 </script>

@@ -31,7 +31,7 @@
 
                     <div class="thumbnail">
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title"></a>
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"></a>
 
                       <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
 
@@ -50,7 +50,7 @@
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
 
                     </div>
 
@@ -60,7 +60,7 @@
 
                 <div class="mt-3">
 
-                  <a @click="this.$router.push('/blog');" class="btn btn-bakery">Voir les autres articles</a>
+                  <a @click="this.$router.push('/blogs');" class="btn btn-bakery">Voir les autres articles</a>
 
                 </div>
 

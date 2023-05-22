@@ -113,7 +113,7 @@ export default {
       const infowindow = new vl.google.maps.InfoWindow({
         // Set tooltip html
         content: `
-            <img src="${this.mapConfig.marker[0].image}" />
+            <img src="bakerys/${this.mapConfig.marker[0].image}" />
             <h3><b>${this.mapConfig.marker[0].caption}</b></h3>
             <p style="font-size: 14px; line-height: 1rem;font-family: Arial, sans-serif;">${this.mapConfig.marker[0].content}</p>
             <p style="font-size: 14px; line-height: 1.25rem;font-family: Arial, sans-serif;"><b>${this.mapConfig.marker[0].address}</b></p>

@@ -283,6 +283,8 @@
 
   </div>
 
+  <Section7 />
+
   <FooterComponent />
 </template>
 
@@ -404,6 +406,7 @@ import { defineComponent } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import FooterComponent from 'components/Footer.vue'
 import { useMeta } from 'quasar'
+import Section7 from 'components/home/sections/Section7.vue'
 
 const metaData = {
   title: 'Conditions générales d\'utilisation du site My bakery',
@@ -418,7 +421,8 @@ export default defineComponent({
   },
   components: {
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    Section7
   },
   mounted() {
 
@@ -465,6 +469,7 @@ export default defineComponent({
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
     $('.fadeIn3').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
 
     // Scroll click

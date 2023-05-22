@@ -36,8 +36,7 @@
             <label for="">Trier par mot clé</label>
 
             <span class="select">
-              <input v-model="search" type="text" @keyup="chargeBakery(this.current, this.search, this.location)"
-                class="form-control" placeholder="Entrer un mot clé...">
+              <input v-model="search" type="text" class="form-control" placeholder="Entrer un mot clé...">
             </span>
 
           </div>
@@ -47,13 +46,19 @@
             <label for="">Trier par adresse</label>
 
             <span class="select">
-              <input v-model="location" type="text" @keyup="chargeBakery(this.current, this.search, this.location)"
-                class="form-control" placeholder="Entrer une adresse...">
+              <input v-model="location" type="text" class="form-control" placeholder="Entrer une adresse...">
             </span>
 
           </div>
 
         </form>
+
+        <div class="form-group mt-5">
+
+          <a role="button" class="btn btn-bakery"
+            @click="chargeBakery(this.current, this.search, this.location)">Rechercher</a>
+
+        </div>
 
       </div>
 
@@ -92,10 +97,10 @@
                           <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
                             aria-label="Slide 2"></button>
 
-                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
                             aria-label="Slide 3"></button>
 
-                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
                             aria-label="Slide 4"></button>
 
                         </div>
@@ -105,7 +110,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -113,7 +118,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_2" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -121,7 +126,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_3" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -129,7 +134,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_4" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -359,7 +364,7 @@
   max-width: 100%;
   cursor: pointer;
   width: 100%;
-  height: 300px;
+  height: 100%;
 }
 
 .bb .content {
@@ -623,6 +628,10 @@ export default defineComponent({
     },
     chargeBakery(getPage, search = null, location = null) {
 
+      if (search.trim() == "" && location.trim() == "") {
+        this.showTextLoading()
+      }
+
       if (search.trim() != "" && location.trim() != "" && this.search.length >= 3 && this.location.length >= 3) {
         this.showTextLoading()
       }
@@ -770,7 +779,7 @@ export default defineComponent({
                     }
                   }
 
-                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="2" aria-label="Slide 3"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="3" aria-label="Slide 4"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse  + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
 
                 })
 
@@ -919,7 +928,7 @@ export default defineComponent({
                     }
                   }
 
-                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="2" aria-label="Slide 3"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="3" aria-label="Slide 4"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse  + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
 
                 })
 
@@ -1068,7 +1077,151 @@ export default defineComponent({
                     }
                   }
 
-                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="First slide"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="Second slide"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse + ' ' + bakery.cp + ' ' + bakery.ville + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="2" aria-label="Slide 3"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="3" aria-label="Slide 4"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse  + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
+
+                })
+
+              } else {
+                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
+              }
+
+            }).catch((error) => {
+              console.log(error);
+            })
+
+        }
+
+        if (search.trim() == "" && location.trim() == "") {
+
+          axios.get(process.env.WEBSITE + '/bakerys-pagination/' + getPage)
+            .then((res) => {
+
+              this.current = getPage
+
+              $([document.documentElement, document.body]).animate({
+                scrollTop: $('#blocGrid').offset().top
+              }, 'slow')
+
+              $('#blocGrid').html('')
+
+              if (res.data.bakerysAll.length != 0) {
+
+                $.each(res.data.bakerysAll, function (index, bakery) {
+
+                  var bloc_list = ''
+
+                  if (Cookies.has('bakerysList') && Cookies.get('bakerysList').indexOf(bakery.id) === -1) {
+                    bloc_list = '<a role="button" data-id="' + bakery.id + '" class="btn btn-bakery me-3 bakery-list bakery-list-' + bakery.id + '"><i class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>'
+                  }
+
+                  if (Cookies.has('bakerysList') && Cookies.get('bakerysList').indexOf(bakery.id) !== -1) {
+                    bloc_list += '<a role="button" data-id="' + bakery.id + '" class="btn btn-bakery me-3 delete-bakery-list delete-bakery-list-' + bakery.id + '" > <i class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>'
+                  }
+
+                  // Commentaire
+                  if (bakery.author_comment != null) {
+                    var bloc_comment = '<div v-if="bakery.author_comment !== null"><p class="last-ratings">Par <strong>' + bakery.author_comment + '</strong> - <span>le ' + moment(bakery.created_at_comment).format('DD MMMM YYYY à H:mm') + '</span></p><p class="last-ratings">' + bakery.content_comment + '</p></div>'
+                  }
+
+                  // Commentaire
+                  if (bakery.author_comment == null) {
+                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                  }
+
+                  var devanture = '',
+                    proprete = '',
+                    prix = '',
+                    choix = ''
+
+                  // Devanture si + de 0
+                  if (bakery.counter_devanture != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture)) {
+                      } else {
+                        devanture += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Proprete si + de 0
+                  if (bakery.counter_proprete != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)) {
+                      } else {
+                        proprete += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Prix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_prix * 5 / bakery.sum_prix)) {
+                      } else {
+                        prix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  // Choix si + de 0
+                  if (bakery.counter_prix != 0) {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class="br-selected"></a>'
+                      }
+
+                    }
+                  } else {
+                    for (let i = 1; i <= 5; i++) {
+
+                      if (i > Math.round(bakery.counter_choix * 5 / bakery.sum_choix)) {
+                      } else {
+                        choix += '<a href="#" data-rating-value="' + i + '" data-rating-text="' + i + '" class=""></a>'
+                      }
+
+                    }
+                  }
+
+                  $('#blocGrid').append('<div class="col-lg-4 col-md-4 bakery"><div class="row"><div><div id="carouselBakery' + bakery.id + '" class="carousel slide slider-bakery carousel-fade" data-ride="carousel"><div class="carousel-indicators"><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="0"class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="1" aria-label="Slide 2"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="2" aria-label="Slide 3"></button><button type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide-to="3" aria-label="Slide 4"></button></div><div class="carousel-inner"><div class="carousel-item active"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_2 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_3 + '" alt="' + bakery.title + '"></a></div><div class="carousel-item"><a href="#/bakery/' + bakery.url + '"><img class="d-block w-100" src="bakerys/' + bakery.image_4 + '" alt="' + bakery.title + '"></a></div></div><button class="carousel-control-prev" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselBakery' + bakery.id + '" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button></div><a href="#/bakery/' + bakery.url + '" class="title">' + bakery.title + '</a> <div><p class="content">' + bakery.small_content + '</p></div></div><div><div class="devanture"><span>Devanture du magasin :</span><div class="br-widget">' + devanture + '</div></div><div class="proprete"><span>Propreté du magasin :</span><div class="br-widget">' + proprete + '</div></div><div class="prix"><span>Prix des produits :</span><div class="br-widget">' + prix + '</div></div><div class="choix"><span>Choix des produits :</span><div class="br-widget">' + choix + '</div></div><p class="location"><i class="fa-solid fa-map-location me-1"></i>' + bakery.adresse  + '</p><div class="text-end"><p class="mb-1"><strong>Dernier commentaire :</strong></p>' + bloc_comment + '</div></div><div class="text-end mt-3 grid-mobile">' + bloc_list + '<a href="#/bakery/' + bakery.url + '" class="btn btn-bakery">En savoir +</a></div></div></div>')
 
                 })
 
@@ -1089,7 +1242,7 @@ export default defineComponent({
       if (counter <= 1) {
         setTimeout(() => {
           if (this.bakerysAll.length <= 8) this.max = 1;
-          else this.max = Math.round(this.bakerysAllCount / 9);
+          else this.max = 9;
           counter++;
         }, 300);
       }
@@ -1144,6 +1297,7 @@ export default defineComponent({
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
     $('.fadeIn3').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
 
     // Scroll click

@@ -46,7 +46,7 @@
 
                     <div class="thumbnail">
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title"></a>
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"></a>
 
                       <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
 
@@ -65,7 +65,7 @@
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a :href="'#/blog/' + blog.url" :title="blog.title" class="btn btn-bakery">Lire la
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title" class="btn btn-bakery">Lire la
                         suite</a>
 
                     </div>
@@ -310,7 +310,7 @@ export default defineComponent({
               vues = ''
             }
 
-            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
+            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
           })
 
@@ -380,6 +380,7 @@ export default defineComponent({
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
     $('.fadeIn3').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
 
     // Scroll click

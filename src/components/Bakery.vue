@@ -43,13 +43,13 @@
 
                 <div class="slick-slider">
 
-                  <a href="" tabindex="0"><img :src="bakery.image" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="bakery.image_2" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_2" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="bakery.image_3" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_3" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="bakery.image_4" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_4" :alt="bakery.title"></a>
 
                 </div>
 
@@ -60,19 +60,19 @@
                 <div class="slick-nav">
 
                   <div class="item" style="width: 98px;">
-                    <img :src="bakery.image" :alt="bakery.title" />
+                    <img :src="'bakerys/' + bakery.image" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="bakery.image_2" :alt="bakery.title" />
+                    <img :src="'bakerys/' + bakery.image_2" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="bakery.image_3" :alt="bakery.title" />
+                    <img :src="'bakerys/' + bakery.image_3" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="bakery.image_4" :alt="bakery.title" />
+                    <img :src="'bakerys/' + bakery.image_4" :alt="bakery.title" />
                   </div>
 
                 </div>
@@ -470,7 +470,7 @@
 
                         <div class="col-xs-12">
 
-                          <ul class="bakeryHour">
+                          <ul class="bakeryHour" v-if="bakeryHours.length >= 1">
 
                             <li v-for="bakeryHour in bakeryHours" v-bind:id="bakeryHour.id">
                               <div>{{ bakeryHour.date }}</div>
@@ -479,6 +479,8 @@
                             </li>
 
                           </ul>
+
+                          <div v-else>Aucun horaire prévu pour cette boulangerie.</div>
 
                         </div>
 
@@ -1039,6 +1041,7 @@ export default defineComponent({
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
     $('.fadeIn3').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
     $('.fadeIn8').fadeIn(600)
 
     // Scroll click

@@ -3,6 +3,8 @@
 
   <MyBakerysComponent />
 
+  <Section7 />
+
   <FooterComponent />
 </template>
 
@@ -11,6 +13,7 @@ import { defineComponent } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import MyBakerysComponent from 'components/MyBakerys.vue'
 import FooterComponent from 'components/Footer.vue'
+import Section7 from 'components/home/sections/Section7.vue'
 
 import { useMeta } from 'quasar'
 
@@ -42,7 +45,8 @@ export default defineComponent({
   components: {
     HeaderComponent,
     MyBakerysComponent,
-    FooterComponent
+    FooterComponent,
+    Section7,
   },
 })
 </script>

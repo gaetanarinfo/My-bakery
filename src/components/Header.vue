@@ -74,8 +74,10 @@
                 v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="a-propos">À
                 propos de nous</a></li>
 
-            <li class="menu-item"><a @click="this.$router.push('/contact');"
-                v-bind:class="this.$route.path === '/contact' ? 'active' : ''">Contact</a></li>
+            <li class="menu-item"><a :href="this.$route.path !== '/' ? '' : ''"
+                v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'"
+                data-scroll="contact">Contact</a>
+            </li>
 
           </ul>
 
@@ -94,8 +96,8 @@
             <li class="menu-item"><a @click="this.$router.push('/bakerys');"
                 v-bind:class="this.$route.path === '/bakerys' ? 'active' : 'btn-target'">Boulangeries</a></li>
 
-            <li class="menu-item"><a @click="this.$router.push('/blog');"
-                v-bind:class="this.$route.path === '/blog' ? 'active' : 'btn-target'">Blog</a></li>
+            <li class="menu-item"><a @click="this.$router.push('/blogs');"
+                v-bind:class="this.$route.path === '/blogs' ? 'active' : 'btn-target'">Blog</a></li>
 
           </ul>
 
@@ -133,8 +135,8 @@
             <a href="#" class="scroll-click-s" data-scroll="a-propos">À propos de nous</a>
           </li>
 
-          <li class="menu-item">
-            <a @click="this.$router.push('/contact');">Contact</a>
+          <li class="menu-item"><a :href="this.$route.path !== '' ? '' : ''" class="scroll-click"
+              v-bind:class="this.$route.path === '/contact' ? 'active' : ''" data-scroll="contact">Contact</a>
           </li>
 
           <li class="menu-item">
@@ -142,7 +144,7 @@
           </li>
 
           <li class="menu-item">
-            <a @click="this.$router.push('/blog');">Blog</a>
+            <a @click="this.$router.push('/blogs');">Blog</a>
           </li>
 
         </ul>
@@ -233,7 +235,7 @@ export default defineComponent({
                     vues = ''
                   }
 
-                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blog/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blog/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
+                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
                 })
 

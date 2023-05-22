@@ -55,7 +55,7 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -63,7 +63,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_2" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -71,7 +71,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_3" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -79,7 +79,7 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="bakery.image_4" :alt="bakery.title">
+                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -275,6 +275,7 @@
 
   </div>
 </template>
+
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'

@@ -5,7 +5,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Home.vue') },
-      { path: '/blog', component: () => import('pages/Blog.vue') },
+      { path: '/blogs', component: () => import('pages/Blog.vue') },
       {
         path: '/bakerys', component: () => import('pages/Bakerys.vue'),
         meta: {
@@ -88,6 +88,50 @@ const routes = [
             }
           ]
         }
+      },
+      {
+        path: '/blogs/:url', component: () => import('pages/Article.vue'),
+        meta: {
+          title: localStorage.getItem('article-title'),
+          metaTags: [
+            {
+              name: 'description',
+              content: localStorage.getItem('article-description')
+            },
+            {
+              property: 'og:title',
+              content: localStorage.getItem('article-title')
+            },
+            {
+              property: 'og:description',
+              content: localStorage.getItem('article-description')
+            },
+            {
+              property: 'og:url',
+              content: localStorage.getItem('article-url')
+            },
+            {
+              property: 'og:image',
+              content: localStorage.getItem('article-image')
+            },
+            {
+              property: 'twitter:title',
+              content: localStorage.getItem('article-title')
+            },
+            {
+              property: 'twitter:url',
+              content: localStorage.getItem('article-url')
+            },
+            {
+              property: 'twitter:description',
+              content: localStorage.getItem('article-description')
+            },
+            {
+              property: 'twitter:image',
+              content: localStorage.getItem('article-image')
+            }
+          ]
+        }
       }
     ]
   },
@@ -101,3 +145,4 @@ const routes = [
 ]
 
 export default routes
+

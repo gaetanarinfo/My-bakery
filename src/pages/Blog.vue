@@ -3,6 +3,8 @@
 
   <BlogComponent />
 
+  <Section7 />
+
   <FooterComponent />
 </template>
 
@@ -12,6 +14,7 @@ import HeaderComponent from 'components/Header.vue'
 import BlogComponent from 'components/Blog.vue'
 import FooterComponent from 'components/Footer.vue'
 import { useMeta } from 'quasar'
+import Section7 from 'components/home/sections/Section7.vue'
 
 const metaData = {
   title: 'Notre blog sur my bakery',
@@ -44,7 +47,8 @@ export default defineComponent({
   components: {
     HeaderComponent,
     BlogComponent,
-    FooterComponent
+    FooterComponent,
+    Section7
   }
 
 })

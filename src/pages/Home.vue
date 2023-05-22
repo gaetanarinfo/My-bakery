@@ -30,6 +30,20 @@ export default defineComponent({
     FooterComponent,
     SliderComponent,
     SectionsHome
+  },
+  mounted() {
+
+    $('.fadeIn').fadeIn(600)
+    $('.fadeIn2').fadeIn(600)
+    $('.fadeIn3').fadeIn(600)
+    $('.fadeIn4').fadeIn(600)
+    $('.fadeIn5').fadeIn(600)
+    $('.fadeIn6').fadeIn(600)
+    $('.fadeIn7').fadeIn(600)
+    $('.fadeIn8').fadeIn(600)
+    $('.fadeIn9').fadeIn(600)
+    $('.fadeIn10').fadeIn(600)
+
   }
 })
 </script>

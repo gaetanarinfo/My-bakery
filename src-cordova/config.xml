@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.mybakery.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>My bakery - classement des meilleurs boulangerie de France</name>
+    <description>Retrouvez toutes les meilleures boulangeries en France sur My bakery.</description>
+    <author email="contact@my-bakery.fr" href="https://my-bakery.fr">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="ScrollEnabled" value="true" />
+    <allow-navigation href="about:*" />
+</widget>
