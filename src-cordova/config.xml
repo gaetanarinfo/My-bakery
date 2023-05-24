@@ -8,6 +8,5 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <preference name="ScrollEnabled" value="true" />
     <allow-navigation href="about:*" />
 </widget>

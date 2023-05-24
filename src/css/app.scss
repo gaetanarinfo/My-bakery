@@ -2820,6 +2820,7 @@ footer.footer .footer-copyright p a:hover {
   border-radius: 0;
   background-color: #faf7f3;
   border: none;
+  padding: 1rem 1rem;
   -webkit-transition: all 0.4s ease;
   -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
@@ -3388,4 +3389,253 @@ footer.footer .footer-copyright p a:hover {
   font-size: 18px !important;
   line-height: 30px !important;
   color: #000 !important;
+}
+
+.bakery-single #image,
+.bakery-single #image2,
+.bakery-single #image3,
+.bakery-single #image4 {
+  display: none;
+}
+
+.bakery-single #showImg,
+.bakery-single #showImg2,
+.bakery-single #showImg3,
+.bakery-single #showImg4 {
+  cursor: pointer;
+}
+
+.bakery-single .image-error,
+.bakery-single .image2-error,
+.bakery-single .image3-error,
+.bakery-single .image4-error {
+  display: block;
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 18px;
+}
+
+.bakery-single .bakeryHour input {
+  min-width: 300px;
+}
+
+.bakery-single .bakeryHour label {
+  display: block;
+  min-width: 200px;
+}
+
+.bakery-single .select-bakery {
+  outline: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  height: 50px;
+  border-radius: 0;
+  background-color: #faf7f3;
+  border: none;
+  transition: all 0.4s ease;
+  color: #000;
+}
+
+.bakery-single .special-select {
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: center;
+}
+
+.bakery-single .special-select label {
+  margin-right: 0.25rem;
+  width: 250px;
+  margin-top: 0.5rem !important;
+  transition: all 0.4s ease;
+  color: #585858;
+}
+
+.bakery-add textarea,
+.bakery-add label,
+.bakery-add .limite-text,
+.bakery-add select,
+.bakery-add input[type="text"] {
+  font-family: Arial, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.25px !important;
+  font-size: 13px !important;
+}
+
+.bakery-add .bakeryHourS {
+  max-width: 560px !important;
+  min-width: 497px;
+}
+
+@media all and (max-width: 48rem) {
+  .bakery-add .bakeryHourS {
+    max-width: 560px !important;
+    min-width: 100%;
+  }
+
+  .bakery-single .bakeryHour input {
+    min-width: 100%;
+    padding: 2rem;
+  }
+
+  .bakery-single .bakeryHour label {
+    min-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  #tab_hours .bakeryHour li {
+    flex-direction: column;
+    padding-bottom: 1rem;
+  }
+}
+
+.bakery-single .removeImage,
+.bakery-single .removeImage2,
+.bakery-single .removeImage3,
+.bakery-single .removeImage4 {
+  display: none;
+}
+
+.bakery-single .grid-images-others {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.bakery-single .grid-images-others .thumbnail {
+  margin-right: 2rem;
+}
+
+.bakery-single .grid-images-others .thumbnail:last-child {
+  margin-right: 0;
+}
+
+.bakery-single .grid-images-others .thumbnail img {
+  min-width: 220px;
+  max-width: 220px;
+}
+
+@media all and (max-width: 48rem) {
+  .bakery-single .grid-images-others .thumbnail img {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .bakery-single .grid-images-others .thumbnail {
+    margin-right: 0;
+  }
+
+  .bakery-single .grid-images-others {
+    flex-direction: column;
+  }
+}
+
+/* LOGIN */
+
+#login .content {
+  min-height: 510px;
+}
+
+#login h2 {
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+#login .u-column1,
+#login .u-column2 {
+  width: 48%;
+  float: left;
+}
+
+#login .u-column2 {
+  float: right;
+}
+
+#login .ps-btn,
+#login button.ps-btn {
+  margin-right: 25px;
+}
+
+#login p {
+  font-size: 14px;
+  line-height: 1.6em;
+  color: #767676;
+}
+
+#login a {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+#login a:hover {
+  color: #cd9b33;
+}
+
+@media all and (max-width: 48rem) {
+  #login .u-column1,
+  #login .u-column2 {
+    float: none;
+    width: 100%;
+  }
+
+  #login .u-column2 {
+    margin-top: 3rem;
+  }
+
+  .b-80 {
+    padding-top: 2rem;
+  }
+
+  .b-80 {
+    padding-bottom: 2rem;
+  }
+
+  #login h2 {
+    text-align: center;
+  }
+}
+
+#login .error-text {
+  color: red;
+}
+
+.loadingDiv {
+  min-height: 23.1875rem;
+  display: flex;
+  float: none;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* FORGOT*/
+
+.forgot .content {
+  min-height: auto !important;
+}
+
+.forgot {
+  float: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forgot .bakery-detail {
+  min-width: 523px;
+}
+
+.forgot .loadingDiv {
+  min-height: 16.4375rem;
+}
+
+@media all and (max-width: 48rem) {
+  .forgot .bakery-detail {
+    min-width: 100%;
+  }
+
 }

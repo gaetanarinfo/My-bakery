@@ -67,17 +67,11 @@ setTimeout(() => {
   const myCarousel = document.querySelector('#sliders')
 
   const carousel = new bootstrap.Carousel(myCarousel, {
-    interval: 4500,
+    interval: 2500,
     wrap: true
   })
 
-  const sliderCarousel = document.querySelector('.slider-bakery')
-
-  const carouselBakery = new bootstrap.Carousel(sliderCarousel, {
-    interval: 2000,
-    wrap: true
-  })
-}, 2500)
+}, 3000)
 
 // Slider ratings
 

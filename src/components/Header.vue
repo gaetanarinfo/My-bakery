@@ -103,7 +103,9 @@
 
           <div class="actions">
 
-            <a role="button"><i class="icono-user"></i></a>
+            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+
+            <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 
             <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
 
@@ -135,8 +137,9 @@
             <a href="#" class="scroll-click-s" data-scroll="a-propos">À propos de nous</a>
           </li>
 
-          <li class="menu-item"><a :href="this.$route.path !== '' ? '' : ''" class="scroll-click"
-              v-bind:class="this.$route.path === '/contact' ? 'active' : ''" data-scroll="contact">Contact</a>
+          <li class="menu-item"><a :href="this.$route.path !== '/' ? '' : ''"
+              v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'"
+              data-scroll="contact">Contact</a>
           </li>
 
           <li class="menu-item">
@@ -153,7 +156,9 @@
 
         <div class="actions">
 
-          <a role="button"><i class="icono-user"></i></a>
+          <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+
+          <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 
           <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
 
@@ -188,9 +193,21 @@ export default defineComponent({
       return store.state.searchAll
     })
 
+    const user = computed(() => {
+      return store.state.stateUser.user
+    })
+
     onMounted(() => {
       store.dispatch('fetchSearchAll')
     })
+
+    if (sessionStorage.getItem('token') !== null) {
+
+      onMounted(() => {
+        store.dispatch('fetchVerificationAccount')
+      })
+
+    }
 
     return {
       showTextLoading() {
@@ -202,6 +219,8 @@ export default defineComponent({
           showSimulatedReturnData.value = true
         }, 1500)
       },
+      isLoggedIn: store.getters.isLoggedIn,
+      user,
       visible,
       searchHeader: searchHeader,
       moment: moment,
@@ -253,6 +272,17 @@ export default defineComponent({
       }, 1500);
 
     },
+    logout(e) {
+
+      e.preventDefault()
+
+      sessionStorage.removeItem('token')
+
+      setTimeout(() => {
+        location.reload()
+      }, 1500);
+
+    }
   },
   props: {}
 })

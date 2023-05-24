@@ -132,7 +132,101 @@ const routes = [
             }
           ]
         }
-      }
+      },
+      {
+        path: '/add-bakery', component: () => import('pages/AddBakery.vue'),
+        meta: {
+          title: 'Ajouter une boulangerie',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'og:title',
+              content: 'Ajouter une boulangerie'
+            },
+            {
+              property: 'og:description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'og:url',
+              content: 'https://my-bakery.fr/#/add-bakery'
+            },
+            {
+              property: 'og:image',
+              content: 'https://my-bakery.fr/boulanger.png'
+            },
+            {
+              property: 'twitter:title',
+              content: 'Ajouter une boulangerie'
+            },
+            {
+              property: 'twitter:url',
+              content: 'https://my-bakery.fr/#/add-bakery'
+            },
+            {
+              property: 'twitter:description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'twitter:image',
+              content: 'https://my-bakery.fr/boulanger.png'
+            }
+          ]
+        }
+      },
+      {
+        path: '/my-account', component: () => import('pages/MyAccount.vue'),
+        meta: {
+          title: 'Mon compte',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'og:title',
+              content: 'Mon compte'
+            },
+            {
+              property: 'og:description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'og:url',
+              content: 'https://my-bakery.fr/#/my-account'
+            },
+            {
+              property: 'og:image',
+              content: 'https://my-bakery.fr/boulanger.png'
+            },
+            {
+              property: 'twitter:title',
+              content: 'Mon compte'
+            },
+            {
+              property: 'twitter:url',
+              content: 'https://my-bakery.fr/#/my-account'
+            },
+            {
+              property: 'twitter:description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+            {
+              property: 'twitter:image',
+              content: 'https://my-bakery.fr/boulanger.png'
+            }
+          ]
+        }
+      },
+      {
+        path: '/activate-account/:token', component: () => import('pages/ActivateAccount.vue'),
+      },
+      {
+        path: '/forgot-password/:token?', component: () => import('pages/ForgotPassword.vue'),
+      },
     ]
   },
 

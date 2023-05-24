@@ -123,6 +123,14 @@
                   <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non' : 'oui' }}</span></p>
                 </div>
 
+                <div>
+                  <p><i class="fa-solid fa-truck me-1"></i>Livraison <span :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non' : 'oui' }}</span></p>
+                </div>
+
+                <div>
+                  <p><i class="fa-solid fa-utensils me-1"></i>Restauration sur place <span :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'">{{ (bakery.dine_in == 0) ? 'non' : 'oui' }}</span></p>
+                </div>
+
                 <div class="short-desc">
 
                   <p>{{ bakery.small_content }}</p>

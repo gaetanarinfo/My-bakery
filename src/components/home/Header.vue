@@ -105,7 +105,9 @@
 
           <div class="actions">
 
-            <a role="button"><i class="icono-user"></i></a>
+            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+
+            <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 
             <a @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
 
@@ -155,9 +157,11 @@
 
         <div class="actions">
 
-          <a role="button"><i class="icono-user"></i></a>
+          <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
 
           <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
+
+          <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 
           <a href="#" class="search-btn"><i class="icono-search"></i></a>
 
@@ -190,9 +194,21 @@ export default defineComponent({
       return store.state.searchAll
     })
 
+    const user = computed(() => {
+      return store.state.stateUser.user
+    })
+
     onMounted(() => {
       store.dispatch('fetchSearchAll')
     })
+
+    if (sessionStorage.getItem('token') !== null) {
+
+      onMounted(() => {
+        store.dispatch('fetchVerificationAccount')
+      })
+
+    }
 
     return {
       showTextLoading() {
@@ -204,6 +220,8 @@ export default defineComponent({
           showSimulatedReturnData.value = true
         }, 1500)
       },
+      isLoggedIn: store.getters.isLoggedIn,
+      user,
       visible,
       searchHeader: searchHeader,
       moment: moment,
@@ -255,6 +273,17 @@ export default defineComponent({
       }, 1500);
 
     },
+    logout(e) {
+
+      e.preventDefault()
+
+      sessionStorage.removeItem('token')
+
+      setTimeout(() => {
+        location.reload()
+      }, 1500);
+
+    }
   },
   props: {}
 })

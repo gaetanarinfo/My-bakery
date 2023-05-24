@@ -180,6 +180,7 @@ export default defineComponent({
   },
   methods: {
     submitContact(e) {
+
       e.preventDefault();
 
       this.v$.$validate() // checks all inputs

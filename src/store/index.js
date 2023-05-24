@@ -17,7 +17,12 @@ export default createStore({
     bakerysFavorites: [],
     bakeryHours: [],
     blog: [],
-    blog_tags: []
+    blog_tags: [],
+    activateAccount: [],
+    stateUser: {
+      user: null,
+      token: null,
+    },
   },
   getters: {
     getBakery: (state) => state.bakery,
@@ -34,6 +39,16 @@ export default createStore({
     getRatings: (state) => state.ratings,
     getSearchAll: (state) => state.searchAll,
     getBakerysFavorites: (state) => state.bakerysFavorites,
+    getActivateAccount: (state) => state.activateAccount,
+    getToken: (state) => state.stateUser.token,
+    isLoggedIn: (state) => {
+
+      if (sessionStorage.getItem('token') === null) {
+        return !!state.stateUser.token;
+      } else {
+        return sessionStorage.getItem('token');
+      }
+    },
   },
   actions: {
 
@@ -193,6 +208,64 @@ export default createStore({
       }
     },
 
+    // My account
+    async fetchActivateAccount({ commit, state }, data) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/activate-account/' + data.token)
+
+        if (getUrl.data.activateAccount !== undefined) {
+
+          this.activateAccount = getUrl.data
+
+          commit('SET_ACTIVATE_ACCOUNT', getUrl.data)
+
+        } else {
+          this.$router.push('/my-account')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    // Verification Account
+    async fetchVerificationAccount() {
+      try {
+
+        if (sessionStorage.getItem('token') === null) {
+          this.$router.push('/my-account')
+        } else {
+
+          const getUrl = await axios.get(process.env.WEBSITE + '/authenticate/' + sessionStorage.getItem('token'))
+
+          if (getUrl.data.user !== undefined) {
+            this.state.stateUser.user = getUrl.data.user
+          } else {
+            this.$router.push('/my-account')
+          }
+
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    // Verification Token Forgot Password
+    async fetchVerificationTokenForgot({ commit, state }, data) {
+      try {
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/forgot-password-token/' + data.token)
+
+        console.log(getUrl.data);
+
+        if (getUrl.data.success === undefined) {
+          this.$router.push('/my-account')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
   },
   mutations: {
 
@@ -255,6 +328,10 @@ export default createStore({
     SET_BAKERY_HOURS(state, bakeryHours) {
       state.bakeryHours = bakeryHours
     },
+
+    SET_ACTIVATE_ACCOUNT(state, activateAccount) {
+      state.activateAccount = activateAccount
+    }
 
   }
 })

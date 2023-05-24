@@ -20,13 +20,13 @@
               <ul class="list-social">
 
                 <li>
-                  <a href="">
+                  <a href="https://www.facebook.com/profile.php?id=100093129302668" target="_blank">
                     <i class="fa fa-facebook"></i>
                   </a>
                 </li>
 
                 <li>
-                  <a href="">
+                  <a href="https://twitter.com/Mybakery7280" target="_blank">
                     <i class="fa fa-twitter"></i>
                   </a>
                 </li>
@@ -40,13 +40,13 @@
               </ul>
 
               <div v-if="plateformApp" class="text-center mb-3 grid-app">
-                <a href="" class="google-play">
+                <a href="https://portfolio-gaetan.fr/applications/my-bakery" class="google-play">
                   <img src="google-play.png" alt="Google play">
                 </a>
               </div>
 
               <div v-if="plateformApp" class="text-center grid-app">
-                <a href="" class="app-store">
+                <a href="" class="app-store disabled">
                   <img src="app-store.png" alt="Apple store">
                 </a>
               </div>
@@ -126,7 +126,7 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/blog');" class="scroll-click" data-scroll="blog"><i class="fa-solid fa-chevron-right me-1"></i>
+                      <a @click="this.$router.push('/blogs');" class="scroll-click" data-scroll="blog"><i class="fa-solid fa-chevron-right me-1"></i>
                         Blog</a>
                     </li>
 
