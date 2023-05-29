@@ -1,0 +1,24 @@
+{
+  "name": "org.mybakery.app",
+  "displayName": "My bakery",
+  "version": "1.0.2",
+  "description": "Retrouvez toutes les meilleures boulangeries en France sur My bakery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Dev72",
+  "license": "Apache-2.0",
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {}
+  },
+  "devDependencies": {
+    "cordova-android": "^12.0.0"
+  }
+}

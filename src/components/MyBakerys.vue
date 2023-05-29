@@ -72,12 +72,16 @@
                   <div class="grid-t-m">
 
                     <div class="image">
-                      <img :src="favorite.image" width="90" height="90" alt="">
+                      <a role="button" @click="this.$router.push('/bakery/' + favorite.url)">
+                        <img :src="'bakerys/' + favorite.image" width="90" height="50" :alt="favorite.title">
+                      </a>
                     </div>
 
                     <div class="title">
-                      <h5>{{ favorite.title }}</h5>
-                      <p class="location">{{ favorite.adresse + ' ' + favorite.ville + ' ' + favorite.cp }}</p>
+                      <a role="button" @click="this.$router.push('/bakery/' + favorite.url)">
+                        <h5>{{ favorite.title }}</h5>
+                        <p class="location">{{ favorite.adresse }}</p>
+                      </a>
                     </div>
 
                   </div>
@@ -162,10 +166,10 @@
                           <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
                             aria-label="Slide 2"></button>
 
-                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
                             aria-label="Slide 3"></button>
 
-                            <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
+                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
                             aria-label="Slide 4"></button>
 
                         </div>
@@ -349,11 +353,11 @@
 
                         <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
                           :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
+                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
 
                         <a v-else @click="saveBakeryList(bakery.id)"
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
                         <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
 
@@ -734,7 +738,6 @@ export default defineComponent({
 
     $(document).on('click', '#back-top', function (e) {
       e.preventDefault()
-      console.log('test')
       $('html, body').animate({ scrollTop: 0 }, 600)
     })
 

@@ -229,11 +229,11 @@
 
                         <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
                           :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
+                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
 
                         <a v-else @click="saveBakeryList(bakery.id)"
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
                         <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
 

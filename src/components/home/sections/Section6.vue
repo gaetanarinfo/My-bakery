@@ -48,7 +48,7 @@
                       <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span
                           v-if="blog.views >= 2">s</span></span>
 
-                      <p>{{ blog.small_content }}</p>
+                      <p>{{ blog.small_content.substr(0, 150) + '...' }}</p>
 
                       <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
 

@@ -1,3 +1,4 @@
+import meta from '../utils/meta.js'
 
 const routes = [
   {
@@ -48,43 +49,27 @@ const routes = [
       {
         path: '/bakery/:url', component: () => import('pages/Bakery.vue'),
         meta: {
-          title: localStorage.getItem('title'),
+          title: 'Nos meilleures boulangeries sont ici',
           metaTags: [
             {
               name: 'description',
-              content: localStorage.getItem('description')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             },
             {
               property: 'og:title',
-              content: localStorage.getItem('title')
+              content: 'Nos meilleures boulangeries sont ici'
             },
             {
               property: 'og:description',
-              content: localStorage.getItem('description')
-            },
-            {
-              property: 'og:url',
-              content: localStorage.getItem('url')
-            },
-            {
-              property: 'og:image',
-              content: localStorage.getItem('image')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             },
             {
               property: 'twitter:title',
-              content: localStorage.getItem('title')
-            },
-            {
-              property: 'twitter:url',
-              content: localStorage.getItem('url')
+              content: 'Nos meilleures boulangeries sont ici'
             },
             {
               property: 'twitter:description',
-              content: localStorage.getItem('description')
-            },
-            {
-              property: 'twitter:image',
-              content: localStorage.getItem('image')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             }
           ]
         }
@@ -96,39 +81,23 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: localStorage.getItem('article-description')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             },
             {
               property: 'og:title',
-              content: localStorage.getItem('article-title')
+              content: 'Nos meilleures boulangeries sont ici'
             },
             {
               property: 'og:description',
-              content: localStorage.getItem('article-description')
-            },
-            {
-              property: 'og:url',
-              content: localStorage.getItem('article-url')
-            },
-            {
-              property: 'og:image',
-              content: localStorage.getItem('article-image')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             },
             {
               property: 'twitter:title',
-              content: localStorage.getItem('article-title')
-            },
-            {
-              property: 'twitter:url',
-              content: localStorage.getItem('article-url')
+              content: 'Nos meilleures boulangeries sont ici'
             },
             {
               property: 'twitter:description',
-              content: localStorage.getItem('article-description')
-            },
-            {
-              property: 'twitter:image',
-              content: localStorage.getItem('article-image')
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
             }
           ]
         }

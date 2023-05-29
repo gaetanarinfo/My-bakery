@@ -75,8 +75,7 @@
               </div>
 
               <div class="form-group submit">
-                <button id="submit_contact" v-bind:class="submit !== false ? '' : 'disabled'" @click="submitContact"
-                  type="submit" class="btn btn-bakery">Valider</button>
+                <button id="submit_contact" @click="submitContact" type="submit" class="btn btn-bakery">Valider</button>
               </div>
 
             </form>
@@ -157,19 +156,8 @@ export default defineComponent({
   },
   data() {
 
-    $(document).on('keyup', '#form-contact', function (e) {
-
-      if ($('#firstname').val().length >= 2 && $('#lastname').val().length >= 2 && $('#email').val().length >= 2 && $('#phone').val().length >= 2 && $('#sujet').val().length >= 2 && $('#content').val().length >= 2) {
-        $('#submit_contact').removeClass('disabled')
-      } else {
-        $('#submit_contact').addClass('disabled')
-      }
-
-    })
-
     return {
       v$: useValidate(),
-      submit: false,
       firstname: null,
       lastname: null,
       email: null,
@@ -179,6 +167,7 @@ export default defineComponent({
     }
   },
   methods: {
+
     submitContact(e) {
 
       e.preventDefault();
@@ -207,7 +196,6 @@ export default defineComponent({
                   $(document).find('.error-text').removeAttr()
                   $('#form-contact').find('input').val('')
                   $('#form-contact').find('textarea').val('')
-                  this.submit = false
                   $('#submit_contact').addClass('disabled')
 
                   this.firstname = null
@@ -230,11 +218,7 @@ export default defineComponent({
 
         } else {
 
-          this.submit = false
-
           if (this.firstname && this.lastname && this.email && this.phone && this.sujet && this.content) {
-
-            this.submit = true
 
             return true
           }
@@ -306,6 +290,8 @@ export default defineComponent({
       sujet: { required },
       content: { required }
     }
+  },
+  mounted() {
   }
 })
 </script>

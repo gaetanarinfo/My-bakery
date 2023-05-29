@@ -84,22 +84,6 @@ export default createStore({
 
           this.bakery = getUrl.data.bakery
 
-          localStorage.removeItem('title')
-          localStorage.removeItem('description')
-          localStorage.removeItem('url')
-          localStorage.removeItem('image')
-          localStorage.removeItem('lat')
-          localStorage.removeItem('lng')
-          localStorage.removeItem('adresse')
-
-          localStorage.setItem('title', getUrl.data.bakery.title)
-          localStorage.setItem('description', getUrl.data.bakery.small_content)
-          localStorage.setItem('url', 'https://my-bakery.fr/#/bakery/' + getUrl.data.bakery.url)
-          localStorage.setItem('image', getUrl.data.bakery.image)
-          localStorage.setItem('lat', getUrl.data.bakery.lat)
-          localStorage.setItem('lng', getUrl.data.bakery.lng)
-          localStorage.setItem('adresse', getUrl.data.bakery.adresse)
-
           commit('SET_BAKERY', getUrl.data.bakery)
 
           this.bakeryComments = getUrl.data.bakeryComments
@@ -113,6 +97,14 @@ export default createStore({
         } else {
           this.$router.push('/bakerys')
         }
+      } catch (error) {
+        console.log(error)
+      }
+
+    },
+    async fetchBakeryUpdate({ commit, state }, data) {
+      try {
+        await axios.get(process.env.WEBSITE + '/bakery-update/' + data.url)
       } catch (error) {
         console.log(error)
       }

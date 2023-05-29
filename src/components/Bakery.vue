@@ -55,7 +55,7 @@
 
               </div>
 
-              <div class="preview">
+              <div class="preview hide-mobile">
 
                 <div class="slick-nav">
 
@@ -116,19 +116,31 @@
                 </div>
 
                 <div>
-                  <p><i class="fa-solid fa-phone me-1"></i>{{ bakery.phone }}</p>
+                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-1"></i>{{ bakery.phone
+                  }}</a></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non' : 'oui' }}</span></p>
+                  <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span
+                      :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non' :
+                        'oui' }}</span></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-solid fa-truck me-1"></i>Livraison <span :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non' : 'oui' }}</span></p>
+                  <p><i class="fa-solid fa-truck me-1"></i>Livraison <span
+                      :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non' :
+                        'oui' }}</span></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-solid fa-utensils me-1"></i>Restauration sur place <span :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'">{{ (bakery.dine_in == 0) ? 'non' : 'oui' }}</span></p>
+                  <p><i class="fa-solid fa-utensils me-1"></i>Restauration sur place <span
+                      :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'">{{ (bakery.dine_in == 0) ? 'non' :
+                        'oui' }}</span></p>
+                </div>
+
+                <div v-if="bakery.website !== null">
+                  <p class="website"><a :href="bakery.website" target="_blank"><i class="fa-solid fa-globe me-1"></i>Site
+                      internet</a></p>
                 </div>
 
                 <div class="short-desc">
@@ -142,18 +154,17 @@
                   <div v-if="Cookies.has('bakerysList') !== false">
 
                     <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
-                      :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
-                        class="fa-solid fa-heart me-2 text-danger"></i>Supprimer</a>
+                      :class="'btn btn-bakery delete-bakery-list-' + bakery.id"><i
+                        class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
 
-                    <a v-else @click="saveBakeryList(bakery.id)"
-                      :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                        class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Ajouter à ma liste</a>
+                    <a v-else @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery bakery-list-' + bakery.id"><i
+                        class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
                   </div>
 
                   <div v-else>
 
-                    <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
+                    <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery bakery-list-' + bakery.id"><i
                         class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
                   </div>
@@ -184,9 +195,19 @@
 
           </div>
 
-          <GoogleMapLoader :mapConfig="mapConfig" :apiKey="apiKey">
+          <div
+            style="position: relative;z-index: 999999999;overflow: visible;display: block;height: 600px;margin-top: 2rem;">
+            <l-map :zoomAnimation="true" :fadeAnimation="true" :markerZoomAnimation="true" v-if="Boolean(this.map)" ref="map"
+              v-model:zoom="zoom" :center="[bakery.lat, bakery.lng]">
+              <l-tile-layer :url="urlMap" layer-type="base" name="OpenStreetMap"></l-tile-layer>
+              <l-marker :lat-lng="[bakery.lat, bakery.lng]"></l-marker>
+            </l-map>
 
-          </GoogleMapLoader>
+            <div class="loadingDiv" v-else>
+              <q-spinner-grid size="70px" color="info" />
+            </div>
+
+          </div>
 
           <div class="bakery-content">
 
@@ -661,7 +682,6 @@
 
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
-import GoogleMapLoader from 'components/GoogleMapLoader'
 import { useQuasar } from 'quasar'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -671,6 +691,8 @@ import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import { useRoute } from 'vue-router';
 import axios from 'axios'
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 
 moment.locale('fr')
 
@@ -681,7 +703,9 @@ slick_css
 export default defineComponent({
   name: 'BakeryComponent',
   components: {
-    GoogleMapLoader,
+    LMap,
+    LMarker,
+    LTileLayer,
   },
   setup() {
     const route = useRoute();
@@ -708,6 +732,11 @@ export default defineComponent({
         {
           'url': route.params.url
         })
+
+      store.dispatch('fetchBakeryUpdate',
+        {
+          'url': route.params.url
+        })
     })
 
     $q.notify.registerType('success-form', {
@@ -729,6 +758,8 @@ export default defineComponent({
     })
 
     return {
+      urlMap: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      zoom: 18,
       showTextLoading() {
         visible.value = true
         showSimulatedReturnData.value = true
@@ -777,7 +808,7 @@ export default defineComponent({
     })
 
     return {
-      apiKey: process.env.GOOGLE_API_KEY,
+      map: null,
       v$: useValidate(),
       submit: false,
       url: null,
@@ -785,20 +816,6 @@ export default defineComponent({
       author: null,
       emailComment: null
     }
-  },
-  computed: {
-    mapConfig() {
-      return {
-        center: { lat: parseFloat(localStorage.getItem('lat')), lng: parseFloat(localStorage.getItem('lng')) },
-        zoom: 18,
-        fullscreenControl: true,
-        clickableIcons: true,
-        streetViewControl: false,
-        marker: [
-          { id: 'a', image: localStorage.getItem('image'), caption: localStorage.getItem('title'), content: localStorage.getItem('description'), address: localStorage.getItem('adresse'), position: { lat: parseFloat(localStorage.getItem('lat')), lng: parseFloat(localStorage.getItem('lng')) } },
-        ],
-      }
-    },
   },
   methods: {
     saveBakeryList(id) {
@@ -995,7 +1012,7 @@ export default defineComponent({
         $('.' + 'email' + '_error').text("Le champs adresse email n'est pas valide !");
 
       }
-    }
+    },
   },
   validations() {
     return {
@@ -1005,6 +1022,10 @@ export default defineComponent({
     }
   },
   mounted() {
+
+    setTimeout(() => {
+      this.map = 1
+    }, 1200);
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -1163,8 +1184,6 @@ export default defineComponent({
         $(this).addClass('active')
         $('#tab_hours').addClass('active')
 
-        $('#btn_description').removeClass('active')
-        $('#tab_description').removeClass('active')
         $('#btn_description').removeClass('active')
         $('#tab_description').removeClass('active')
         $('#btn_reviews').removeClass('active')

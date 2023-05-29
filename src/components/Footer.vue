@@ -131,7 +131,7 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/login');"><i class="fa-solid fa-chevron-right me-1"></i> Espace membre</a>
+                      <a @click="this.$router.push('/my-account');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
                     </li>
 
                     <li>
