@@ -29,7 +29,7 @@
 
     <div class="content b-80 b-80">
 
-      <div class="container">
+      <div class="container clear">
 
         <div class="u-column1 col-1" v-show="showSimulatedReturnData">
 
@@ -38,7 +38,7 @@
           <form class="login bakery-detail">
 
             <p class="form-group">
-              <label for="username">Pseudo ou adresse email <span class="required">*</span></label>
+              <label for="username">Adresse email <span class="required">*</span></label>
               <input @keyup="erraseData('username')" v-model="username" type="text" class="form-control" name="username"
                 id="username">
             <p class="error-text username_error"></p>
@@ -46,8 +46,13 @@
 
             <p class="form-group">
               <label for="password">Mot de passe <span class="required">*</span></label>
+            <div class="input-group">
               <input @keyup="erraseData('password')" v-model="password" class="form-control" type="password"
                 name="password" id="password">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="show-password"><i class="fa-solid fa-eye"></i></span>
+              </div>
+            </div>
             <p class="error-text password_error"></p>
             </p>
 
@@ -81,6 +86,42 @@
               <label for="reg_email">Adresse email <span class="required">*</span></label>
               <input v-model="reg_email" type="email" class="form-control" name="email" id="reg_email">
             <p class="error-text reg_email_error"></p>
+            </p>
+
+            <p class="form-group">
+              <label for="reg_firstname">Prénom <span class="required">*</span></label>
+              <input v-model="reg_firstname" type="text" class="form-control" name="firstname" id="reg_firstname">
+            <p class="error-text reg_firstname_error"></p>
+            </p>
+
+            <p class="form-group">
+              <label for="reg_lastname">Nom <span class="required">*</span></label>
+              <input v-model="reg_lastname" type="text" class="form-control" name="lastname" id="reg_lastname">
+            <p class="error-text reg_lastname_error"></p>
+            </p>
+
+            <p class="form-group">
+              <label for="reg_function">Poste occupé <span class="required">*</span></label>
+              <input v-model="reg_function" type="text" placeholder="ex : Ouvrier" class="form-control" name="function"
+                id="reg_function">
+            <p class="error-text reg_function_error"></p>
+            </p>
+
+            <p class="form-group">
+              <label for="reg_location">Localisation <span class="required">*</span></label>
+              <input v-model="reg_location" placeholder="ex : Le Mans" type="text" class="form-control" name="location"
+                id="reg_location">
+            <p class="error-text reg_location_error"></p>
+            </p>
+
+            <p class="form-group">
+              <label for="reg_mobile">Mobile</label>
+              <input v-model="reg_mobile" type="tel" class="form-control" name="mobile" id="reg_mobile">
+            </p>
+
+            <p class="form-group">
+              <label for="reg_phone">Téléphone fixe</label>
+              <input v-model="reg_phone" type="tel" class="form-control" name="fixe" id="reg_phone">
             </p>
 
             <div class="privacy-policy-text">
@@ -152,9 +193,27 @@ import axios from 'axios'
 
 moment.locale('fr')
 
+var switcher = 0
+
+$(document).on('click', '#show-password', function (e) {
+
+  e.preventDefault();
+
+  if (switcher == 0) {
+    $(this).find('i.fa-solid.fa-eye').removeClass('fa-solid fa-eye').addClass('fa-solid fa-eye-slash');
+    $(document).find('#password').attr('type', 'text');
+    switcher = 1;
+  } else {
+    $(this).find('i.fa-solid.fa-eye-slash').removeClass('fa-solid fa-eye-slash').addClass('fa-solid fa-eye');
+    $(document).find('#password').attr('type', 'password');
+    switcher = 0;
+  }
+
+})
+
 export default defineComponent({
-  name: 'BlogcComponent',
-  setup() {
+  name: 'MyAccount',
+  setup () {
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
@@ -183,7 +242,7 @@ export default defineComponent({
     })
 
     return {
-      showTextLoading(express = null) {
+      showTextLoading (express = null) {
         visible.value = true
         $('.u-column1').fadeOut(300)
         $('.u-column2').fadeOut(300)
@@ -196,13 +255,13 @@ export default defineComponent({
           }, 3000)
         }
       },
-      showNotif(message) {
+      showNotif (message) {
         $q.notify({
           type: 'success-form',
           message: message
         })
       },
-      errorNotif(message = null) {
+      errorNotif (message = null) {
         $q.notify({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
@@ -215,11 +274,19 @@ export default defineComponent({
       showSimulatedReturnData,
     }
   },
-  data() {
+  data () {
 
     return {
       v$: useValidate(),
+
       reg_email: null,
+      reg_firstname: null,
+      reg_lastname: null,
+      reg_function: null,
+      reg_location: null,
+      reg_mobile: null,
+      reg_phone: null,
+
       password: (localStorage.getItem('password') !== null) ? localStorage.getItem('password') : null,
       rememberme: (localStorage.getItem('username') !== null && localStorage.getItem('password') !== null) ? "true" : "false",
       userLoggedIn: false,
@@ -227,7 +294,7 @@ export default defineComponent({
     }
   },
   methods: {
-    register(e) {
+    register (e) {
 
       e.preventDefault()
 
@@ -241,11 +308,19 @@ export default defineComponent({
         $('.' + 'reqEmail' + '_error').removeAttr()
         $('.' + 'reqEmail' + '_error').text("");
 
-        if (this.reg_email) {
+        if (this.reg_email && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
 
           this.showTextLoading()
 
-          axios.post(process.env.WEBSITE + '/register', { 'email': this.reg_email })
+          axios.post(process.env.WEBSITE + '/register', {
+            'email': this.reg_email,
+            'firstname': this.reg_firstname,
+            'lastname': this.reg_lastname,
+            'fonction': this.reg_function,
+            'location': this.reg_location,
+            'phone': this.reg_phone,
+            'mobile': this.reg_mobile,
+           })
             .then((res) => {
 
               if (res.data.success === true) {
@@ -258,6 +333,12 @@ export default defineComponent({
                   $('#login').find('input').val('')
 
                   this.reg_email = null
+                  this.reg_firstname = null
+                  this.reg_lastname = null
+                  this.reg_function = null
+                  this.reg_location = null
+                  this.reg_mobile = null
+                  this.reg_phone = null
 
                 }, 3500);
 
@@ -270,16 +351,6 @@ export default defineComponent({
               this.errorNotif()
             })
 
-        } else {
-
-          if (!this.reg_email) {
-            $('.' + 'reg_email' + '_error').attr('style', 'display: block')
-            $('.' + 'reg_email' + '_error').text("Le champs adresse email est obligatoire !");
-          } else {
-            $('.' + 'reg_email' + '_error').removeAttr()
-            $('.' + 'reg_email' + '_error').text("");
-          }
-
         }
 
       } else {
@@ -289,8 +360,48 @@ export default defineComponent({
 
       }
 
+      if (!this.reg_firstname) {
+        $('.' + 'reg_firstname' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_firstname' + '_error').text("Le champs prénom est obligatoire !");
+      } else {
+        $('.' + 'reg_firstname' + '_error').removeAttr()
+        $('.' + 'reg_firstname' + '_error').text("");
+      }
+
+      if (!this.reg_lastname) {
+        $('.' + 'reg_lastname' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_lastname' + '_error').text("Le champs nom est obligatoire !");
+      } else {
+        $('.' + 'reg_lastname' + '_error').removeAttr()
+        $('.' + 'reg_lastname' + '_error').text("");
+      }
+
+      if (!this.reg_function) {
+        $('.' + 'reg_function' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_function' + '_error').text("Le champs fonction est obligatoire !");
+      } else {
+        $('.' + 'reg_function' + '_error').removeAttr()
+        $('.' + 'reg_function' + '_error').text("");
+      }
+
+      if (!this.reg_location) {
+        $('.' + 'reg_location' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_location' + '_error').text("Le champs location est obligatoire !");
+      } else {
+        $('.' + 'reg_location' + '_error').removeAttr()
+        $('.' + 'reg_location' + '_error').text("");
+      }
+
+      if (!this.reg_email) {
+        $('.' + 'reg_email' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_email' + '_error').text("Le champs adresse email est obligatoire !");
+      } else {
+        $('.' + 'reg_email' + '_error').removeAttr()
+        $('.' + 'reg_email' + '_error').text("");
+      }
+
     },
-    login(e) {
+    login (e) {
 
       e.preventDefault()
 
@@ -309,7 +420,7 @@ export default defineComponent({
           axios.post(process.env.WEBSITE + '/login', { 'username': this.username, 'password': this.password })
             .then((res) => {
 
-            this.showTextLoading('login')
+              this.showTextLoading('login')
 
               if (res.data.success === true) {
 
@@ -371,7 +482,7 @@ export default defineComponent({
       }
 
     },
-    remember() {
+    remember () {
 
       if (this.rememberme === "true") {
         localStorage.setItem('username', this.username)
@@ -382,7 +493,7 @@ export default defineComponent({
       }
 
     },
-    erraseData(string) {
+    erraseData (string) {
 
       if (localStorage.getItem(string) !== null) {
         if (string === "username") localStorage.setItem(string, this.username)
@@ -391,12 +502,12 @@ export default defineComponent({
 
     }
   },
-  validations() {
+  validations () {
     return {
 
     }
   },
-  mounted() {
+  mounted () {
 
     if (sessionStorage.getItem('token') !== null) {
       location.href = '/'
@@ -503,4 +614,3 @@ export default defineComponent({
   }
 })
 </script>
-

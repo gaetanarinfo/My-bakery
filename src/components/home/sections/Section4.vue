@@ -55,7 +55,8 @@
                           <div class="carousel-item active">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
+                              <img v-if="bakery.image === 'default.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -63,7 +64,8 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
+                              <img v-if="bakery.image_2 === 'default2.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_2" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -71,7 +73,8 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
+                              <img v-if="bakery.image_3 === 'default.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_3" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -79,7 +82,8 @@
                           <div class="carousel-item">
 
                             <a :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
+                              <img v-if="bakery.image_4 === 'default2.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_4" :alt="bakery.title">
                             </a>
 
                           </div>
@@ -297,6 +301,7 @@ export default defineComponent({
     })
 
     return {
+      folderPicture: process.env.WEBSITE + '/bakerys/images/',
       Cookies: Cookies,
       bakerys,
       moment: moment

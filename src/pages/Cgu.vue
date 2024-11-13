@@ -51,7 +51,7 @@
         <p>adresse URL du site : <a data-fr-linked="true"
             href="https://my-bakery.fr">https://my-bakery.fr</a></p>
         <p>e-mail : <a data-fr-linked="true" href="mailto:contact@my-bakery.fr">contact@my-bakery.fr</a></p>
-        <p>numéro de téléphone : 0615759302</p>
+        <p>numéro de téléphone : 0650558731</p>
         <p>Les conditions générales d'utilisation doivent être acceptées par tout
           Utilisateur, et son accès au site vaut acceptation de ces</p>
         <p>conditions.</p>

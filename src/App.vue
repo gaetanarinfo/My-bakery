@@ -1,5 +1,17 @@
 <template>
+
   <router-view v-if="show === true" />
+
+  <div v-if="show === false">
+
+    <div class="loading">
+
+      <img src="logo-light.png">
+
+    </div>
+
+  </div>
+
 </template>
 
 <script>
@@ -9,30 +21,22 @@ import { QSpinnerBox } from 'quasar'
 export default defineComponent({
   name: 'App',
 
-  data() {
+  data () {
     return {
       show: false
     }
   },
   methods: {
 
-    showLoading() {
-      this.$q.loading.show({
-        spinner: QSpinnerBox,
-        spinnerColor: 'blue-6',
-        backgroundColor: 'white',
-        spinnerSize: 75
-      })
-
+    showLoading () {
       // hiding in 2s
       setTimeout(() => {
-        this.$q.loading.hide()
         this.show = true
       }, 2500)
     }
   },
 
-  beforeUnmount() {
+  beforeUnmount () {
     setTimeout(() => {
       this.$q.loading.hide()
     }, 2500)
@@ -40,7 +44,7 @@ export default defineComponent({
   computed: {
   },
 
-  mounted() {
+  mounted () {
     this.showLoading()
   }
 })

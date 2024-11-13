@@ -191,6 +191,18 @@ const routes = [
         }
       },
       {
+        path: '/my-account-profil', component: () => import('pages/MyAccountProfil.vue'),
+        meta: {
+          title: 'Gestion de mon compte',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
         path: '/activate-account/:token', component: () => import('pages/ActivateAccount.vue'),
       },
       {

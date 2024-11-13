@@ -27,12 +27,12 @@
 
                 <li>
                   <a href="https://twitter.com/Mybakery7280" target="_blank">
-                    <i class="fa fa-twitter"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
                   </a>
                 </li>
 
                 <li>
-                  <a href="">
+                  <a href="https://www.linkedin.com/in/ga%C3%ABtan-seigneur-7391342b7/">
                     <i class="fa fa-linkedin"></i>
                   </a>
                 </li>
@@ -40,7 +40,7 @@
               </ul>
 
               <div v-if="plateformApp" class="text-center mb-3 grid-app">
-                <a href="https://portfolio-gaetan.fr/applications/my-bakery" class="google-play">
+                <a href="https://gaetan-seigneur.fr/applications/my-bakery" class="google-play">
                   <img src="google-play.png" alt="Google play">
                 </a>
               </div>
@@ -61,7 +61,7 @@
 
               <form id="form-newsletter" class="form-newsletter">
 
-                <h4>Recevez des nouvelles et &amp; offre</h4>
+                <h4>Recevez des nouvelles et offres de My Bakery</h4>
 
                 <div class="form-group">
 
@@ -91,7 +91,7 @@
 
                 <p>125 avenue Félix Geneslay 72100 Le Mans, France</p>
 
-                <p>(+33) 6-15-75-93-02</p>
+                <p>(+33) 6-50-55-87-31</p>
 
               </div>
 
@@ -131,7 +131,8 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/my-account');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
+                      <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
+                      <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
                     </li>
 
                     <li>
@@ -163,7 +164,7 @@
       <div class="container">
 
         <p>© Copyright par <strong>Gaëtan Seigneur - {{ moment().format('YYYY') }}</strong>. Concu par<a
-            href="https://portfolio-gaetan.fr"> Dev72</a>.
+            href="https://gaetan-seigneur.fr"> Dev72</a>.
         </p>
 
         <p class="mt-1">Plateforme <span class="plateform">{{ plateform }}</span> - Version {{ version }}</p>
@@ -186,6 +187,7 @@ import { useQuasar } from 'quasar'
 import { ref } from 'vue'
 import axios from 'axios'
 import moment from 'moment'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'FooterComponent',
@@ -194,6 +196,7 @@ export default defineComponent({
     const $q = useQuasar()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
+    const store = useStore()
 
     $q.notify.registerType('success-form', {
       icon: 'fa-solid fa-check',
@@ -214,6 +217,7 @@ export default defineComponent({
     })
 
     return {
+      isLoggedIn: store.getters.isLoggedIn,
       plateform: $q.platform.is.name,
       version: process.env.VERSION,
       plateformApp: $q.platform.is.desktop,

@@ -199,43 +199,43 @@
 
                             <li>
                               <label for="">Lundi</label>
-                              <input v-model="addHours1" class="form-control" type="text" id="addHours1" name="addHours1"
+                              <input v-model="addHours1" class="form-control border-hours" type="text" id="addHours1" name="addHours1"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Mardi</label>
-                              <input v-model="addHours2" class="form-control" type="text" id="addHours2" name="addHours2"
+                              <input v-model="addHours2" class="form-control border-hours" type="text" id="addHours2" name="addHours2"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Mercredi</label>
-                              <input v-model="addHours3" class="form-control" type="text" id="addHours3" name="addHours3"
+                              <input v-model="addHours3" class="form-control border-hours" type="text" id="addHours3" name="addHours3"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Jeudi</label>
-                              <input v-model="addHours4" class="form-control" type="text" id="addHours4" name="addHours4"
+                              <input v-model="addHours4" class="form-control border-hours" type="text" id="addHours4" name="addHours4"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Vendredi</label>
-                              <input v-model="addHours5" class="form-control" type="text" id="addHours5" name="addHours5"
+                              <input v-model="addHours5" class="form-control border-hours" type="text" id="addHours5" name="addHours5"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Samedi</label>
-                              <input v-model="addHours6" class="form-control" type="text" id="addHours6" name="addHours6"
+                              <input v-model="addHours6" class="form-control border-hours" type="text" id="addHours6" name="addHours6"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Dimanche</label>
-                              <input v-model="addHours7" class="form-control" type="text" id="addHours7" name="addHours7"
+                              <input v-model="addHours7" class="form-control border-hours" type="text" id="addHours7" name="addHours7"
                                 placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
@@ -1027,7 +1027,7 @@ export default defineComponent({
 
         if (!this.addHandicap) {
           $('.' + 'addHandicap' + '_error').attr('style', 'display: block')
-          $('.' + 'addHandicap' + '_error').text("Le champs adresse handicap est obligatoire !");
+          $('.' + 'addHandicap' + '_error').text("Le champs handicap est obligatoire !");
         } else {
           $('.' + 'addHandicap' + '_error').removeAttr()
           $('.' + 'addHandicap' + '_error').text("");
@@ -1217,6 +1217,7 @@ export default defineComponent({
         $('#tab_reviews').removeClass('active')
         $('#btn_hours').removeClass('active')
         $('#tab_hours').removeClass('active')
+        $('#btn_others').removeClass('active')
         $('#tab_others_image').removeClass('active')
 
       })
@@ -1232,6 +1233,7 @@ export default defineComponent({
         $('#tab_description').removeClass('active')
         $('#btn_hours').removeClass('active')
         $('#tab_hours').removeClass('active')
+        $('#btn_other').removeClass('active')
         $('#tab_others_image').removeClass('active')
       })
 
@@ -1244,10 +1246,9 @@ export default defineComponent({
 
         $('#btn_description').removeClass('active')
         $('#tab_description').removeClass('active')
-        $('#btn_description').removeClass('active')
-        $('#tab_description').removeClass('active')
         $('#btn_reviews').removeClass('active')
         $('#tab_reviews').removeClass('active')
+        $('#btn_others').removeClass('active')
         $('#tab_others_image').removeClass('active')
 
       })
@@ -1261,10 +1262,9 @@ export default defineComponent({
 
         $('#btn_description').removeClass('active')
         $('#tab_description').removeClass('active')
-        $('#btn_description').removeClass('active')
-        $('#tab_description').removeClass('active')
         $('#btn_reviews').removeClass('active')
         $('#tab_reviews').removeClass('active')
+        $('#btn_hours').removeClass('active')
         $('#tab_hours').removeClass('active')
 
       })

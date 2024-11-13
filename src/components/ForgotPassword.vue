@@ -40,8 +40,9 @@
           <form class="bakery-detail" style="max-width: 350px;">
 
             <p class="form-group text-start">
-              <label for="emailForgot">Pseudo ou adresse email <span class="required">*</span></label>
-              <input v-model="emailForgot" type="text" class="form-control" name="emailForgot" id="emailForgot">
+              <label for="emailForgot">Adresse email <span class="required">*</span></label>
+              <input style="border-bottom: 1px solid #c79732;" v-model="emailForgot" type="text" class="form-control"
+                name="emailForgot" id="emailForgot">
             <p class="error-text email_forgot_error"></p>
             </p>
 
@@ -79,16 +80,26 @@
 
             <p class="form-group text-start">
               <label for="passwordForgot">Nouveau mot de passe <span class="required">*</span></label>
-              <input v-model="passwordForgot" type="password" class="form-control" name="passwordForgot"
-                id="passwordForgot">
+            <div class="input-group">
+              <input style="border-bottom: 1px solid #c79732;" v-model="passwordForgot" type="password"
+                class="form-control" name="passwordForgot" id="passwordForgot">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="show-password"><i class="fa-solid fa-eye"></i></span>
+              </div>
+            </div>
             <p class="error-text password_forgot_error"></p>
             </p>
 
             <p class="form-group text-start">
               <label for="passwordForgotConfirmation">Confirmer votre nouveau mot de passe <span
                   class="required">*</span></label>
-              <input v-model="passwordForgotConfirmation" type="password" class="form-control"
-                name="passwordForgotConfirmation" id="passwordForgotConfirmation">
+            <div class="input-group">
+              <input style="border-bottom: 1px solid #c79732;" v-model="passwordForgotConfirmation" type="password"
+                class="form-control" name="passwordForgotConfirmation" id="passwordForgotConfirmation">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="show-password-2"><i class="fa-solid fa-eye"></i></span>
+              </div>
+            </div>
             <p class="error-text password_confirmation_forgot_error"></p>
             </p>
 
@@ -157,9 +168,44 @@ import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import axios from 'axios'
 
+var switcher = 0,
+  switcher2 = 0
+
+$(document).on('click', '#show-password', function (e) {
+
+  e.preventDefault();
+
+  if (switcher == 0) {
+    $(this).find('i.fa-solid.fa-eye').removeClass('fa-solid fa-eye').addClass('fa-solid fa-eye-slash');
+    $(document).find('#passwordForgot').attr('type', 'text');
+    switcher = 1;
+  } else if (switcher != 0) {
+    $(this).find('i.fa-solid.fa-eye-slash').removeClass('fa-solid fa-eye-slash').addClass('fa-solid fa-eye');
+    $(document).find('#passwordForgot').attr('type', 'password');
+    switcher = 0;
+  }
+
+})
+
+$(document).on('click', '#show-password-2', function (e) {
+
+  e.preventDefault();
+
+  if (switcher2 == 0) {
+    $(this).find('i.fa-solid.fa-eye').removeClass('fa-solid fa-eye').addClass('fa-solid fa-eye-slash');
+    $(document).find('#passwordForgotConfirmation').attr('type', 'text');
+    switcher2 = 1;
+  } else {
+    $(this).find('i.fa-solid.fa-eye-slash').removeClass('fa-solid fa-eye-slash').addClass('fa-solid fa-eye');
+    $(document).find('#passwordForgotConfirmation').attr('type', 'password');
+    switcher2 = 0;
+  }
+
+})
+
 export default defineComponent({
   name: 'ForgotPasswordComponent',
-  setup() {
+  setup () {
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
     const $q = useQuasar()
@@ -184,8 +230,6 @@ export default defineComponent({
       timeout: 3500
     })
 
-    console.log(route.params.token);
-
     // Vérification du token pour le mot de passe perdu
     if (route.params.token !== "") {
       store.dispatch('fetchVerificationTokenForgot',
@@ -195,7 +239,7 @@ export default defineComponent({
     }
 
     return {
-      showTextLoading(express = null) {
+      showTextLoading (express = null) {
         visible.value = true
         $('.u-column1').fadeOut(300)
         showSimulatedReturnData.value = false
@@ -207,13 +251,13 @@ export default defineComponent({
           }, 3000)
         }
       },
-      showNotif(message) {
+      showNotif (message) {
         $q.notify({
           type: 'success-form',
           message: message
         })
       },
-      errorNotif(message = null) {
+      errorNotif (message = null) {
         $q.notify({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
@@ -226,7 +270,7 @@ export default defineComponent({
       showSimulatedReturnData,
     }
   },
-  data() {
+  data () {
     return {
       v$: useValidate(),
       emailForgot: null,
@@ -235,7 +279,7 @@ export default defineComponent({
     }
   },
   methods: {
-    forgot(e) {
+    forgot (e) {
 
       e.preventDefault()
 
@@ -298,19 +342,22 @@ export default defineComponent({
       }
 
     },
-    forgotPassword(e) {
+    forgotPassword (e) {
 
       e.preventDefault()
+
+      var passwordForgot = parseInt($(document).find('#passwordForgot').val().length),
+        password_confirmation_forgot = parseInt($(document).find('#passwordForgotConfirmation').val().length)
 
       if (this.passwordForgot && this.passwordForgotConfirmation) {
 
         $(document).find('.error-text').text('')
 
-        if (this.passwordForgot === this.passwordForgotConfirmation) {
+        if (this.passwordForgot === this.passwordForgotConfirmation && (passwordForgot > 7 || password_confirmation_forgot > 7)) {
 
           this.showTextLoading()
 
-          axios.post(process.env.WEBSITE + '/forgot-password/' + this.$route.params.token, { 'newPassword': this.passwordForgot })
+          axios.post(process.env.WEBSITE + '/forgot-password-token/' + this.$route.params.token, { 'newPassword': this.passwordForgot })
             .then((res) => {
 
               if (res.data.success === true) {
@@ -338,37 +385,45 @@ export default defineComponent({
             })
 
         } else {
-
-          if (this.passwordForgot !== this.passwordForgotConfirmation) {
-            $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
-            $('.' + 'password_confirmation_forgot' + '_error').text("Les mots de passe ne correspondent pas !");
+          if (!this.passwordForgotConfirmation) {
+           $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
+            $('.' + 'password_confirmation_forgot' + '_error').text("Le champs confirmation du mot de passe est obligatoire !");
           } else {
             $('.' + 'password_confirmation_forgot' + '_error').removeAttr()
             $('.' + 'password_confirmation_forgot' + '_error').text("");
           }
-
         }
 
       } else {
-
-        if (!this.passwordForgot) {
-          $('.' + 'password_forgot' + '_error').attr('style', 'display: block')
-          $('.' + 'password_forgot' + '_error').text("Le champs mot de passe est obligatoire !");
-        } else {
-          $('.' + 'password_forgot' + '_error').removeAttr()
-          $('.' + 'password_forgot' + '_error').text("");
-        }
-
-        if (!this.passwordForgotConfirmation) {
-          $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
-          $('.' + 'password_confirmation_forgot' + '_error').text("Le champs confirmation du mot de passe est obligatoire !");
-        } else {
-          $('.' + 'password_confirmation_forgot' + '_error').removeAttr()
-          $('.' + 'password_confirmation_forgot' + '_error').text("");
-        }
-
       }
 
+      if (this.passwordForgot !== this.passwordForgotConfirmation) {
+        $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
+        $('.' + 'password_confirmation_forgot' + '_error').text("Les mots de passe ne correspondent pas !");
+      } else {
+        $('.' + 'password_confirmation_forgot' + '_error').removeAttr()
+        $('.' + 'password_confirmation_forgot' + '_error').text("");
+      }
+
+      if (!this.passwordForgot) {
+        $('.' + 'password_forgot' + '_error').attr('style', 'display: block')
+        $('.' + 'password_forgot' + '_error').text("Le champs mot de passe est obligatoire !");
+      } else {
+       $('.' + 'password_forgot' + '_error').removeAttr()
+        $('.' + 'password_forgot' + '_error').text("");
+      }
+
+      if (passwordForgot < 7) {
+        $('.' + 'password_forgot' + '_error').attr('style', 'display: block')
+        $('.' + 'password_forgot' + '_error').text("Le mot de passe doit être supèrieur à 8 caractères !");
+      } else {
+      }
+
+      if (password_confirmation_forgot < 7) {
+        $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
+        $('.' + 'password_confirmation_forgot' + '_error').text("Le mot de passe doit être supèrieur à 8 caractères !");
+      } else {
+      }
     }
   },
   components: {
@@ -376,7 +431,7 @@ export default defineComponent({
     FooterComponent,
     Section7,
   },
-  mounted() {
+  mounted () {
 
     if (sessionStorage.getItem('token') !== null) {
       location.href = '/'
@@ -481,7 +536,7 @@ export default defineComponent({
     }, 1000)
 
   },
-  validations() {
+  validations () {
     return {
       emailForgot: { required },
     }

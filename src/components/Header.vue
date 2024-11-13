@@ -72,7 +72,7 @@
 
             <li class="menu-item"><a role="button"
                 v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="a-propos">À
-                propos de nous</a></li>
+                propos</a></li>
 
             <li class="menu-item"><a :href="this.$route.path !== '/' ? '' : ''"
                 v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'"
@@ -104,6 +104,8 @@
           <div class="actions">
 
             <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+
+            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button"><i class="icono-user"></i></a>
 
             <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 
@@ -157,6 +159,8 @@
         <div class="actions">
 
           <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+
+          <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button"><i class="icono-user"></i></a>
 
           <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
 

@@ -43,13 +43,20 @@
 
                 <div class="slick-slider">
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
+                      :alt="bakery.title"><img v-else :src="folderPicture + bakery.image" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_2" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img v-if="bakery.image_2 === 'default2.jpg'"
+                      :src="'bakerys/' + bakery.image_2" :alt="bakery.title"><img v-else
+                      :src="folderPicture + bakery.image_2" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_3" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img v-if="bakery.image_3 === 'default.jpg'"
+                      :src="'bakerys/' + bakery.image_3" :alt="bakery.title"><img v-else
+                      :src="folderPicture + bakery.image_3" :alt="bakery.title"></a>
 
-                  <a href="" tabindex="0"><img :src="'bakerys/' + bakery.image_4" :alt="bakery.title"></a>
+                  <a href="" tabindex="0"><img v-if="bakery.image_4 === 'default2.jpg'"
+                      :src="'bakerys/' + bakery.image_4" :alt="bakery.title"><img v-else
+                      :src="folderPicture + bakery.image_4" :alt="bakery.title"></a>
 
                 </div>
 
@@ -60,19 +67,26 @@
                 <div class="slick-nav">
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image" :alt="bakery.title" />
+                    <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title" />
+                    <img v-else :src="folderPicture + bakery.image" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image_2" :alt="bakery.title" />
+                    <img v-if="bakery.image_2 === 'default2.jpg'" :src="'bakerys/' + bakery.image_2"
+                      :alt="bakery.title" />
+                    <img v-else :src="folderPicture + bakery.image_2" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image_3" :alt="bakery.title" />
+                    <img v-if="bakery.image_3 === 'default.jpg'" :src="'bakerys/' + bakery.image_3"
+                      :alt="bakery.title" />
+                    <img v-else :src="folderPicture + bakery.image_3" :alt="bakery.title" />
                   </div>
 
                   <div class="item" style="width: 98px;">
-                    <img :src="'bakerys/' + bakery.image_4" :alt="bakery.title" />
+                    <img v-if="bakery.image_4 === 'default2.jpg'" :src="'bakerys/' + bakery.image_4"
+                      :alt="bakery.title" />
+                    <img v-else :src="folderPicture + bakery.image_4" :alt="bakery.title" />
                   </div>
 
                 </div>
@@ -116,19 +130,22 @@
                 </div>
 
                 <div>
-                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-1"></i>{{ bakery.phone
-                  }}</a></p>
+                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-1"></i>{{
+                    bakery.phone
+                      }}</a></p>
                 </div>
 
                 <div>
                   <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span
-                      :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non' :
+                      :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non'
+                        :
                         'oui' }}</span></p>
                 </div>
 
                 <div>
                   <p><i class="fa-solid fa-truck me-1"></i>Livraison <span
-                      :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non' :
+                      :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non'
+                        :
                         'oui' }}</span></p>
                 </div>
 
@@ -139,7 +156,8 @@
                 </div>
 
                 <div v-if="bakery.website !== null">
-                  <p class="website"><a :href="bakery.website" target="_blank"><i class="fa-solid fa-globe me-1"></i>Site
+                  <p class="website"><a :href="bakery.website" target="_blank"><i
+                        class="fa-solid fa-globe me-1"></i>Site
                       internet</a></p>
                 </div>
 
@@ -179,7 +197,7 @@
                         class="fa fa-facebook"></i></a>
 
                     <a :href="'https://twitter.com/share?url=https://my-bakery.fr' + $route.fullPath + '&text=' + bakery.title + '&via=my-bakery'"
-                      onclick="window.open(this.href);return false;"><i class="fa fa-twitter"></i></a>
+                      onclick="window.open(this.href);return false;"><i class="fa-brands fa-x-twitter"></i></a>
 
                     <a
                       :href="'https://www.linkedin.com/shareArticle?mini=true&url=https://my-bakery.fr' + $route.fullPath + '&text=' + bakery.title"><i
@@ -197,8 +215,8 @@
 
           <div
             style="position: relative;z-index: 999999999;overflow: visible;display: block;height: 600px;margin-top: 2rem;">
-            <l-map :zoomAnimation="true" :fadeAnimation="true" :markerZoomAnimation="true" v-if="Boolean(this.map)" ref="map"
-              v-model:zoom="zoom" :center="[bakery.lat, bakery.lng]">
+            <l-map :zoomAnimation="true" :fadeAnimation="true" :markerZoomAnimation="true" v-if="Boolean(this.map)"
+              ref="map" v-model:zoom="zoom" :center="[bakery.lat, bakery.lng]">
               <l-tile-layer :url="urlMap" layer-type="base" name="OpenStreetMap"></l-tile-layer>
               <l-marker :lat-lng="[bakery.lat, bakery.lng]"></l-marker>
             </l-map>
@@ -229,6 +247,18 @@
               <li class="" id="btn_hours">
 
                 <a aria-controls="tab_hours" role="tab" data-toggle="tab" aria-expanded="false">Horaire d'ouverture</a>
+
+              </li>
+
+              <li class="me-0" id="btn_settings">
+
+                <a v-if="isLoggedIn" aria-controls="tab_settings" role="tab" data-toggle="tab"
+                  aria-expanded="false">Revendiquer cet
+                  établissement</a>
+
+                <a v-else aria-controls="tab_settings" @click="this.$router.push('/my-account');" aria-expanded="false">Revendiquer
+                  cet
+                  établissement</a>
 
               </li>
 
@@ -298,21 +328,22 @@
 
                         <div class="col-xs-12">
 
-                          <h4>AJOUTEZ VOTRE AVIS</h4>
+                          <h3 class="text-center mb-4 mt-2">AJOUTEZ VOTRE AVIS</h3>
 
                           <form id="form-comment">
 
                             <input type="hidden" :value="bakery.url" id="url" name="url">
 
                             <p class="comment-notes"><span id="email-notes">Votre adresse e-mail ne sera pas
-                                publié.</span> <span class="required-field-message" aria-hidden="true">Champs obligatoires
+                                publié.</span> <span class="required-field-message" aria-hidden="true">Champs
+                                obligatoires
                                 sont marqués<span class="required" aria-hidden="true">*</span></span></p>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 
                               <div class="form-group">
 
-                                <label for="rating">Devanture du magasin <sup>*</sup></label>
+                                <label for="rating"><strong>Devanture du magasin <sup>*</sup></strong></label>
 
                                 <div class="devanture">
 
@@ -339,7 +370,7 @@
 
                               <div class="form-group">
 
-                                <label for="rating">Propreté du magasin <sup>*</sup></label>
+                                <label for="rating"><strong>Propreté du magasin <sup>*</sup></strong></label>
 
                                 <div class="proprete">
 
@@ -366,7 +397,7 @@
 
                               <div class="form-group">
 
-                                <label for="rating">Prix des produits <sup>*</sup></label>
+                                <label for="rating"><strong>Prix des produits <sup>*</sup></strong></label>
 
                                 <div class="prix">
 
@@ -393,7 +424,7 @@
 
                               <div class="form-group">
 
-                                <label for="rating">Choix des produits <sup>*</sup></label>
+                                <label for="rating"><strong>Choix des produits <sup>*</sup></strong></label>
 
                                 <div class="choix">
 
@@ -420,7 +451,7 @@
 
                               <div class="form-group">
 
-                                <label for="comment">Votre avis <sup>*</sup></label>
+                                <label for="comment"><strong>Votre avis <sup>*</sup></strong></label>
 
                                 <textarea v-model="comment" id="comment" class="form-control" name="comment" cols="45"
                                   rows="8"></textarea>
@@ -435,7 +466,7 @@
 
                               <div class="form-group">
 
-                                <label for="author">Votre nom <sup>*</sup></label>
+                                <label for="author"><strong>Votre nom <sup>*</sup></strong></label>
 
                                 <input v-model="author" id="author" name="author" type="text" size="30"
                                   class="form-control" aria-required="true">
@@ -446,7 +477,7 @@
 
                               <div class="form-group">
 
-                                <label for="emailComment">Adresse email <sup>*</sup></label>
+                                <label for="emailComment"><strong>Adresse email <sup>*</sup></strong></label>
 
                                 <input v-model="emailComment" id="emailComment" name="emailComment" type="email"
                                   class="form-control" size="30" aria-required="true">
@@ -462,7 +493,8 @@
                               <div class="form-group">
 
                                 <button type="submit" v-bind:class="submit !== false ? '' : 'disabled'"
-                                  @click="submitComment" class="submit btn btn-bakery">Valider<i class="ps-icon-next"></i>
+                                  @click="submitComment" class="submit btn btn-bakery">Valider<i
+                                    class="ps-icon-next"></i>
                                 </button>
 
                               </div>
@@ -523,6 +555,286 @@
 
               </div>
 
+            </div>
+
+            <div class="tab-pane" role="tabpanel" id="tab_settings">
+              <div id="review-form-rapper">
+
+                <div class="bs-bakery-review">
+
+                  <div class="row">
+
+                    <div class="bs-form-bakery-review">
+
+                      <div class="col-xs-12">
+
+                        <h3 class="text-center mb-4 mt-2">GÉRER LA FICHE D'ÉTABLISSEMENT</h3>
+
+                        <p class="comment-notes"><span id="email-notes">Vous revendiquez cette boulangerie, grâce à
+                            votre compte My Bakery, vous pouvez la modifier librement !</span></p>
+
+                        <div class="bakery-detail">
+
+                          <div class="bakery">
+
+                            <div class="row">
+
+                              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                                <div class="thumbnail">
+
+                                  <div class="updateImg">
+
+                                    <label for="image">
+                                      <img id="showImg" :src="imageSrc" style="display: block;">
+                                      <input type="file" accept="image/*" name="image" id="image" @change="setImage">
+                                    </label>
+
+                                  </div>
+
+                                  <div class="removeImage text-center mt-4"><a @click="removeImage"
+                                      class="btn btn-danger">Supprimer
+                                      l'image</a></div>
+
+                                  <div class="error-text image-error"></div>
+
+                                  <textarea v-model="addDesc" class="form-control" rows="20" id="addDesc"
+                                    style="max-height: 220px !important;" name="addDesc"
+                                    placeholder="Description de la boulangerie*"></textarea>
+                                  <p class="error-text addDesc_error"></p>
+
+
+                                </div>
+
+                              </div>
+
+                              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                                <div class="info">
+                                  <div>
+                                    <p>
+                                      <input v-model="addName" type="text" class="form-control" id="addName"
+                                        name="addName" placeholder="Nom de la boulangerie*">
+                                    </p>
+                                    <p class="error-text addName_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p>
+                                      <input v-model="addWebsite" type="text" class="form-control" id="addWebsite"
+                                        name="addWebsite" placeholder="Site internet de la boulangerie">
+                                    </p>
+                                    <p class="error-text addWebsite_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p>
+                                      <input v-model="addAdresse" type="text" class="form-control" id="addAdresse"
+                                        name="addAdresse" placeholder="Adresse de la boulangerie*">
+                                    </p>
+                                    <p class="error-text addAdresse_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p>
+                                      <input v-model="addPhone" type="text" class="form-control" id="addPhone"
+                                        name="addPhone" placeholder="Téléphone de la boulangerie*">
+                                    </p>
+                                    <p class="error-text addPhone_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p class="d-flex special-select">
+                                      <label for="">Accès handicapé* :</label>
+                                      <select v-model="addHandicap" class="form-select mt-2 select-bakery"
+                                        name="addHandicap" id="addHandicap">
+                                        <option value="" selected disabled></option>
+                                        <option value="1">Oui</option>
+                                        <option value="0">Non</option>
+                                      </select>
+                                    </p>
+                                    <p class="error-text addHandicap_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p class="d-flex special-select">
+                                      <label for="">Livraison* :</label>
+                                      <select v-model="addLivraison" class="form-select mt-2 select-bakery"
+                                        name="addLivraison" id="addLivraison">
+                                        <option value="" selected disabled></option>
+                                        <option value="1">Oui</option>
+                                        <option value="0">Non</option>
+                                      </select>
+                                    </p>
+                                    <p class="error-text addLivraison_error"></p>
+                                  </div>
+
+                                  <div>
+                                    <p class="d-flex special-select">
+                                      <label for="">Restauration sur place* :</label>
+                                      <select v-model="addRestauration" class="form-select mt-2 select-bakery"
+                                        name="addRestauration" id="addRestauration">
+                                        <option value="" selected disabled></option>
+                                        <option value="1">Oui</option>
+                                        <option value="0">Non</option>
+                                      </select>
+                                    </p>
+                                    <p class="error-text addRestauration_error"></p>
+                                  </div>
+
+                                  <div class="short-desc">
+
+                                    <textarea v-model="addSmallContent" class="form-control" maxlength="200" rows="6"
+                                      id="addSmallContent" name="addSmallContent" placeholder="Petite description*"
+                                      @keyup="verifLengthArea"></textarea>
+                                    <p class="error-text addSmallContent_error"></p>
+                                    <p class="limite-text text-end mt-1"><b><span>0</span> / 200</b></p>
+
+                                  </div>
+
+                                  <input id="addId" name="addId" v-model="addId" type="hidden">
+
+                                </div>
+
+                              </div>
+
+                              <h3 class="text-center mb-4 mt-2">HORRAIRE D'OUVERTURE</h3>
+
+                              <p class="text-center text-danger"><i class="fa-solid fa-exclamation me-2"></i><b>Si la
+                                  boulangerie est fermé écrire Fermé*</b></p>
+
+                              <div id="tab_hours">
+
+                                <div class="col-xs-12">
+
+                                  <ul class="bakeryHour bakeryHourS">
+
+                                    <li>
+                                      <label for="">Lundi</label>
+                                      <input v-model="addHours1" class="form-control border-hours" type="text"
+                                        id="addHours1" name="addHours1" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours1_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Mardi</label>
+                                      <input v-model="addHours2" class="form-control border-hours" type="text"
+                                        id="addHours2" name="addHours2" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours2_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Mercredi</label>
+                                      <input v-model="addHours3" class="form-control border-hours" type="text"
+                                        id="addHours3" name="addHours3" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours3_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Jeudi</label>
+                                      <input v-model="addHours4" class="form-control border-hours" type="text"
+                                        id="addHours4" name="addHours4" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours4_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Vendredi</label>
+                                      <input v-model="addHours5" class="form-control border-hours" type="text"
+                                        id="addHours5" name="addHours5" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours5_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Samedi</label>
+                                      <input v-model="addHours6" class="form-control border-hours" type="text"
+                                        id="addHours6" name="addHours6" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours6_error"></p>
+                                    </li>
+
+                                    <li>
+                                      <label for="">Dimanche</label>
+                                      <input v-model="addHours7" class="form-control border-hours" type="text"
+                                        id="addHours7" name="addHours7" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                                      <p class="error-text addHours7_error"></p>
+                                    </li>
+
+                                  </ul>
+
+                                </div>
+
+                              </div>
+
+                              <h3 class="text-center mb-4 mt-4">PHOTOS SUPPLÉMENTAIRES</h3>
+
+                              <div class="grid-images-others">
+
+                                <div class="thumbnail">
+
+                                  <div class="updateImg">
+                                    <label for="image2">
+                                      <img id="showImg2" :src="imageSrc2"><input @change="setImage2" type="file"
+                                        accept="image/*" name="image2" id="image2"></label>
+                                  </div>
+
+                                  <div class="removeImage2 text-center mt-4" @click="removeImage2"><a
+                                      class="btn btn-danger">Supprimer
+                                      l'image</a></div>
+                                  <div class="error-text image2-error"></div>
+
+                                </div>
+
+                                <div class="thumbnail">
+
+                                  <div class="updateImg">
+                                    <label for="image3">
+                                      <img id="showImg3" :src="imageSrc3"><input @change="setImage3" type="file"
+                                        accept="image/*" name="image3" id="image3"></label>
+                                  </div>
+
+                                  <div class="removeImage3 text-center mt-4" @click="removeImage3"><a
+                                      class="btn btn-danger">Supprimer
+                                      l'image</a></div>
+                                  <div class="error-text image3-error"></div>
+
+                                </div>
+
+                                <div class="thumbnail">
+
+                                  <div class="updateImg">
+                                    <label for="image4">
+                                      <img id="showImg4" :src="imageSrc4"><input @change="setImage4" type="file"
+                                        accept="image/*" name="image4" id="image4"></label>
+                                  </div>
+
+                                  <div class="removeImage4 text-center mt-4" @click="removeImage4"><a
+                                      class="btn btn-danger">Supprimer
+                                      l'image</a></div>
+                                  <div class="error-text image4-error"></div>
+
+                                </div>
+
+                              </div>
+
+                              <div class="mt-5 text-center">
+                                <button type="submit" id="submit_bakery" @click="submitBakery"
+                                  class="btn btn-bakery">Modifier la boulangerie</button>
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
             </div>
 
           </div>
@@ -707,13 +1019,14 @@ export default defineComponent({
     LMarker,
     LTileLayer,
   },
-  setup() {
+  setup () {
     const route = useRoute();
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
     const paginationData = ref(true)
     const $q = useQuasar()
+    const FormData = require('form-data');
 
     const bakery = computed(() => {
       return store.state.bakery
@@ -725,6 +1038,10 @@ export default defineComponent({
 
     const bakeryHours = computed(() => {
       return store.state.bakeryHours
+    })
+
+    const user = computed(() => {
+      return store.state.stateUser.user
     })
 
     onMounted(() => {
@@ -758,9 +1075,11 @@ export default defineComponent({
     })
 
     return {
+      user,
+      isLoggedIn: store.getters.isLoggedIn,
       urlMap: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 18,
-      showTextLoading() {
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = true
 
@@ -777,13 +1096,25 @@ export default defineComponent({
       paginationData,
       moment: moment,
       showSimulatedReturnData,
-      showNotifComment() {
+      showNotifComment () {
         $q.notify({
           type: 'success-form',
           message: 'Votre avis a bien été ajouté.'
         })
       },
-      errorNotifComment(message = null) {
+      errorNotifComment (message = null) {
+        $q.notify({
+          type: 'error-form',
+          message: message ? message : 'Une erreur est survenue dans le formulaire.'
+        })
+      },
+      showNotif () {
+        $q.notify({
+          type: 'success-form',
+          message: 'La boulangerie a bien été modifier.'
+        })
+      },
+      errorNotif (message = null) {
         $q.notify({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
@@ -791,7 +1122,7 @@ export default defineComponent({
       }
     }
   },
-  data() {
+  data () {
 
     $(document).on('change', '#form-comment', function (e) {
 
@@ -808,17 +1139,45 @@ export default defineComponent({
     })
 
     return {
+      folderPicture: process.env.WEBSITE + '/bakerys/images/',
       map: null,
       v$: useValidate(),
       submit: false,
       url: null,
       comment: null,
       author: null,
-      emailComment: null
+      emailComment: null,
+      v$: useValidate(),
+      addDesc: null,
+      addHours1: null,
+      addHours2: null,
+      addHours3: null,
+      addHours4: null,
+      addHours5: null,
+      addHours6: null,
+      addHours7: null,
+      addName: null,
+      addWebsite: null,
+      addAdresse: null,
+      addPhone: null,
+      addHandicap: null,
+      addLivraison: null,
+      addRestauration: null,
+      addSmallContent: null,
+      addId: null,
+      image: null,
+      image2: null,
+      imageSrc: null,
+      imageSrc2: null,
+      imageSrc3: null,
+      imageSrc4: null
     }
   },
   methods: {
-    saveBakeryList(id) {
+    verifLengthArea (e) {
+      if (this.addSmallContent.length <= 200) $('.limite-text span').html(this.addSmallContent.length)
+    },
+    saveBakeryList (id) {
 
       const bakerysList = Cookies.has('bakerysList'),
         cookies = Cookies.get('bakerysList')
@@ -872,7 +1231,7 @@ export default defineComponent({
       }
 
     },
-    submitComment(e) {
+    submitComment (e) {
       e.preventDefault();
 
       this.v$.$validate() // checks all inputs
@@ -1013,18 +1372,500 @@ export default defineComponent({
 
       }
     },
+    submitBakery (e) {
+
+      e.preventDefault();
+
+      if (this.addAdresse
+        && this.addName
+        && this.addPhone
+        && this.addSmallContent
+        && this.addHours1
+        && this.addHours2
+        && this.addHours3
+        && this.addHours4
+        && this.addHours5
+        && this.addHours6
+        && this.addHours7
+        && this.addDesc
+      ) {
+
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+        };
+
+        const form_data = new FormData();
+
+        form_data.append("addDesc", this.addDesc);
+        form_data.append('file', this.image);
+        form_data.append('file', this.image2);
+        form_data.append('file', this.image3);
+        form_data.append('file', this.image4);
+        form_data.append("addName", this.addName);
+        form_data.append("addAdresse", this.addAdresse);
+        form_data.append("addPhone", this.addPhone);
+        form_data.append("addWebsite", this.addWebsite);
+        form_data.append("addHandicap", this.addHandicap);
+        form_data.append("addLivraison", this.addLivraison);
+        form_data.append("addRestauration", this.addRestauration);
+        form_data.append("addSmallContent", this.addSmallContent);
+        form_data.append("addId", this.addId);
+        form_data.append("addHours1", this.addHours1);
+        form_data.append("addHours2", this.addHours2);
+        form_data.append("addHours3", this.addHours3);
+        form_data.append("addHours4", this.addHours4);
+        form_data.append("addHours5", this.addHours5);
+        form_data.append("addHours6", this.addHours6);
+        form_data.append("addHours7", this.addHours7);
+        form_data.append("userId", this.user.id);
+
+        axios({
+          method: "POST",
+          url: process.env.WEBSITE + '/update-bakery',
+          data: form_data,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+          .then((res) => {
+
+            if (res.data.success === true) {
+
+              this.showNotif()
+
+              setTimeout(() => {
+                $(document).find('.error-text').text('')
+                $(document).find('.error-text').removeAttr()
+                location.reload()
+              }, 3500);
+
+            } else {
+              this.errorNotif()
+            }
+
+          })
+          .catch((error) => {
+            this.errorNotif()
+          })
+
+      }
+
+      if (!this.addHours1) {
+        $('.' + 'addHours' + '1' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '1' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '1' + '_error').removeAttr()
+        $('.' + 'addHours' + '1' + '_error').text("");
+      }
+
+      if (!this.addHours2) {
+        $('.' + 'addHours' + '2' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '2' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '2' + '_error').removeAttr()
+        $('.' + 'addHours' + '2' + '_error').text("");
+      }
+
+      if (!this.addHours3) {
+        $('.' + 'addHours' + '3' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '3' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '3' + '_error').removeAttr()
+        $('.' + 'addHours' + '3' + '_error').text("");
+      }
+
+      if (!this.addHours4) {
+        $('.' + 'addHours' + '4' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '4' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '4' + '_error').removeAttr()
+        $('.' + 'addHours' + '4' + '_error').text("");
+      }
+
+      if (!this.addHours5) {
+        $('.' + 'addHours' + '5' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '5' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '5' + '_error').removeAttr()
+        $('.' + 'addHours' + '5' + '_error').text("");
+      }
+
+      if (!this.addHours6) {
+        $('.' + 'addHours' + '6' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '6' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '6' + '_error').removeAttr()
+        $('.' + 'addHours' + '6' + '_error').text("");
+      }
+
+      if (!this.addHours7) {
+        $('.' + 'addHours' + '7' + '_error').attr('style', 'display: block')
+        $('.' + 'addHours' + '7' + '_error').text("Le champs horaire d'ouverture est obligatoire !");
+      } else {
+        $('.' + 'addHours' + '7' + '_error').removeAttr()
+        $('.' + 'addHours' + '7' + '_error').text("");
+      }
+
+      if (!this.addName) {
+        $('.' + 'addName' + '_error').attr('style', 'display: block')
+        $('.' + 'addName' + '_error').text("Le champs nom est obligatoire !");
+      } else {
+        $('.' + 'addName' + '_error').removeAttr()
+        $('.' + 'addName' + '_error').text("");
+      }
+
+      if (!this.addAdresse) {
+        $('.' + 'addAdresse' + '_error').attr('style', 'display: block')
+        $('.' + 'addAdresse' + '_error').text("Le champs adresse est obligatoire !");
+      } else {
+        $('.' + 'addAdresse' + '_error').removeAttr()
+        $('.' + 'addAdresse' + '_error').text("");
+      }
+
+      if (!this.addPhone) {
+        $('.' + 'addPhone' + '_error').attr('style', 'display: block')
+        $('.' + 'addPhone' + '_error').text("Le champs téléphone est obligatoire !");
+      } else {
+        $('.' + 'addPhone' + '_error').removeAttr()
+        $('.' + 'addPhone' + '_error').text("");
+      }
+
+      if (!this.addSmallContent) {
+        $('.' + 'addSmallContent' + '_error').attr('style', 'display: block')
+        $('.' + 'addSmallContent' + '_error').text("Le champs description est obligatoire !");
+      } else {
+        $('.' + 'addSmallContent' + '_error').removeAttr()
+        $('.' + 'addSmallContent' + '_error').text("");
+      }
+
+      if (!this.addDesc) {
+        $('.' + 'addDesc' + '_error').attr('style', 'display: block')
+        $('.' + 'addDesc' + '_error').text("Le champs description est obligatoire !");
+      } else {
+        $('.' + 'addDesc' + '_error').removeAttr()
+        $('.' + 'addDesc' + '_error').text("");
+      }
+
+    },
+    removeImage () {
+      $('.removeImage').hide()
+      this.imageSrc = 'bakerys/add-bakery.jpg'
+      this.image = null
+      $('.image-error').hide()
+      $('.image-error').html('')
+    },
+    removeImage2 () {
+      $('.removeImage2').hide()
+      this.imageSrc2 = 'bakerys/add-bakery.jpg'
+      this.image2 = null
+      $('.image-error2').hide()
+      $('.image-error2').html('')
+    },
+    removeImage3 () {
+      $('.removeImage3').hide()
+      this.imageSrc3 = 'bakerys/add-bakery.jpg'
+      this.image3 = null
+      $('.image-error3').hide()
+      $('.image-error3').html('')
+    },
+    removeImage4 () {
+      $('.removeImage4').hide()
+      this.imageSrc4 = 'bakerys/add-bakery.jpg'
+      this.image4 = null
+      $('.image-error4').hide()
+      $('.image-error4').html('')
+    },
+    setImage (e) {
+      const file = e.target.files[0],
+        ext = file.name.split('.').pop(),
+        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+
+      if (e.target.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            // dimension de l'image
+            if (img.width <= 1920 && img.height <= 1080) {
+
+              if (extValid.indexOf(ext, 0) === 0) {
+
+                this.image = file
+                this.imageSrc = URL.createObjectURL(file);
+                $('.removeImage').show()
+
+              } else {
+
+                $('.removeImage').hide()
+                this.imageSrc = 'bakerys/add-bakery.jpg'
+                this.image = null
+                $('.image-error').show()
+                $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+              }
+
+            } else {
+
+              $('.removeImage').hide()
+              this.imageSrc = 'bakerys/add-bakery.jpg'
+              this.image = null
+              $('.image-error').show()
+              $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
+
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image-error').hide()
+          $('.image-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage').hide()
+        this.image = null
+        $('.image-error').show()
+        $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+    },
+    setImage2 (e) {
+      const file = e.target.files[0],
+        ext = file.name.split('.').pop(),
+        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+
+      if (e.target.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            if (img.width <= 1920 && img.height <= 1080) {
+
+              if (extValid.indexOf(ext, 0) === 0) {
+
+                this.image2 = file
+                this.imageSrc2 = URL.createObjectURL(file);
+                $('.removeImage2').show()
+
+              } else {
+
+                $('.removeImage2').hide()
+                this.imageSrc2 = 'bakerys/add-bakery.jpg'
+                this.image2 = null
+                $('.image2-error').show()
+                $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+              }
+
+            } else {
+              $('.removeImage2').hide()
+              this.imageSrc2 = 'bakerys/add-bakery.jpg'
+              this.image2 = null
+              $('.image2-error').show()
+              $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image2-error').hide()
+          $('.image2-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage2').hide()
+        this.image = null
+        $('.image2-error').show()
+        $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+    },
+    setImage3 (e) {
+      const file = e.target.files[0],
+        ext = file.name.split('.').pop(),
+        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+
+      if (e.target.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            if (img.width <= 1920 && img.height <= 1080) {
+
+              if (extValid.indexOf(ext, 0) === 0) {
+
+                this.image3 = file
+                this.imageSrc3 = URL.createObjectURL(file);
+                $('.removeImage3').show()
+
+              } else {
+
+                $('.removeImage3').hide()
+                this.imageSrc3 = 'bakerys/add-bakery.jpg'
+                this.image3 = null
+                $('.image3-error').show()
+                $('.image3-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+              }
+
+            } else {
+              $('.removeImage3').hide()
+              this.imageSrc3 = 'bakerys/add-bakery.jpg'
+              this.image3 = null
+              $('.image3-error').show()
+              $('.image3-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image3-error').hide()
+          $('.image3-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage3').hide()
+        this.image = null
+        $('.image3-error').show()
+        $('.image3-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+    },
+    setImage4 (e) {
+      const file = e.target.files[0],
+        ext = file.name.split('.').pop(),
+        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+
+      if (e.target.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            if (img.width <= 1920 && img.height <= 1080) {
+
+              if (extValid.indexOf(ext, 0) === 0) {
+
+                this.image4 = file
+                this.imageSrc4 = URL.createObjectURL(file);
+                $('.removeImage4').show()
+
+              } else {
+
+                $('.removeImage4').hide()
+                this.imageSrc4 = 'bakerys/add-bakery.jpg'
+                this.image4 = null
+                $('.image4-error').show()
+                $('.image4-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+              }
+
+            } else {
+              $('.removeImage4').hide()
+              this.imageSrc4 = 'bakerys/add-bakery.jpg'
+              this.image4 = null
+              $('.image4-error').show()
+              $('.image4-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image4-error').hide()
+          $('.image4-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage4').hide()
+        this.image = null
+        $('.image4-error').show()
+        $('.image4-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+    },
   },
-  validations() {
+  validations () {
     return {
       comment: { required },
       author: { required },
-      emailComment: { required }
+      emailComment: { required },
+      addName: { required },
+      addAdresse: { required },
+      addPhone: { required },
+      addSmallContent: { required }
     }
   },
-  mounted() {
+  mounted () {
 
     setTimeout(() => {
       this.map = 1
+      this.addName = this.bakery.title
+      this.addPhone = this.bakery.phone
+      this.addWebsite = this.bakery.website
+      this.addSmallContent = this.bakery.small_content
+      this.addAdresse = this.bakery.adresse
+      this.addHandicap = this.bakery.handicape
+      this.addLivraison = this.bakery.delivery
+      this.addRestauration = this.bakery.dine_in
+      this.addId = this.bakery.id
+      this.imageSrc = 'bakerys/add-bakery.jpg'
+      this.imageSrc2 = 'bakerys/add-bakery.jpg'
+      this.imageSrc3 = 'bakerys/add-bakery.jpg'
+      this.imageSrc4 = 'bakerys/add-bakery.jpg'
+
+      if(this.bakeryHours[0] !== undefined) this.addHours1 = this.bakeryHours[0].am
+       if(this.bakeryHours[1] !== undefined) this.addHours2 = this.bakeryHours[1].am
+       if(this.bakeryHours[2] !== undefined) this.addHours3 = this.bakeryHours[2].am
+       if(this.bakeryHours[3] !== undefined) this.addHours4 = this.bakeryHours[3].am
+       if(this.bakeryHours[4] !== undefined) this.addHours5 = this.bakeryHours[4].am
+       if(this.bakeryHours[5] !== undefined) this.addHours6 = this.bakeryHours[5].am
+       if(this.bakeryHours[6] !== undefined) this.addHours7 = this.bakeryHours[6].am
+       this.verifLengthArea()
     }, 1200);
 
     $('#menu-main-menu').removeAttr('style')
@@ -1161,6 +2002,8 @@ export default defineComponent({
         $('#tab_reviews').removeClass('active')
         $('#btn_hours').removeClass('active')
         $('#tab_hours').removeClass('active')
+        $('#btn_settings').removeClass('active')
+        $('#tab_settings').removeClass('active')
 
       })
 
@@ -1175,6 +2018,8 @@ export default defineComponent({
         $('#tab_description').removeClass('active')
         $('#btn_hours').removeClass('active')
         $('#tab_hours').removeClass('active')
+        $('#btn_settings').removeClass('active')
+        $('#tab_settings').removeClass('active')
       })
 
       $('#btn_hours').on('click', function (e) {
@@ -1188,6 +2033,24 @@ export default defineComponent({
         $('#tab_description').removeClass('active')
         $('#btn_reviews').removeClass('active')
         $('#tab_reviews').removeClass('active')
+        $('#btn_settings').removeClass('active')
+        $('#tab_settings').removeClass('active')
+
+      })
+
+      $('#btn_settings').on('click', function (e) {
+
+        e.preventDefault()
+
+        $(this).addClass('active')
+        $('#tab_settings').addClass('active')
+
+        $('#btn_description').removeClass('active')
+        $('#tab_description').removeClass('active')
+        $('#btn_reviews').removeClass('active')
+        $('#tab_reviews').removeClass('active')
+        $('#btn_hours').removeClass('active')
+        $('#tab_hours').removeClass('active')
 
       })
 

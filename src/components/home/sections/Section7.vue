@@ -18,7 +18,7 @@
 
                 <p><i class="fa fa-envelope"></i><a href="mailto:contact@my-bakery.fr">contact@my-bakery.fr</a></p>
 
-                <p><i class="fa fa-phone-square"></i>+33 6-15-75-93-02</p>
+                <p><i class="fa fa-phone-square"></i>+33 6-50-55-87-31</p>
 
               </div>
 

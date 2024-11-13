@@ -193,7 +193,6 @@ export default createStore({
         const getUrl = await axios.get(process.env.WEBSITE + '/favorites/' + data.favorites)
 
         this.favorites = getUrl.data.favorites
-        console.log(getUrl.data.favorites);
         commit('SET_FAVORITES', getUrl.data.favorites)
       } catch (error) {
         console.log(error)
@@ -245,11 +244,9 @@ export default createStore({
     async fetchVerificationTokenForgot({ commit, state }, data) {
       try {
 
-        const getUrl = await axios.get(process.env.WEBSITE + '/forgot-password-token/' + data.token)
+        const getUrl = await axios.get(process.env.WEBSITE + '/forgot-verif-password-token/' + data.token)
 
-        console.log(getUrl.data);
-
-        if (getUrl.data.success === undefined) {
+        if (getUrl.data.success === false) {
           this.$router.push('/my-account')
         }
 
