@@ -4,7 +4,7 @@
 
   <div v-if="show === false">
 
-    <div class="loading">
+    <div class="loadings">
 
       <img src="logo-light.png">
 

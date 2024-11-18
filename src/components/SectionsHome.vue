@@ -15,7 +15,12 @@
 
   <Section8 />
 
+  <Section10 />
+
   <Section7 />
+
+  <Section11 />
+
 </template>
 
 <script>
@@ -29,6 +34,8 @@ import Section5 from 'components/home/sections/Section5.vue'
 import Section6 from 'components/home/sections/Section6.vue'
 import Section8 from 'components/home/sections/Section8.vue'
 import Section7 from 'components/home/sections/Section7.vue'
+import Section10 from 'components/home/sections/Section10.vue'
+import Section11 from 'components/home/sections/Section11.vue'
 
 export default defineComponent({
   name: 'SectionsHome',
@@ -41,7 +48,9 @@ export default defineComponent({
     Section5,
     Section8,
     Section6,
-    Section7
+    Section7,
+    Section10,
+    Section11,
   }
 })
 </script>

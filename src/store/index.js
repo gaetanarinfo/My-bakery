@@ -13,12 +13,14 @@ export default createStore({
     blogsAll: [],
     blogsAllCount: 0,
     ratings: [],
+    villesFrance: [],
     searchAll: [],
     bakerysFavorites: [],
     bakeryHours: [],
     blog: [],
     blog_tags: [],
     activateAccount: [],
+    markersBakerys: [],
     stateUser: {
       user: null,
       token: null,
@@ -37,10 +39,12 @@ export default createStore({
     getBlogsAll: (state) => state.blogsAll,
     getBlogsAllCount: (state) => state.blogsAllCount,
     getRatings: (state) => state.ratings,
+    getVillesFrance: (state) => state.villesFrance,
     getSearchAll: (state) => state.searchAll,
     getBakerysFavorites: (state) => state.bakerysFavorites,
     getActivateAccount: (state) => state.activateAccount,
     getToken: (state) => state.stateUser.token,
+    getMarkerBakerys: (state) => state.markersBakerys,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -53,7 +57,7 @@ export default createStore({
   actions: {
 
     // Liste des boulangeries en France
-    async fetchBakerys({ commit, state }, data) {
+    async fetchBakerys ({ commit, state }, data) {
       try {
 
         const getUrl = await axios.get(process.env.WEBSITE + '/bakerys/' + data.limite)
@@ -64,7 +68,7 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchBakerysAll({ commit }) {
+    async fetchBakerysAll ({ commit }) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-all')
         this.bakerysAll = getUrl.data.bakerysAll
@@ -76,7 +80,7 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchBakery({ commit, state }, data) {
+    async fetchBakery ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/bakery/' + data.url)
 
@@ -102,7 +106,7 @@ export default createStore({
       }
 
     },
-    async fetchBakeryUpdate({ commit, state }, data) {
+    async fetchBakeryUpdate ({ commit, state }, data) {
       try {
         await axios.get(process.env.WEBSITE + '/bakery-update/' + data.url)
       } catch (error) {
@@ -112,7 +116,7 @@ export default createStore({
     },
 
     // Liste des articles sur le blog
-    async fetchBlogs({ commit }) {
+    async fetchBlogs ({ commit }) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/blogs')
 
@@ -122,7 +126,7 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchBlogsAll({ commit }) {
+    async fetchBlogsAll ({ commit }) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/blogs-all')
 
@@ -135,7 +139,7 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchSearchAll({ commit }) {
+    async fetchSearchAll ({ commit }) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/search')
 
@@ -145,7 +149,7 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchBlog({ commit, state }, data) {
+    async fetchBlog ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/blogs/' + data.url)
 
@@ -176,19 +180,31 @@ export default createStore({
     },
 
     // Vote du site internet
-    async fetchRatings({ commit }) {
+    async fetchRatings ({ commit }) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/ratings')
 
-        this.blogs = getUrl.data.ratings
+        this.ratings = getUrl.data.ratings
         commit('SET_RATINGS', getUrl.data.ratings)
       } catch (error) {
         console.log(error)
       }
     },
 
+    // Vote du site internet
+    async fetchVillesFrance ({ commit }) {
+      try {
+        const getUrl = await axios.get(process.env.WEBSITE + '/villes-france-home')
+
+        this.villesFrance = getUrl.data.villesFrance
+        commit('SET_VILLES_FRANCE', getUrl.data.villesFrance)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
     // Listes des boulangeries en favoris
-    async fetchBakerysFavorites({ commit, state }, data) {
+    async fetchBakerysFavorites ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/favorites/' + data.favorites)
 
@@ -200,7 +216,7 @@ export default createStore({
     },
 
     // My account
-    async fetchActivateAccount({ commit, state }, data) {
+    async fetchActivateAccount ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/activate-account/' + data.token)
 
@@ -219,7 +235,7 @@ export default createStore({
     },
 
     // Verification Account
-    async fetchVerificationAccount() {
+    async fetchVerificationAccount () {
       try {
 
         if (sessionStorage.getItem('token') === null) {
@@ -241,7 +257,7 @@ export default createStore({
     },
 
     // Verification Token Forgot Password
-    async fetchVerificationTokenForgot({ commit, state }, data) {
+    async fetchVerificationTokenForgot ({ commit, state }, data) {
       try {
 
         const getUrl = await axios.get(process.env.WEBSITE + '/forgot-verif-password-token/' + data.token)
@@ -255,70 +271,98 @@ export default createStore({
       }
     },
 
+    async fetchMarkersBakerys ({ commit, state }, data) {
+      try {
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers/' + data.region)
+
+        if (getUrl.data.markers.length >= 1) {
+
+          this.markersBakerys = getUrl.data
+
+          commit('SET_MARKER_BAKERY', getUrl.data)
+
+        } else {
+          this.$router.push('/')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
   },
   mutations: {
 
-    SET_BAKERYS(state, bakerys) {
+    SET_MARKER_BAKERY (state, markersBakerys) {
+      state.markersBakerys = markersBakerys
+    },
+
+    SET_BAKERYS (state, bakerys) {
       state.bakerys = bakerys
     },
 
-    SET_BAKERY(state, bakery) {
+    SET_BAKERY (state, bakery) {
       state.bakery = bakery
     },
 
-    SET_BAKERY_COMMENTS(state, bakeryComments) {
+    SET_BAKERY_COMMENTS (state, bakeryComments) {
       state.bakeryComments = bakeryComments
     },
 
-    SET_BAKERYS_ALL(state, bakerysAll) {
+    SET_BAKERYS_ALL (state, bakerysAll) {
       state.bakerysAll = bakerysAll
     },
 
-    SET_BAKERYS_ALL_COUNT(state, bakerysAllCount) {
+    SET_BAKERYS_ALL_COUNT (state, bakerysAllCount) {
       state.bakerysAllCount = bakerysAllCount
     },
 
-    SET_BLOGS(state, blogs) {
+    SET_BLOGS (state, blogs) {
       state.blogs = blogs
     },
 
-    SET_BLOG(state, blog) {
+    SET_BLOG (state, blog) {
       state.blog = blog
     },
 
-    SET_BLOG_TAGS(state, blog_tags) {
+    SET_BLOG_TAGS (state, blog_tags) {
       state.blog_tags = blog_tags
     },
 
-    SET_BLOGS_ALL(state, blogsAll) {
+    SET_BLOGS_ALL (state, blogsAll) {
       state.blogsAll = blogsAll
     },
 
-    SET_BLOGS_ALL_COUNT(state, blogsAllCount) {
+    SET_BLOGS_ALL_COUNT (state, blogsAllCount) {
       state.blogsAllCount = blogsAllCount
     },
 
-    SET_RATINGS(state, ratings) {
+    SET_RATINGS (state, ratings) {
       state.ratings = ratings
     },
 
-    SET_SEARCH_ALL(state, searchAll) {
+    SET_VILLES_FRANCE (state, villesFrance) {
+      state.villesFrance = villesFrance
+    },
+
+    SET_SEARCH_ALL (state, searchAll) {
       state.searchAll = searchAll
     },
 
-    SET_FAVORITES(state, bakerysFavorites) {
+    SET_FAVORITES (state, bakerysFavorites) {
       state.bakerysFavorites = bakerysFavorites
     },
 
-    SET_BAKERY(state, bakery) {
+    SET_BAKERY (state, bakery) {
       state.bakery = bakery
     },
 
-    SET_BAKERY_HOURS(state, bakeryHours) {
+    SET_BAKERY_HOURS (state, bakeryHours) {
       state.bakeryHours = bakeryHours
     },
 
-    SET_ACTIVATE_ACCOUNT(state, activateAccount) {
+    SET_ACTIVATE_ACCOUNT (state, activateAccount) {
       state.activateAccount = activateAccount
     }
 

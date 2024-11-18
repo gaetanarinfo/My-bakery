@@ -1,4 +1,5 @@
 <template name="SectionHome4">
+
   <div id="classement" class="section fadeIn4 last-bakery">
 
     <div class="column-inner">
@@ -25,7 +26,7 @@
 
               <div class="row">
 
-                <div class="col-lg-6 bakery" v-for="bakery in bakerys" :key="bakery.id">
+                <div class="col-lg-4 bakery" v-for="bakery in bakerys" :key="bakery.id">
 
                   <div class="row">
 
@@ -54,39 +55,46 @@
 
                           <div class="carousel-item active">
 
-                            <a :href="'#/bakery/' + bakery.url">
-                              <img v-if="bakery.image === 'default.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
-                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image" :alt="bakery.title">
-                            </a>
+<a :href="'#/bakery/' + bakery.url" style="text-align: center;display: grid;justify-content: center;background-color: white;">
+  <img v-if="bakery.image === 'default.jpg'" style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
+    :src="'bakerys/' + bakery.image" :alt="bakery.title">
+  <img v-else class="d-block w-100"
+    :src="folderPicture + bakery.image"
+    :alt="bakery.title">
+</a>
 
-                          </div>
+</div>
 
-                          <div class="carousel-item">
+<div v-if="bakery.image_2 !== 'default2.jpg'" class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
-                              <img v-if="bakery.image_2 === 'default2.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
-                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_2" :alt="bakery.title">
-                            </a>
+<a :href="'#/bakery/' + bakery.url">
+    <div
+    :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+</div>
+  </a>
 
-                          </div>
+</div>
 
-                          <div class="carousel-item">
+<div v-if="bakery.image_3 !== 'default.jpg'" class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
-                              <img v-if="bakery.image_3 === 'default.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
-                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_3" :alt="bakery.title">
-                            </a>
+<a :href="'#/bakery/' + bakery.url">
+  <div
+  :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+</div>
+</a>
 
-                          </div>
+</div>
 
-                          <div class="carousel-item">
+<div v-if="bakery.image_4 !== 'default2.jpg'" class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
-                              <img v-if="bakery.image_4 === 'default2.jpg'" class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
-                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image_4" :alt="bakery.title">
-                            </a>
+<a :href="'#/bakery/' + bakery.url">
+  <div
+  :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+</div>
+</a>
 
-                          </div>
+</div>
+
 
                         </div>
 
@@ -297,7 +305,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      store.dispatch('fetchBakerys', { 'limite': 4 })
+      store.dispatch('fetchBakerys', { 'limite': 3 })
     })
 
     return {

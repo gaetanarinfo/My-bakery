@@ -246,45 +246,44 @@
 
               <h3 class="text-bold">Résumé de votre activité</h3>
 
-              <table class="table table-striped">
+              <table v-if="activityTable.length >= 1" class="table table-striped">
 
                 <thead>
 
                   <tr>
                     <th scope="col"></th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Adresse</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Crée le</th>
+                    <th scope="col"></th>
                   </tr>
 
                 </thead>
 
                 <tbody>
 
-                  <tr v-for="activity in activityTable" :key="activity.id">
+                  <tr :id="'activityRow-' + activity.id" v-for="activity in activityTable" :key="activity.id">
                     <th scope="row">{{ activity.id }}</th>
-                    <td>{{ activity.title }}</td>
-                    <td>{{ activity.adresse }}</td>
-                    <td>{{ activity.small_content }}</td>
+                    <td><a :href="'#/bakery/' + activity.url">{{ activity.title }}</a></td>
                     <td>{{ moment(activity.userCreatedAt).format('DD MMMM YYYY') }}</td>
+                    <td>
+
+                      <a :href="'#/bakery/' + activity.url" class="text-success cursor-pointer me-2"><i
+                          class="fa fa-eye"></i></a>
+
+                      <a @click="deleteActivity(activity.id)" class="text-danger cursor-pointer"><i
+                          class="fa fa-trash"></i></a>
+
+                    </td>
                   </tr>
 
                 </tbody>
 
-                <tfoot>
-
-<tr>
-  <th scope="col"></th>
-  <th scope="col">Nom</th>
-  <th scope="col">Adresse</th>
-  <th scope="col">Description</th>
-  <th scope="col">Crée le</th>
-</tr>
-
-                </tfoot>
-
               </table>
+
+              <p v-else class="fw-bolder">
+                <i class="fa fa-warning text-warning"></i>
+                Vous n'avez pas encore d'activité sur My Nakery.
+              </p>
 
             </div>
 
@@ -511,6 +510,22 @@ export default defineComponent({
 
 
     return {
+      deleteActivity (id) {
+
+        if (confirm("Êtes-vous sûr de vouloir supprimer cette activité ?")) {
+
+          axios.get(process.env.WEBSITE + '/user-activity-delete/' + this.user.email + '/' + this.user.id + '/' + id)
+            .then((res) => {
+              if (res.status === 200) {
+                //window.location.reload()
+                $('#activityRow-' + id).fadeOut(200)
+                $('#activityRow-' + id).remove()
+              }
+            })
+
+        }
+
+      },
       showProfil () {
         cardProfil.value = true
         cardUpdateProfil.value = false
@@ -684,6 +699,13 @@ export default defineComponent({
           .then((res) => {
             if (res.status === 200) {
 
+              cardProfil.value = true
+              cardUpdateProfil.value = false
+              cardActivity.value = false
+              $('#card1').addClass('active-list');
+              $('#card2').removeClass('active-list');
+              $('#card3').removeClass('active-list');
+
               // Static values
               email.value = res.data.user.email
               firstname.value = res.data.user.firstname
@@ -709,9 +731,9 @@ export default defineComponent({
           .then((res) => {
             if (res.status === 200) {
               // Static values
-              activity.value = (res.data.activity == []) ? 0 : res.data.activity.counterId
+              activity.value = (res.data.activity == []) ? 0 : res.data.activity
               activityTable.value = res.data.activityTable
-                }
+            }
           })
       } else {
         this.$router.push('/')

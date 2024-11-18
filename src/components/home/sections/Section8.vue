@@ -1,4 +1,14 @@
-<template name="SectionHome7">
+<template name="SectionHome8">
+
+  <div class="section fadeIn5 ratings">
+
+    <div class="background-p">
+
+
+    </div>
+
+  </div>
+
   <div id="bakery-list" class="section fadeIn9">
 
     <div class="column-inner">
@@ -28,7 +38,6 @@
               </div>
 
             </div>
-
 
             <div class="row">
 
@@ -72,7 +81,8 @@
                       </h4>
 
                       <p>La qualité des annonces de boulangerie sur My bakery est primordiale, notre équipe veille au
-                        grain. Nous vérifions chaque avis utilisateur, nous vous garantissons une totale transparence.</p>
+                        grain. Nous vérifions chaque avis utilisateur, nous vous garantissons une totale transparence.
+                      </p>
 
                     </div>
 
@@ -126,7 +136,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SectionHome8',
-  setup() {
+  setup () {
 
   }
 })

@@ -43,20 +43,30 @@
 
                 <div class="slick-slider">
 
-                  <a href="" tabindex="0"><img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
-                      :alt="bakery.title"><img v-else :src="folderPicture + bakery.image" :alt="bakery.title"></a>
+                  <a href="" tabindex="0" style="background: white;display: grid;justify-content: center;">
+                    <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title">
+                    <div v-else
+                      :style="'background: url(' + folderPicture + bakery.image + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
+                  </a>
 
-                  <a href="" tabindex="0"><img v-if="bakery.image_2 === 'default2.jpg'"
-                      :src="'bakerys/' + bakery.image_2" :alt="bakery.title"><img v-else
-                      :src="folderPicture + bakery.image_2" :alt="bakery.title"></a>
+                  <a href="" v-if="bakery.image_2 !== 'default2.jpg'" tabindex="0">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_2 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
+                  </a>
 
-                  <a href="" tabindex="0"><img v-if="bakery.image_3 === 'default.jpg'"
-                      :src="'bakerys/' + bakery.image_3" :alt="bakery.title"><img v-else
-                      :src="folderPicture + bakery.image_3" :alt="bakery.title"></a>
+                  <a href="" v-if="bakery.image_3 !== 'default.jpg'" tabindex="0">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_3 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
+                  </a>
 
-                  <a href="" tabindex="0"><img v-if="bakery.image_4 === 'default2.jpg'"
-                      :src="'bakerys/' + bakery.image_4" :alt="bakery.title"><img v-else
-                      :src="folderPicture + bakery.image_4" :alt="bakery.title"></a>
+                  <a href="" v-if="bakery.image_4 !== 'default2.jpg'" tabindex="0">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_4 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
+                  </a>
 
                 </div>
 
@@ -68,25 +78,27 @@
 
                   <div class="item" style="width: 98px;">
                     <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title" />
-                    <img v-else :src="folderPicture + bakery.image" :alt="bakery.title" />
+                    <div v-else
+                      :style="'background: url(' + folderPicture + bakery.image + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
                   </div>
 
-                  <div class="item" style="width: 98px;">
-                    <img v-if="bakery.image_2 === 'default2.jpg'" :src="'bakerys/' + bakery.image_2"
-                      :alt="bakery.title" />
-                    <img v-else :src="folderPicture + bakery.image_2" :alt="bakery.title" />
+                  <div class="item" style="width: 98px;" v-if="bakery.image_2 !== 'default2.jpg'">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
                   </div>
 
-                  <div class="item" style="width: 98px;">
-                    <img v-if="bakery.image_3 === 'default.jpg'" :src="'bakerys/' + bakery.image_3"
-                      :alt="bakery.title" />
-                    <img v-else :src="folderPicture + bakery.image_3" :alt="bakery.title" />
+                  <div class="item" style="width: 98px;" v-if="bakery.image_3 !== 'default.jpg'">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
                   </div>
 
-                  <div class="item" style="width: 98px;">
-                    <img v-if="bakery.image_4 === 'default2.jpg'" :src="'bakerys/' + bakery.image_4"
-                      :alt="bakery.title" />
-                    <img v-else :src="folderPicture + bakery.image_4" :alt="bakery.title" />
+                  <div class="item" style="width: 98px;" v-if="bakery.image_4 !== 'default2.jpg'">
+                    <div
+                      :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                    </div>
                   </div>
 
                 </div>
@@ -126,38 +138,38 @@
                 </div>
 
                 <div>
-                  <p>{{ bakery.adresse }}</p>
+                  <p><strong>{{ bakery.adresse }}</strong></p>
                 </div>
 
                 <div>
-                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-1"></i>{{
+                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-2"></i><strong>{{
                     bakery.phone
-                      }}</a></p>
+                        }}</strong></a></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-brands fa-accessible-icon me-1"></i> Accès handicapé <span
+                  <p><i class="fa-brands fa-accessible-icon me-2"></i> Accès handicapé <span
                       :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non'
                         :
                         'oui' }}</span></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-solid fa-truck me-1"></i>Livraison <span
+                  <p><i class="fa-solid fa-truck me-2"></i>Livraison <span
                       :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non'
                         :
                         'oui' }}</span></p>
                 </div>
 
                 <div>
-                  <p><i class="fa-solid fa-utensils me-1"></i>Restauration sur place <span
+                  <p><i class="fa-solid fa-utensils me-2"></i>Restauration sur place <span
                       :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'">{{ (bakery.dine_in == 0) ? 'non' :
                         'oui' }}</span></p>
                 </div>
 
-                <div v-if="bakery.website !== null">
+                <div v-if="bakery.website !== null && bakery.website !== ''">
                   <p class="website"><a :href="bakery.website" target="_blank"><i
-                        class="fa-solid fa-globe me-1"></i>Site
+                        class="fa-solid fa-globe me-2"></i>Site
                       internet</a></p>
                 </div>
 
@@ -213,6 +225,31 @@
 
           </div>
 
+          <div class="section section-rating fadeIn7">
+
+            <div class="row">
+
+              <div v-if="bakery.total_rating_google >= 1" class="bloc-rating">
+
+                <img src="avis-google.svg" alt="Logo Google">
+
+                <p>{{ bakery.total_rating_google }}/5 d'avis positifs<br />
+                  sur {{ bakery.user_rating_google }} avis.</p>
+
+              </div>
+
+              <div v-else>
+
+                <img src="avis-google.svg" alt="Logo Google">
+
+                <p>Aucun avis pour le moment.</p>
+
+              </div>
+
+            </div>
+
+          </div>
+
           <div
             style="position: relative;z-index: 999999999;overflow: visible;display: block;height: 600px;margin-top: 2rem;">
             <l-map :zoomAnimation="true" :fadeAnimation="true" :markerZoomAnimation="true" v-if="Boolean(this.map)"
@@ -256,7 +293,7 @@
                   aria-expanded="false">Revendiquer cet
                   établissement</a>
 
-                <a v-else aria-controls="tab_settings" @click="this.$router.push('/my-account');" aria-expanded="false">Revendiquer
+                <a v-else class="disabled">Revendiquer
                   cet
                   établissement</a>
 
@@ -557,7 +594,7 @@
 
             </div>
 
-            <div class="tab-pane" role="tabpanel" id="tab_settings">
+            <div v-if="isLoggedIn" class="tab-pane" role="tabpanel" id="tab_settings">
               <div id="review-form-rapper">
 
                 <div class="bs-bakery-review">
@@ -1011,6 +1048,8 @@ moment.locale('fr')
 import slick_css from "../css/slick.scss";
 
 slick_css
+
+var counter = 0
 
 export default defineComponent({
   name: 'BakeryComponent',
@@ -1843,6 +1882,7 @@ export default defineComponent({
   mounted () {
 
     setTimeout(() => {
+      counter = 0
       this.map = 1
       this.addName = this.bakery.title
       this.addPhone = this.bakery.phone
@@ -1858,14 +1898,14 @@ export default defineComponent({
       this.imageSrc3 = 'bakerys/add-bakery.jpg'
       this.imageSrc4 = 'bakerys/add-bakery.jpg'
 
-      if(this.bakeryHours[0] !== undefined) this.addHours1 = this.bakeryHours[0].am
-       if(this.bakeryHours[1] !== undefined) this.addHours2 = this.bakeryHours[1].am
-       if(this.bakeryHours[2] !== undefined) this.addHours3 = this.bakeryHours[2].am
-       if(this.bakeryHours[3] !== undefined) this.addHours4 = this.bakeryHours[3].am
-       if(this.bakeryHours[4] !== undefined) this.addHours5 = this.bakeryHours[4].am
-       if(this.bakeryHours[5] !== undefined) this.addHours6 = this.bakeryHours[5].am
-       if(this.bakeryHours[6] !== undefined) this.addHours7 = this.bakeryHours[6].am
-       this.verifLengthArea()
+      if (this.bakeryHours[0] !== undefined) this.addHours1 = this.bakeryHours[0].am
+      if (this.bakeryHours[1] !== undefined) this.addHours2 = this.bakeryHours[1].am
+      if (this.bakeryHours[2] !== undefined) this.addHours3 = this.bakeryHours[2].am
+      if (this.bakeryHours[3] !== undefined) this.addHours4 = this.bakeryHours[3].am
+      if (this.bakeryHours[4] !== undefined) this.addHours5 = this.bakeryHours[4].am
+      if (this.bakeryHours[5] !== undefined) this.addHours6 = this.bakeryHours[5].am
+      if (this.bakeryHours[6] !== undefined) this.addHours7 = this.bakeryHours[6].am
+      this.verifLengthArea()
     }, 1200);
 
     $('#menu-main-menu').removeAttr('style')
@@ -1972,6 +2012,22 @@ export default defineComponent({
         })
       })
 
+      if (this.bakery.image === 'default.jpg') {
+        counter++
+      }
+
+      if (this.bakery.image_2 !== 'default2.jpg') {
+        counter++
+      }
+
+      if (this.bakery.image_3 !== 'default.jpg') {
+        counter++
+      }
+
+      if (this.bakery.image_4 !== 'default2.jpg') {
+        counter++
+      }
+
       // Slick
       $('.slick-slider').slick({
         slidesToShow: 1,
@@ -1983,13 +2039,16 @@ export default defineComponent({
         asNavFor: '.slick-nav'
       });
 
-      $('.slick-nav').slick({
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        asNavFor: '.slick-slider',
-        centerMode: true,
-        focusOnSelect: true
-      });
+      setTimeout(() => {
+        $('.slick-nav').slick({
+          slidesToShow: counter,
+          slidesToScroll: 1,
+          asNavFor: '.slick-slider',
+          centerMode: true,
+          focusOnSelect: true
+        });
+
+      }, 500);
 
       $('#btn_description').on('click', function (e) {
 
@@ -2038,22 +2097,25 @@ export default defineComponent({
 
       })
 
-      $('#btn_settings').on('click', function (e) {
+      if (this.isLoggedIn) {
 
-        e.preventDefault()
+        $('#btn_settings').on('click', function (e) {
 
-        $(this).addClass('active')
-        $('#tab_settings').addClass('active')
+          e.preventDefault()
 
-        $('#btn_description').removeClass('active')
-        $('#tab_description').removeClass('active')
-        $('#btn_reviews').removeClass('active')
-        $('#tab_reviews').removeClass('active')
-        $('#btn_hours').removeClass('active')
-        $('#tab_hours').removeClass('active')
+          $(this).addClass('active')
+          $('#tab_settings').addClass('active')
 
-      })
+          $('#btn_description').removeClass('active')
+          $('#tab_description').removeClass('active')
+          $('#btn_reviews').removeClass('active')
+          $('#tab_reviews').removeClass('active')
+          $('#btn_hours').removeClass('active')
+          $('#tab_hours').removeClass('active')
 
+        })
+
+      }
 
     }, 100)
 

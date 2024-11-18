@@ -13,9 +13,9 @@ import { defineComponent, onMounted, computed } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import BakeryComponent from 'components/Bakery.vue'
 import FooterComponent from 'components/Footer.vue'
+import Section7 from 'components/home/sections/Section7.vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router';
-import Section7 from 'components/home/sections/Section7.vue'
 
 export default defineComponent({
   name: 'Bakery',

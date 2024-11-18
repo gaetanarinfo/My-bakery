@@ -1,7 +1,5 @@
 /* IMPORT */
 @import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
 
 @font-face {
   font-family: Bakery;
@@ -10,16 +8,33 @@
 
 /* GENERALES */
 
-.loading {
+.loadings {
   min-height: 100vh;
   display: flex;
   height: 100vh;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
-.loading img {
+@media all and (max-width: 768px) {
+
+  .loadings {
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    margin-left: auto;
+    z-index: 1000;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+}
+
+.loadings img {
+  display: block;
+  width: 100%;
   max-width: 150px;
   animation: customAni 2s ease 0s infinite reverse forwards;
 }
@@ -101,13 +116,15 @@ a:hover {
 .fadeIn7,
 .fadeIn8,
 .fadeIn9,
-.fadeIn10 {
+.fadeIn11,
+.fadeIn10,
+.fadeIn12 {
   display: none;
 }
 
 .btn-bakery {
   color: #cd9b33;
-  font-size: 20px;
+  font-size: 16px;
   border: 2px solid #cd9b33;
   transition: all 0.4s ease-in-out;
 }
@@ -117,7 +134,7 @@ a:hover {
 .btn-bakery:focus-within,
 .btn-bakery:active,
 .btn-bakery:hover {
-  font-size: 20px;
+  font-size: 16px;
   border: 2px solid #e0b75e8c;
   background-color: #e0b75e8c;
   color: #fff;
@@ -785,14 +802,29 @@ a:hover {
   margin-bottom: 5rem;
 }
 
+#bakery-add .section,
+#blog .section {
+  padding-top: 5rem;
+}
+
+.section-blog {
+  margin-top: 5rem;
+}
+
 @media all and (max-width: 48rem) {
   .section {
     margin-bottom: 2rem;
   }
+
+  #bakery-add .section,
+  #blog .section {
+    padding-top: 2rem;
+    margin-top: 0;
+  }
 }
 
 .section .title {
-  font-family: "Kaushan Script", cursive;
+  font-family: "Libre Baskerville, sans-serif", cursive;
   font-size: 48px;
   color: #000;
   font-weight: 400;
@@ -910,6 +942,10 @@ a:hover {
 }
 
 /* RATINGS */
+
+.ratings {
+  margin-bottom: 0;
+}
 
 .ratings .background-p {
   background: url("../../public/background-2.jpg") 50% 80px;
@@ -1143,7 +1179,8 @@ a:hover {
 }
 
 .last-bakery .column-inner .wrapper .bloc .section:last-child .bakery .title {
-  font-size: 24px;
+  font-size: 18px;
+  font-family: "Libre Baskerville", sans-serif;
   color: #000;
   text-transform: uppercase;
   text-align: left;
@@ -1152,7 +1189,12 @@ a:hover {
   transition: all 0.4s ease;
   cursor: pointer;
   display: block;
+  font-weight: 700;
   margin-top: 1rem !important;
+  min-height: 54px;
+  vertical-align: middle;
+  display: grid;
+  align-items: center;
 }
 
 .last-bakery .column-inner .wrapper .bloc .section:last-child .bakery .title:hover {
@@ -1164,7 +1206,7 @@ a:hover {
 }
 
 .last-bakery .column-inner .wrapper .bloc .section:last-child .bakery .location {
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
   text-align: left;
   color: #4e3939;
@@ -1194,7 +1236,7 @@ a:hover {
   text-transform: uppercase;
   margin-right: 0.5rem;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 @media all and (max-width: 48rem) {
@@ -1228,7 +1270,7 @@ a:hover {
 .last-bakery .prix .br-widget a,
 .last-bakery .choix .br-widget a {
   cursor: default;
-  font-size: 16px !important;
+  font-size: 14px !important;
   font: normal normal normal 20px/1 FontAwesome;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -1343,7 +1385,7 @@ a:hover {
   padding-right: 1rem;
   color: #333434;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   white-space: inherit;
 }
@@ -1486,6 +1528,12 @@ a:hover {
 
 #my-account-profil #activityCard table tr {
   font-size: 14px;
+  vertical-align: middle;
+}
+
+#my-account-profil #activityCard table tr a {
+  text-decoration: none;
+  font-weight: 500;
 }
 
 /* BLOG */
@@ -1570,7 +1618,7 @@ a:hover {
 
 .last-blog .content .title {
   display: block;
-  font-size: 24px;
+  font-size: 18px;
   font-family: inherit;
   text-decoration: none;
   cursor: default;
@@ -2178,11 +2226,14 @@ footer.footer .footer-copyright p a:hover {
   vertical-align: top;
 }
 
+.bb.background4 {
+  background: url(../../public/page-header-4.jpg);
+}
+
 .bb.background3 {
   background: url(../../public/page-header-3.jpg);
   opacity: 0.9;
 }
-
 
 .bb.background2 {
   background: url(../../public/page-header-1.jpg);
@@ -2403,7 +2454,7 @@ footer.footer .footer-copyright p a:hover {
 }
 
 .b-table thead>tr>th {
-  font-family: "Kaushan Script", cursive;
+  font-family: "Libre Baskerville, sans-serif", cursive;
   font-size: 18px;
   font-weight: 700;
   color: #515356;
@@ -2622,7 +2673,7 @@ footer.footer .footer-copyright p a:hover {
 .bakery-single .info {
   padding-left: 1.875rem;
   font-weight: 400;
-  font-family: "Kaushan Script", cursive;
+  font-family: "Libre Baskerville, sans-serif", cursive;
 }
 
 @media all and (max-width: 48rem) {
@@ -2685,7 +2736,7 @@ footer.footer .footer-copyright p a:hover {
 
 .bakery-single .info .simple-action a {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .bakery-single .info .sharing {
@@ -2763,7 +2814,6 @@ footer.footer .footer-copyright p a:hover {
 .bakery-single .bakery-content .tab-list {
   margin-bottom: 20px;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
   margin-left: 0;
   padding-left: 0;
 }
@@ -3289,6 +3339,109 @@ footer.footer .footer-copyright p a:hover {
   }
 }
 
+/* SECTION 10 */
+
+#phone-section {
+  margin-bottom: 0;
+}
+
+#phone-section .col-md-8 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#phone-section .col-md-8 h4 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #cd9b33;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3em;
+}
+
+#phone-section .col-md-8 p {
+  font-size: 16px;
+}
+
+#phone-section .phone {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* SECTION 11 */
+
+#footer-link-bakerys {
+  margin-bottom: 0;
+}
+
+#footer-link-bakerys ul li {
+  display: inline-block;
+  width: 25%;
+  line-height: inherit !important;
+}
+
+@media all and (max-width: 768px) {
+
+  #footer-link-bakerys ul li {
+    display: block;
+    width: 100%;
+  }
+
+}
+
+#footer-link-bakerys ul li {
+  font-size: 22px;
+  line-height: 34px;
+  color: #cd9b33;
+  font-weight: 300;
+}
+
+#footer-link-bakerys ul li a {
+  color: #cd9b33;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 0 !important;
+}
+
+/* Bakerys Department */
+
+.list-bakery-marker {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0 0;
+  padding: 0 0;
+}
+
+.list-bakery-marker li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.list-bakery-marker li a {
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.leaflet-popup-content p {
+  margin: 0 !important;
+}
+
+.list-bakery {
+  max-height: 550px;
+  overflow: overlay;
+}
+
+@media all and (max-width: 768px) {
+
+.list-bakery {
+  margin-top: 2rem;
+}
+
+}
+
 /* BLOG */
 
 .blog-single {
@@ -3804,4 +3957,40 @@ footer.footer .footer-copyright p a:hover {
 .bakery-single .phone a,
 .bakery-single .website a {
   text-decoration: none;
+}
+
+#btn_settings .disabled {
+  color: #00000060;
+  pointer-events: none;
+}
+
+.link-letter {
+  text-transform: capitalize
+}
+
+.section-rating {
+  margin-top: 5rem;
+  margin-bottom: 5rem !important;
+  text-align: center;
+}
+
+@media all and (max-width: 768px) {
+  .section-rating {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+.bloc-rating img {
+  height: 100px;
+  width: auto !important;
+}
+
+.bloc-rating p {
+  margin: 1rem auto;
+  font-size: 24px;
+  color: #cd9b33;
+  font-weight: 700;
+  text-align: center;
+  line-height: 34px;
 }

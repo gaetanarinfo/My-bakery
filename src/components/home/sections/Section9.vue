@@ -1,4 +1,14 @@
 <template name="SectionHome9">
+
+  <div class="section fadeIn5 ratings">
+
+    <div class="background-p">
+
+      
+    </div>
+
+  </div>
+
   <div id="bakery-add" class="section fadeIn10">
 
     <div class="column-inner">
@@ -73,7 +83,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SectionHome9',
-  setup() {
+  setup () {
 
   }
 })

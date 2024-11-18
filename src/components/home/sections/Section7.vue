@@ -13,7 +13,7 @@
 
               <div class="bloc-contact">
 
-                <h4>NOS BUREAU EN FRANCE</h4>
+                <h4>NOS BUREAUX EN FRANCE</h4>
                 <h5>125 avenue Félix Geneslay 72100 Le Mans, France</h5>
 
                 <p><i class="fa fa-envelope"></i><a href="mailto:contact@my-bakery.fr">contact@my-bakery.fr</a></p>

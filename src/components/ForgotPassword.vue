@@ -357,7 +357,7 @@ export default defineComponent({
 
           this.showTextLoading()
 
-          axios.post(process.env.WEBSITE + '/forgot-password-token/' + this.$route.params.token, { 'newPassword': this.passwordForgot })
+          axios.post(process.env.WEBSITE + '/forgot-password-token', { 'token': this.$route.params.token, 'newPassword': this.passwordForgot })
             .then((res) => {
 
               if (res.data.success === true) {

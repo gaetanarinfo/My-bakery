@@ -203,6 +203,18 @@ const routes = [
         }
       },
       {
+        path: '/bakerys-region/:region', component: () => import('pages/BakerysRegion.vue'),
+        meta: {
+          title: 'Boulangeries par région',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
         path: '/activate-account/:token', component: () => import('pages/ActivateAccount.vue'),
       },
       {

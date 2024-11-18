@@ -66,7 +66,7 @@
                         class="fa fa-facebook"></i></a>
 
                     <a :href="'https://twitter.com/share?url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title + '&via=my-bakery'"
-                      onclick="window.open(this.href);return false;"><i class="fa fa-twitter"></i></a>
+                      onclick="window.open(this.href);return false;"><i class="fa-brands fa-x-twitter"></i></a>
 
                     <a
                       :href="'https://www.linkedin.com/shareArticle?mini=true&url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title"><i
