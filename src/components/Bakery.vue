@@ -46,25 +46,25 @@
                   <a href="" tabindex="0" style="background: white;display: grid;justify-content: center;">
                     <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title">
                     <div v-else
-                      :style="'background: url(' + folderPicture + bakery.image + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                      :style="'background: url(' + folderPicture + bakery.image + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
                     </div>
                   </a>
 
                   <a href="" v-if="bakery.image_2 !== 'default2.jpg'" tabindex="0">
                     <div
-                      :style="'background: url(' + folderPicture + bakery.image_2 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                      :style="'background: url(' + folderPicture + bakery.image_2 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
                     </div>
                   </a>
 
                   <a href="" v-if="bakery.image_3 !== 'default.jpg'" tabindex="0">
                     <div
-                      :style="'background: url(' + folderPicture + bakery.image_3 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                      :style="'background: url(' + folderPicture + bakery.image_3 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
                     </div>
                   </a>
 
                   <a href="" v-if="bakery.image_4 !== 'default2.jpg'" tabindex="0">
                     <div
-                      :style="'background: url(' + folderPicture + bakery.image_4 + ');border-radius: 10px;max-width: 550px;width: 100%;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                      :style="'background: url(' + folderPicture + bakery.image_4 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
                     </div>
                   </a>
 
@@ -1881,8 +1881,9 @@ export default defineComponent({
   },
   mounted () {
 
+    counter = 0
+
     setTimeout(() => {
-      counter = 0
       this.map = 1
       this.addName = this.bakery.title
       this.addPhone = this.bakery.phone
@@ -2013,6 +2014,10 @@ export default defineComponent({
       })
 
       if (this.bakery.image === 'default.jpg') {
+        counter++
+      }
+
+      if (this.bakery.image !== 'default.jpg') {
         counter++
       }
 
