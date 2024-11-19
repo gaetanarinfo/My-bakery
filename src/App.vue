@@ -16,14 +16,15 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { QSpinnerBox } from 'quasar'
+import { Cookies } from 'quasar'
 
 export default defineComponent({
   name: 'App',
 
   data () {
     return {
-      show: false
+      show: false,
+      Cookies: Cookies,
     }
   },
   methods: {
@@ -46,6 +47,10 @@ export default defineComponent({
 
   mounted () {
     this.showLoading()
+
+    if(Cookies.has('bakerysList') === false) {
+      Cookies.set('bakerysList', '')
+    }
   }
 })
 </script>

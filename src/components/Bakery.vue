@@ -37,70 +37,60 @@
 
           <div class="row">
 
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 widthMaxCol">
 
               <div class="thumbnail">
 
-                <div class="slick-slider">
+                <div id="slider_1" class="sliderimgSpec" tabindex="0" >
+                  <img class="sliderSpec" v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
+                    :alt="bakery.title">
+                  <div class="sliderSpec" v-else :style="'background: url(' + folderPicture + bakery.image + ');'">
+                  </div>
+                </div>
 
-                  <a href="" tabindex="0" style="background: white;display: grid;justify-content: center;">
-                    <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title">
-                    <div v-else
-                      :style="'background: url(' + folderPicture + bakery.image + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
-                  </a>
+                <div id="slider_2" class="sliderimgSpec hide" v-if="bakery.image_2 !== 'default2.jpg'"
+                  tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_2 + ');'" class="sliderSpec">
+                  </div>
+                </div>
 
-                  <a href="" v-if="bakery.image_2 !== 'default2.jpg'" tabindex="0">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_2 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
-                  </a>
+                <div id="slider_3" class="sliderimgSpec hide" v-if="bakery.image_3 !== 'default.jpg'"
+                  tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_3 + ');'" class="sliderSpec">
+                  </div>
+                </div>
 
-                  <a href="" v-if="bakery.image_3 !== 'default.jpg'" tabindex="0">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_3 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
-                  </a>
-
-                  <a href="" v-if="bakery.image_4 !== 'default2.jpg'" tabindex="0">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_4 + ');border-radius: 10px;max-width: 550px;width: 550px;height: 320px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
-                  </a>
-
+                <div id="slider_4" class="sliderimgSpec hide" v-if="bakery.image_4 !== 'default2.jpg'"
+                  tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_4 + ');'" class="sliderSpec">
+                  </div>
                 </div>
 
               </div>
 
-              <div class="preview hide-mobile">
+              <div class="preview">
 
-                <div class="slick-nav">
-
-                  <div class="item" style="width: 98px;">
-                    <img v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image" :alt="bakery.title" />
-                    <div v-else
-                      :style="'background: url(' + folderPicture + bakery.image + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
+                <div id="slider_image_1" class="sliderimgSpec" tabindex="0">
+                  <img class="sliderSpec active" v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
+                    :alt="bakery.title">
+                  <div class="sliderSpec active" v-else
+                    :style="'background: url(' + folderPicture + bakery.image + ');'">
                   </div>
+                </div>
 
-                  <div class="item" style="width: 98px;" v-if="bakery.image_2 !== 'default2.jpg'">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
+                <div id="slider_image_2" class="sliderimgSpec" v-if="bakery.image_2 !== 'default2.jpg'" tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_2 + ');'" class="sliderSpec">
                   </div>
+                </div>
 
-                  <div class="item" style="width: 98px;" v-if="bakery.image_3 !== 'default.jpg'">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
+                <div id="slider_image_3" class="sliderimgSpec" v-if="bakery.image_3 !== 'default.jpg'" tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_3 + ');'" class="sliderSpec">
                   </div>
+                </div>
 
-                  <div class="item" style="width: 98px;" v-if="bakery.image_4 !== 'default2.jpg'">
-                    <div
-                      :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                    </div>
+                <div id="slider_image_4" class="sliderimgSpec" v-if="bakery.image_4 !== 'default2.jpg'" tabindex="0">
+                  <div :style="'background: url(' + folderPicture + bakery.image_4 + ');'" class="sliderSpec">
                   </div>
-
                 </div>
 
               </div>
@@ -1049,8 +1039,6 @@ import slick_css from "../css/slick.scss";
 
 slick_css
 
-var counter = 0
-
 export default defineComponent({
   name: 'BakeryComponent',
   components: {
@@ -1881,7 +1869,55 @@ export default defineComponent({
   },
   mounted () {
 
-    counter = 0
+
+    // Galeries
+    $('#slider_image_1').on('click', function (e) {
+      $('#slider_image_1 .sliderSpec').addClass('active');
+      $('#slider_image_2 .sliderSpec').removeClass('active');
+      $('#slider_image_3 .sliderSpec').removeClass('active');
+      $('#slider_image_4 .sliderSpec').removeClass('active');
+
+      $('#slider_1').removeClass('hide').addClass('show')
+      $('#slider_2').removeClass('show').addClass('hide')
+      $('#slider_3').removeClass('show').addClass('hide')
+      $('#slider_4').removeClass('show').addClass('hide')
+    });
+
+    $('#slider_image_2').on('click', function (e) {
+      $('#slider_image_1 .sliderSpec').removeClass('active');
+      $('#slider_image_2 .sliderSpec').addClass('active');
+      $('#slider_image_3 .sliderSpec').removeClass('active');
+      $('#slider_image_4 .sliderSpec').removeClass('active');
+
+      $('#slider_1').removeClass('show').addClass('hide')
+      $('#slider_2').removeClass('hide').addClass('show')
+      $('#slider_3').removeClass('show').addClass('hide')
+      $('#slider_4').removeClass('show').addClass('hide')
+    });
+
+    $('#slider_image_3').on('click', function (e) {
+      $('#slider_image_1 .sliderSpec').removeClass('active');
+      $('#slider_image_2 .sliderSpec').removeClass('active');
+      $('#slider_image_3 .sliderSpec').addClass('active');
+      $('#slider_image_4 .sliderSpec').removeClass('active');
+
+      $('#slider_1').removeClass('show').addClass('hide')
+      $('#slider_2').removeClass('show').addClass('hide')
+      $('#slider_3').removeClass('hide').addClass('show')
+      $('#slider_4').removeClass('show').addClass('hide')
+    });
+
+    $('#slider_image_4').on('click', function (e) {
+      $('#slider_image_1 .sliderSpec').removeClass('active');
+      $('#slider_image_2 .sliderSpec').removeClass('active');
+      $('#slider_image_3 .sliderSpec').removeClass('active');
+      $('#slider_image_4 .sliderSpec').addClass('active');
+
+      $('#slider_1').removeClass('show').addClass('hide')
+      $('#slider_2').removeClass('show').addClass('hide')
+      $('#slider_3').removeClass('show').addClass('hide')
+      $('#slider_4').removeClass('hide').addClass('show')
+    });
 
     setTimeout(() => {
       this.map = 1
@@ -2012,48 +2048,6 @@ export default defineComponent({
           overflow: 'auto'
         })
       })
-
-      if (this.bakery.image === 'default.jpg') {
-        counter++
-      }
-
-      if (this.bakery.image !== 'default.jpg') {
-        counter++
-      }
-
-      if (this.bakery.image_2 !== 'default2.jpg') {
-        counter++
-      }
-
-      if (this.bakery.image_3 !== 'default.jpg') {
-        counter++
-      }
-
-      if (this.bakery.image_4 !== 'default2.jpg') {
-        counter++
-      }
-
-      // Slick
-      $('.slick-slider').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        infinite: true,
-        speed: 300,
-        fade: true,
-        asNavFor: '.slick-nav'
-      });
-
-      setTimeout(() => {
-        $('.slick-nav').slick({
-          slidesToShow: counter,
-          slidesToScroll: 1,
-          asNavFor: '.slick-slider',
-          centerMode: true,
-          focusOnSelect: true
-        });
-
-      }, 500);
 
       $('#btn_description').on('click', function (e) {
 
