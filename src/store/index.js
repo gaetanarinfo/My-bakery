@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 
 import axios from 'axios'
+import { SessionStorage } from 'quasar';
 
 export default createStore({
   state: {
@@ -21,10 +22,13 @@ export default createStore({
     blog_tags: [],
     activateAccount: [],
     markersBakerys: [],
+    products_cart: [],
+    paiement_status: [],
     stateUser: {
       user: null,
       token: null,
     },
+    products: [],
   },
   getters: {
     getBakery: (state) => state.bakery,
@@ -45,6 +49,9 @@ export default createStore({
     getActivateAccount: (state) => state.activateAccount,
     getToken: (state) => state.stateUser.token,
     getMarkerBakerys: (state) => state.markersBakerys,
+    getProducts: (state) => state.products,
+    getProductsCart: (state) => state.products_cart,
+    getPaiementStatus: (state) => state.paiement_status,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -246,6 +253,7 @@ export default createStore({
 
           if (getUrl.data.user !== undefined) {
             this.state.stateUser.user = getUrl.data.user
+            SessionStorage.setItem('email', getUrl.data.user.email)
           } else {
             this.$router.push('/my-account')
           }
@@ -291,8 +299,114 @@ export default createStore({
       }
     },
 
+    async fetchProducts ({ commit, state }, data) {
+      try {
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/products')
+
+        if (getUrl.data.products.length >= 1) {
+
+          this.products = getUrl.data.products
+
+          commit('SET_PRODUCTS', getUrl.data.products)
+
+        } else {
+          this.$router.push('/')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async fetchProductsCart ({ commit, state }, data) {
+
+      try {
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/products-cart/' + data.cart)
+
+        if (getUrl.data.products_cart.length >= 1) {
+
+          this.products_cart = getUrl.data.products_cart
+
+          commit('SET_PRODUCTS_CART', getUrl.data.products_cart)
+
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+
+    },
+
+    async setInsertCommandeClient ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-insert', { 'user_id': data.user_id, 'product_id': data.product_id, 'status': data.status, 'qte': data.qte, 'total_ht': data.total_ht, 'total_ttc': data.total_ttc })
+        .then((res) => {
+          if (res.data.succes === true) {
+            location.href = process.env.WEBSITE + '/paypal/create/' + res.data.order_id
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
+    setOrderValidate ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-validate', { 'paymentId': data.paymentId, 'status': data.status })
+        .then((res) => {
+          console.log(res.data);
+
+          if (res.data.succes === true) {
+            this.paiement_status = res.data
+            commit('SET_PAIEMENT_STATUS', res.data)
+          } else {
+            this.$router.push('/')
+          }
+
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
+    setOrderCancel({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-cancel', { 'paymentId': data.paymentId, 'status': data.status })
+        .then((res) => {
+          console.log(res.data);
+
+          if (res.data.succes === true) {
+            this.paiement_status = res.data
+            commit('SET_PAIEMENT_STATUS', res.data)
+          } else {
+            this.$router.push('/')
+          }
+
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    }
+
   },
   mutations: {
+
+    SET_PAIEMENT_STATUS (state, paiement_status) {
+      state.paiement_status = paiement_status
+    },
+
+    SET_PRODUCTS_CART (state, products_cart) {
+      state.products_cart = products_cart
+    },
+
+    SET_PRODUCTS (state, products) {
+      state.products = products
+    },
 
     SET_MARKER_BAKERY (state, markersBakerys) {
       state.markersBakerys = markersBakerys

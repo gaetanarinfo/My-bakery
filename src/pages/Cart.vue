@@ -1,8 +1,8 @@
-<template name="MyAccountProfil">
+<template name="Cart">
 
   <HeaderComponent />
 
-  <AccountProfilComponent />
+  <CartComponent />
 
   <Section7 />
 
@@ -10,7 +10,10 @@
 
 </template>
 
+
 <style lang="css">
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+
 .disabled {
   pointer-events: none;
 }
@@ -127,23 +130,19 @@
 
 import { defineComponent, onMounted, computed } from 'vue'
 import HeaderComponent from 'components/Header.vue'
-import AccountProfilComponent from 'components/AccountProfil.vue'
+import CartComponent from 'components/Cart.vue'
 import FooterComponent from 'components/Footer.vue'
 import Section7 from 'components/home/sections/Section7.vue'
 
 export default defineComponent({
-  name: 'MyAccountProfil',
+  name: 'Cart',
   components: {
     HeaderComponent,
-    AccountProfilComponent,
+    CartComponent,
     Section7,
     FooterComponent,
   },
   mounted () {
-
-    if (sessionStorage.getItem('token') === null) {
-      this.$router.push('/')
-    }
 
     $('#menu-main-menu').removeAttr('style')
 

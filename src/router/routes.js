@@ -220,6 +220,54 @@ const routes = [
       {
         path: '/forgot-password/:token?', component: () => import('pages/ForgotPassword.vue'),
       },
+      {
+        path: '/cart', component: () => import('pages/Cart.vue'),
+        meta: {
+          title: 'Mon panier',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
+        path: '/products', component: () => import('pages/Products.vue'),
+        meta: {
+          title: 'Nos produits',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
+        path: '/cart/paiement/succes/:paymentId', component: () => import('src/pages/PaiementSucces.vue'),
+        meta: {
+          title: 'Statut de votre commande',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
+        path: '/cart/paiement/cancel/:paymentId', component: () => import('src/pages/PaiementCancel.vue'),
+        meta: {
+          title: 'Annulation de votre commande',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
     ]
   },
 

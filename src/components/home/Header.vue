@@ -105,16 +105,41 @@
 
           <div class="actions">
 
-            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i
-                class="icono-user"></i></a>
+            <a role="button" @click="this.$router.push('/cart');">
+              <span class="material-symbols-outlined">
+                shopping_cart
+              </span>
+            </a>
 
-            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button"><i class="icono-user"></i></a>
+            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
+              <span class="material-symbols-outlined">
+                login
+              </span>
+            </a>
 
-            <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
+            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
+              <span class="material-symbols-outlined">
+                account_circle
+              </span>
+            </a>
 
-            <a @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
+            <a v-if="isLoggedIn" @click="logout" role="button">
+              <span class="material-symbols-outlined">
+                logout
+              </span>
+            </a>
 
-            <a href="#" class="search-btn"><i class="icono-search"></i></a>
+            <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
+              <span class="material-symbols-outlined">
+                favorite
+              </span>
+            </a>
+
+            <a href="">
+              <span class="material-symbols-outlined search-btn">
+                search
+              </span>
+            </a>
 
           </div>
 
@@ -159,16 +184,41 @@
         <div class="menu-toggle"><span></span></div>
 
         <div class="actions">
+          <a role="button" @click="this.$router.push('/cart');">
+              <span class="material-symbols-outlined">
+                shopping_cart
+              </span>
+            </a>
 
-          <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button"><i class="icono-user"></i></a>
+            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
+              <span class="material-symbols-outlined">
+                login
+              </span>
+            </a>
 
-          <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button"><i class="icono-user"></i></a>
+            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
+              <span class="material-symbols-outlined">
+                account_circle
+              </span>
+            </a>
 
-          <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn"><i class="icono-heart"></i></a>
+            <a v-if="isLoggedIn" @click="logout" role="button">
+              <span class="material-symbols-outlined">
+                logout
+              </span>
+            </a>
 
-          <a v-if="isLoggedIn" @click="logout" role="button"><i class="icono-signOut"></i></a>
+            <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
+              <span class="material-symbols-outlined">
+                favorite
+              </span>
+            </a>
 
-          <a href="#" class="search-btn"><i class="icono-search"></i></a>
+            <a href="">
+              <span class="material-symbols-outlined search-btn">
+                search
+              </span>
+            </a>
 
         </div>
 
@@ -282,6 +332,7 @@ export default defineComponent({
 
       e.preventDefault()
 
+      sessionStorage.removeItem('email')
       sessionStorage.removeItem('token')
 
       setTimeout(() => {

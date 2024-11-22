@@ -161,7 +161,8 @@
               </li>
 
               <li class="" id="btn_others">
-                <a aria-controls="tab_others" role="tab" data-toggle="tab" aria-expanded="false">Ajouter plus de photo</a>
+                <a aria-controls="tab_others" role="tab" data-toggle="tab" aria-expanded="false">Ajouter plus de
+                  photo</a>
               </li>
 
             </ul>
@@ -199,44 +200,44 @@
 
                             <li>
                               <label for="">Lundi</label>
-                              <input v-model="addHours1" class="form-control border-hours" type="text" id="addHours1" name="addHours1"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours1" class="form-control border-hours" type="text" id="addHours1"
+                                name="addHours1" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Mardi</label>
-                              <input v-model="addHours2" class="form-control border-hours" type="text" id="addHours2" name="addHours2"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours2" class="form-control border-hours" type="text" id="addHours2"
+                                name="addHours2" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Mercredi</label>
-                              <input v-model="addHours3" class="form-control border-hours" type="text" id="addHours3" name="addHours3"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours3" class="form-control border-hours" type="text" id="addHours3"
+                                name="addHours3" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Jeudi</label>
-                              <input v-model="addHours4" class="form-control border-hours" type="text" id="addHours4" name="addHours4"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours4" class="form-control border-hours" type="text" id="addHours4"
+                                name="addHours4" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Vendredi</label>
-                              <input v-model="addHours5" class="form-control border-hours" type="text" id="addHours5" name="addHours5"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours5" class="form-control border-hours" type="text" id="addHours5"
+                                name="addHours5" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Samedi</label>
-                              <input v-model="addHours6" class="form-control border-hours" type="text" id="addHours6" name="addHours6"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours6" class="form-control border-hours" type="text" id="addHours6"
+                                name="addHours6" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                             <li>
                               <label for="">Dimanche</label>
-                              <input v-model="addHours7" class="form-control border-hours" type="text" id="addHours7" name="addHours7"
-                                placeholder="09:30 à 12:30 et de 14:00 à 20:30">
+                              <input v-model="addHours7" class="form-control border-hours" type="text" id="addHours7"
+                                name="addHours7" placeholder="09:30 à 12:30 et de 14:00 à 20:30">
                             </li>
 
                           </ul>
@@ -481,7 +482,7 @@ export default defineComponent({
   name: 'AddBakeryComponent',
   components: {
   },
-  setup() {
+  setup () {
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
     const $q = useQuasar()
@@ -506,7 +507,7 @@ export default defineComponent({
     })
 
     return {
-      showTextLoading() {
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = true
 
@@ -520,13 +521,13 @@ export default defineComponent({
       FormData: FormData,
       moment: moment,
       showSimulatedReturnData,
-      showNotif() {
+      showNotif () {
         $q.notify({
           type: 'success-form',
           message: 'La boulangerie que vous avez ajouté est en cours de vérification. Elle apparaîtra quand notre équipe la vérifiera.'
         })
       },
-      errorNotif(message = null) {
+      errorNotif (message = null) {
         $q.notify({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
@@ -534,7 +535,7 @@ export default defineComponent({
       }
     }
   },
-  data() {
+  data () {
 
     $(document).on('change', '#image', function (e) {
 
@@ -608,38 +609,38 @@ export default defineComponent({
     }
   },
   methods: {
-    verifLengthArea(e) {
+    verifLengthArea (e) {
       if (this.addSmallContent.length <= 200) $('.limite-text span').html(this.addSmallContent.length)
     },
-    removeImage() {
+    removeImage () {
       $('.removeImage').hide()
       this.imageSrc = 'bakerys/add-bakery.jpg'
       this.image = null
       $('.image-error').hide()
       $('.image-error').html('')
     },
-    removeImage2() {
+    removeImage2 () {
       $('.removeImage2').hide()
       this.imageSrc2 = 'bakerys/add-bakery.jpg'
       this.image2 = null
       $('.image-error2').hide()
       $('.image-error2').html('')
     },
-    removeImage3() {
+    removeImage3 () {
       $('.removeImage3').hide()
       this.imageSrc3 = 'bakerys/add-bakery.jpg'
       this.image3 = null
       $('.image-error3').hide()
       $('.image-error3').html('')
     },
-    removeImage4() {
+    removeImage4 () {
       $('.removeImage4').hide()
       this.imageSrc4 = 'bakerys/add-bakery.jpg'
       this.image4 = null
       $('.image-error4').hide()
       $('.image-error4').html('')
     },
-    setImage(e) {
+    setImage (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
         extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
@@ -655,10 +656,10 @@ export default defineComponent({
 
           img.onload = () => {
 
-            // dimension de l'image
-            if (img.width <= 1920 && img.height <= 1080) {
+            if (extValid.indexOf(ext) !== -1) {
 
-              if (extValid.indexOf(ext, 0) === 0) {
+              // dimension de l'image
+              if (img.width <= 1920 && img.height <= 1080) {
 
                 this.image = file
                 this.imageSrc = URL.createObjectURL(file);
@@ -670,7 +671,7 @@ export default defineComponent({
                 this.imageSrc = 'bakerys/add-bakery.jpg'
                 this.image = null
                 $('.image-error').show()
-                $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+                $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
 
               }
 
@@ -680,7 +681,7 @@ export default defineComponent({
               this.imageSrc = 'bakerys/add-bakery.jpg'
               this.image = null
               $('.image-error').show()
-              $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher ne doit pas dépasser 1920 pixels par 1080 pixels.')
+              $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
 
             }
 
@@ -704,7 +705,7 @@ export default defineComponent({
         $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
     },
-    setImage2(e) {
+    setImage2 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
         extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
@@ -766,7 +767,7 @@ export default defineComponent({
         $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
     },
-    setImage3(e) {
+    setImage3 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
         extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
@@ -828,7 +829,7 @@ export default defineComponent({
         $('.image3-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
     },
-    setImage4(e) {
+    setImage4 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
         extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
@@ -890,7 +891,7 @@ export default defineComponent({
         $('.image4-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
     },
-    submitBakery(e) {
+    submitBakery (e) {
 
       e.preventDefault();
 
@@ -1081,7 +1082,7 @@ export default defineComponent({
 
     },
   },
-  validations() {
+  validations () {
     return {
       addName: { required },
       addAdresse: { required },
@@ -1100,7 +1101,7 @@ export default defineComponent({
       addHours7: { required }
     }
   },
-  mounted() {
+  mounted () {
 
     $('#menu-main-menu').removeAttr('style')
 

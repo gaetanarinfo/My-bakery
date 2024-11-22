@@ -1461,9 +1461,9 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
     css: [
-      'icono.min.scss',
       'bootstrap.min.scss',
-      'app.scss'
+      'app.scss',
+      'material.scss'
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras

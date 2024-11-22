@@ -185,7 +185,7 @@
 import { defineComponent, onMounted, computed } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
+import { LocalStorage, useQuasar } from 'quasar'
 import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
@@ -320,7 +320,7 @@ export default defineComponent({
             'location': this.reg_location,
             'phone': this.reg_phone,
             'mobile': this.reg_mobile,
-           })
+          })
             .then((res) => {
 
               if (res.data.success === true) {
@@ -440,7 +440,11 @@ export default defineComponent({
                   this.username = null
                   this.password = null
 
-                  this.$router.push("/");
+                  if (LocalStorage.has('prev_url')) {
+                    this.$router.push(LocalStorage.getItem('prev_url'));
+                  } else {
+                    this.$router.push("/")
+                  }
 
                 }, 3500);
 

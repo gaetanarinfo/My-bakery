@@ -1,8 +1,8 @@
-<template name="MyAccountProfil">
+<template name="PaiementSucces">
 
   <HeaderComponent />
 
-  <AccountProfilComponent />
+  <PaiementComponentSucces />
 
   <Section7 />
 
@@ -10,7 +10,9 @@
 
 </template>
 
+
 <style lang="css">
+
 .disabled {
   pointer-events: none;
 }
@@ -122,28 +124,23 @@
   opacity: 0;
 }
 </style>
-
 <script>
 
 import { defineComponent, onMounted, computed } from 'vue'
 import HeaderComponent from 'components/Header.vue'
-import AccountProfilComponent from 'components/AccountProfil.vue'
+import PaiementComponentSucces from 'components/PaiementSuccess.vue'
 import FooterComponent from 'components/Footer.vue'
 import Section7 from 'components/home/sections/Section7.vue'
 
 export default defineComponent({
-  name: 'MyAccountProfil',
+  name: 'PaiementSucces',
   components: {
     HeaderComponent,
-    AccountProfilComponent,
+    PaiementComponentSucces,
     Section7,
     FooterComponent,
   },
   mounted () {
-
-    if (sessionStorage.getItem('token') === null) {
-      this.$router.push('/')
-    }
 
     $('#menu-main-menu').removeAttr('style')
 
