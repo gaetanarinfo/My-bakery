@@ -30,7 +30,7 @@
 
     <div class="container">
 
-      <div class="row gutters-sm">
+      <div class="row gutters-sm u-column1" v-show="showSimulatedReturnData">
 
         <div class="col-md-3 mb-3">
 
@@ -86,8 +86,9 @@
 
               <li id="card4" class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <a @click="showCartOrder">
-                  <i class="fa-solid fa-basket-shopping me-2"></i>Historique des Commandes <span class="badge bg-warning float-right">{{
-                    0 }}</span>
+                  <i class="fa-solid fa-basket-shopping me-2"></i>Historique des Commandes <span
+                    class="badge bg-warning float-right">{{
+                      orders }}</span>
                 </a>
               </li>
 
@@ -294,12 +295,33 @@
 
           </div>
 
-          <div v-show="cartOrder" class="card">
+          <div v-show="cardOrder" class="card">
+
+            <div id="orderCard">
+
+              <h3 class="text-bold">Résumé de vos commandes</h3>
+
+              <ag-grid-vue v-if="ordersTable.length >= 1" :paginationPageSize="paginationPageSize"
+                :paginationPageSizeSelector="paginationPageSizeSelector" :tooltipShowDelay="tooltipShowDelay"
+                :tooltipHideDelay="tooltipHideDelay" :localeText="localeText" :rowData="rowData" :columnDefs="colDefs"
+                :pagination="true" class="ag-theme-quartz table-ag-grid">
+              </ag-grid-vue>
+
+              <p v-else class="fw-bolder">
+                <i class="fa fa-warning text-warning"></i>
+                Vous n'avez pas encore de commande sur My Nakery.
+              </p>
+
+            </div>
 
           </div>
 
         </div>
 
+      </div>
+
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
       </div>
 
     </div>
@@ -308,6 +330,9 @@
 
 </template>
 
+<style lang="css">
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+</style>
 
 <script>
 
@@ -319,6 +344,14 @@ import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import axios from 'axios'
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
+import { AgGridVue } from "ag-grid-vue3"; // Vue Data Grid Component
+import { AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { ModuleRegistry } from '@ag-grid-community/core';
+
+ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 moment.locale('fr')
 
@@ -333,15 +366,67 @@ const email = ref(null),
   cardProfil = ref(true),
   cardUpdateProfil = ref(false),
   cardActivity = ref(false),
-  cartOrder= ref(false),
+  cardOrder = ref(false),
   activity = ref(0),
-  activityTable = ref([])
+  orders = ref(0),
+  ordersTable = ref([]),
+  activityTable = ref([]),
+  tooltipShowDelay = ref(null),
+  tooltipHideDelay = ref(null);
+
+// Row Data: The data to be displayed.
+const rowData = ref([]),
+  paginationPageSize = ref(''),
+  paginationPageSizeSelector = ref('')
 
 export default defineComponent({
   name: 'AccountProfilComponent',
+  components: {
+    AgGridVue,
+  },
   data () {
 
+    // Column Definitions: Defines the columns to be displayed.
+    const colDefs = ref([
+      { field: "CreatedAt", hide: true },
+      { field: "idProduct", hide: true },
+      { field: "TooltipStatus", hide: true },
+      { field: "Nom2", hide: true },
+      { field: "IconPack", hide: true },
+      { field: "PaiementStatus", hide: true },
+      { field: "Id", hide: true },
+      { field: "#", filter: false, maxWidth: 80 },
+      {
+        field: "Nom", cellRenderer (params) {
+          return `<div><span class="missionSpan"><i class="${params.data.IconPack} missionIcon" /><span class="missionTexte">${params.data.Nom2}</span></span></div>`
+        }, filter: true, sortable: false, maxWidth: 150
+      },
+      { field: "Quantité", filter: false, maxWidth: 120, cellClass: 'cellCenter' },
+      { field: "Total HT", filter: true, maxWidth: 130 },
+      { field: "Total TTC", filter: true, maxWidth: 140 },
+      {
+        field: "Statut", cellRenderer (params) {
+          return '<span class="missionSpan"><img src="' + params.data.PaiementStatus + '" class="missionIcon"/></span>'
+        }, filter: false, sortable: false, maxWidth: 80, cellClass: 'cellCenter', tooltipValueGetter (p) {
+          return p.data.TooltipStatus
+        }
+      },
+      { field: "Crée le", filter: false },
+      { field: "Payé le", filter: false },
+      { field: "Rembourser le", filter: false },
+      {
+        field: "Actions", filter: false, sortable: false, cellRenderer (params) {
+          return '<a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
+        }, maxWidth: 100, cellClass: 'cellCenter'
+      }
+    ]);
+
     return {
+      tooltipShowDelay,
+      tooltipHideDelay,
+      localeText: AG_GRID_LOCALE_FR,
+      rowData,
+      colDefs,
       email,
       firstname,
       lastname,
@@ -353,9 +438,12 @@ export default defineComponent({
       cardProfil,
       cardUpdateProfil,
       cardActivity,
+      cardOrder,
       v$: useValidate(),
       activity,
       activityTable,
+      orders,
+      ordersTable,
 
       reg_naissance: null,
       reg_firstname: null,
@@ -364,6 +452,11 @@ export default defineComponent({
       reg_location: null,
       reg_mobile: null,
       reg_phone: null,
+
+      replaces: function (st, rep, repWith) {
+        const result = st.split(rep).join(repWith)
+        return result;
+      },
     }
   },
   setup () {
@@ -398,8 +491,15 @@ export default defineComponent({
       timeout: 3500
     })
 
+    // sets 10 rows per page (default is 100)
+    paginationPageSize.value = 10;
+
+    // allows the user to select the page size from a predefined list of page sizes
+    paginationPageSizeSelector.value = [5, 10, 20, 40, 60, 80, 100];
 
     return {
+      paginationPageSize,
+      paginationPageSizeSelector,
       deleteActivity (id) {
 
         if (confirm("Êtes-vous sûr de vouloir supprimer cette activité ?")) {
@@ -420,7 +520,7 @@ export default defineComponent({
         cardProfil.value = true
         cardUpdateProfil.value = false
         cardActivity.value = false
-        cartOrder.value = false
+        cardOrder.value = false
         $('#card1').addClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -430,7 +530,7 @@ export default defineComponent({
         cardProfil.value = false
         cardUpdateProfil.value = true
         cardActivity.value = false
-        cartOrder.value = false
+        cardOrder.value = false
         $('#card1').removeClass('active-list');
         $('#card2').addClass('active-list');
         $('#card3').removeClass('active-list');
@@ -440,7 +540,7 @@ export default defineComponent({
         cardProfil.value = false
         cardUpdateProfil.value = false
         cardActivity.value = true
-        cartOrder.value = false
+        cardOrder.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').addClass('active-list');
@@ -456,14 +556,14 @@ export default defineComponent({
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = true
-          }, 3000)
+          }, 1500)
         }
       },
       showCartOrder () {
         cardProfil.value = false
         cardUpdateProfil.value = false
         cardActivity.value = false
-        cartOrder.value = true
+        cardOrder.value = true
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -586,13 +686,24 @@ export default defineComponent({
   },
   validations () {
   },
+  beforeMount () {
+    tooltipShowDelay.value = 0;
+    tooltipHideDelay.value = 2000;
+  },
   mounted () {
+
+    const $q = useQuasar()
+    const store = useStore()
+
+    this.showTextLoading()
 
     setTimeout(() => {
       if (sessionStorage.getItem('token') !== null) {
         axios.get(process.env.WEBSITE + '/user-profil/' + SessionStorage.getItem('email'))
           .then((res) => {
             if (res.status === 200) {
+
+              var userId = res.data.user.id
 
               cardProfil.value = true
               cardUpdateProfil.value = false
@@ -619,17 +730,141 @@ export default defineComponent({
               this.reg_phone = res.data.user.phone
               this.reg_mobile = res.data.user.mobile
               this.reg_naissance = res.data.user.naissance
+
+              axios.get(process.env.WEBSITE + '/user-activity/' + res.data.user.email + '/' + res.data.user.id)
+                .then((res) => {
+                  if (res.status === 200) {
+                    // Static values
+                    activity.value = (res.data.activity == []) ? 0 : res.data.activity
+                    activityTable.value = res.data.activityTable
+                  }
+                })
+
+              axios.get(process.env.WEBSITE + '/user-orders/' + res.data.user.email + '/' + res.data.user.id)
+                .then((res) => {
+                  if (res.status === 200) {
+                    // Static values
+                    orders.value = (res.data.orders == []) ? 0 : res.data.orders
+                    ordersTable.value = res.data.ordersTable
+
+                    res.data.ordersTable.forEach(element => {
+
+                      var paypal_id = element.paypal_id
+
+                      rowData.value.push({
+                        'CreatedAt': moment(element.created_at).format('YYYY-MM-DD'),
+                        'idProduct': element.id,
+                        'TooltipStatus': element.titleStatus,
+                        'Nom2': 'Pack ' + element.title,
+                        'IconPack': element.image,
+                        'PaiementStatus': (element.status === 1) ? 'cross-in-warning.png' : (element.status === 2) ? 'tick-in-circle.png' : (element.status === 3) ? 'cross-in-circle.png' : (element.status === 4) ? 'cross-in-circle.png' : '',
+                        'Id': element.paypal_id,
+                        '#': element.id,
+                        'Quantité': element.qte,
+                        'Total HT': element.total_ht + ' €',
+                        'Total TTC': element.total_ttc + ' €',
+                        'Statut': true,
+                        'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
+                        'Payé le': (element.validate_at !== null) ? moment(element.validate_at).format('DD MMMM YYYY à HH:mm') : '/',
+                        'Rembourser le': (element.refund_at !== null) ? moment(element.refund_at).format('DD MMMM YYYY à HH:mm') : '/',
+                      })
+
+                    })
+
+                    function showNotif (message) {
+                      $q.notify({
+                        type: 'success-form',
+                        message: message
+                      })
+                    }
+
+                    function errorNotif (message = null) {
+                      $q.notify({
+                        type: 'error-form',
+                        message: message ? message : 'Votre demande de remboursement ne peut pas aboutir !'
+                      })
+                    }
+
+                    function refundOrder (id, tokenPaiement, date) {
+
+                      if (moment().add(14, 'days').format('YYYY-MM-DD') >= moment(date).format('YYYY-MM-DD')) {
+
+                        store.dispatch('fetchRefundOrder', { 'tokenPaiement': tokenPaiement })
+
+                        const paiement_status = computed(() => {
+                          return store.state.paiement_status
+                        })
+
+                        if (paiement_status.value.succes === true) {
+                          showNotif('Votre demande de remboursement à bien été pris en compte !');
+
+                          rowData.value = []
+
+                          setTimeout(() => {
+
+                            axios.get(process.env.WEBSITE + '/user-orders/' + email.value + '/' + userId)
+                              .then((res) => {
+                                if (res.status === 200) {
+                                  // Static values
+                                  orders.value = (res.data.orders == []) ? 0 : res.data.orders
+                                  ordersTable.value = res.data.ordersTable
+
+                                  res.data.ordersTable.forEach(element => {
+
+                                    var paypal_id = element.paypal_id
+
+                                    rowData.value.push({
+                                      'CreatedAt': moment(element.created_at).format('YYYY-MM-DD'),
+                                      'idProduct': element.id,
+                                      'TooltipStatus': element.titleStatus,
+                                      'Nom2': 'Pack ' + element.title,
+                                      'IconPack': element.image,
+                                      'PaiementStatus': (element.status === 1) ? 'cross-in-warning.png' : (element.status === 2) ? 'tick-in-circle.png' : (element.status === 3) ? 'cross-in-circle.png' : (element.status === 4) ? 'cross-in-circle.png' : '',
+                                      'Id': element.paypal_id,
+                                      '#': element.id,
+                                      'Quantité': element.qte,
+                                      'Total HT': element.total_ht + ' €',
+                                      'Total TTC': element.total_ttc + ' €',
+                                      'Statut': true,
+                                      'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
+                                      'Payé le': (element.validate_at !== null) ? moment(element.validate_at).format('DD MMMM YYYY à HH:mm') : '/',
+                                      'Rembourser le': (element.refund_at !== null) ? moment(element.refund_at).format('DD MMMM YYYY à HH:mm') : '/',
+                                    })
+
+                                  })
+
+                                }
+                              })
+
+                          }, 1000);
+
+                        } else {
+                          errorNotif(paiement_status.value.message);
+                        }
+
+                      } else {
+                        errorNotif('Votre demande de remboursement ne peut pas aboutir !');
+                      }
+
+                    }
+
+                    $(document).on('click', '#refundButton', function (e) {
+
+                      e.preventDefault()
+
+                      var id = $(this).data('id'),
+                        date = $(this).data('date'),
+                        tokenPaiement = $(this).data('token')
+
+                      refundOrder(id, tokenPaiement, date)
+
+                    })
+
+                  }
+                })
             }
           })
 
-        axios.get(process.env.WEBSITE + '/user-activity/' + SessionStorage.getItem('email') + '/' + this.user.id)
-          .then((res) => {
-            if (res.status === 200) {
-              // Static values
-              activity.value = (res.data.activity == []) ? 0 : res.data.activity
-              activityTable.value = res.data.activityTable
-            }
-          })
       } else {
         this.$router.push('/')
       }

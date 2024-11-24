@@ -353,11 +353,23 @@ export default createStore({
 
     },
 
+    async fetchRefundOrder ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-refund', { 'tokenPaiement': data.tokenPaiement })
+        .then((res) => {
+            this.paiement_status = res.data
+            commit('SET_PAIEMENT_STATUS', res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
     setOrderValidate ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/order-validate', { 'paymentId': data.paymentId, 'status': data.status })
         .then((res) => {
-          console.log(res.data);
 
           if (res.data.succes === true) {
             this.paiement_status = res.data
@@ -373,12 +385,10 @@ export default createStore({
 
     },
 
-    setOrderCancel({ commit, state }, data) {
+    setOrderCancel ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/order-cancel', { 'paymentId': data.paymentId, 'status': data.status })
         .then((res) => {
-          console.log(res.data);
-
           if (res.data.succes === true) {
             this.paiement_status = res.data
             commit('SET_PAIEMENT_STATUS', res.data)
@@ -391,7 +401,7 @@ export default createStore({
           console.log(error)
         })
 
-    }
+    },
 
   },
   mutations: {

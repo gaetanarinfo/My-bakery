@@ -45,7 +45,7 @@
                 {{ product.title }}
               </h4>
 
-              <div class="plan-cost"><span class="plan-price">{{ replaces(product.price, '.', ',') }} HT €</span></div>
+              <div class="plan-cost"><span class="plan-price">{{ product.price, '.', ',' }} HT €</span></div>
 
             </header>
 
@@ -102,10 +102,6 @@ export default defineComponent({
     return {
       products,
       showCart,
-      replaces: function (st, rep, repWith) {
-        const result = st.split(rep).join(repWith)
-        return result;
-      },
       addCart (id) {
 
         var counter = this.products.length

@@ -30,7 +30,7 @@
 
     <div class="container">
 
-      <div class="row gutters-sm">
+      <div class="u-column1 row gutters-sm" v-show="showSimulatedReturnData">
 
         <div v-if="shopping_cart" class="ps-cart-listing">
 
@@ -138,6 +138,10 @@
 
       </div>
 
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
+      </div>
+
     </div>
 
   </div>
@@ -159,6 +163,8 @@ export default defineComponent({
   setup () {
 
     const store = useStore()
+    const showSimulatedReturnData = ref(true)
+    const visible = ref(false)
 
     const products_cart = computed(() => {
       return store.state.products_cart
@@ -171,22 +177,37 @@ export default defineComponent({
     store.dispatch('fetchProductsCart', { 'cart': LocalStorage.getItem('shopping_cart') })
 
     return {
+      showTextLoading (duration, express = null) {
+        visible.value = true
+        $('.u-column1').fadeOut(300)
+        showSimulatedReturnData.value = false
+
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, duration)
+        }
+      },
       user,
       createPaiement () {
 
         if (sessionStorage.getItem('token') !== null) {
-          store.dispatch('setInsertCommandeClient', { 'user_id': this.user.id, 'product_id': LocalStorage.getItem('shopping_cart'), 'status': '1', 'qte': LocalStorage.getItem('shopping_cart_qte'), 'total_ht' : LocalStorage.getItem('shopping_total_ht'), 'total_ttc' : LocalStorage.getItem('shopping_total_ttc') })
+          this.showTextLoading(3000)
+          store.dispatch('setInsertCommandeClient', { 'user_id': this.user.id, 'product_id': LocalStorage.getItem('shopping_cart'), 'status': '1', 'qte': LocalStorage.getItem('shopping_cart_qte'), 'total_ht': LocalStorage.getItem('shopping_total_ht'), 'total_ttc': LocalStorage.getItem('shopping_total_ttc') })
         } else {
           LocalStorage.setItem('prev_url', '/cart')
           this.$router.push('/my-account')
         }
-        
+
       },
       shopping_cart: LocalStorage.getItem('shopping_cart'),
       shopping_total_ht,
       shopping_total_ttc,
       shopping_cart_qte,
       products_cart,
+      visible,
+      showSimulatedReturnData,
       addQuantityProduct (price) {
 
         var qte = shopping_cart_qte.value + 1
@@ -248,6 +269,8 @@ export default defineComponent({
     }
   },
   mounted () {
+
+    this.showTextLoading(1500)
 
     setTimeout(() => {
 

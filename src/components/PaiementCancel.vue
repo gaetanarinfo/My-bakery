@@ -1,6 +1,6 @@
 <template name="PaiementCancelComponent">
 
-  <div class="background fadeIn2 bb background5">
+  <div class="background bb background5 u-column1" v-show="showSimulatedReturnData">
 
     <div class="content">
 
@@ -32,7 +32,7 @@
 
     <div class="container">
 
-      <div class="cartEmpty" v-if="paiement_status.status === 1">
+      <div class="u-column1 cartEmpty" v-show="showSimulatedReturnData" v-if="paiement_status.status === 1">
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
@@ -47,7 +47,7 @@
 
       </div>
 
-      <div class="cartEmpty" v-else-if="paiement_status.status === 3">
+      <div class="u-column1 cartEmpty" v-show="showSimulatedReturnData" v-else-if="paiement_status.status === 3">
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
@@ -62,6 +62,9 @@
 
       </div>
 
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
+      </div>
 
     </div>
 
@@ -85,7 +88,8 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const route = useRoute()
-
+    const showSimulatedReturnData = ref(true)
+    const visible = ref(false)
     const user = computed(() => {
       return store.state.stateUser.user
     })
@@ -93,9 +97,6 @@ export default defineComponent({
     const paiement_status = computed(() => {
       return store.state.paiement_status
     })
-
-    console.log(paiement_status.status);
-    
 
     if (route.params.paymentId !== null) {
       store.dispatch('setOrderCancel', { 'status': 3, 'paymentId': route.params.paymentId })
@@ -110,6 +111,20 @@ export default defineComponent({
     }
 
     return {
+      showTextLoading (express = null) {
+        visible.value = true
+        $('.u-column1').fadeOut(300)
+        showSimulatedReturnData.value = false
+
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, 1500)
+        }
+      },
+      visible,
+      showSimulatedReturnData,
       user,
       firstname,
       paiement_status
@@ -117,6 +132,8 @@ export default defineComponent({
 
   },
   mounted () {
+
+    this.showTextLoading()
 
     setTimeout(() => {
       if (sessionStorage.getItem('token') !== null) {

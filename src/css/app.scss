@@ -1565,6 +1565,26 @@ a:hover {
   font-weight: 500;
 }
 
+#my-account-profil #orderCard h3 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+#my-account-profil #orderCard {
+  padding: 15px;
+}
+
+#my-account-profil #orderCard table tr {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+#my-account-profil #orderCard table tr a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
 /* BLOG */
 
 .last-blog article {
@@ -5194,4 +5214,33 @@ button.ps-btn:hover {
 
 .hide {
   display: none !important;
+}
+
+.cellCenter {
+  text-align: center;
+}
+
+.cellRight {
+  text-align: right;
+}
+
+.missionSpan {
+  display: inline-block;
+}
+
+.missionSpan i {
+  font-size: 25px;
+  color: #f39c12;
+}
+
+.missionTexte {
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  position: absolute;
+}
+
+.table-ag-grid {
+  width: 100%;
+  height: 515px
 }

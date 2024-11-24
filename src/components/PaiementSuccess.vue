@@ -1,6 +1,6 @@
 <template name="PaiementSuccesComponent">
 
-  <div class="background fadeIn2 bb background5">
+  <div class="background bb background5 u-column1" v-show="showSimulatedReturnData">
 
     <div class="content">
 
@@ -32,7 +32,7 @@
 
     <div class="container">
 
-      <div class="cartEmpty" v-if="paiement_status.status === 1">
+      <div class="cartEmpty u-column1" v-show="showSimulatedReturnData" v-if="paiement_status.status === 1">
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
@@ -48,20 +48,25 @@
 
       </div>
 
-      <div class="cartEmpty" v-else-if="paiement_status.status === 2">
+      <div class="cartEmpty u-column1" v-show="showSimulatedReturnData" v-else-if="paiement_status.status === 2">
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
-        <h3>Oups {{ paiement_status.firstname }},<br/>votre commande a déjà été validée</h3>
+        <h3>Oups {{ paiement_status.firstname }},<br />votre commande a déjà été validée</h3>
 
         <p class="mt-1 mb-1">Dans quelques instants, vous pourrez profiter de celui-ci.</p>
 
         <p class="mt-1">Nous vous souhaitons un agréable moment sur My Bakery.</p>
 
-        <a class="ps-btn ps-btn-mobile me-2" @click="this.$router.push('/my-account-profil/historique-commandes')">Historique de mes commandes</a>
+        <a class="ps-btn ps-btn-mobile me-2"
+          @click="this.$router.push('/my-account-profil/historique-commandes')">Historique de mes commandes</a>
 
         <a class="ps-btn" href="#/">Retour à l'accueil</a>
 
+      </div>
+
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
       </div>
 
     </div>
@@ -86,7 +91,8 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const route = useRoute()
-
+    const showSimulatedReturnData = ref(true)
+    const visible = ref(false)
     const user = computed(() => {
       return store.state.stateUser.user
     })
@@ -108,6 +114,20 @@ export default defineComponent({
     }
 
     return {
+      showTextLoading (express = null) {
+        visible.value = true
+        $('.u-column1').fadeOut(300)
+        showSimulatedReturnData.value = false
+
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, 1500)
+        }
+      },
+      visible,
+      showSimulatedReturnData,
       user,
       firstname,
       paiement_status
@@ -115,6 +135,8 @@ export default defineComponent({
 
   },
   mounted () {
+
+    this.showTextLoading()
 
     setTimeout(() => {
       if (sessionStorage.getItem('token') !== null) {
