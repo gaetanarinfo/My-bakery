@@ -34,7 +34,7 @@
 
         <div class="col-md-3 mb-3">
 
-          <div class="card">
+          <div class="card card-perso">
 
             <div class="card-body">
 
@@ -49,8 +49,12 @@
                   <p class="text-secondary text-bold mb-1"><i class="fa-solid fa-briefcase text-blue me-1"></i>
                     {{ fonction }}</p>
 
-                  <p class="text-muted text-bold font-size-sm"><i class="fa-solid fa-location-dot text-green me-1"></i>
+                  <p class="text-muted text-bold font-size-sm mb-1"><i
+                      class="fa-solid fa-location-dot text-green me-1"></i>
                     {{ location }}</p>
+
+                  <p class="text-muted text-bold font-size-sm"><i class="fa-solid fa-coins text-brown-5 me-1"></i>
+                    {{ credits }} Crédits disponible </p>
 
                 </div>
 
@@ -65,9 +69,16 @@
             <ul class="list-group list-clic list-group-flush">
 
               <li id="card1"
-                class="active-list list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                :class="(yearRouter !== undefined) ? 'list-group-item d-flex justify-content-between align-items-center flex-wrap' : 'active-list list-group-item d-flex justify-content-between align-items-center flex-wrap'">
                 <a @click="showProfil">
                   <p class="mb-0"><i class="fa fa-user me-2"></i>Mon profil</p>
+                </a>
+              </li>
+
+              <li id="card5" v-if="admin === 1"
+                :class="(yearRouter !== undefined) ? 'active-list list-group-item d-flex justify-content-between align-items-center flex-wrap' : 'list-group-item d-flex justify-content-between align-items-center flex-wrap'">
+                <a @click="showBudget">
+                  <p class="mb-0"><i class="fa-solid fa-chart-line me-2"></i>Suivi budget</p>
                 </a>
               </li>
 
@@ -316,12 +327,192 @@
 
           </div>
 
+          <div v-if="admin === 1" v-show="cardBudget" class="card">
+
+            <div id="budgetCard" class="filterCardE">
+
+              <div class="row bakery-single">
+                <span><strong>Filtres :</strong></span>
+                <div class="col-2 mt-0 pt-1 special-select">
+                  <select v-model="changeYear" @change="changeYearSelected($event)"
+                    class="form-select select-filter select-bakery" name="changeYear">
+                    <option
+                      v-for="year in Array.from({ length: String(new Date().getFullYear()) - 2015 }, (value, index) => 2022 + index)"
+                      :value="year">{{ year }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <hr />
+
+            <div id="budgetCard" class="budgetCardE">
+
+              <div class="card text-bg-secondary mb-3 me-3" style="max-width: 18rem;">
+                <div class="card-header">Commande client</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total des commandes</h5>
+                  <p class="card-text">{{ totalOrders }} commande(s) clients</p>
+                </div>
+              </div>
+
+              <div class="card text-bg-secondary mb-3 me-3" style="max-width: 18rem;">
+                <div class="card-header">Pour l'année (<strong>{{ year }}</strong>)</div>
+                <div class="card-body">
+                  <h5 class="card-title">HT des commandes</h5>
+                  <p class="card-text">{{ totalHT }} €</p>
+                </div>
+              </div>
+
+              <div class="card text-bg-secondary mb-3 me-3" style="max-width: 18rem;">
+                <div class="card-header">Pour l'année (<strong>{{ year }}</strong>)</div>
+                <div class="card-body">
+                  <h5 class="card-title">TTC des commandes</h5>
+                  <p class="card-text">{{ totalTTC }} €</p>
+                </div>
+              </div>
+
+            </div>
+
+            <hr />
+
+            <div id="budgetCard">
+
+              <h3 class="text-bold">Suivi du budget My Bakery</h3>
+
+              <ag-charts :options="optionsBudgets"> </ag-charts>
+
+              <hr />
+
+              <ag-charts :options="optionsRefund"> </ag-charts>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
       <div class="loadingDiv" v-show="visible">
         <q-spinner-grid size="70px" color="info" />
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalOrderShow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+      <div class="modal-content">
+
+        <div class="modal-body">
+
+          <div class="card">
+
+            <div class="title">Reçu de votre achat
+              <div>
+                <img src="paypal.png" style="max-width: 60px;">
+              </div>
+            </div>
+
+            <div class="info">
+
+              <div class="row">
+
+                <div class="col-7">
+                  <span class="heading" id="staticDate">Date</span><br>
+                  <span class="details" id="staticOrderShow2"></span><br>
+                  <span class="heading">Coordonnées</span><br>
+                  <span id="staticOrderShow8"></span><br>
+                  <span id="staticOrderShow9"></span><br>
+                  <span id="staticOrderShow10"></span><br>
+                  <span id="staticOrderShow11"></span><br>
+                  <span id="staticOrderShow12"></span>
+                </div>
+
+                <div class="col-5 pull-right">
+                  <span class="heading">Commande n°</span><br>
+                  <span class="details" id="staticOrderShow3"></span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="pricing">
+
+              <div class="row">
+
+                <div class="col-9">
+                  <span class="name" id="staticOrderShow4"></span>
+                  <div id="staticOrderShow13"></div>
+                </div>
+
+                <div class="col-3">
+                  <span class="price" id="staticOrderShow5"></span>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-9">
+                  <span class="name">Frais de mise en service</span>
+                </div>
+
+                <div class="col-3">
+                  <span class="price" id="staticOrderShow6"></span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="total">
+
+              <div class="row">
+                <div class="col-9">Total TTC</div>
+                <div class="col-3" id="staticOrderShow7"></div>
+              </div>
+
+            </div>
+
+            <div class="tracking">
+              <div class="title">Suivi de commande</div>
+            </div>
+
+            <div class="progress-track">
+
+              <ul id="progressbar">
+
+              </ul>
+
+            </div>
+
+            <div class="footer">
+
+              <div class="row">
+
+                <div class="col-2"><img class="img-fluid" src="contact.png"></div>
+                <div class="col-10">Vous voulez de l'aide ? &nbsp;<a href="mailto:contact@my-bakery.fr">
+                    Contactez-nous</a></div>
+                <div class="text-right">
+                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -339,7 +530,8 @@
 import { defineComponent, onMounted, computed } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
-import { SessionStorage, useQuasar } from 'quasar'
+import { useRoute, useRouter } from 'vue-router';
+import { date, SessionStorage, useQuasar } from 'quasar'
 import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
@@ -350,39 +542,54 @@ import { AgGridVue } from "ag-grid-vue3"; // Vue Data Grid Component
 import { AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry } from '@ag-grid-community/core';
+import { AgCharts } from 'ag-charts-vue3';
+import { AG_CHARTS_LOCALE_FR_FR } from 'ag-charts-locale';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 moment.locale('fr')
 
-const email = ref(null),
-  firstname = ref(null),
-  lastname = ref(null),
-  fonction = ref(null),
-  location = ref(null),
-  phone = ref(null),
-  mobile = ref(null),
-  naissance = ref(null),
+const email = ref(''),
+  firstname = ref(''),
+  lastname = ref(''),
+  fonction = ref(''),
+  location = ref(''),
+  phone = ref(''),
+  mobile = ref(''),
+  naissance = ref(''),
   cardProfil = ref(true),
   cardUpdateProfil = ref(false),
   cardActivity = ref(false),
   cardOrder = ref(false),
+  cardBudget = ref(false),
   activity = ref(0),
   orders = ref(0),
   ordersTable = ref([]),
   activityTable = ref([]),
-  tooltipShowDelay = ref(null),
-  tooltipHideDelay = ref(null);
+  tooltipShowDelay = ref(''),
+  tooltipHideDelay = ref(''),
+  credits = ref(0),
+  admin = ref(0),
+  totalTTC = ref(0),
+  totalHT = ref(0),
+  totalOrders = ref(0)
 
 // Row Data: The data to be displayed.
 const rowData = ref([]),
   paginationPageSize = ref(''),
   paginationPageSizeSelector = ref('')
 
+const arrayBudget = ref([]),
+  arrayRefund = ref([])
+
+const optionsBudgets = ref(),
+  optionsRefund = ref()
+
 export default defineComponent({
   name: 'AccountProfilComponent',
   components: {
     AgGridVue,
+    'ag-charts': AgCharts,
   },
   data () {
 
@@ -416,12 +623,16 @@ export default defineComponent({
       { field: "Rembourser le", filter: false },
       {
         field: "Actions", filter: false, sortable: false, cellRenderer (params) {
-          return '<a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
+          return '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a><a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
         }, maxWidth: 100, cellClass: 'cellCenter'
       }
     ]);
 
     return {
+      changeYear: (this.$route.params.year !== undefined) ? this.$route.params.year : moment().format('YYYY'),
+      totalOrders,
+      totalHT,
+      totalTTC,
       tooltipShowDelay,
       tooltipHideDelay,
       localeText: AG_GRID_LOCALE_FR,
@@ -439,19 +650,22 @@ export default defineComponent({
       cardUpdateProfil,
       cardActivity,
       cardOrder,
+      cardBudget,
       v$: useValidate(),
       activity,
       activityTable,
       orders,
       ordersTable,
+      credits,
+      admin,
 
-      reg_naissance: null,
-      reg_firstname: null,
-      reg_lastname: null,
-      reg_function: null,
-      reg_location: null,
-      reg_mobile: null,
-      reg_phone: null,
+      reg_naissance: '',
+      reg_firstname: '',
+      reg_lastname: '',
+      reg_function: '',
+      reg_location: '',
+      reg_mobile: '',
+      reg_phone: '',
 
       replaces: function (st, rep, repWith) {
         const result = st.split(rep).join(repWith)
@@ -464,6 +678,8 @@ export default defineComponent({
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
     const $q = useQuasar()
+    const route = useRoute()
+    const router = useRouter()
 
     const stateUser = computed(() => {
       return store.state.stateUser
@@ -497,7 +713,161 @@ export default defineComponent({
     // allows the user to select the page size from a predefined list of page sizes
     paginationPageSizeSelector.value = [5, 10, 20, 40, 60, 80, 100];
 
+    store.dispatch('fetchBudget', { 'year': (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear()) })
+
+    setTimeout(() => {
+
+      const show_budget = computed(() => {
+        return store.state.show_budget
+      })
+
+      var budget = show_budget.value,
+        months = show_budget.value.months,
+        i = -1,
+        i2 = -1
+
+      budget.budget.forEach(element => {
+        i++
+        arrayBudget.value.push({ month: months[i], Paypal: element.totalTTC, Remboursement: element.total })
+      });
+
+      budget.refund.forEach(element => {
+        i2++
+        arrayRefund.value.push({ month: months[i2], Remboursement: element.total })
+      });
+
+      var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
+
+      optionsBudgets.value = {
+        title: {
+          text: "Budget pour l'année " + aYear,
+        },
+        // Data: Data to be displayed in the chart
+        data: arrayBudget.value,
+        // Series: Defines which chart type and data to use
+        series: [
+          {
+            type: 'line', xKey: 'month', stroke: "#129fc4", marker: {
+              fill: '#129fc4',
+              stroke: '#129fc4',
+            }, stacked: true, yKey: 'Paypal', yName: "Paiement Paypal"
+          },
+        ],
+        locale: {
+          localeText: AG_CHARTS_LOCALE_FR_FR,
+        },
+        legend: {
+          enabled: true,
+          item: {
+            marker: {
+              size: 20,
+              strokeWidth: 3,
+              shape: 'plus', // 'circle', 'square', 'cross', 'plus', 'triangle'
+            },
+          },
+        },
+        axes: [
+          {
+            position: "bottom",
+            type: "category",
+            title: {
+              text: "Mois de l'année en cours",
+            },
+            crossLines: [
+              {
+                type: "line",
+              },
+            ],
+          },
+          {
+            position: "left",
+            type: "number",
+            title: {
+              text: "Montant (€)",
+            },
+            label: {
+              formatter: (params) => `${params.value} €`,
+            },
+            crossLines: [
+              {
+                type: "line",
+              },
+            ],
+          },
+        ],
+      }
+
+      optionsRefund.value = {
+        title: {
+          text: "Remboursement pour l'année " + aYear,
+        },
+        // Data: Data to be displayed in the chart
+        data: arrayRefund.value,
+        // Series: Defines which chart type and data to use
+        series: [
+          {
+            type: 'line', xKey: 'month', stroke: "#D21E75", stacked: true, marker: {
+              fill: '#D21E75',
+              stroke: '#D21E75',
+            }, yKey: 'Remboursement', yName: "Remboursement Paypal"
+          }
+        ],
+        locale: {
+          localeText: AG_CHARTS_LOCALE_FR_FR,
+        },
+        legend: {
+          enabled: true,
+          item: {
+            marker: {
+              size: 20,
+              strokeWidth: 3,
+              shape: 'circle', // 'circle', 'square', 'cross', 'plus', 'triangle'
+            },
+          },
+        },
+        axes: [
+          {
+            position: "bottom",
+            type: "category",
+            title: {
+              text: "Mois de l'année en cours",
+            },
+            crossLines: [
+              {
+                type: "line",
+              },
+            ],
+          },
+          {
+            position: "left",
+            type: "number",
+            title: {
+              text: "Montant (€)",
+            },
+            label: {
+              formatter: (params) => `${params.value} €`,
+            },
+            crossLines: [
+              {
+                type: "line",
+                stroke: "#D21E75",
+              },
+            ],
+          },
+        ],
+      }
+
+    }, 1000);
+
     return {
+      yearRouter: route.params.year,
+      changeYearSelected (e) {
+        window.location.href = '/#/my-account-profil/' + e.target.value
+        router.go()
+      },
+      year: (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear()),
+      optionsBudgets,
+      optionsRefund,
       paginationPageSize,
       paginationPageSizeSelector,
       deleteActivity (id) {
@@ -521,30 +891,36 @@ export default defineComponent({
         cardUpdateProfil.value = false
         cardActivity.value = false
         cardOrder.value = false
+        cardBudget.value = false
         $('#card1').addClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
       },
       showUpdateProfil () {
         cardProfil.value = false
         cardUpdateProfil.value = true
         cardActivity.value = false
         cardOrder.value = false
+        cardBudget.value = false
         $('#card1').removeClass('active-list');
         $('#card2').addClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
       },
       showActivity () {
         cardProfil.value = false
         cardUpdateProfil.value = false
         cardActivity.value = true
         cardOrder.value = false
+        cardBudget.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').addClass('active-list');
         $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
       },
       showTextLoading (express = null) {
         visible.value = true
@@ -564,10 +940,12 @@ export default defineComponent({
         cardUpdateProfil.value = false
         cardActivity.value = false
         cardOrder.value = true
+        cardBudget.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').addClass('active-list');
+        $('#card5').removeClass('active-list');
       },
       deleteAccount () {
 
@@ -596,6 +974,18 @@ export default defineComponent({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
         })
+      },
+      showBudget () {
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = true
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').addClass('active-list');
       },
       visible,
       user,
@@ -697,6 +1087,8 @@ export default defineComponent({
 
     this.showTextLoading()
 
+    if (this.$route.params.year !== undefined) this.year = this.$route.params.year
+
     setTimeout(() => {
       if (sessionStorage.getItem('token') !== null) {
         axios.get(process.env.WEBSITE + '/user-profil/' + SessionStorage.getItem('email'))
@@ -705,12 +1097,29 @@ export default defineComponent({
 
               var userId = res.data.user.id
 
-              cardProfil.value = true
-              cardUpdateProfil.value = false
-              cardActivity.value = false
-              $('#card1').addClass('active-list');
-              $('#card2').removeClass('active-list');
-              $('#card3').removeClass('active-list');
+              if (this.$route.params.year !== undefined) {
+                cardProfil.value = false
+                cardUpdateProfil.value = false
+                cardActivity.value = false
+                cardOrder.value = false
+                cardBudget.value = true
+                $('#card1').removeClass('active-list');
+                $('#card2').removeClass('active-list');
+                $('#card3').removeClass('active-list');
+                $('#card4').removeClass('active-list');
+                $('#card5').addClass('active-list');
+              } else {
+                cardProfil.value = true
+                cardUpdateProfil.value = false
+                cardActivity.value = false
+                cardOrder.value = false
+                cardBudget.value = false
+                $('#card1').addClass('active-list');
+                $('#card2').removeClass('active-list');
+                $('#card3').removeClass('active-list');
+                $('#card4').removeClass('active-list');
+                $('#card5').removeClass('active-list');
+              }
 
               // Static values
               email.value = res.data.user.email
@@ -721,6 +1130,8 @@ export default defineComponent({
               phone.value = res.data.user.phone
               mobile.value = res.data.user.mobile
               naissance.value = res.data.user.naissance
+              credits.value = res.data.user.credits
+              admin.value = res.data.user.admin
 
               // Form dynamique values
               this.reg_firstname = res.data.user.firstname
@@ -740,12 +1151,21 @@ export default defineComponent({
                   }
                 })
 
-              axios.get(process.env.WEBSITE + '/user-orders/' + res.data.user.email + '/' + res.data.user.id)
+              var axYear = (this.$route.params.year !== undefined) ? this.$route.params.year : String(new Date().getFullYear())
+
+              axios.get(process.env.WEBSITE + '/user-orders/' + res.data.user.email + '/' + res.data.user.id + '/' + axYear)
                 .then((res) => {
+                  console.log(res);
+
                   if (res.status === 200) {
                     // Static values
                     orders.value = (res.data.orders == []) ? 0 : res.data.orders
                     ordersTable.value = res.data.ordersTable
+                    totalOrders.value = (res.data.orders == []) ? 0 : res.data.orders
+                    totalHT.value = (res.data.totalHT == []) ? 0 : res.data.totalHT
+                    totalTTC.value = (res.data.totalTTC == []) ? 0 : res.data.totalTTC
+
+                    console.log(res.data)
 
                     res.data.ordersTable.forEach(element => {
 
@@ -802,7 +1222,9 @@ export default defineComponent({
 
                           setTimeout(() => {
 
-                            axios.get(process.env.WEBSITE + '/user-orders/' + email.value + '/' + userId)
+                            var axYear = (this.$route.params.year !== undefined) ? this.$route.params.year : String(new Date().getFullYear())
+
+                            axios.get(process.env.WEBSITE + '/user-orders/' + email.value + '/' + userId + '/' + axYear)
                               .then((res) => {
                                 if (res.status === 200) {
                                   // Static values
@@ -848,6 +1270,67 @@ export default defineComponent({
 
                     }
 
+                    function showOrder (paypalId) {
+
+                      store.dispatch('fetchShowOrder', { 'paypalId': paypalId })
+
+                      const show_order = computed(() => {
+                        return store.state.show_order
+                      })
+
+                      setTimeout(() => {
+                        $('#modalOrderShow').modal('toggle');
+                      }, 1500);
+
+                      // Modal Static Values
+
+                      setTimeout(() => {
+                        if (show_order.value.order.status >= 4) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
+                        else $('#staticOrderShow2').text(moment('Rembourser le ' + show_order.value.order.refund_at).format('DD MMMM YYYY à HH:mm'))
+
+                        if (show_order.value.order.status === 1) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
+                        if (show_order.value.order.status === 3) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
+
+                        if (show_order.value.order.status === 1) $('#staticDate').text('Crée le')
+                        if (show_order.value.order.status === 2) $('#staticDate').text('Payé le')
+                        if (show_order.value.order.status === 3) $('#staticDate').text('Crée le')
+                        if (show_order.value.order.status === 4) $('#staticDate').text('Rembourser le')
+                        if (show_order.value.order.status === 5) $('#staticDate').text('Livré le')
+
+                        $('#staticOrderShow3').text(String(show_order.value.order.paypal_id).replace('PAYID-', ''))
+                        $('#staticOrderShow4').html('<span><i class="me-2 ' + show_order.value.order.image + '"></i></span>' + '<span>Pack ' + show_order.value.order.title + '</span>')
+                        $('#staticOrderShow5').text(show_order.value.order.total_ht + ' €')
+                        $('#staticOrderShow6').text('0.00 €')
+                        $('#staticOrderShow7').text(show_order.value.order.total_ttc + ' €')
+
+                        $('#staticOrderShow8').text(show_order.value.order.recipient_name_payer)
+                        $('#staticOrderShow9').text(show_order.value.order.email_payer)
+                        $('#staticOrderShow10').text(show_order.value.order.line_payer)
+                        $('#staticOrderShow11').text(show_order.value.order.city_payer + ' ' + show_order.value.order.postal_code_payer)
+                        $('#staticOrderShow12').text(show_order.value.order.country_code_payer)
+                        $('#staticOrderShow13').html('<ul>' + show_order.value.order.content + '</ul>')
+
+                        // ProgressBar
+                        var progressLine = ''
+
+                        if (show_order.value.order.status >= 1) progressLine += '<li class="step0 active" id="step1">Commande crée</li>'
+                        if (show_order.value.order.status >= 1) progressLine += '<li class="step0 active text-center" id="step2">Paiement en attente</li>'
+
+                        if (show_order.value.order.status >= 2 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
+                        if (show_order.value.order.status === 3) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
+                        if (show_order.value.order.status >= 2 && show_order.value.order.status !== 3 && show_order.value.order.status !== 4) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
+
+                        if (show_order.value.order.status <= 1) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
+                        if (show_order.value.order.status >= 4 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step4">Commande livré</li>'
+                        if (show_order.value.order.status <= 3) progressLine += '<li class="step0 text-right" id="step4">Commande livré</li>'
+
+
+                        $('#progressbar').html(progressLine)
+
+                      }, 1000);
+
+                    }
+
                     $(document).on('click', '#refundButton', function (e) {
 
                       e.preventDefault()
@@ -857,6 +1340,16 @@ export default defineComponent({
                         tokenPaiement = $(this).data('token')
 
                       refundOrder(id, tokenPaiement, date)
+
+                    })
+
+                    $(document).on('click', '#showOrderButton', function (e) {
+
+                      e.preventDefault()
+
+                      var paypal = $(this).data('paypal')
+
+                      showOrder(paypal)
 
                     })
 

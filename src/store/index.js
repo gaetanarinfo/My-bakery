@@ -24,6 +24,8 @@ export default createStore({
     markersBakerys: [],
     products_cart: [],
     paiement_status: [],
+    show_order: [],
+    show_budget: [],
     stateUser: {
       user: null,
       token: null,
@@ -52,6 +54,8 @@ export default createStore({
     getProducts: (state) => state.products,
     getProductsCart: (state) => state.products_cart,
     getPaiementStatus: (state) => state.paiement_status,
+    getShowOrder: (state) => state.show_order,
+    getShowBudget: (state) => state.show_budget,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -403,8 +407,46 @@ export default createStore({
 
     },
 
+    fetchShowOrder  ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/order-show/' + data.paypalId)
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.show_order = res.data
+            commit('SET_SHOW_ORDER', res.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
+    fetchBudget ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/user-budgets/' + data.year)
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.show_budget = res.data
+            commit('SET_SHOW_BUDGET', res.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
   },
   mutations: {
+
+    SET_SHOW_BUDGET (state, show_budget) {
+      state.show_budget = show_budget
+    },
+
+    SET_SHOW_ORDER (state, show_order) {
+      state.show_order = show_order
+    },
 
     SET_PAIEMENT_STATUS (state, paiement_status) {
       state.paiement_status = paiement_status

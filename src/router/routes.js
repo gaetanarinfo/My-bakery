@@ -203,6 +203,18 @@ const routes = [
         }
       },
       {
+        path: '/my-account-profil/:year', component: () => import('pages/MyAccountProfil.vue'),
+        meta: {
+          title: 'Gestion de mon compte',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
         path: '/bakerys-region/:region', component: () => import('pages/BakerysRegion.vue'),
         meta: {
           title: 'Boulangeries par région',
