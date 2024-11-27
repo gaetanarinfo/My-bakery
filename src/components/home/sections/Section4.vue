@@ -12,7 +12,7 @@
 
             <div class="section text-center">
 
-              <h2 class="title">Nos meilleurs boulangerie&nbsp;!</h2>
+              <h2 class="title">Nos boulangeries sont ici&nbsp;!</h2>
 
               <p class="description">Tout est dit, ça se passe en dessous.</p>
 
@@ -55,45 +55,45 @@
 
                           <div class="carousel-item active">
 
-<a :href="'#/bakery/' + bakery.url" style="text-align: center;display: grid;justify-content: center;background-color: white;">
-  <img v-if="bakery.image === 'default.jpg'" style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
-    :src="'bakerys/' + bakery.image" :alt="bakery.title">
-  <img v-else class="d-block w-100"
-    :src="folderPicture + bakery.image"
-    :alt="bakery.title">
-</a>
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                              style="text-align: center;display: grid;justify-content: center;background-color: white;">
+                              <img v-if="bakery.image === 'default.jpg'"
+                                style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
+                                :src="'bakerys/' + bakery.image" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image" :alt="bakery.title">
+                            </a>
 
-</div>
+                          </div>
 
-<div v-if="bakery.image_2 !== 'default2.jpg'" class="carousel-item">
+                          <div v-if="bakery.image_2 !== 'default2.jpg'" class="carousel-item">
 
-<a :href="'#/bakery/' + bakery.url">
-    <div
-    :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-</div>
-  </a>
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
+                              <div
+                                :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                              </div>
+                            </a>
 
-</div>
+                          </div>
 
-<div v-if="bakery.image_3 !== 'default.jpg'" class="carousel-item">
+                          <div v-if="bakery.image_3 !== 'default.jpg'" class="carousel-item">
 
-<a :href="'#/bakery/' + bakery.url">
-  <div
-  :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-</div>
-</a>
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
+                              <div
+                                :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                              </div>
+                            </a>
 
-</div>
+                          </div>
 
-<div v-if="bakery.image_4 !== 'default2.jpg'" class="carousel-item">
+                          <div v-if="bakery.image_4 !== 'default2.jpg'" class="carousel-item">
 
-<a :href="'#/bakery/' + bakery.url">
-  <div
-  :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-</div>
-</a>
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
+                              <div
+                                :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
+                              </div>
+                            </a>
 
-</div>
+                          </div>
 
 
                         </div>
@@ -112,7 +112,8 @@
 
                       </div>
 
-                      <a :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
+                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title
+                        }}</a>
 
                       <div>
                         <p class="content">{{ bakery.small_content }}</p>
@@ -209,7 +210,7 @@
                       </div>
 
                       <p class="location">
-                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse  }}
+                        <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse }}
                       </p>
 
                       <div class="text-end">
@@ -247,7 +248,8 @@
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir
+                          +</a>
 
                       </div>
 
@@ -256,7 +258,8 @@
                         <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir
+                          +</a>
 
                       </div>
 
@@ -297,7 +300,7 @@ import { Cookies } from 'quasar'
 export default defineComponent({
   name: 'SectionHome4',
 
-  setup() {
+  setup () {
     const store = useStore()
 
     const bakerys = computed(() => {
@@ -309,6 +312,10 @@ export default defineComponent({
     })
 
     return {
+      addClick (id, url) {
+        store.dispatch('fetchClickBakery', { 'bakeryId': id })
+        window.location.href = `${url}`
+      },
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
       Cookies: Cookies,
       bakerys,
@@ -316,7 +323,7 @@ export default defineComponent({
     }
   },
   methods: {
-    saveBakeryList(id) {
+    saveBakeryList (id) {
 
       const bakerysList = Cookies.has('bakerysList'),
         cookies = Cookies.get('bakerysList')

@@ -41,27 +41,24 @@
 
               <div class="thumbnail">
 
-                <div id="slider_1" class="sliderimgSpec" tabindex="0" >
+                <div id="slider_1" class="sliderimgSpec" tabindex="0">
                   <img class="sliderSpec" v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
                     :alt="bakery.title">
                   <div class="sliderSpec" v-else :style="'background: url(' + folderPicture + bakery.image + ');'">
                   </div>
                 </div>
 
-                <div id="slider_2" class="sliderimgSpec hide" v-if="bakery.image_2 !== 'default2.jpg'"
-                  tabindex="0">
+                <div id="slider_2" class="sliderimgSpec hide" v-if="bakery.image_2 !== 'default2.jpg'" tabindex="0">
                   <div :style="'background: url(' + folderPicture + bakery.image_2 + ');'" class="sliderSpec">
                   </div>
                 </div>
 
-                <div id="slider_3" class="sliderimgSpec hide" v-if="bakery.image_3 !== 'default.jpg'"
-                  tabindex="0">
+                <div id="slider_3" class="sliderimgSpec hide" v-if="bakery.image_3 !== 'default.jpg'" tabindex="0">
                   <div :style="'background: url(' + folderPicture + bakery.image_3 + ');'" class="sliderSpec">
                   </div>
                 </div>
 
-                <div id="slider_4" class="sliderimgSpec hide" v-if="bakery.image_4 !== 'default2.jpg'"
-                  tabindex="0">
+                <div id="slider_4" class="sliderimgSpec hide" v-if="bakery.image_4 !== 'default2.jpg'" tabindex="0">
                   <div :style="'background: url(' + folderPicture + bakery.image_4 + ');'" class="sliderSpec">
                   </div>
                 </div>
@@ -117,7 +114,7 @@
 
                       <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
-                      }}</div>
+                        }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -1076,11 +1073,6 @@ export default defineComponent({
         {
           'url': route.params.url
         })
-
-      store.dispatch('fetchBakeryUpdate',
-        {
-          'url': route.params.url
-        })
     })
 
     $q.notify.registerType('success-form', {
@@ -1425,56 +1417,63 @@ export default defineComponent({
 
         const form_data = new FormData();
 
-        form_data.append("addDesc", this.addDesc);
-        form_data.append('file', this.image);
-        form_data.append('file', this.image2);
-        form_data.append('file', this.image3);
-        form_data.append('file', this.image4);
-        form_data.append("addName", this.addName);
-        form_data.append("addAdresse", this.addAdresse);
-        form_data.append("addPhone", this.addPhone);
-        form_data.append("addWebsite", this.addWebsite);
-        form_data.append("addHandicap", this.addHandicap);
-        form_data.append("addLivraison", this.addLivraison);
-        form_data.append("addRestauration", this.addRestauration);
-        form_data.append("addSmallContent", this.addSmallContent);
-        form_data.append("addId", this.addId);
-        form_data.append("addHours1", this.addHours1);
-        form_data.append("addHours2", this.addHours2);
-        form_data.append("addHours3", this.addHours3);
-        form_data.append("addHours4", this.addHours4);
-        form_data.append("addHours5", this.addHours5);
-        form_data.append("addHours6", this.addHours6);
-        form_data.append("addHours7", this.addHours7);
-        form_data.append("userId", this.user.id);
+        fetch('https://api.ipify.org?format=json')
+          .then(x => x.json())
+          .then(({ ip }) => {
 
-        axios({
-          method: "POST",
-          url: process.env.WEBSITE + '/update-bakery',
-          data: form_data,
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-          .then((res) => {
+            form_data.append("ip", this.ip);
+            form_data.append("addDesc", this.addDesc);
+            form_data.append('file', this.image);
+            form_data.append('file', this.image2);
+            form_data.append('file', this.image3);
+            form_data.append('file', this.image4);
+            form_data.append("addName", this.addName);
+            form_data.append("addAdresse", this.addAdresse);
+            form_data.append("addPhone", this.addPhone);
+            form_data.append("addWebsite", this.addWebsite);
+            form_data.append("addHandicap", this.addHandicap);
+            form_data.append("addLivraison", this.addLivraison);
+            form_data.append("addRestauration", this.addRestauration);
+            form_data.append("addSmallContent", this.addSmallContent);
+            form_data.append("addId", this.addId);
+            form_data.append("addHours1", this.addHours1);
+            form_data.append("addHours2", this.addHours2);
+            form_data.append("addHours3", this.addHours3);
+            form_data.append("addHours4", this.addHours4);
+            form_data.append("addHours5", this.addHours5);
+            form_data.append("addHours6", this.addHours6);
+            form_data.append("addHours7", this.addHours7);
+            form_data.append("userId", this.user.id);
 
-            if (res.data.success === true) {
+            axios({
+              method: "POST",
+              url: process.env.WEBSITE + '/update-bakery',
+              data: form_data,
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            })
+              .then((res) => {
 
-              this.showNotif()
+                if (res.data.success === true) {
 
-              setTimeout(() => {
-                $(document).find('.error-text').text('')
-                $(document).find('.error-text').removeAttr()
-                location.reload()
-              }, 3500);
+                  this.showNotif()
 
-            } else {
-              this.errorNotif()
-            }
+                  setTimeout(() => {
+                    $(document).find('.error-text').text('')
+                    $(document).find('.error-text').removeAttr()
+                    location.reload()
+                  }, 3500);
 
-          })
-          .catch((error) => {
-            this.errorNotif()
+                } else {
+                  this.errorNotif()
+                }
+
+              })
+              .catch((error) => {
+                this.errorNotif()
+              })
+
           })
 
       }
@@ -1868,7 +1867,19 @@ export default defineComponent({
     }
   },
   mounted () {
+    const store = useStore()
 
+    setTimeout(() => {
+      fetch('https://api.ipify.org?format=json')
+        .then(x => x.json())
+        .then(({ ip }) => {
+          store.dispatch('fetchBakeryUpdate',
+            {
+              'ip': ip,
+              'bakeryId': this.bakery.id
+            })
+        })
+    }, 200);
 
     // Galeries
     $('#slider_image_1').on('click', function (e) {
@@ -1921,6 +1932,7 @@ export default defineComponent({
 
     setTimeout(() => {
       this.map = 1
+      this.addDesc = this.bakery.content
       this.addName = this.bakery.title
       this.addPhone = this.bakery.phone
       this.addWebsite = this.bakery.website

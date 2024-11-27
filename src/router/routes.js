@@ -257,6 +257,18 @@ const routes = [
         }
       },
       {
+        path: '/credits/:id', component: () => import('pages/Credits.vue'),
+        meta: {
+          title: 'Échanger mes crédits',
+          metaTags: [
+            {
+              name: 'description',
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+            },
+          ]
+        }
+      },
+      {
         path: '/cart/paiement/succes/:paymentId', component: () => import('src/pages/PaiementSucces.vue'),
         meta: {
           title: 'Statut de votre commande',

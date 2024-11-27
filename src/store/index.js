@@ -26,6 +26,8 @@ export default createStore({
     paiement_status: [],
     show_order: [],
     show_budget: [],
+    user_bakery: [],
+    credtis: [],
     stateUser: {
       user: null,
       token: null,
@@ -56,6 +58,8 @@ export default createStore({
     getPaiementStatus: (state) => state.paiement_status,
     getShowOrder: (state) => state.show_order,
     getShowBudget: (state) => state.show_budget,
+    getUserBakery: (state) => state.user_bakery,
+    getCredits: (state) => state.credtis,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -119,7 +123,7 @@ export default createStore({
     },
     async fetchBakeryUpdate ({ commit, state }, data) {
       try {
-        await axios.get(process.env.WEBSITE + '/bakery-update/' + data.url)
+        await axios.post(process.env.WEBSITE + '/bakery-update/', { ip: data.ip, bakeryId: data.bakeryId })
       } catch (error) {
         console.log(error)
       }
@@ -361,8 +365,8 @@ export default createStore({
 
       axios.post(process.env.WEBSITE + '/order-refund', { 'tokenPaiement': data.tokenPaiement })
         .then((res) => {
-            this.paiement_status = res.data
-            commit('SET_PAIEMENT_STATUS', res.data)
+          this.paiement_status = res.data
+          commit('SET_PAIEMENT_STATUS', res.data)
         })
         .catch((error) => {
           console.log(error)
@@ -370,7 +374,7 @@ export default createStore({
 
     },
 
-    setOrderValidate ({ commit, state }, data) {
+    async setOrderValidate ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/order-validate', { 'paymentId': data.paymentId, 'status': data.status })
         .then((res) => {
@@ -389,7 +393,7 @@ export default createStore({
 
     },
 
-    setOrderCancel ({ commit, state }, data) {
+    async setOrderCancel ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/order-cancel', { 'paymentId': data.paymentId, 'status': data.status })
         .then((res) => {
@@ -407,7 +411,7 @@ export default createStore({
 
     },
 
-    fetchShowOrder  ({ commit, state }, data) {
+    async fetchShowOrder ({ commit, state }, data) {
 
       axios.get(process.env.WEBSITE + '/order-show/' + data.paypalId)
         .then((res) => {
@@ -422,7 +426,7 @@ export default createStore({
 
     },
 
-    fetchBudget ({ commit, state }, data) {
+    async fetchBudget ({ commit, state }, data) {
 
       axios.get(process.env.WEBSITE + '/user-budgets/' + data.year)
         .then((res) => {
@@ -437,8 +441,52 @@ export default createStore({
 
     },
 
+    async fetchUserBakery ({ commit, state }, data) {
+      axios.get(process.env.WEBSITE + '/user-bakery/' + data.email + '/' + data.id)
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.user_bakery = res.data
+            commit('SET_USER_BAKERY', res.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+
+    async fetchCredits ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/credits', { 'email': data.email, 'id': data.id, 'idBakery': data.idBakery })
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.credits = res.data.credits
+            commit('SET_CREDITS', res.data.credits)
+          } else {
+            this.$router.push('/my-account-profil')
+          }
+        })
+
+    },
+
+    async fetchClickBakery ({ commit, state }, data) {
+      fetch('https://api.ipify.org?format=json')
+        .then(x => x.json())
+        .then(({ ip }) => {
+          axios.post(process.env.WEBSITE + '/bakery-click', { bakeryId: data.bakeryId, ip })
+            .then((res) => { })
+        });
+    },
+
   },
   mutations: {
+
+    SET_CREDITS (state, credits) {
+      state.credits = credits
+    },
+
+    SET_USER_BAKERY (state, user_bakery) {
+      state.user_bakery = user_bakery
+    },
 
     SET_SHOW_BUDGET (state, show_budget) {
       state.show_budget = show_budget

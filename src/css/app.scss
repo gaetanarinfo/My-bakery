@@ -1221,7 +1221,6 @@ a:hover {
   font-weight: 700;
   margin-top: 1rem !important;
   min-height: 54px;
-  vertical-align: middle;
   display: grid;
   align-items: center;
 }
@@ -1524,10 +1523,30 @@ a:hover {
   margin: 0 0 10px;
 }
 
-#my-account-profil .bio-graph-info h3 {
-  font-size: 22px;
-  font-weight: 300;
-  margin: 0 0 20px;
+#my-account-profil .col-md-9 {
+  position: relative;
+  top: 0;
+  display: block;
+  padding-top: 2.6rem;
+}
+
+#my-account-profil .title {
+  top: -50px !important;
+  left: 17px !important;
+  padding: 0.8rem !important;
+  font-size: 19px !important;
+  text-align: center !important;
+  min-width: 200px !important;
+  border-right: 1.5px solid rgba(0, 0, 0, 0.125) !important;
+  border-left: 1.5px solid rgba(0, 0, 0, 0.125) !important;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.125) !important;
+  font-weight: 600 !important;
+  position: absolute !important;
+  text-transform: uppercase !important;
+  background-color: white !important;
+  border-top-right-radius: 0.25rem !important;
+  border-top-left-radius: 0.25rem !important;
+  font-family: var(--bs-font-sans-serif) !important;
 }
 
 #my-account-profil .rounded-circle {
@@ -1594,7 +1613,6 @@ a:hover {
   font-weight: 500;
 }
 
-
 #my-account-profil #budgetCard h3 {
   font-size: 22px;
   font-weight: 300;
@@ -1625,6 +1643,184 @@ a:hover {
   height: auto !important;
   margin-left: calc(var(--bs-gutter-x)* 0.5);
   margin-right: calc(var(--bs-gutter-x)* 0.5);
+}
+
+#my-account-profil .bakery-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+#my-account-profil #bakeryCard h3 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+#my-account-profil #bakeryCard {
+  padding: 15px;
+}
+
+#my-account-profil #bakeryCard table tr {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+#my-account-profil #bakeryCard table tr a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#my-account-profil .card-bakery {
+  min-height: 200px;
+  max-width: 390px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 1px 1px 12px 6px #0000001c;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  border-left: 1.5px solid #fbc02d;
+  border-top: 1.5px solid #fbc02d;
+  border-bottom: 1.5px solid #fbc02d;
+  border-right: 1.5px solid #fbc02d;
+}
+
+#my-account-profil .card-bakery .left {
+  background-position: bottom center;
+  background-size: cover;
+  display: block;
+  min-height: 100px;
+  height: 100%;
+  max-width: 130px;
+  border-top-left-radius: 19px;
+  border-bottom-left-radius: 19px;
+}
+
+#my-account-profil .card-bakery .left .background .establishement {
+  background-image: url(../../public/establishement.png);
+  display: block;
+  background-position: center center;
+  background-size: cover;
+  height: 80px;
+  width: 75px;
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  z-index: 1;
+}
+
+#my-account-profil .card-bakery .left .background {
+  background-color: white;
+  width: 90px;
+  height: 90px;
+  z-index: 0;
+  border-radius: 0 0 10px 10px;
+  position: relative;
+  display: block;
+  top: -28px;
+  left: 86px;
+}
+
+#my-account-profil .card-bakery .right {
+  padding: 1rem 1rem;
+  min-width: 258px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#my-account-profil .card-bakery .right .highlighting {
+  background-color: white;
+  top: -41px;
+  right: -1px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  text-align: center;
+  min-width: 150px;
+  z-index: 2;
+  position: absolute;
+  padding: 0.5rem;
+  border-left: 1.5px solid #fbc02d;
+  border-top: 1.5px solid #fbc02d;
+  border-right: 1.5px solid #fbc02d;
+}
+
+#my-account-profil .card-bakery .right .highlighting span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #fbc02d;
+}
+
+#my-account-profil .card-bakery .right h3 {
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  padding-right: 1rem !important;
+  text-align: end !important;
+}
+
+#my-account-profil .card-bakery .right p {
+  font-size: 13px;
+}
+
+#my-account-profil .card-bakery .right .footer {
+  text-align: end;
+  padding-right: 1rem !important;
+}
+
+#my-account-profil .card-bakery .right .footer a {
+  cursor: pointer;
+}
+
+#my-account-profil .card-bakery .right-infos {
+  position: absolute;
+  clear: both;
+  content: " ";
+  width: 100%;
+  bottom: -193px;
+  max-height: 200px;
+  left: 0;
+  overflow-y: scroll;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: white;
+  border-left: 1.5px solid #fbc02d;
+  border-bottom: 1.5px solid #fbc02d;
+  border-right: 1.5px solid #fbc02d;
+  padding: 0.6rem 0.6rem 0.6rem 1rem;
+  font-size: 14px;
+  display: none;
+  z-index: 999;
+}
+
+.right-infos.show {
+  animation: slide-right 1.7s ease-in-out;
+  bottom: -193px;
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+    bottom: -193px;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    display: block;
+    bottom: -193px;
+    opacity: 1;
+  }
+}
+
+#my-account-profil .subtitle {
+  font-weight: 500;
 }
 
 /* BLOG */
@@ -3934,8 +4130,6 @@ footer.footer .footer-copyright p a:hover {
 
 /* LOGIN */
 
-#login .content {}
-
 #login .clear:after {
   clear: both;
   content: "";
@@ -5100,8 +5294,22 @@ button.ps-btn:hover {
   background-color: #262626;
 }
 
+.productsLoad.loadingDiv {
+  min-height: 427px;
+  background-color: #262626;
+}
+
+.creditsLoad.loadingDiv {
+  min-height: 302px;
+  background-color: #262626;
+}
+
 #products .row {
   justify-content: center;
+}
+
+#products .perMonth {
+  font-size: 14px;
 }
 
 /* Modal Order Show */

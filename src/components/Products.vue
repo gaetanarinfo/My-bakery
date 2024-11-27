@@ -30,7 +30,7 @@
 
     <div class="container">
 
-      <div class="row gutters-sm">
+      <div class="row gutters-sm u-column1" v-show="showSimulatedReturnData">
 
         <div class="snip1265">
 
@@ -45,7 +45,8 @@
                 {{ product.title }}
               </h4>
 
-              <div class="plan-cost"><span class="plan-price">{{ product.price, '.', ',' }} HT €</span></div>
+              <div class="plan-cost"><span class="plan-price">{{ product.price, '.', ',' }} HT € <span class="perMonth">/
+                    mois</span></span></div>
 
             </header>
 
@@ -71,6 +72,10 @@
 
       </div>
 
+      <div class="productsLoad loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
+      </div>
+
     </div>
 
   </div>
@@ -90,6 +95,8 @@ export default defineComponent({
   name: 'CartComponent',
   setup () {
     const store = useStore()
+    const visible = ref(false)
+    const showSimulatedReturnData = ref(true)
 
     const products = computed(() => {
       return store.state.products
@@ -100,6 +107,20 @@ export default defineComponent({
     })
 
     return {
+      showTextLoading (express = null) {
+        visible.value = true
+        $('.u-column1').fadeOut(300)
+        showSimulatedReturnData.value = false
+
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, 1500)
+        }
+      },
+      visible,
+      showSimulatedReturnData,
       products,
       showCart,
       addCart (id) {
@@ -130,10 +151,11 @@ export default defineComponent({
   },
   mounted () {
 
+    this.showTextLoading();
+
     setTimeout(() => {
       if (LocalStorage.getItem('shopping_cart') >= 1) {
         showCart.value = true
-        console.log($('#product_' + LocalStorage.getItem('shopping_cart')));
         $('#product_' + LocalStorage.getItem('shopping_cart')).addClass('active');
       } else {
         showCart.value = false

@@ -82,6 +82,13 @@
                 </a>
               </li>
 
+              <li id="card6" v-if="user_bakery.succes === true"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showUserBakery">
+                  <p class="mb-0"><i class="fa-regular fa-building me-2"></i>Mes établissements</p>
+                </a>
+              </li>
+
               <li id="card2" class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <a @click="showUpdateProfil">
                   <p class="mb-0"><i class="fa fa-edit me-2"></i>Modifier mon profil</p>
@@ -121,7 +128,7 @@
 
             <div class="panel-body bio-graph-info">
 
-              <h3 class="text-bold">Mon profil</h3>
+              <h3 class="text-bold title"><i class="fa fa-user me-2"></i>Mon profil</h3>
 
               <div class="row">
 
@@ -167,7 +174,7 @@
 
             <div id="card-update-profil">
 
-              <h3 class="text-bold">Modifier mon profil</h3>
+              <h3 class="text-bold title"><i class="fa fa-edit me-2"></i>Modifier mon profil</h3>
 
               <form method="post" class="d-grid bakery-detail">
 
@@ -261,7 +268,7 @@
 
             <div id="activityCard">
 
-              <h3 class="text-bold">Résumé de votre activité</h3>
+              <h3 class="text-bold title"><i class="fa fa-calendar me-2"></i>Résumé de votre activité</h3>
 
               <table v-if="activityTable.length >= 1" class="table table-striped">
 
@@ -310,7 +317,7 @@
 
             <div id="orderCard">
 
-              <h3 class="text-bold">Résumé de vos commandes</h3>
+              <h3 class="text-bold title"><i class="fa-solid fa-chart-line me-2"></i>Résumé de vos commandes</h3>
 
               <ag-grid-vue v-if="ordersTable.length >= 1" :paginationPageSize="paginationPageSize"
                 :paginationPageSizeSelector="paginationPageSizeSelector" :tooltipShowDelay="tooltipShowDelay"
@@ -379,13 +386,123 @@
 
             <div id="budgetCard">
 
-              <h3 class="text-bold">Suivi du budget My Bakery</h3>
+              <h3 class="text-bold title"><i class="fa-solid fa-chart-line me-2"></i>Suivi du budget My Bakery</h3>
 
               <ag-charts :options="optionsBudgets"> </ag-charts>
 
               <hr />
 
               <ag-charts :options="optionsRefund"> </ag-charts>
+
+            </div>
+
+          </div>
+
+          <div v-if="user_bakery.succes === true" v-show="cardUserBakery" class="card">
+
+            <div id="bakeryCard">
+
+              <h3 class="text-bold title"><i class="fa-regular fa-building me-2"></i>Mes établissements My Bakery</h3>
+
+              <div class="bakery-card">
+
+                <div class="card-bakery" v-for="bakery in user_bakery.bakerys">
+
+                  <div class="left" :style="(bakery.image !== 'default.jpg') ? 'background-image: url(' + folderPicture + '/bakerys/images/' + bakery.image + ');' : 'background-image: url(' + 'bakerys/' + bakery.image + ');background-position: center center;background-size: 195px;background-repeat: no-repeat;'">
+
+                    <div class="background">
+
+                      <div class="establishement">
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div class="right">
+
+                    <div v-if="!isNaN(moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD HH:mm'), 'days'))" class="highlighting">
+                      <i class="fa-solid fa-highlighter text-warning"></i> <span>{{ moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD'), "days") }} jour(s) Restant</span>
+                    </div>
+
+                    <h3>{{ bakery.title }}</h3>
+
+                    <p>
+                      {{ bakery.small_content }}
+                    </p>
+
+                    <div class="footer">
+
+                      <a>
+                        <i class="fa-solid fa-chart-line text-orange me-3"></i>
+                      </a>
+
+                      <a @click="showDetailEstablishement(bakery.id)" class="me-3 text-indigo"><i
+                          class="fa-solid fa-circle-info"></i></a>
+
+                      <a v-if="bakery.credits >= 5" @click="this.$router.push('/credits/' + bakery.bakery_id)" class="me-3 text-warning"><i class="fa-solid fa-coins"></i></a>
+                      <a v-else @click="this.$router.push('/products')" class="me-3 text-danger"><i class="fa-solid fa-coins"></i></a>
+
+                      <a @click="this.$router.push('/bakery/' + bakery.url)" class="me-3 text-success"><i
+                          class="fa-solid fa-eye"></i></a>
+
+                      <a class="text-danger"><i class="fa-solid fa-trash"></i></a>
+
+                    </div>
+
+                    <div class="right-infos" :id="'right-info-' + bakery.id">
+
+                      <p>
+                        <span class="subtitle"><i class="fa-regular fa-building me-2"></i>Propriétaire :</span><br />
+                        <span>{{ bakery.given_name }}</span>
+                      </p>
+
+                      <p>
+                        <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Remonter en tête de liste
+                          :</span><br>
+
+                        <span v-if="bakery.highlighting === 1" class="strong text-success"><i
+                            class="fa-solid fa-check"></i> Oui {{ (bakery.highlighting_at) ? '- ' +
+                              moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
+                        </span>
+
+                        <span v-if="bakery.highlighting === 0" class="strong text-danger">
+                          <i class="fa-solid fa-xmark"></i> Non {{ (bakery.highlighting_at) ? '- ' +
+                            moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
+                        </span>
+
+                      </p>
+
+                      <p>
+                        <span class="subtitle"><i class="fa-solid fa-coins me-2"></i>Crédit dépenser :</span><br>
+                        <span>{{ bakery.user_credits_spent }}</span>
+                      </p>
+
+                      <p>
+                        <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Revendiquer le :</span><br>
+                        <span>{{ moment(bakery.created_at).format('DD MMMM YYYY')
+                          }}</span>
+                      </p>
+
+                      <p>
+                        <span class="subtitle"><i class="fa-solid fa-eye me-2"></i>Visite de l'établisement
+                          :</span><br>
+                        <span>{{ bakery.views }}</span>
+                      </p>
+
+                      <p class="mb-0">
+                        <span class="subtitle"><i class="fa-regular fa-hand-pointer me-2"></i>Clic sur l'établisement
+                          :</span><br>
+                        <span>{{ bakery.click }}</span>
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
 
             </div>
 
@@ -531,7 +648,7 @@ import { defineComponent, onMounted, computed } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
-import { date, SessionStorage, useQuasar } from 'quasar'
+import { date, LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
@@ -562,6 +679,7 @@ const email = ref(''),
   cardActivity = ref(false),
   cardOrder = ref(false),
   cardBudget = ref(false),
+  cardUserBakery = ref(false),
   activity = ref(0),
   orders = ref(0),
   ordersTable = ref([]),
@@ -651,6 +769,7 @@ export default defineComponent({
       cardActivity,
       cardOrder,
       cardBudget,
+      cardUserBakery,
       v$: useValidate(),
       activity,
       activityTable,
@@ -687,6 +806,10 @@ export default defineComponent({
 
     const user = computed(() => {
       return store.state.stateUser.user
+    })
+
+    const user_bakery = computed(() => {
+      return store.state.user_bakery
     })
 
     $q.notify.registerType('success-form', {
@@ -860,6 +983,11 @@ export default defineComponent({
     }, 1000);
 
     return {
+      folderPicture: process.env.WEBSITE + '/bakerys/images/',
+      showDetailEstablishement (id) {
+        $('#right-info-' + id).toggleClass('show');
+      },
+      user_bakery,
       yearRouter: route.params.year,
       changeYearSelected (e) {
         window.location.href = '/#/my-account-profil/' + e.target.value
@@ -877,7 +1005,6 @@ export default defineComponent({
           axios.get(process.env.WEBSITE + '/user-activity-delete/' + this.user.email + '/' + this.user.id + '/' + id)
             .then((res) => {
               if (res.status === 200) {
-                //window.location.reload()
                 $('#activityRow-' + id).fadeOut(200)
                 $('#activityRow-' + id).remove()
               }
@@ -892,11 +1019,13 @@ export default defineComponent({
         cardActivity.value = false
         cardOrder.value = false
         cardBudget.value = false
+        cardUserBakery.value = false
         $('#card1').addClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
       },
       showUpdateProfil () {
         cardProfil.value = false
@@ -904,11 +1033,13 @@ export default defineComponent({
         cardActivity.value = false
         cardOrder.value = false
         cardBudget.value = false
+        cardUserBakery.value = false
         $('#card1').removeClass('active-list');
         $('#card2').addClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
       },
       showActivity () {
         cardProfil.value = false
@@ -916,11 +1047,13 @@ export default defineComponent({
         cardActivity.value = true
         cardOrder.value = false
         cardBudget.value = false
+        cardUserBakery.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').addClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
       },
       showTextLoading (express = null) {
         visible.value = true
@@ -941,11 +1074,13 @@ export default defineComponent({
         cardActivity.value = false
         cardOrder.value = true
         cardBudget.value = false
+        cardUserBakery.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').addClass('active-list');
         $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
       },
       deleteAccount () {
 
@@ -981,11 +1116,27 @@ export default defineComponent({
         cardActivity.value = false
         cardOrder.value = false
         cardBudget.value = true
+        cardUserBakery.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').addClass('active-list');
+        $('#card6').removeClass('active-list');
+      },
+      showUserBakery () {
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = true
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').addClass('active-list');
       },
       visible,
       user,
@@ -1095,7 +1246,8 @@ export default defineComponent({
           .then((res) => {
             if (res.status === 200) {
 
-              var userId = res.data.user.id
+              var userId = res.data.user.id,
+                userEmail = res.data.user.email
 
               if (this.$route.params.year !== undefined) {
                 cardProfil.value = false
@@ -1103,26 +1255,30 @@ export default defineComponent({
                 cardActivity.value = false
                 cardOrder.value = false
                 cardBudget.value = true
+                cardUserBakery.value = false
                 $('#card1').removeClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
                 $('#card4').removeClass('active-list');
                 $('#card5').addClass('active-list');
+                $('#card6').removeClass('active-list');
               } else {
                 cardProfil.value = true
                 cardUpdateProfil.value = false
                 cardActivity.value = false
                 cardOrder.value = false
                 cardBudget.value = false
+                cardUserBakery.value = false
                 $('#card1').addClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
                 $('#card4').removeClass('active-list');
                 $('#card5').removeClass('active-list');
+                $('#card6').removeClass('active-list');
               }
 
               // Static values
-              email.value = res.data.user.email
+              email.value = userEmail
               firstname.value = res.data.user.firstname
               lastname.value = res.data.user.lastname
               location.value = res.data.user.location
@@ -1142,7 +1298,11 @@ export default defineComponent({
               this.reg_mobile = res.data.user.mobile
               this.reg_naissance = res.data.user.naissance
 
-              axios.get(process.env.WEBSITE + '/user-activity/' + res.data.user.email + '/' + res.data.user.id)
+              // Verificaiton si l'user est dans une boulangerie
+              store.dispatch('fetchUserBakery', { 'email': userEmail, 'id': userId })
+              //
+
+              axios.get(process.env.WEBSITE + '/user-activity/' + userEmail + '/' + userId)
                 .then((res) => {
                   if (res.status === 200) {
                     // Static values
@@ -1153,9 +1313,8 @@ export default defineComponent({
 
               var axYear = (this.$route.params.year !== undefined) ? this.$route.params.year : String(new Date().getFullYear())
 
-              axios.get(process.env.WEBSITE + '/user-orders/' + res.data.user.email + '/' + res.data.user.id + '/' + axYear)
+              axios.get(process.env.WEBSITE + '/user-orders/' + userEmail + '/' + userId + '/' + axYear)
                 .then((res) => {
-                  console.log(res);
 
                   if (res.status === 200) {
                     // Static values
@@ -1164,8 +1323,6 @@ export default defineComponent({
                     totalOrders.value = (res.data.orders == []) ? 0 : res.data.orders
                     totalHT.value = (res.data.totalHT == []) ? 0 : res.data.totalHT
                     totalTTC.value = (res.data.totalTTC == []) ? 0 : res.data.totalTTC
-
-                    console.log(res.data)
 
                     res.data.ordersTable.forEach(element => {
 

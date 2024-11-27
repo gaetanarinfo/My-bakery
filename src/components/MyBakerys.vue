@@ -102,7 +102,7 @@
                   <div>
 
                     <a role="button" :data-id="favorite.id" @click="removeFavorite(favorite.id)">
-                      <i class="icono-trash text-danger"></i>
+                      <i class="fa-solid fa-trash text-danger"></i>
                     </a>
 
                   </div>
@@ -178,7 +178,7 @@
 
                           <div class="carousel-item active">
 
-                            <a :href="'#/bakery/' + bakery.url">
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
                               <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
                             </a>
 
@@ -186,7 +186,7 @@
 
                           <div class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
                               <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
                             </a>
 
@@ -194,7 +194,7 @@
 
                           <div class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
                               <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
                             </a>
 
@@ -202,7 +202,7 @@
 
                           <div class="carousel-item">
 
-                            <a :href="'#/bakery/' + bakery.url">
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
                               <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
                             </a>
 
@@ -224,7 +224,7 @@
 
                       </div>
 
-                      <a :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
+                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
 
                       <div>
                         <p class="content">{{ bakery.small_content }}</p>
@@ -359,7 +359,7 @@
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
 
                       </div>
 
@@ -368,7 +368,7 @@
                         <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
 
                       </div>
 
@@ -557,6 +557,10 @@ export default defineComponent({
     }
 
     return {
+      addClick (id, url) {
+        store.dispatch('fetchClickBakery', { 'bakeryId': id })
+        window.location.href = `${url}`
+      },
       showTextLoading() {
         visible.value = true
         showSimulatedReturnData.value = true
