@@ -31,6 +31,8 @@
 
       <div class="wrapper">
 
+        <BannerComponent :margin="false" :top="false" />
+
         <div class="bloc container">
 
           <div class="hp-container">
@@ -65,7 +67,8 @@
 
                       <p>{{ blog.small_content }}</p>
 
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title" class="btn btn-bakery">Lire la
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"
+                        class="btn btn-bakery">Lire la
                         suite</a>
 
                     </div>
@@ -237,6 +240,7 @@ import { useStore } from 'vuex'
 import moment from 'moment'
 import { ref } from 'vue'
 import axios from 'axios'
+import BannerComponent from 'components/Banner.vue'
 
 moment.locale('fr')
 
@@ -244,7 +248,10 @@ var counter = 1
 
 export default defineComponent({
   name: 'BlogcComponent',
-  setup() {
+  components: {
+    BannerComponent,
+  },
+  setup () {
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
@@ -262,7 +269,7 @@ export default defineComponent({
     })
 
     return {
-      showTextLoading() {
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = true
 
@@ -278,14 +285,14 @@ export default defineComponent({
       showSimulatedReturnData,
     }
   },
-  data() {
+  data () {
     return {
       current: ref(1),
       max: 1,
     }
   },
   methods: {
-    chargeBlog(getPage) {
+    chargeBlog (getPage) {
 
       axios.get(process.env.WEBSITE + '/blogs-page/' + getPage)
         .then((res) => {
@@ -296,7 +303,7 @@ export default defineComponent({
 
           $([document.documentElement, document.body]).animate({
             scrollTop: $('#blocGrid').offset().top
-          }, 'slow')
+          }, '200')
 
           this.showTextLoading()
 
@@ -320,7 +327,7 @@ export default defineComponent({
         })
 
     },
-    countBlog() {
+    countBlog () {
       if (counter <= 1) {
         setTimeout(() => {
           if (this.blogsAll.length <= 8) this.max = 1;
@@ -330,7 +337,7 @@ export default defineComponent({
       }
     }
   },
-  mounted() {
+  mounted () {
 
 
     $('#menu-main-menu').removeAttr('style')
@@ -392,7 +399,7 @@ export default defineComponent({
 
       $([document.documentElement, document.body]).animate({
         scrollTop: $('#' + scroll).offset().top
-      }, 'slow')
+      }, '200')
     })
 
     // FOOTER

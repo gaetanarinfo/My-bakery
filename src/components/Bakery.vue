@@ -31,7 +31,7 @@
 
     <div class="container">
 
-      <div class="bakery-detail">
+      <div class="bakery-detail u-column2" v-show="showSimulatedReturnData">
 
         <div class="bakery">
 
@@ -114,7 +114,7 @@
 
                       <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
-                        }}</div>
+                      }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -237,19 +237,7 @@
 
           </div>
 
-          <div
-            style="position: relative;z-index: 999999999;overflow: visible;display: block;height: 600px;margin-top: 2rem;">
-            <l-map :zoomAnimation="true" :fadeAnimation="true" :markerZoomAnimation="true" v-if="Boolean(this.map)"
-              ref="map" v-model:zoom="zoom" :center="[bakery.lat, bakery.lng]">
-              <l-tile-layer :url="urlMap" layer-type="base" name="OpenStreetMap"></l-tile-layer>
-              <l-marker :lat-lng="[bakery.lat, bakery.lng]"></l-marker>
-            </l-map>
-
-            <div class="loadingDiv" v-else>
-              <q-spinner-grid size="70px" color="info" />
-            </div>
-
-          </div>
+          <MapComponent :lat="bakery.lat" :lng="bakery.lng" :map="this.map" />
 
           <div class="bakery-content">
 
@@ -865,6 +853,12 @@
 
         </div>
 
+        <BannerComponent :margin="true" :top="true" />
+
+      </div>
+
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
       </div>
 
     </div>
@@ -1027,8 +1021,8 @@ import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import { useRoute } from 'vue-router';
 import axios from 'axios'
-import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import BannerComponent from 'components/Banner.vue'
+import MapComponent from 'components/Map.vue'
 
 moment.locale('fr')
 
@@ -1036,12 +1030,13 @@ import slick_css from "../css/slick.scss";
 
 slick_css
 
+const addSmallContent = ref('')
+
 export default defineComponent({
   name: 'BakeryComponent',
   components: {
-    LMap,
-    LMarker,
-    LTileLayer,
+    BannerComponent,
+    MapComponent
   },
   setup () {
     const route = useRoute();
@@ -1096,16 +1091,17 @@ export default defineComponent({
     return {
       user,
       isLoggedIn: store.getters.isLoggedIn,
-      urlMap: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      zoom: 18,
-      showTextLoading () {
+      showTextLoading (express = null) {
         visible.value = true
-        showSimulatedReturnData.value = true
+        $('.u-column2').fadeOut(300)
+        showSimulatedReturnData.value = false
 
-        setTimeout(() => {
-          visible.value = false
-          showSimulatedReturnData.value = true
-        }, 1500)
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, 1500)
+        }
       },
       bakery,
       bakeryComments,
@@ -1182,7 +1178,7 @@ export default defineComponent({
       addHandicap: null,
       addLivraison: null,
       addRestauration: null,
-      addSmallContent: null,
+      addSmallContent,
       addId: null,
       image: null,
       image2: null,
@@ -1194,7 +1190,9 @@ export default defineComponent({
   },
   methods: {
     verifLengthArea (e) {
-      if (this.addSmallContent.length <= 200) $('.limite-text span').html(this.addSmallContent.length)
+      setTimeout(() => {
+        if (addSmallContent.value.length <= 200) $('.limite-text span').html(addSmallContent.value.length)
+      }, 1500);
     },
     saveBakeryList (id) {
 
@@ -1398,7 +1396,7 @@ export default defineComponent({
       if (this.addAdresse
         && this.addName
         && this.addPhone
-        && this.addSmallContent
+        && addSmallContent.value
         && this.addHours1
         && this.addHours2
         && this.addHours3
@@ -1434,7 +1432,7 @@ export default defineComponent({
             form_data.append("addHandicap", this.addHandicap);
             form_data.append("addLivraison", this.addLivraison);
             form_data.append("addRestauration", this.addRestauration);
-            form_data.append("addSmallContent", this.addSmallContent);
+            form_data.append("addSmallContent", addSmallContent.value);
             form_data.append("addId", this.addId);
             form_data.append("addHours1", this.addHours1);
             form_data.append("addHours2", this.addHours2);
@@ -1558,7 +1556,7 @@ export default defineComponent({
         $('.' + 'addPhone' + '_error').text("");
       }
 
-      if (!this.addSmallContent) {
+      if (!addSmallContent.value) {
         $('.' + 'addSmallContent' + '_error').attr('style', 'display: block')
         $('.' + 'addSmallContent' + '_error').text("Le champs description est obligatoire !");
       } else {
@@ -1869,6 +1867,8 @@ export default defineComponent({
   mounted () {
     const store = useStore()
 
+    this.showTextLoading()
+
     setTimeout(() => {
       fetch('https://api.ipify.org?format=json')
         .then(x => x.json())
@@ -1931,12 +1931,11 @@ export default defineComponent({
     });
 
     setTimeout(() => {
-      this.map = 1
       this.addDesc = this.bakery.content
       this.addName = this.bakery.title
       this.addPhone = this.bakery.phone
       this.addWebsite = this.bakery.website
-      this.addSmallContent = this.bakery.small_content
+      addSmallContent.value = this.bakery.small_content
       this.addAdresse = this.bakery.adresse
       this.addHandicap = this.bakery.handicape
       this.addLivraison = this.bakery.delivery
@@ -1954,8 +1953,12 @@ export default defineComponent({
       if (this.bakeryHours[4] !== undefined) this.addHours5 = this.bakeryHours[4].am
       if (this.bakeryHours[5] !== undefined) this.addHours6 = this.bakeryHours[5].am
       if (this.bakeryHours[6] !== undefined) this.addHours7 = this.bakeryHours[6].am
+
       this.verifLengthArea()
-    }, 1200);
+
+      this.map = 1
+
+    }, 1500);
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -2012,7 +2015,7 @@ export default defineComponent({
 
       $([document.documentElement, document.body]).animate({
         scrollTop: $('#' + scroll).offset().top
-      }, 'slow')
+      }, '200')
     })
 
     // FOOTER
@@ -2129,7 +2132,6 @@ export default defineComponent({
       }
 
     }, 100)
-
 
     $(document).on('click', '.bs-form-bakery-review .br-widget a', function (e) {
 

@@ -1,4 +1,5 @@
 <template name="BakerysComponent">
+
   <div class="background fadeIn2 bb background1">
 
     <div class="content">
@@ -71,6 +72,8 @@
     <div class="column-inner">
 
       <div class="wrapper">
+
+        <BannerComponent :margin="true" />
 
         <div class="bloc container">
 
@@ -377,6 +380,7 @@
     </div>
 
   </div>
+
 </template>
 
 <style lang="css">
@@ -537,6 +541,7 @@ import moment from 'moment'
 import { ref } from 'vue'
 import axios from 'axios'
 import { Cookies } from 'quasar'
+import BannerComponent from 'components/Banner.vue'
 
 moment.locale('fr')
 
@@ -546,6 +551,9 @@ const search = '',
 
 export default defineComponent({
   name: 'BakerysComponent',
+  components: {
+    BannerComponent,
+  },
   setup () {
     const store = useStore()
     const visible = ref(false)
@@ -685,7 +693,7 @@ export default defineComponent({
               if (search == null || location == null) {
                 $([document.documentElement, document.body]).animate({
                   scrollTop: $('#blocGrid').offset().top
-                }, 'slow')
+                }, '200')
               }
 
               if (res.data.bakerysAll.length != 0) {
@@ -847,7 +855,7 @@ export default defineComponent({
               if (search == null || location == null) {
                 $([document.documentElement, document.body]).animate({
                   scrollTop: $('#blocGrid').offset().top
-                }, 'slow')
+                }, '200')
               }
 
               $('#blocGrid').html('')
@@ -1012,7 +1020,7 @@ export default defineComponent({
               if (search == null || location == null) {
                 $([document.documentElement, document.body]).animate({
                   scrollTop: $('#blocGrid').offset().top
-                }, 'slow')
+                }, '200')
               }
 
               $('#blocGrid').html('')
@@ -1174,7 +1182,7 @@ export default defineComponent({
 
               $([document.documentElement, document.body]).animate({
                 scrollTop: $('#blocGrid').offset().top
-              }, 'slow')
+              }, '200')
 
               $('#blocGrid').html('')
 
@@ -1424,7 +1432,7 @@ export default defineComponent({
 
       $([document.documentElement, document.body]).animate({
         scrollTop: $('#' + scroll).offset().top
-      }, 'slow')
+      }, '200')
     })
 
     // FOOTER

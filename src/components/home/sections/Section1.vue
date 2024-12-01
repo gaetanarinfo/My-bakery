@@ -11,6 +11,7 @@
         <img class="delicious" src="floral.png" alt="Delicieux">
       </div>
 
+
     </div>
 
   </div>
@@ -21,6 +22,9 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SectionHome1',
+  components () {
+
+  },
   props: {}
 })
 </script>

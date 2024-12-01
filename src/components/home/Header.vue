@@ -253,10 +253,6 @@ export default defineComponent({
       return store.state.stateUser.user
     })
 
-    onMounted(() => {
-      store.dispatch('fetchSearchAll')
-    })
-
     if (sessionStorage.getItem('token') !== null) {
 
       onMounted(() => {
@@ -286,12 +282,12 @@ export default defineComponent({
   methods: {
     searchBlog (search = null) {
 
-      if (search.trim() != "" && this.searchHeader.length >= 3) {
+      if (this.searchHeader.length >= 3) {
         this.showTextLoading()
       }
 
       setTimeout(() => {
-        if (search.trim() != "" && this.searchHeader.length >= 3) {
+        if (this.searchHeader.length >= 3) {
 
           axios.get(process.env.WEBSITE + '/search/' + search.trim())
             .then((res) => {

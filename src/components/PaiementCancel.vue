@@ -106,6 +106,11 @@ export default defineComponent({
       LocalStorage.removeItem('shopping_cart')
       LocalStorage.removeItem('shopping_product_id')
       LocalStorage.removeItem('prev_url')
+      LocalStorage.removeItem('additional_information')
+      LocalStorage.removeItem('banner_date_start')
+      LocalStorage.removeItem('banner_date_end')
+      LocalStorage.removeItem('banner_name')
+      LocalStorage.removeItem('bakery_id_event')
     } else {
       this.$router.push('/')
     }
@@ -132,6 +137,10 @@ export default defineComponent({
 
   },
   mounted () {
+
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $('#cart').offset().top
+    }, '200')
 
     this.showTextLoading()
 

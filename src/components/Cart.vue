@@ -57,7 +57,7 @@
                   <td>
                     <a class="ps-product--table">
                       <i :class="'me-3 ' + product.image"></i>
-                      {{ product.title }}</a>
+                      <strong>{{ product.title }}</strong></a>
                   </td>
 
                   <td>{{ product.price }} €</td>
@@ -67,7 +67,7 @@
                       <button class="minus" @click="removeQuantityProduct(product.price)"><span><i
                             class="fa fa-minus"></i></span></button>
                       <input class="form-control" disabled type="text" :value="shopping_cart_qte">
-                      <button class="plus" @click="addQuantityProduct(product.price)"><span><i
+                      <button class="plus disabled" @click="addQuantityProduct(product.price)"><span><i
                             class="fa fa-plus"></i></span></button>
                     </div>
                   </td>
@@ -77,6 +77,28 @@
                   <td>
                     <div @click="removeProduct(product.id)" class="ps-remove"></div>
                   </td>
+
+                </tr>
+
+                <tr v-if="verifBanner">
+
+                  <td>
+                    <a class="ps-product--table">
+                      <i :class="'me-3 ' + 'ion-ios-color-wand-outline'"></i>
+                      <strong>Jours supplèmentaire bannière</strong></a>
+
+                  </td>
+                  <td>{{ (Number(moment(dateE).diff(moment(dateS), "days")) + 1 - 7) *
+                    parseFloat(0.25).toFixed(2) }} €</td>
+                  <td>
+                    <div class="form-group--number">
+                      <button class="minus disabled"><span><i class="fa fa-minus"></i></span></button>
+                      <input class="form-control" disabled type="text" :value="shopping_cart_qte">
+                      <button class="plus disabled"><span><i class="fa fa-plus"></i></span></button>
+                    </div>
+                  </td>
+                  <td><strong id="priceTotalProduct">{{ shopping_total_ht }} €</strong></td>
+                  <td></td>
 
                 </tr>
 
@@ -138,7 +160,7 @@
 
       </div>
 
-      <div class="loadingDiv" v-show="visible">
+      <div class="cartLoad loadingDiv" v-show="visible">
         <q-spinner-grid size="70px" color="info" />
       </div>
 
@@ -153,10 +175,17 @@
 import { LocalStorage } from 'quasar';
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import moment from 'moment'
+
+moment.locale('fr')
 
 const shopping_total_ht = ref(LocalStorage.getItem('shopping_total_ht')),
   shopping_total_ttc = ref(LocalStorage.getItem('shopping_total_ttc')),
   shopping_cart_qte = ref(LocalStorage.getItem('shopping_cart_qte'))
+
+var verifBanner = ref(false),
+  dateS = null,
+  dateE = null
 
 export default defineComponent({
   name: 'CartComponent',
@@ -174,9 +203,19 @@ export default defineComponent({
       return store.state.stateUser.user
     })
 
-    store.dispatch('fetchProductsCart', { 'cart': LocalStorage.getItem('shopping_cart') })
+    if (LocalStorage.hasItem('shopping_cart')) {
+      store.dispatch('fetchProductsCart', { 'cart': LocalStorage.getItem('shopping_cart') })
+    }
+
+    verifBanner = (LocalStorage.hasItem('banner_date_start')) ? true : false
+    dateS = LocalStorage.getItem('banner_date_start')
+    dateE = LocalStorage.getItem('banner_date_end')
 
     return {
+      dateS,
+      dateE,
+      verifBanner,
+      moment,
       showTextLoading (duration, express = null) {
         visible.value = true
         $('.u-column1').fadeOut(300)
@@ -193,8 +232,25 @@ export default defineComponent({
       createPaiement () {
 
         if (sessionStorage.getItem('token') !== null) {
+
+          $([document.documentElement, document.body]).animate({
+            scrollTop: $('#cart').offset().top
+          }, '200')
+
           this.showTextLoading(3000)
-          store.dispatch('setInsertCommandeClient', { 'user_id': this.user.id, 'product_id': LocalStorage.getItem('shopping_cart'), 'status': '1', 'qte': LocalStorage.getItem('shopping_cart_qte'), 'total_ht': LocalStorage.getItem('shopping_total_ht'), 'total_ttc': LocalStorage.getItem('shopping_total_ttc') })
+          store.dispatch('setInsertCommandeClient', {
+            'user_id': this.user.id,
+            'product_id': LocalStorage.getItem('shopping_cart'),
+            'status': '1',
+            'qte': LocalStorage.getItem('shopping_cart_qte'),
+            'total_ht': LocalStorage.getItem('shopping_total_ht'),
+            'total_ttc': LocalStorage.getItem('shopping_total_ttc'),
+            'dateStart': (LocalStorage.hasItem('banner_date_start')) ? LocalStorage.getItem('banner_date_start') : null,
+            'dateEnd': (LocalStorage.hasItem('banner_date_end')) ? LocalStorage.getItem('banner_date_end') : null,
+            'additional_information': (LocalStorage.hasItem('additional_information')) ? LocalStorage.getItem('additional_information') : null,
+            'banner_name': (LocalStorage.hasItem('banner_name')) ? LocalStorage.getItem('banner_name') : null,
+            'bakery_id_event': (LocalStorage.hasItem('bakery_id_event')) ? LocalStorage.getItem('bakery_id_event') : null,
+          })
         } else {
           LocalStorage.setItem('prev_url', '/cart')
           this.$router.push('/my-account')
@@ -209,24 +265,6 @@ export default defineComponent({
       visible,
       showSimulatedReturnData,
       addQuantityProduct (price) {
-
-        var qte = shopping_cart_qte.value + 1
-
-        if (qte <= 10) {
-
-          LocalStorage.setItem('shopping_cart_qte', qte)
-
-          LocalStorage.setItem('shopping_total_ht', (Number(price) * qte).toFixed(2))
-          LocalStorage.setItem('shopping_total_ttc', (Number(LocalStorage.getItem('shopping_total_ht')) + Number(LocalStorage.getItem('shopping_total_ht')) * 20 / 100).toFixed(2))
-
-          shopping_total_ht.value = LocalStorage.getItem('shopping_total_ht')
-          shopping_total_ttc.value = LocalStorage.getItem('shopping_total_ttc')
-          shopping_cart_qte.value = LocalStorage.getItem('shopping_cart_qte')
-
-          $('#priceTotalProduct').text(LocalStorage.getItem('shopping_total_ht') + ' €')
-
-        }
-
       },
       removeQuantityProduct (price) {
 
@@ -234,22 +272,17 @@ export default defineComponent({
 
         if (qte >= 1) {
 
-          LocalStorage.setItem('shopping_cart_qte', qte)
-
-          LocalStorage.setItem('shopping_total_ht', (Number(price) * qte).toFixed(2))
-          LocalStorage.setItem('shopping_total_ttc', (Number(LocalStorage.getItem('shopping_total_ht')) + Number(LocalStorage.getItem('shopping_total_ht')) * 20 / 100).toFixed(2))
-
-          shopping_total_ht.value = LocalStorage.getItem('shopping_total_ht')
-          shopping_total_ttc.value = LocalStorage.getItem('shopping_total_ttc')
-          shopping_cart_qte.value = LocalStorage.getItem('shopping_cart_qte')
-
-          $('#priceTotalProduct').text(LocalStorage.getItem('shopping_total_ht') + ' €')
         } else {
 
           LocalStorage.removeItem('shopping_total_ht')
           LocalStorage.removeItem('shopping_total_ttc')
           LocalStorage.removeItem('shopping_cart_qte')
           LocalStorage.removeItem('shopping_cart')
+          LocalStorage.removeItem('additional_information')
+          LocalStorage.removeItem('banner_date_start')
+          LocalStorage.removeItem('banner_date_end')
+          LocalStorage.removeItem('banner_name')
+          LocalStorage.removeItem('bakery_id_event')
 
           location.reload()
 
@@ -262,6 +295,11 @@ export default defineComponent({
         LocalStorage.removeItem('shopping_total_ttc')
         LocalStorage.removeItem('shopping_cart_qte')
         LocalStorage.removeItem('shopping_cart')
+        LocalStorage.removeItem('additional_information')
+        LocalStorage.removeItem('banner_date_start')
+        LocalStorage.removeItem('banner_date_end')
+        LocalStorage.removeItem('banner_name')
+        LocalStorage.removeItem('bakery_id_event')
 
         location.reload()
 
@@ -274,17 +312,36 @@ export default defineComponent({
 
     setTimeout(() => {
 
-      var qte = LocalStorage.getItem('shopping_cart_qte')
+      if (LocalStorage.hasItem('shopping_cart')) {
 
-      var str = this.products_cart[0].price * qte,
-        TTC = parseFloat(str + ((str * 20 / 100))).toFixed(2)
+        var dateS = LocalStorage.getItem('banner_date_start'),
+          dateE = LocalStorage.getItem('banner_date_end'),
+          day_supplement = (Number(moment(dateE).diff(moment(dateS), "days")) + 1 - 7) *
+            parseFloat(0.25).toFixed(2)
 
-      LocalStorage.setItem('shopping_total_ht', (str).toFixed(2))
-      LocalStorage.setItem('shopping_total_ttc', TTC)
+        var price = 0
 
-      shopping_total_ht.value = LocalStorage.getItem('shopping_total_ht')
-      shopping_total_ttc.value = LocalStorage.getItem('shopping_total_ttc')
-      shopping_cart_qte.value = LocalStorage.getItem('shopping_cart_qte')
+        if (LocalStorage.hasItem('banner_date_start')) {
+          price = Number(this.products_cart[0].price) + (day_supplement)
+          day_supplement = (day_supplement + day_supplement * 20 / 100)
+        } else {
+          price = Number(this.products_cart[0].price)
+
+        }
+
+        var total = (price + price * 20 / 100).toFixed(2)
+
+        var str = price,
+          TTC = total
+
+        LocalStorage.setItem('shopping_total_ht', (str).toFixed(2))
+        LocalStorage.setItem('shopping_total_ttc', TTC)
+
+        shopping_total_ht.value = LocalStorage.getItem('shopping_total_ht')
+        shopping_total_ttc.value = LocalStorage.getItem('shopping_total_ttc')
+        shopping_cart_qte.value = LocalStorage.getItem('shopping_cart_qte')
+
+      }
 
     }, 300);
   }

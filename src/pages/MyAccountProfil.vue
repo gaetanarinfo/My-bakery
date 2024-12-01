@@ -200,7 +200,7 @@ export default defineComponent({
 
       $([document.documentElement, document.body]).animate({
         scrollTop: $('#' + scroll).offset().top
-      }, 'slow')
+      }, '200')
     })
 
     // FOOTER

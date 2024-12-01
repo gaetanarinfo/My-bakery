@@ -1,4 +1,5 @@
 <template name="ArticleComponent">
+
   <div class="background fadeIn2 bb background2">
 
     <div class="content">
@@ -31,7 +32,7 @@
 
     <div class="container">
 
-      <div class="row">
+      <div class="row u-column1" v-show="showSimulatedReturnData">
 
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
 
@@ -80,6 +81,8 @@
 
             </div>
 
+            <BannerComponent :margin="false" />
+
           </div>
 
           <div class="clearfix"></div>
@@ -108,8 +111,9 @@
 
             <h3 class="widget-title">Tags</h3>
 
-            <div class="tagcloud"><a v-for="blog_tag in blog_tags" v-bind:id="blog_tag.id" role="button">{{ blog_tag.title
-            }}</a></div>
+            <div class="tagcloud"><a v-for="blog_tag in blog_tags" v-bind:id="blog_tag.id" role="button">{{
+              blog_tag.title
+                }}</a></div>
 
           </div>
 
@@ -117,9 +121,14 @@
 
       </div>
 
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
+      </div>
+
     </div>
 
   </div>
+
 </template>
 
 <style lang="css">
@@ -238,14 +247,22 @@
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import { ref } from 'vue'
 import moment from 'moment'
 import { useRoute } from 'vue-router';
+import BannerComponent from 'components/Banner.vue'
 
 moment.locale('fr')
 
+const visible = ref(false)
+const showSimulatedReturnData = ref(true)
+
 export default defineComponent({
   name: 'ArticleComponent',
-  setup() {
+  components: {
+    BannerComponent,
+  },
+  setup () {
     const store = useStore()
     const route = useRoute();
 
@@ -263,12 +280,28 @@ export default defineComponent({
       })
 
     return {
+      showTextLoading (express = null) {
+        visible.value = true
+        $('.u-column1').fadeOut(300)
+        showSimulatedReturnData.value = false
+
+        if (express === null) {
+          setTimeout(() => {
+            visible.value = false
+            showSimulatedReturnData.value = true
+          }, 1500)
+        }
+      },
+      showSimulatedReturnData,
+      visible,
       blog,
       blog_tags,
       moment: moment,
     }
   },
-  mounted() {
+  mounted () {
+
+    this.showTextLoading()
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -325,7 +358,7 @@ export default defineComponent({
 
       $([document.documentElement, document.body]).animate({
         scrollTop: $('#' + scroll).offset().top
-      }, 'slow')
+      }, '200')
     })
 
     // FOOTER

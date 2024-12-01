@@ -27,7 +27,9 @@ export default createStore({
     show_order: [],
     show_budget: [],
     user_bakery: [],
-    credtis: [],
+    credits: [],
+    banner: [],
+    bakerysList: [],
     stateUser: {
       user: null,
       token: null,
@@ -59,7 +61,9 @@ export default createStore({
     getShowOrder: (state) => state.show_order,
     getShowBudget: (state) => state.show_budget,
     getUserBakery: (state) => state.user_bakery,
-    getCredits: (state) => state.credtis,
+    getCredits: (state) => state.credits,
+    getBanner: (state) => state.banner,
+    getBakerysList: (state) => state.bakerysList,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -123,7 +127,7 @@ export default createStore({
     },
     async fetchBakeryUpdate ({ commit, state }, data) {
       try {
-        await axios.post(process.env.WEBSITE + '/bakery-update/', { ip: data.ip, bakeryId: data.bakeryId })
+        await axios.post(process.env.WEBSITE + '/bakery-update', { ip: data.ip, bakeryId: data.bakeryId })
       } catch (error) {
         console.log(error)
       }
@@ -150,16 +154,6 @@ export default createStore({
 
         this.blogsAll = getUrl.data.blogsAllCount
         commit('SET_BLOGS_ALL_COUNT', getUrl.data.blogsAllCount)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async fetchSearchAll ({ commit }) {
-      try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/search')
-
-        this.searchAll = getUrl.data.searchAll
-        commit('SET_SEARCH_ALL', getUrl.data.searchAll)
       } catch (error) {
         console.log(error)
       }
@@ -349,7 +343,19 @@ export default createStore({
 
     async setInsertCommandeClient ({ commit, state }, data) {
 
-      axios.post(process.env.WEBSITE + '/order-insert', { 'user_id': data.user_id, 'product_id': data.product_id, 'status': data.status, 'qte': data.qte, 'total_ht': data.total_ht, 'total_ttc': data.total_ttc })
+      axios.post(process.env.WEBSITE + '/order-insert', {
+        'user_id': data.user_id,
+        'product_id': data.product_id,
+        'status': data.status,
+        'qte': data.qte,
+        'total_ht': data.total_ht,
+        'total_ttc': data.total_ttc,
+        'dateStart': data.dateStart,
+        'dateEnd': data.dateEnd,
+        'additional_information': data.additional_information,
+        'banner_name': data.banner_name,
+        'bakery_id_event': data.bakery_id_event,
+      })
         .then((res) => {
           if (res.data.succes === true) {
             location.href = process.env.WEBSITE + '/paypal/create/' + res.data.order_id
@@ -477,8 +483,54 @@ export default createStore({
         });
     },
 
+    async fetchBanner ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/banner')
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.banner = res.data.banner
+            commit('SET_BANNER', res.data.banner)
+          }
+        })
+
+    },
+
+    async fetchBakeryList ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/bakerys-list')
+        .then((res) => {
+          if (res.data.succes === true) {
+            this.bakerysList = res.data.bakerys
+            commit('SET_BAkERYS_LIST', res.data.bakerys)
+          }
+        })
+
+    },
+
+    async fetchBannerAddCLick ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/banner-add-click', { bannerId: data.bannerId, ip: data.ip, page: data.page })
+        .then((res) => {})
+
+    },
+
+    async fetchBannerAddViews ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/banner-add-views', { bannerId: data.bannerId, ip: data.ip, page: data.page })
+        .then((res) => {})
+
+    },
+
   },
   mutations: {
+
+    SET_BAkERYS_LIST (state, bakerysList) {
+      state.bakerysList = bakerysList
+    },
+
+    SET_BANNER (state, banner) {
+      state.banner = banner
+    },
 
     SET_CREDITS (state, credits) {
       state.credits = credits

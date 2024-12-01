@@ -371,7 +371,7 @@ $(document).on('click', '.scroll-click-s', function (e) {
 
   $([document.documentElement, document.body]).animate({
     scrollTop: $('#' + scroll).offset().top
-  }, 'slow')
+  }, '200')
 })
 
 // FOOTER

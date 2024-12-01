@@ -14,6 +14,7 @@ setTimeout(() => {
   $('.fadeIn10').fadeIn(600)
   $('.fadeIn11').fadeIn(600)
   $('.fadeIn12').fadeIn(600)
+  $('.fadeIn13').fadeIn(600)
 
   $('.carousel-control-prev').on('click', function (e) {
     e.preventDefault()
@@ -142,6 +143,6 @@ $(document).on('click', '.scroll-click', function (e) {
 
   $([document.documentElement, document.body]).animate({
     scrollTop: $('#' + scroll).offset().top
-  }, 'slow')
+  }, '200')
 
 })

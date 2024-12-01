@@ -45,6 +45,7 @@ export default defineComponent({
     $('.fadeIn10').fadeIn(600)
     $('.fadeIn11').fadeIn(600)
     $('.fadeIn12').fadeIn(600)
+    $('.fadeIn13').fadeIn(600)
 
   }
 })

@@ -46,15 +46,38 @@
 
                   <h4>{{ firstname + ' ' + lastname }}</h4>
 
-                  <p class="text-secondary text-bold mb-1"><i class="fa-solid fa-briefcase text-blue me-1"></i>
-                    {{ fonction }}</p>
+                  <hr />
 
-                  <p class="text-muted text-bold font-size-sm mb-1"><i
-                      class="fa-solid fa-location-dot text-green me-1"></i>
-                    {{ location }}</p>
+                  <div class="text-start">
 
-                  <p class="text-muted text-bold font-size-sm"><i class="fa-solid fa-coins text-brown-5 me-1"></i>
-                    {{ credits }} Crédits disponible </p>
+                    <p class="text-secondary text-bold mb-0"><i class="fa-solid fa-briefcase text-blue me-1"></i>
+                      {{ fonction }}</p>
+
+                    <hr />
+
+                    <p class="text-muted text-bold font-size-sm mb-0"><i
+                        class="fa-solid fa-location-dot text-green me-1"></i>
+                      {{ location }}</p>
+
+                    <hr />
+
+                    <p class="text-muted text-bold font-size-sm mb-0"><i
+                        class="fa-solid fa-coins text-brown-5 me-1"></i>
+                      {{ credits }} Crédits disponible </p>
+
+                    <hr />
+
+                    <p v-if="subscription === true" class="text-muted text-bold font-size-sm"><i
+                        class="fa-solid fa-meteor text-orange-5 me-1"></i> Abonné(e) jusqu'au : <br />
+                      {{ date_subcription }}
+                    </p>
+
+                    <p v-else class="text-muted text-bold font-size-sm">
+                      <i class="fa-solid fa-meteor text-orange-5 me-1"></i>
+                      Aucun abonnement en cours
+                    </p>
+
+                  </div>
 
                 </div>
 
@@ -79,6 +102,33 @@
                 :class="(yearRouter !== undefined) ? 'active-list list-group-item d-flex justify-content-between align-items-center flex-wrap' : 'list-group-item d-flex justify-content-between align-items-center flex-wrap'">
                 <a @click="showBudget">
                   <p class="mb-0"><i class="fa-solid fa-chart-line me-2"></i>Suivi budget</p>
+                </a>
+              </li>
+
+              <li id="card8" v-if="subscription === true"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showBannerAll">
+                  <p class="mb-0"><i class="fa-solid fa-bullhorn me-2"></i>Mes bannières</p>
+                </a>
+              </li>
+
+              <li id="card8" v-else class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showBannerAll">
+                  <p class="mb-0"><i class="fa-solid fa-bullhorn me-2"></i>Mes bannières</p>
+                </a>
+              </li>
+
+              <li v-if="subscription === true" id="card7"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showBannerPlanning">
+                  <p class="mb-0"><i class="fa-solid fa-bullhorn me-2"></i>Planning bannières</p>
+                </a>
+              </li>
+
+              <li v-else id="card7"
+                class="disabled list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a>
+                  <p class="mb-0"><i class="fa-solid fa-bullhorn me-2"></i>Planning bannières</p>
                 </a>
               </li>
 
@@ -275,7 +325,7 @@
                 <thead>
 
                   <tr>
-                    <th scope="col"></th>
+                    <th scope="col">#</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Crée le</th>
                     <th scope="col"></th>
@@ -287,7 +337,8 @@
 
                   <tr :id="'activityRow-' + activity.id" v-for="activity in activityTable" :key="activity.id">
                     <th scope="row">{{ activity.id }}</th>
-                    <td><a :href="'#/bakery/' + activity.url">{{ activity.title }}</a></td>
+                    <td><a :href="'#/bakery/' + activity.url">Renvendication de <strong>{{ activity.title
+                          }}</strong></a></td>
                     <td>{{ moment(activity.userCreatedAt).format('DD MMMM YYYY') }}</td>
                     <td>
 
@@ -304,9 +355,9 @@
 
               </table>
 
-              <p v-else class="fw-bolder">
+              <p v-else class="fw-bolder" style="text-align: center;margin-top: 1rem;">
                 <i class="fa fa-warning text-warning"></i>
-                Vous n'avez pas encore d'activité sur My Nakery.
+                Vous n'avez pas encore d'activité sur My Bakery.
               </p>
 
             </div>
@@ -325,7 +376,7 @@
                 :pagination="true" class="ag-theme-quartz table-ag-grid">
               </ag-grid-vue>
 
-              <p v-else class="fw-bolder">
+              <p v-else class="fw-bolder" style="text-align: center;margin-top: 1rem;">
                 <i class="fa fa-warning text-warning"></i>
                 Vous n'avez pas encore de commande sur My Nakery.
               </p>
@@ -404,11 +455,12 @@
 
               <h3 class="text-bold title"><i class="fa-regular fa-building me-2"></i>Mes établissements My Bakery</h3>
 
-              <div class="bakery-card">
+              <div v-if="user_bakery.bakerys.length >= 1" class="bakery-card">
 
-                <div class="card-bakery" v-for="bakery in user_bakery.bakerys">
+                <div class="card-bakery" :id="'establishement-' + bakery.id" v-for="bakery in user_bakery.bakerys">
 
-                  <div class="left" :style="(bakery.image !== 'default.jpg') ? 'background-image: url(' + folderPicture + '/bakerys/images/' + bakery.image + ');' : 'background-image: url(' + 'bakerys/' + bakery.image + ');background-position: center center;background-size: 195px;background-repeat: no-repeat;'">
+                  <div class="left"
+                    :style="(bakery.image !== 'default.jpg') ? 'background-image: url(' + folderPicture + bakery.image + ');' : 'background-image: url(' + 'bakerys/' + bakery.image + ');background-position: center center;background-size: 195px;background-repeat: no-repeat;'">
 
                     <div class="background">
 
@@ -421,80 +473,114 @@
 
                   <div class="right">
 
-                    <div v-if="!isNaN(moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD HH:mm'), 'days'))" class="highlighting">
-                      <i class="fa-solid fa-highlighter text-warning"></i> <span>{{ moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD'), "days") }} jour(s) Restant</span>
+                    <div v-if="!isNaN(moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD HH:mm'), 'days'))"
+                      class="highlighting">
+                      <i class="fa-solid fa-highlighter text-warning"></i> <span>{{
+                        moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD'), "days") }} jour(s)
+                        Restant</span>
                     </div>
-
-                    <h3>{{ bakery.title }}</h3>
 
                     <p>
                       {{ bakery.small_content }}
                     </p>
 
+                    <h3>{{ bakery.title }}</h3>
+
                     <div class="footer">
 
-                      <a>
-                        <i class="fa-solid fa-chart-line text-orange me-3"></i>
+                      <a id="showDetailEstablishement" :data-id="bakery.bakery_id">
+                        <i
+                          :class="(subscription === false) ? 'fa-solid fa-chart-line me-3 text-danger' : 'fa-solid fa-chart-line me-3 text-orange'"></i>
                       </a>
 
-                      <a @click="showDetailEstablishement(bakery.id)" class="me-3 text-indigo"><i
+                      <a @click="showDetailEstablishement(bakery.id)"
+                        :class="(subscription === false) ? 'me-3 text-danger' : 'me-3 text-indigo'"><i
                           class="fa-solid fa-circle-info"></i></a>
 
-                      <a v-if="bakery.credits >= 5" @click="this.$router.push('/credits/' + bakery.bakery_id)" class="me-3 text-warning"><i class="fa-solid fa-coins"></i></a>
-                      <a v-else @click="this.$router.push('/products')" class="me-3 text-danger"><i class="fa-solid fa-coins"></i></a>
+                      <a v-if="bakery.credits >= 5" @click="this.$router.push('/credits/' + bakery.bakery_id)"
+                        class="me-3 text-warning"><i class="fa-solid fa-coins"></i></a>
+                      <a v-else @click="this.$router.push('/products')" class="me-3 text-danger"><i
+                          class="fa-solid fa-coins"></i></a>
 
                       <a @click="this.$router.push('/bakery/' + bakery.url)" class="me-3 text-success"><i
                           class="fa-solid fa-eye"></i></a>
 
-                      <a class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                      <a @click="deleteEstablishement(bakery.bakery_id, bakery.id)" class="text-danger"><i
+                          class="fa-solid fa-trash"></i></a>
 
                     </div>
 
                     <div class="right-infos" :id="'right-info-' + bakery.id">
 
-                      <p>
-                        <span class="subtitle"><i class="fa-regular fa-building me-2"></i>Propriétaire :</span><br />
-                        <span>{{ bakery.given_name }}</span>
-                      </p>
+                      <div v-if="subscription === false" class="rightInfoSubscription">
 
-                      <p>
-                        <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Remonter en tête de liste
-                          :</span><br>
+                        <p>Pour suivre l'évolution de votre établisement vous devez acheter un pack sur notre boutique !
+                        </p>
 
-                        <span v-if="bakery.highlighting === 1" class="strong text-success"><i
-                            class="fa-solid fa-check"></i> Oui {{ (bakery.highlighting_at) ? '- ' +
-                              moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
-                        </span>
+                        <a class="btn btn-bakery" @click="this.$router.push('/products')">Acheter un
+                          pack</a>
 
-                        <span v-if="bakery.highlighting === 0" class="strong text-danger">
-                          <i class="fa-solid fa-xmark"></i> Non {{ (bakery.highlighting_at) ? '- ' +
-                            moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
-                        </span>
+                      </div>
 
-                      </p>
+                      <div :class="(subscription === false) ? 'rightSubscription' : ''">
 
-                      <p>
-                        <span class="subtitle"><i class="fa-solid fa-coins me-2"></i>Crédit dépenser :</span><br>
-                        <span>{{ bakery.user_credits_spent }}</span>
-                      </p>
+                        <p>
+                          <span class="subtitle"><i class="fa-regular fa-building me-2"></i>Propriétaire :</span><br />
+                          <span v-if="subscription === true">{{ bakery.given_name }}</span>
+                          <span v-else>NC</span>
+                        </p>
 
-                      <p>
-                        <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Revendiquer le :</span><br>
-                        <span>{{ moment(bakery.created_at).format('DD MMMM YYYY')
-                          }}</span>
-                      </p>
+                        <p>
+                          <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Remonter en tête de liste
+                            :</span><br>
 
-                      <p>
-                        <span class="subtitle"><i class="fa-solid fa-eye me-2"></i>Visite de l'établisement
-                          :</span><br>
-                        <span>{{ bakery.views }}</span>
-                      </p>
+                          <span v-if="subscription === true">
 
-                      <p class="mb-0">
-                        <span class="subtitle"><i class="fa-regular fa-hand-pointer me-2"></i>Clic sur l'établisement
-                          :</span><br>
-                        <span>{{ bakery.click }}</span>
-                      </p>
+                            <span v-if="bakery.highlighting === 1" class="strong text-success"><i
+                                class="fa-solid fa-check"></i> Oui {{ (bakery.highlighting_at) ? '- ' +
+                                  moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
+                            </span>
+
+                            <span v-if="bakery.highlighting === 0" class="strong text-danger">
+                              <i class="fa-solid fa-xmark"></i> Non {{ (bakery.highlighting_at) ? '- ' +
+                                moment(bakery.highlighting_at).format('DD MMMM YYYY à HH:mm') : '' }}
+                            </span>
+
+                          </span>
+
+                          <span v-else>NC</span>
+
+                        </p>
+
+                        <p>
+                          <span class="subtitle"><i class="fa-solid fa-coins me-2"></i>Crédit dépenser :</span><br>
+                          <span v-if="subscription === true">{{ bakery.user_credits_spent }}</span>
+                          <span v-else>NC</span>
+                        </p>
+
+                        <p>
+                          <span class="subtitle"><i class="fa-regular fa-clock me-2"></i>Revendiquer le :</span><br>
+                          <span v-if="subscription === true">{{ moment(bakery.created_at).format('DD MMMM YYYY')
+                            }}</span>
+                          <span v-else>NC</span>
+                        </p>
+
+                        <p>
+                          <span class="subtitle"><i class="fa-solid fa-eye me-2"></i>Vue(s) de l'établisement
+                            :</span><br>
+                          <span v-if="subscription === true">{{ bakery.viewsN }}</span>
+                          <span v-else>NC</span>
+                        </p>
+
+                        <p class="mb-0">
+                          <span class="subtitle"><i class="fa-regular fa-hand-pointer me-2"></i>Clic(s) sur
+                            l'établisement
+                            :</span><br>
+                          <span v-if="subscription === true">{{ bakery.click }}</span>
+                          <span v-else>NC</span>
+                        </p>
+
+                      </div>
 
                     </div>
 
@@ -503,6 +589,105 @@
                 </div>
 
               </div>
+
+              <p v-else class="fw-bolder" style="text-align: center;margin-top: 1rem;">
+                <i class="fa fa-warning text-warning"></i>
+                Vous ne gérer pas encore d'établissemen sur My Bakery.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div v-if="subscription === true" v-show="cardBannerPlanning" class="card">
+
+            <div id="bannerPlanningCard">
+
+              <h3 class="text-bold title"><i class="fa-solid fa-bullhorn me-2"></i>Planning des bannières</h3>
+
+              <div class="buttons mb-3">
+                <p class="mb-2 text-bold font-size-sm">Nous somme le {{ moment().format('DD MMMM YYYY') }}</p>
+                <a class="btn btn-bakery me-2" v-on:click="previous">Mois précédent</a>
+                <a class="btn btn-bakery" id="next" v-on:click="next">Mois suivant</a>
+              </div>
+
+              <DayPilotMonth id="dp" @onBeforeCellRender="onBeforeCellRender" :config="config" ref="calendar"
+                :eventBorderRadius="5">
+
+                <template #event="{ event }">
+
+                  <div class="event">
+
+                    <div class="event-body">
+                      <div class="event-title" v-html="event.text()"></div>
+                    </div>
+
+                  </div>
+
+                </template>
+
+              </DayPilotMonth>
+
+              <p class="mt-2 text-warning" style="font-size:14px; font-weight: 500;">* Vous ne pouvez pas prendre de
+                bannière sur
+                l'amplitude de date d'un autre client</p>
+
+            </div>
+
+          </div>
+
+          <div v-if="subscription === true" v-show="cardBannerAll" class="card">
+
+            <div id="bannerAllCard">
+
+              <h3 class="text-bold title"><i class="fa-solid fa-bullhorn me-2"></i>Mes bannières</h3>
+
+              <table v-if="bannerTable.length >= 1" class="table table-striped">
+
+                <thead>
+
+                  <tr>
+                    <th scope="col">N° de campagne</th>
+                    <th scope="col">Nom de la campagne</th>
+                    <th scope="col">Statut de la campagne</th>
+                    <th scope="col">Crée le</th>
+                    <th scope="col"></th>
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  <tr :id="'banniereRow-' + banner.campaign_id" v-for="banner in bannerTable" :key="banner.id">
+                    <th scope="row">{{ banner.campaign_id }}</th>
+                    <td v-html="banner.title"></td>
+                    <td class="text-center">
+
+                      <span
+                        v-if="(moment(banner.start).format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD'))">
+                        <i class="fa-solid fa-check text-success me-2"></i>Actif
+                      </span>
+
+                      <span v-else>
+                        <i class="fa-solid fa-xmark text-danger me-2"></i>Inactif
+                      </span>
+
+                    </td>
+                    <td>{{ moment(banner.created_at).format('DD MMMM YYYY') }}</td>
+                    <td>
+                      <a @click="showDetailBanner(banner.clicksBanner, banner.viewsBanner, banner.id, banner.start, banner.end, banner.campaign_id, banner.banner_name)"
+                        class="text-success cursor-pointer me-2"><i class="fa fa-eye"></i></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+              <p v-else class="fw-bolder" style="text-align: center;margin-top: 1rem;">
+                <i class="fa fa-warning text-warning"></i>
+                Vous n'avez pas encore de bannière sur My Bakery.
+              </p>
 
             </div>
 
@@ -520,9 +705,9 @@
 
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalOrderShow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <!-- Modal Ticket Paiement -->
+  <div class="modal fade modalSpecial" id="modalOrderShow" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered modal-lg">
 
@@ -530,7 +715,7 @@
 
         <div class="modal-body">
 
-          <div class="card">
+          <div class="cardHead">
 
             <div class="title">Reçu de votre achat
               <div>
@@ -545,11 +730,11 @@
                 <div class="col-7">
                   <span class="heading" id="staticDate">Date</span><br>
                   <span class="details" id="staticOrderShow2"></span><br>
-                  <span class="heading">Coordonnées</span><br>
-                  <span id="staticOrderShow8"></span><br>
-                  <span id="staticOrderShow9"></span><br>
-                  <span id="staticOrderShow10"></span><br>
-                  <span id="staticOrderShow11"></span><br>
+                  <span class="heading" id="staticOrderCoordonnees">Coordonnées</span><br id="staticOrderCoordonneesBr">
+                  <span id="staticOrderShow8"></span><br id="staticOrderShow8Br">
+                  <span id="staticOrderShow9"></span><br id="staticOrderShow9Br">
+                  <span id="staticOrderShow10"></span><br id="staticOrderShow10Br">
+                  <span id="staticOrderShow11"></span><br id="staticOrderShow11Br">
                   <span id="staticOrderShow12"></span>
                 </div>
 
@@ -636,7 +821,228 @@
 
   </div>
 
+  <!-- Modal Graph -->
+  <div v-if="subscription === true" class="modal fade modalSpecial" id="modalEstablishementShow"
+    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+      <div class="modal-content">
+
+        <div class="modal-body">
+
+          <div class="cardHead">
+
+            <div class="title">Suivi de votre établissement
+              <div>
+                <img src="barometre.png" style="max-width: 60px;">
+              </div>
+            </div>
+
+            <div v-if="subscription === false" class="productOrders">
+
+              <p>Pour suivre l'évolution de votre établisement vous devez acheter un pack sur notre boutique !</p>
+
+              <a class="btn btn-bakery" @click="hideModal(), this.$router.push('/products')">Acheter un pack</a>
+
+            </div>
+
+            <div :class="(subscription === false) ? 'subscriptionEmpty graphEstablishement' : ' graphEstablishement'">
+
+              <div>
+                <ag-charts :options="optionsEstablishementViews"></ag-charts>
+              </div>
+
+              <hr />
+
+              <div>
+                <ag-charts :options="optionsEstablishementClick"></ag-charts>
+              </div>
+
+            </div>
+
+            <div class="footer">
+
+              <div class="row">
+
+                <div class="text-right">
+                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal Banner -->
+  <div v-if="subscription === true" class="modal fade modalSpecial" id="modalBannerShow" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+      <div class="modal-content">
+
+        <div class="modal-body">
+
+          <div class="cardHead">
+
+            <div class="title">Suivi de votre campagne publicitaire
+              <div>
+                <img src="annonce.png" style="max-width: 60px;">
+              </div>
+            </div>
+
+            <div>
+
+              <div class="bannerCardE">
+
+                <div class="card text-bg-secondary mb-3 me-3" style="max-width: 18rem;">
+                  <div class="card-header">Pour l'année (<strong>{{ year }}</strong>)</div>
+                  <div class="card-body">
+                    <h6 class="card-title">Nombre de clic</h6>
+                    <p id="clicksBanner" class="card-text"></p>
+                  </div>
+                </div>
+
+                <div class="card text-bg-secondary mb-3 me-3" style="max-width: 18rem;">
+                  <div class="card-header">Pour l'année (<strong>{{ year }}</strong>)</div>
+                  <div class="card-body">
+                    <h6 class="card-title">Nombre de visites</h6>
+                    <p id="viewsBanner" class="card-text"></p>
+                  </div>
+                </div>
+
+              </div>
+
+              <hr />
+
+              <div class="title">Informations complémentaire</div>
+
+              <div class="bannerCardE bannerCardF mb-0">
+                <p id="titleCampaign"></p>
+              </div>
+
+              <div class="bannerCardE bannerCardF mt-0">
+                <p id="startCampaign"></p>
+                <p id="endCampaign"></p>
+                <div id="statusCampaign">
+
+                </div>
+              </div>
+
+              <div class="bannerCardE bannerCardH">
+                <img id="imageCampaign" />
+              </div>
+
+              <hr />
+
+              <div>
+                <ag-charts :options="optionsBannerClick"></ag-charts>
+              </div>
+
+              <hr />
+
+              <div>
+                <ag-charts :options="optionsBannerViews"></ag-charts>
+              </div>
+
+            </div>
+
+            <div class="footer">
+
+              <div class="row">
+
+                <div class="text-right">
+                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </template>
+
+<style lang="scss">
+.event {
+  position: absolute;
+  inset: 0 0 0 5px;
+  padding: 5px;
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+}
+
+.event-icon {
+  margin-right: 5px;
+}
+
+.event-icon .icon {
+  width: 16px;
+  height: 16px;
+  color: #ffba11;
+  vertical-align: middle;
+}
+
+.event-text {
+  flex-grow: 1;
+}
+
+.event-progress {
+  margin-top: 10px;
+  width: 100%;
+  height: 4px;
+  background-color: #e9ecef;
+}
+
+.event-progress-bar {
+  height: 100%;
+  background-color: #28a745;
+}
+
+.event-progress-text {
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.event-button {
+  margin-left: auto;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-button:hover {
+  background-color: #5a6268;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
 
 <style lang="css">
 @import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
@@ -644,7 +1050,7 @@
 
 <script>
 
-import { defineComponent, onMounted, computed } from 'vue'
+import { defineComponent, onMounted, reactive, computed } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
@@ -653,6 +1059,8 @@ import moment from 'moment'
 import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import axios from 'axios'
+
+// Graphique && Grid
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import { AgGridVue } from "ag-grid-vue3"; // Vue Data Grid Component
@@ -661,6 +1069,9 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { ModuleRegistry } from '@ag-grid-community/core';
 import { AgCharts } from 'ag-charts-vue3';
 import { AG_CHARTS_LOCALE_FR_FR } from 'ag-charts-locale';
+
+// Calendar
+import { DayPilot, DayPilotMonth, DayPilotNavigator } from '@daypilot/daypilot-lite-vue'
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -680,6 +1091,8 @@ const email = ref(''),
   cardOrder = ref(false),
   cardBudget = ref(false),
   cardUserBakery = ref(false),
+  cardBannerPlanning = ref(false),
+  cardBannerAll = ref(false),
   activity = ref(0),
   orders = ref(0),
   ordersTable = ref([]),
@@ -688,6 +1101,8 @@ const email = ref(''),
   tooltipHideDelay = ref(''),
   credits = ref(0),
   admin = ref(0),
+  subscription = ref(false),
+  date_subcription = ref(''),
   totalTTC = ref(0),
   totalHT = ref(0),
   totalOrders = ref(0)
@@ -698,99 +1113,62 @@ const rowData = ref([]),
   paginationPageSizeSelector = ref('')
 
 const arrayBudget = ref([]),
+  arrayViews = ref([]),
+  arrayClick = ref([]),
   arrayRefund = ref([])
 
 const optionsBudgets = ref(),
+  optionsEstablishementViews = ref(),
+  optionsEstablishementClick = ref(),
+  optionsBannerClick = ref(),
+  optionsBannerViews = ref(),
   optionsRefund = ref()
+
+const onBeforeCellRender = ref()
+
+const config = reactive({
+  startDate: DayPilot.Date.today(),
+  eventHeight: 70,
+  cellWidth: 100,
+  days: DayPilot.Date.today().daysInMonth(),
+  locale: "fr-fr",
+  timeHeaders: [{ groupBy: 'Month' }, { groupBy: 'Day', format: 'd' }],
+  treeEnabled: true,
+  viewType: "Week",
+  showToolTip: false,
+  onBeforeCellRender: args => {
+
+    if (args.cell.start < DayPilot.Date.today()) {
+      args.cell.properties.disabled = true;
+      args.cell.properties.backColor = "#f0f0f0";
+    }
+
+    if (args.cell.start === DayPilot.Date.today()) {
+      args.cell.properties.disabled = false;
+      args.cell.properties.backColor = "#ffc107";
+    }
+
+  },
+  eventMoveHandling: "Disabled",
+  timeRangeSelectedHandling: "Disabled",
+  eventResizeHandling: "Disabled",
+  eventDeleteHandling: "Disabled",
+  rowMoveHandling: "Disabled",
+  taskMoveHandling: "Disabled",
+  linkCreateHandling: "Disabled",
+  rowCreateHandling: "Disabled",
+}),
+  next = ref(),
+  previous = ref()
+
+const bannerTable = ref([])
 
 export default defineComponent({
   name: 'AccountProfilComponent',
   components: {
     AgGridVue,
+    DayPilotMonth,
     'ag-charts': AgCharts,
-  },
-  data () {
-
-    // Column Definitions: Defines the columns to be displayed.
-    const colDefs = ref([
-      { field: "CreatedAt", hide: true },
-      { field: "idProduct", hide: true },
-      { field: "TooltipStatus", hide: true },
-      { field: "Nom2", hide: true },
-      { field: "IconPack", hide: true },
-      { field: "PaiementStatus", hide: true },
-      { field: "Id", hide: true },
-      { field: "#", filter: false, maxWidth: 80 },
-      {
-        field: "Nom", cellRenderer (params) {
-          return `<div><span class="missionSpan"><i class="${params.data.IconPack} missionIcon" /><span class="missionTexte">${params.data.Nom2}</span></span></div>`
-        }, filter: true, sortable: false, maxWidth: 150
-      },
-      { field: "Quantité", filter: false, maxWidth: 120, cellClass: 'cellCenter' },
-      { field: "Total HT", filter: true, maxWidth: 130 },
-      { field: "Total TTC", filter: true, maxWidth: 140 },
-      {
-        field: "Statut", cellRenderer (params) {
-          return '<span class="missionSpan"><img src="' + params.data.PaiementStatus + '" class="missionIcon"/></span>'
-        }, filter: false, sortable: false, maxWidth: 80, cellClass: 'cellCenter', tooltipValueGetter (p) {
-          return p.data.TooltipStatus
-        }
-      },
-      { field: "Crée le", filter: false },
-      { field: "Payé le", filter: false },
-      { field: "Rembourser le", filter: false },
-      {
-        field: "Actions", filter: false, sortable: false, cellRenderer (params) {
-          return '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a><a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
-        }, maxWidth: 100, cellClass: 'cellCenter'
-      }
-    ]);
-
-    return {
-      changeYear: (this.$route.params.year !== undefined) ? this.$route.params.year : moment().format('YYYY'),
-      totalOrders,
-      totalHT,
-      totalTTC,
-      tooltipShowDelay,
-      tooltipHideDelay,
-      localeText: AG_GRID_LOCALE_FR,
-      rowData,
-      colDefs,
-      email,
-      firstname,
-      lastname,
-      fonction,
-      location,
-      phone,
-      mobile,
-      naissance,
-      cardProfil,
-      cardUpdateProfil,
-      cardActivity,
-      cardOrder,
-      cardBudget,
-      cardUserBakery,
-      v$: useValidate(),
-      activity,
-      activityTable,
-      orders,
-      ordersTable,
-      credits,
-      admin,
-
-      reg_naissance: '',
-      reg_firstname: '',
-      reg_lastname: '',
-      reg_function: '',
-      reg_location: '',
-      reg_mobile: '',
-      reg_phone: '',
-
-      replaces: function (st, rep, repWith) {
-        const result = st.split(rep).join(repWith)
-        return result;
-      },
-    }
   },
   setup () {
     const store = useStore()
@@ -836,7 +1214,9 @@ export default defineComponent({
     // allows the user to select the page size from a predefined list of page sizes
     paginationPageSizeSelector.value = [5, 10, 20, 40, 60, 80, 100];
 
-    store.dispatch('fetchBudget', { 'year': (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear()) })
+    var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
+
+    store.dispatch('fetchBudget', { 'year': aYear })
 
     setTimeout(() => {
 
@@ -858,8 +1238,6 @@ export default defineComponent({
         i2++
         arrayRefund.value.push({ month: months[i2], Remboursement: element.total })
       });
-
-      var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
 
       optionsBudgets.value = {
         title: {
@@ -996,6 +1374,10 @@ export default defineComponent({
       year: (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear()),
       optionsBudgets,
       optionsRefund,
+      optionsEstablishementViews,
+      optionsEstablishementClick,
+      optionsBannerClick,
+      optionsBannerViews,
       paginationPageSize,
       paginationPageSizeSelector,
       deleteActivity (id) {
@@ -1013,6 +1395,21 @@ export default defineComponent({
         }
 
       },
+      deleteEstablishement (bakeryId, id) {
+
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet établissement ?")) {
+
+          axios.post(process.env.WEBSITE + '/user-establishement-delete', { email: this.user.email, user_id: this.user.id, bakeryId: bakeryId })
+            .then((res) => {
+              if (res.status === 200) {
+                $('#establishement-' + id).fadeOut(200)
+                $('#establishement-' + id).remove()
+              }
+            })
+
+        }
+
+      },
       showProfil () {
         cardProfil.value = true
         cardUpdateProfil.value = false
@@ -1020,12 +1417,20 @@ export default defineComponent({
         cardOrder.value = false
         cardBudget.value = false
         cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
         $('#card1').addClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
         $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
       },
       showUpdateProfil () {
         cardProfil.value = false
@@ -1034,12 +1439,20 @@ export default defineComponent({
         cardOrder.value = false
         cardBudget.value = false
         cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
         $('#card1').removeClass('active-list');
         $('#card2').addClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
         $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
       },
       showActivity () {
         cardProfil.value = false
@@ -1048,12 +1461,20 @@ export default defineComponent({
         cardOrder.value = false
         cardBudget.value = false
         cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').addClass('active-list');
         $('#card4').removeClass('active-list');
         $('#card5').removeClass('active-list');
         $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
       },
       showTextLoading (express = null) {
         visible.value = true
@@ -1075,12 +1496,111 @@ export default defineComponent({
         cardOrder.value = true
         cardBudget.value = false
         cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
         $('#card4').addClass('active-list');
         $('#card5').removeClass('active-list');
         $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+      },
+      showBudget () {
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = true
+        cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').addClass('active-list');
+        $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+
+      },
+      showUserBakery () {
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = true
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').addClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+      },
+      showBannerPlanning () {
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = false
+        cardBannerPlanning.value = true
+        cardBannerAll.value = false
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
+        $('#card7').addClass('active-list');
+        $('#card8').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+      },
+      showBannerAll () {
+
+        cardProfil.value = false
+        cardUpdateProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = true
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').addClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+
       },
       deleteAccount () {
 
@@ -1110,40 +1630,302 @@ export default defineComponent({
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
         })
       },
-      showBudget () {
-        cardProfil.value = false
-        cardUpdateProfil.value = false
-        cardActivity.value = false
-        cardOrder.value = false
-        cardBudget.value = true
-        cardUserBakery.value = false
-        $('#card1').removeClass('active-list');
-        $('#card2').removeClass('active-list');
-        $('#card3').removeClass('active-list');
-        $('#card4').removeClass('active-list');
-        $('#card5').addClass('active-list');
-        $('#card6').removeClass('active-list');
-      },
-      showUserBakery () {
-        cardProfil.value = false
-        cardUpdateProfil.value = false
-        cardActivity.value = false
-        cardOrder.value = false
-        cardBudget.value = false
-        cardUserBakery.value = true
-        $('#card1').removeClass('active-list');
-        $('#card2').removeClass('active-list');
-        $('#card3').removeClass('active-list');
-        $('#card4').removeClass('active-list');
-        $('#card5').removeClass('active-list');
-        $('#card6').addClass('active-list');
-      },
       visible,
       user,
       stateUser,
       moment: moment,
       Cookies: Cookies,
       showSimulatedReturnData,
+    }
+  },
+  data () {
+    const store = useStore()
+    const route = useRoute()
+
+    const show_views = computed(() => {
+      return store.state.show_views
+    })
+
+    // Column Definitions: Defines the columns to be displayed.
+    const colDefs = ref([
+      { field: "CreatedAt", hide: true },
+      { field: "idProduct", hide: true },
+      { field: "TooltipStatus", hide: true },
+      { field: "Nom2", hide: true },
+      { field: "IconPack", hide: true },
+      { field: "PaiementStatus", hide: true },
+      { field: "Id", hide: true },
+      { field: "#", filter: false, maxWidth: 80 },
+      {
+        field: "Nom", cellRenderer (params) {
+          return `<div><span class="missionSpan"><i class="${params.data.IconPack} missionIcon" /><span class="missionTexte">${params.data.Nom2}</span></span></div>`
+        }, filter: true, sortable: false, maxWidth: 150
+      },
+      { field: "Quantité", filter: false, maxWidth: 120, cellClass: 'cellCenter' },
+      { field: "Total HT", filter: true, maxWidth: 130 },
+      { field: "Total TTC", filter: true, maxWidth: 140 },
+      {
+        field: "Statut", cellRenderer (params) {
+          return '<span class="missionSpan"><img src="' + params.data.PaiementStatus + '" class="missionIcon"/></span>'
+        }, filter: false, sortable: false, maxWidth: 80, cellClass: 'cellCenter', tooltipValueGetter (p) {
+          return p.data.TooltipStatus
+        }
+      },
+      { field: "Crée le", filter: false },
+      { field: "Payé le", filter: false },
+      { field: "Rembourser le", filter: false },
+      {
+        field: "Actions", filter: false, sortable: false, cellRenderer (params) {
+          return '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a><a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
+        }, maxWidth: 100, cellClass: 'cellCenter'
+      }
+    ]);
+
+    return {
+      showDetailBanner (clicks, vues, bannerId, start, end, campaign_id, image) {
+
+        var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
+
+        axios.get(process.env.WEBSITE + '/user-banner/' + aYear + '/' + bannerId)
+          .then((res) => {
+            if (res.data.succes === true) {
+
+              optionsBannerViews.value = []
+              optionsBannerClick.value = []
+                      arrayClick.value = []
+                      arrayViews.value = []
+
+              var views = res.data.views,
+                click = res.data.click,
+                months = res.data.months,
+                i = -1,
+                i2 = -1
+
+              views.forEach(element => {
+                i++
+                arrayViews.value.push({ month: months[i], Views: element.totalId })
+              });
+
+              click.forEach(element => {
+                i2++
+                arrayClick.value.push({ month: months[i2], Click: element.totalId })
+              });
+
+              optionsBannerViews.value = {
+                title: {
+                  text: "Vue pour l'année " + aYear,
+                },
+                // Data: Data to be displayed in the chart
+                data: arrayViews.value,
+                // Series: Defines which chart type and data to use
+                series: [
+                  {
+                    type: 'line', xKey: 'month', stroke: "#892580", marker: {
+                      fill: '#892580',
+                      stroke: '#892580',
+                    }, stacked: true, yKey: 'Views', yName: "Vue(s)"
+                  },
+                ],
+                locale: {
+                  localeText: AG_CHARTS_LOCALE_FR_FR,
+                },
+                legend: {
+                  enabled: true,
+                  item: {
+                    marker: {
+                      size: 20,
+                      strokeWidth: 3,
+                      shape: 'plus', // 'circle', 'square', 'cross', 'plus', 'triangle'
+                    },
+                  },
+                },
+                axes: [
+                  {
+                    position: "bottom",
+                    type: "category",
+                    title: {
+                      text: "Mois de l'année en cours",
+                    },
+                    crossLines: [
+                      {
+                        type: "line",
+                      },
+                    ],
+                  },
+                  {
+                    position: "left",
+                    type: "number",
+                    title: {
+                      text: "Vue(s)",
+                    },
+                    label: {
+                      formatter: (params) => `${params.value} vues`,
+                    },
+                    crossLines: [
+                      {
+                        type: "line",
+                      },
+                    ],
+                  },
+                ],
+              }
+
+              optionsBannerClick.value = {
+                title: {
+                  text: "Clic pour l'année " + aYear,
+                },
+                // Data: Data to be displayed in the chart
+                data: arrayClick.value,
+                // Series: Defines which chart type and data to use
+                series: [
+                  {
+                    type: 'line', xKey: 'month', stroke: "#508925", marker: {
+                      fill: '#508925',
+                      stroke: '#508925',
+                    }, stacked: true, yKey: 'Click', yName: "Clic(s)"
+                  },
+                ],
+                locale: {
+                  localeText: AG_CHARTS_LOCALE_FR_FR,
+                },
+                legend: {
+                  enabled: true,
+                  item: {
+                    marker: {
+                      size: 20,
+                      strokeWidth: 3,
+                      shape: 'plus', // 'circle', 'square', 'cross', 'plus', 'triangle'
+                    },
+                  },
+                },
+                axes: [
+                  {
+                    position: "bottom",
+                    type: "category",
+                    title: {
+                      text: "Mois de l'année en cours",
+                    },
+                    crossLines: [
+                      {
+                        type: "line",
+                      },
+                    ],
+                  },
+                  {
+                    position: "left",
+                    type: "number",
+                    title: {
+                      text: "Clic(s)",
+                    },
+                    label: {
+                      formatter: (params) => `${params.value} clics`,
+                    },
+                    crossLines: [
+                      {
+                        type: "line",
+                      },
+                    ],
+                  },
+                ],
+              }
+
+            }
+
+          })
+
+        setTimeout(() => {
+
+          $('#clicksBanner').text(clicks)
+          $('#viewsBanner').text(vues)
+          $('#startCampaign').html('<strong>Démarrage de la campagne</strong> <br/>' + moment(start).format('DD MMMM YYYY'))
+          $('#endCampaign').html('<strong>Fin de la campagne</strong> <br/>' + moment(end).format('DD MMMM YYYY'))
+          $('#titleCampaign').html('<strong>Campagne publicitaire n°' + campaign_id + '</strong>')
+          $('#imageCampaign').attr('src', process.env.WEBSITE + '/banners/images/' + image)
+
+          if((moment(start).format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(end).format('YYYY-MM-DD'))) $('#statusCampaign').html('<strong>Statut de la campagne</strong> <br/>' + '<span><i style="font-size: 18px;" class="fa-solid fa-check text-success me-2"></i>Actif</span>')
+          else $('#statusCampaign').html('<strong>Statut de la campagne</strong> <br/>' + '<span><i style="font-size: 18px;" class="fa-solid fa-xmark text-danger me-2"></i>Inactif</span>')
+
+          $('#modalBannerShow').modal('show');
+
+        }, 1500);
+      },
+      bannerTable,
+      onBeforeCellRender,
+      config,
+      next: () => {
+        config.startDate = config.startDate.addMonths(1);
+        config.days = config.startDate.daysInMonth();
+      },
+      previous: () => {
+        config.startDate = config.startDate.addMonths(-1);
+        config.days = config.startDate.daysInMonth();
+      },
+      events: [],
+      datePickerConfig: {
+        locale: "fr-fr",
+        showMonths: 1,
+        skipMonths: 1,
+        selectMode: "Week",
+      },
+      hideModal () {
+        $('#modalOrderShow').modal('hide');
+        $('body').removeClass('modal-open')
+        $('body').removeAttr('style')
+        $('.modal-backdrop').remove()
+      },
+      show_views,
+      changeYear: (this.$route.params.year !== undefined) ? this.$route.params.year : moment().format('YYYY'),
+      totalOrders,
+      totalHT,
+      totalTTC,
+      tooltipShowDelay,
+      tooltipHideDelay,
+      localeText: AG_GRID_LOCALE_FR,
+      rowData,
+      colDefs,
+      email,
+      firstname,
+      lastname,
+      fonction,
+      location,
+      phone,
+      mobile,
+      naissance,
+      cardProfil,
+      cardUpdateProfil,
+      cardActivity,
+      cardOrder,
+      cardBudget,
+      cardUserBakery,
+      cardBannerPlanning,
+      cardBannerAll,
+      v$: useValidate(),
+      activity,
+      activityTable,
+      orders,
+      ordersTable,
+      credits,
+      admin,
+      subscription,
+      date_subcription,
+
+      reg_naissance: '',
+      reg_firstname: '',
+      reg_lastname: '',
+      reg_function: '',
+      reg_location: '',
+      reg_mobile: '',
+      reg_phone: '',
+
+      replaces: function (st, rep, repWith) {
+        const result = st.split(rep).join(repWith)
+        return result;
+      },
+    }
+  },
+  computed: {
+    calendar () {
+      return this.$refs.calendar.control;
     }
   },
   methods: {
@@ -1224,6 +2006,24 @@ export default defineComponent({
       }
 
     },
+    loadEvents () {
+
+      var data = []
+
+      axios.get(process.env.WEBSITE + '/bakery-banner-events')
+        .then((res) => {
+
+          if (res.data.succes === true) {
+
+            data = res.data.events;
+
+            this.calendar.update({ events: data });
+
+          }
+
+        })
+
+    },
   },
   validations () {
   },
@@ -1235,6 +2035,7 @@ export default defineComponent({
 
     const $q = useQuasar()
     const store = useStore()
+    const route = useRoute()
 
     this.showTextLoading()
 
@@ -1256,12 +2057,20 @@ export default defineComponent({
                 cardOrder.value = false
                 cardBudget.value = true
                 cardUserBakery.value = false
+                cardBannerPlanning.value = false
+                cardBannerAll.value = false
                 $('#card1').removeClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
                 $('#card4').removeClass('active-list');
                 $('#card5').addClass('active-list');
                 $('#card6').removeClass('active-list');
+                $('#card7').removeClass('active-list');
+                $('#card8').removeClass('active-list');
+
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#my-account-profil').offset().top
+                }, '200')
               } else {
                 cardProfil.value = true
                 cardUpdateProfil.value = false
@@ -1269,12 +2078,20 @@ export default defineComponent({
                 cardOrder.value = false
                 cardBudget.value = false
                 cardUserBakery.value = false
+                cardBannerPlanning.value = false
+                cardBannerAll.value = false
                 $('#card1').addClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
                 $('#card4').removeClass('active-list');
                 $('#card5').removeClass('active-list');
                 $('#card6').removeClass('active-list');
+                $('#card7').removeClass('active-list');
+                $('#card8').removeClass('active-list');
+
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#my-account-profil').offset().top
+                }, '200')
               }
 
               // Static values
@@ -1288,6 +2105,8 @@ export default defineComponent({
               naissance.value = res.data.user.naissance
               credits.value = res.data.user.credits
               admin.value = res.data.user.admin
+              subscription.value = res.data.subscription
+              date_subcription.value = res.data.dateSubcription
 
               // Form dynamique values
               this.reg_firstname = res.data.user.firstname
@@ -1436,16 +2255,16 @@ export default defineComponent({
                       })
 
                       setTimeout(() => {
-                        $('#modalOrderShow').modal('toggle');
+                        $('#modalOrderShow').modal('show');
                       }, 1500);
 
                       // Modal Static Values
 
                       setTimeout(() => {
-                        if (show_order.value.order.status >= 4) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
-                        else $('#staticOrderShow2').text(moment('Rembourser le ' + show_order.value.order.refund_at).format('DD MMMM YYYY à HH:mm'))
-
+                        if (show_order.value.order.status >= 5) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
+                        if (show_order.value.order.status === 4) $('#staticOrderShow2').text(moment('Rembourser le ' + show_order.value.order.refund_at).format('DD MMMM YYYY à HH:mm'))
                         if (show_order.value.order.status === 1) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
+                        if (show_order.value.order.status === 2) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
                         if (show_order.value.order.status === 3) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
 
                         if (show_order.value.order.status === 1) $('#staticDate').text('Crée le')
@@ -1463,9 +2282,37 @@ export default defineComponent({
                         $('#staticOrderShow8').text(show_order.value.order.recipient_name_payer)
                         $('#staticOrderShow9').text(show_order.value.order.email_payer)
                         $('#staticOrderShow10').text(show_order.value.order.line_payer)
-                        $('#staticOrderShow11').text(show_order.value.order.city_payer + ' ' + show_order.value.order.postal_code_payer)
+                        if (show_order.value.order.city_payer !== null) $('#staticOrderShow11').text(show_order.value.order.city_payer + ' ' + show_order.value.order.postal_code_payer)
+                        else $('#staticOrderShow11').text('')
                         $('#staticOrderShow12').text(show_order.value.order.country_code_payer)
+
                         $('#staticOrderShow13').html('<ul>' + show_order.value.order.content + '</ul>')
+
+                        if (show_order.value.order.recipient_name_payer === null) {
+                          $('#staticOrderCoordonnees').hide()
+                          $('#staticOrderCoordonneesBr').hide()
+                          $('#staticOrderShow8').hide()
+                          $('#staticOrderShow8Br').hide()
+                        }
+
+                        if (show_order.value.order.email_payer === null) {
+                          $('#staticOrderShow9').hide()
+                          $('#staticOrderShow9Br').hide()
+                        }
+
+                        if (show_order.value.order.line_payer === null) {
+                          $('#staticOrderShow10').hide()
+                          $('#staticOrderShow10Br').hide()
+                        }
+
+                        if (show_order.value.order.city_payer === null) {
+                          $('#staticOrderShow11').hide()
+                          $('#staticOrderShow1Br').hide()
+                        }
+
+                        if (show_order.value.order.country_code_payer === null) {
+                          $('#staticOrderShow12').hide()
+                        }
 
                         // ProgressBar
                         var progressLine = ''
@@ -1473,13 +2320,13 @@ export default defineComponent({
                         if (show_order.value.order.status >= 1) progressLine += '<li class="step0 active" id="step1">Commande crée</li>'
                         if (show_order.value.order.status >= 1) progressLine += '<li class="step0 active text-center" id="step2">Paiement en attente</li>'
 
-                        if (show_order.value.order.status >= 2 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
-                        if (show_order.value.order.status === 3) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
                         if (show_order.value.order.status >= 2 && show_order.value.order.status !== 3 && show_order.value.order.status !== 4) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
 
+                        if (show_order.value.order.status === 3) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
+
                         if (show_order.value.order.status <= 1) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
-                        if (show_order.value.order.status >= 4 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step4">Commande livré</li>'
-                        if (show_order.value.order.status <= 3) progressLine += '<li class="step0 text-right" id="step4">Commande livré</li>'
+                        if (show_order.value.order.status === 2 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step4">Commande livré</li>'
+                        if (show_order.value.order.status <= 3 && show_order.value.order.status !== 2) progressLine += '<li class="step0 text-right" id="step4">Commande livré</li>'
 
 
                         $('#progressbar').html(progressLine)
@@ -1510,9 +2357,196 @@ export default defineComponent({
 
                     })
 
+                    $(document).on('click', '#showDetailEstablishement', function (e) {
+
+                      e.preventDefault()
+
+                      var bakeryId = $(this).data('id')
+
+                      showDetailEstablishement(bakeryId)
+
+                    })
+
+                    // Modal Show Details Establishement
+                    function showDetailEstablishement (bakeryId) {
+
+                      optionsEstablishementViews.value = []
+                      optionsEstablishementClick.value = []
+                      arrayClick.value = []
+                      arrayViews.value = []
+
+                      setTimeout(() => {
+                        $('#modalEstablishementShow').modal('toggle');
+                      }, 1500);
+
+                      if (subscription.value === true) {
+
+                        var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
+
+                        axios.get(process.env.WEBSITE + '/user-establishement/' + aYear + '/' + bakeryId)
+                          .then((res) => {
+                            if (res.data.succes === true) {
+
+                              var views = res.data.views,
+                                click = res.data.click,
+                                months = res.data.months,
+                                i = -1,
+                                i2 = -1
+
+                              views.forEach(element => {
+                                i++
+                                arrayViews.value.push({ month: months[i], Views: element.totalId })
+                              });
+
+                              click.forEach(element => {
+                                i2++
+                                arrayClick.value.push({ month: months[i2], Click: element.totalId })
+                              });
+
+                              optionsEstablishementViews.value = {
+                                title: {
+                                  text: "Vue pour l'année " + aYear,
+                                },
+                                // Data: Data to be displayed in the chart
+                                data: arrayViews.value,
+                                // Series: Defines which chart type and data to use
+                                series: [
+                                  {
+                                    type: 'line', xKey: 'month', stroke: "#892580", marker: {
+                                      fill: '#892580',
+                                      stroke: '#892580',
+                                    }, stacked: true, yKey: 'Views', yName: "Vue(s) par fiche d'établissement"
+                                  },
+                                ],
+                                locale: {
+                                  localeText: AG_CHARTS_LOCALE_FR_FR,
+                                },
+                                legend: {
+                                  enabled: true,
+                                  item: {
+                                    marker: {
+                                      size: 20,
+                                      strokeWidth: 3,
+                                      shape: 'plus', // 'circle', 'square', 'cross', 'plus', 'triangle'
+                                    },
+                                  },
+                                },
+                                axes: [
+                                  {
+                                    position: "bottom",
+                                    type: "category",
+                                    title: {
+                                      text: "Mois de l'année en cours",
+                                    },
+                                    crossLines: [
+                                      {
+                                        type: "line",
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    position: "left",
+                                    type: "number",
+                                    title: {
+                                      text: "Vue(s)",
+                                    },
+                                    label: {
+                                      formatter: (params) => `${params.value} vues`,
+                                    },
+                                    crossLines: [
+                                      {
+                                        type: "line",
+                                      },
+                                    ],
+                                  },
+                                ],
+                              }
+
+                              optionsEstablishementClick.value = {
+                                title: {
+                                  text: "Clic pour l'année " + aYear,
+                                },
+                                // Data: Data to be displayed in the chart
+                                data: arrayClick.value,
+                                // Series: Defines which chart type and data to use
+                                series: [
+                                  {
+                                    type: 'line', xKey: 'month', stroke: "#508925", marker: {
+                                      fill: '#508925',
+                                      stroke: '#508925',
+                                    }, stacked: true, yKey: 'Click', yName: "Clic(s) par fiche d'établissement"
+                                  },
+                                ],
+                                locale: {
+                                  localeText: AG_CHARTS_LOCALE_FR_FR,
+                                },
+                                legend: {
+                                  enabled: true,
+                                  item: {
+                                    marker: {
+                                      size: 20,
+                                      strokeWidth: 3,
+                                      shape: 'plus', // 'circle', 'square', 'cross', 'plus', 'triangle'
+                                    },
+                                  },
+                                },
+                                axes: [
+                                  {
+                                    position: "bottom",
+                                    type: "category",
+                                    title: {
+                                      text: "Mois de l'année en cours",
+                                    },
+                                    crossLines: [
+                                      {
+                                        type: "line",
+                                      },
+                                    ],
+                                  },
+                                  {
+                                    position: "left",
+                                    type: "number",
+                                    title: {
+                                      text: "Clic(s)",
+                                    },
+                                    label: {
+                                      formatter: (params) => `${params.value} clics`,
+                                    },
+                                    crossLines: [
+                                      {
+                                        type: "line",
+                                      },
+                                    ],
+                                  },
+                                ],
+                              }
+
+                            }
+                          })
+                          .catch((error) => {
+                            console.log(error)
+                          })
+
+                      }
+
+                    }
+
+                  }
+
+                })
+
+              axios.get(process.env.WEBSITE + '/user-banners/' + userEmail + '/' + userId)
+                .then((res) => {
+                  if (res.status === 200) {
+                    // Static values
+                    bannerTable.value = res.data.bannerTable
                   }
                 })
+
+              // Calendar
+              this.loadEvents();
             }
+
           })
 
       } else {
