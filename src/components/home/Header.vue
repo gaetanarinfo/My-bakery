@@ -179,6 +179,10 @@
             <a href="#" class="scroll-click" data-scroll="blog">Blog</a>
           </li>
 
+          <li class="menu-item">
+            <a @click="this.$router.push('/products')">Nos produits</a>
+          </li>
+
         </ul>
 
         <div class="menu-toggle"><span></span></div>

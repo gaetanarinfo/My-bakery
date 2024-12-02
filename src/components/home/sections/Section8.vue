@@ -4,7 +4,6 @@
 
     <div class="background-p">
 
-
     </div>
 
   </div>
@@ -129,6 +128,7 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -136,6 +136,8 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SectionHome8',
+  components: {
+  },
   setup () {
 
   }

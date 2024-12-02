@@ -354,6 +354,7 @@ export default createStore({
         'dateEnd': data.dateEnd,
         'additional_information': data.additional_information,
         'banner_name': data.banner_name,
+        'banner_square_name': data.banner_square_name,
         'bakery_id_event': data.bakery_id_event,
       })
         .then((res) => {
@@ -509,14 +510,14 @@ export default createStore({
 
     async fetchBannerAddCLick ({ commit, state }, data) {
 
-      axios.post(process.env.WEBSITE + '/banner-add-click', { bannerId: data.bannerId, ip: data.ip, page: data.page })
+      axios.post(process.env.WEBSITE + '/banner-add-click', { bannerId: data.bannerId, ip: data.ip, page: data.page, type: data.type })
         .then((res) => {})
 
     },
 
     async fetchBannerAddViews ({ commit, state }, data) {
 
-      axios.post(process.env.WEBSITE + '/banner-add-views', { bannerId: data.bannerId, ip: data.ip, page: data.page })
+      axios.post(process.env.WEBSITE + '/banner-add-views', { bannerId: data.bannerId, ip: data.ip, page: data.page, type: data.type })
         .then((res) => {})
 
     },

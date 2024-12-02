@@ -643,7 +643,7 @@ export default defineComponent({
     setImage (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+         extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -708,7 +708,7 @@ export default defineComponent({
     setImage2 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+         extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -770,7 +770,7 @@ export default defineComponent({
     setImage3 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+         extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -832,7 +832,7 @@ export default defineComponent({
     setImage4 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+         extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 

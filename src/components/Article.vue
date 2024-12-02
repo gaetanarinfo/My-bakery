@@ -117,6 +117,8 @@
 
           </div>
 
+          <BannerSquareComponent />
+
         </div>
 
       </div>
@@ -251,6 +253,7 @@ import { ref } from 'vue'
 import moment from 'moment'
 import { useRoute } from 'vue-router';
 import BannerComponent from 'components/Banner.vue'
+import BannerSquareComponent from 'components/BannerSquare.vue'
 
 moment.locale('fr')
 
@@ -261,6 +264,7 @@ export default defineComponent({
   name: 'ArticleComponent',
   components: {
     BannerComponent,
+    BannerSquareComponent,
   },
   setup () {
     const store = useStore()
@@ -273,11 +277,6 @@ export default defineComponent({
     const blog_tags = computed(() => {
       return store.state.blog_tags
     })
-
-    store.dispatch('fetchBlog',
-      {
-        'url': route.params.url
-      })
 
     return {
       showTextLoading (express = null) {
@@ -300,6 +299,16 @@ export default defineComponent({
     }
   },
   mounted () {
+
+    const store = useStore();
+    const route = useRoute();
+
+    setTimeout(() => {
+      store.dispatch('fetchBlog',
+      {
+        'url': route.params.url
+      })
+    }, 1500);
 
     this.showTextLoading()
 

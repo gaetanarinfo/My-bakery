@@ -1,17 +1,17 @@
-<template name="BannerComponent">
+<template name="BannerSquareComponent">
 
-  <div :class="(margin === false) ? 'container-xl container-large section fadeIn padding' : 'container-xl container-large section fadeIn'">
+  <div :class="(margin === false) ? 'container-xl container-square section fadeIn padding' : 'container-xl container-square section fadeIn'">
 
-    <div :class="(margin === false) ? 'ads_campaign margin' : (top === true) ? 'ads_campaign top' : 'ads_campaign'">
+    <div :class="(margin === false) ? 'ads_campaign square margin' : (top === true) ? 'ads_campaign square top' : 'ads_campaign square'">
 
       <a v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
         @click="addClick(banner.id, '/bakery/' + banner.bakeryUrl, this.$route.path.slice(1))" target="_blank"
         :title="'Boulangerie ' + banner.bakeryTitle">
-        <img :src="folderPicture + banner.banner_name" :alt="'Boulangerie ' + banner.bakeryTitle">
+        <img :src="folderPicture + banner.banner_square_name" :alt="'Boulangerie ' + banner.bakeryTitle">
       </a>
 
       <a v-else @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
-        <img :src="folderPicture + 'default.jpg'" alt="Acheter un emplacement de bannière">
+        <img :src="folderPicture + 'default2.jpg'" alt="Acheter un emplacement de bannière">
       </a>
 
     </div>
@@ -27,7 +27,7 @@ import moment from 'moment'
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
-  name: 'BannerComponent',
+  name: 'BannerSquareComponent',
   components: {
   },
   setup () {
@@ -57,7 +57,7 @@ export default defineComponent({
               bannerId: id,
               ip,
               page: page,
-              type: 'large'
+              type: 'square'
             })
 
           }).then(res => {
@@ -91,7 +91,7 @@ export default defineComponent({
           bannerId: this.banner.id,
           ip,
           page: route.path.slice(1),
-          type: 'large'
+          type: 'square'
         })
 
       })

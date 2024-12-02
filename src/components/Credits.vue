@@ -30,7 +30,7 @@
 
     <div class="container">
 
-      <div class="row gutters-sm u-column1" v-show="showSimulatedReturnData">
+      <div class="row gutters-sm u-column1 mb-5" v-show="showSimulatedReturnData">
 
         <div class="snip1265">
 
@@ -59,6 +59,8 @@
 
       </div>
 
+      <BannerComponent v-show="showSimulatedReturnData" :margin="false" :top="true" />
+
       <div class="creditsLoad loadingDiv" v-show="visible">
         <q-spinner-grid size="70px" color="info" />
       </div>
@@ -81,12 +83,16 @@ import { SessionStorage, useQuasar } from 'quasar';
 import { defineComponent, onMounted, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
+import BannerComponent from 'components/Banner.vue'
 
 const showCart = ref(false)
 const store = useStore()
 
 export default defineComponent({
   name: 'CreditsComponent',
+  components: {
+    BannerComponent,
+  },
   setup () {
     const store = useStore()
     const $q = useQuasar()
@@ -203,7 +209,7 @@ export default defineComponent({
     } else {
       setTimeout(() => {
         store.dispatch('fetchCredits', { email: this.user.email, id: this.user.id, idBakery: this.$route.params.id })
-      }, 1000);
+      }, 200);
     }
   },
 })

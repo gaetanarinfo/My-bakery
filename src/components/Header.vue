@@ -178,6 +178,10 @@
             <a @click="this.$router.push('/blogs');">Blog</a>
           </li>
 
+          <li class="menu-item">
+            <a @click="this.$router.push('/products')">Nos produits</a>
+          </li>
+
         </ul>
 
         <div class="menu-toggle-2"><span></span></div>

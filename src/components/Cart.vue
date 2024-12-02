@@ -88,7 +88,7 @@
                       <strong>Jours supplèmentaire bannière</strong></a>
 
                   </td>
-                  <td>{{ (Number(moment(dateE).diff(moment(dateS), "days")) + 1 - 7) *
+                  <td>{{ (Number(moment(dateE).add(1, 'days').diff(moment(dateS), "days")) - 7) *
                     parseFloat(0.25).toFixed(2) }} €</td>
                   <td>
                     <div class="form-group--number">
@@ -207,7 +207,7 @@ export default defineComponent({
       store.dispatch('fetchProductsCart', { 'cart': LocalStorage.getItem('shopping_cart') })
     }
 
-    verifBanner = (LocalStorage.hasItem('banner_date_start')) ? true : false
+    verifBanner = (LocalStorage.hasItem('banner_date_start') && moment(LocalStorage.getItem('banner_date_end')).add(1, 'days').diff(moment(LocalStorage.getItem('banner_date_start')).format('YYYY-MM-DD'), 'days') >= 8) ? true : false
     dateS = LocalStorage.getItem('banner_date_start')
     dateE = LocalStorage.getItem('banner_date_end')
 
@@ -249,6 +249,7 @@ export default defineComponent({
             'dateEnd': (LocalStorage.hasItem('banner_date_end')) ? LocalStorage.getItem('banner_date_end') : null,
             'additional_information': (LocalStorage.hasItem('additional_information')) ? LocalStorage.getItem('additional_information') : null,
             'banner_name': (LocalStorage.hasItem('banner_name')) ? LocalStorage.getItem('banner_name') : null,
+            'banner_square_name': (LocalStorage.hasItem('banner_square_name')) ? LocalStorage.getItem('banner_square_name') : null,
             'bakery_id_event': (LocalStorage.hasItem('bakery_id_event')) ? LocalStorage.getItem('bakery_id_event') : null,
           })
         } else {
@@ -282,6 +283,7 @@ export default defineComponent({
           LocalStorage.removeItem('banner_date_start')
           LocalStorage.removeItem('banner_date_end')
           LocalStorage.removeItem('banner_name')
+          LocalStorage.removeItem('banner_square_name')
           LocalStorage.removeItem('bakery_id_event')
 
           location.reload()
@@ -299,6 +301,7 @@ export default defineComponent({
         LocalStorage.removeItem('banner_date_start')
         LocalStorage.removeItem('banner_date_end')
         LocalStorage.removeItem('banner_name')
+        LocalStorage.removeItem('banner_square_name')
         LocalStorage.removeItem('bakery_id_event')
 
         location.reload()
@@ -316,7 +319,7 @@ export default defineComponent({
 
         var dateS = LocalStorage.getItem('banner_date_start'),
           dateE = LocalStorage.getItem('banner_date_end'),
-          day_supplement = (Number(moment(dateE).diff(moment(dateS), "days")) + 1 - 7) *
+          day_supplement = (Number(moment(dateE).add(1, 'days').diff(moment(dateS), "days")) - 7) *
             parseFloat(0.25).toFixed(2)
 
         var price = 0

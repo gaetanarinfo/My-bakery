@@ -40,7 +40,37 @@
 
               <div class="d-flex flex-column align-items-center text-center">
 
-                <img class="rounded-circle" src="users/avatar.png" alt="">
+                <div class="picture-profil">
+
+                  <div class="input-picture">
+
+                    <input id="file-input" type="file" accept="image/*" @change="handleFileChange($event.target)"
+                      required />
+
+                    <img v-if="avatar === null" class="rounded-circle first-preview" src="users/avatar.png" v-bind:src="preview" alt="">
+                    <img v-else class="rounded-circle first-preview" :src="folderPictureUsers + avatar" v-bind:src="preview" alt="">
+
+                    <img class="rounded-circle preview" v-bind:src="preview" alt="">
+
+                  </div>
+
+                  <div class="camera">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                  </div>
+
+                  <div class="error-text image-error"></div>
+
+                  <div class="button-picture">
+
+                  <div class="addImage text-center mt-4"><a @click="saveImage" class="btn btn-success">Enregistrer</a>
+                  </div>
+
+                  <div class="removeImage text-center mt-4"><a @click="removeImage" class="btn btn-danger">Supprimer</a>
+                  </div>
+
+                </div>
+
+                </div>
 
                 <div class="mt-3">
 
@@ -675,7 +705,7 @@
                     </td>
                     <td>{{ moment(banner.created_at).format('DD MMMM YYYY') }}</td>
                     <td>
-                      <a @click="showDetailBanner(banner.clicksBanner, banner.viewsBanner, banner.id, banner.start, banner.end, banner.campaign_id, banner.banner_name)"
+                      <a @click="showDetailBanner(banner.clicksBanner, banner.viewsBanner, banner.id, banner.start, banner.end, banner.campaign_id, banner.banner_name, banner.banner_square_name)"
                         class="text-success cursor-pointer me-2"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
@@ -944,6 +974,10 @@
                 <img id="imageCampaign" />
               </div>
 
+              <div class="bannerCardE bannerCardH">
+                <img id="image2Campaign" />
+              </div>
+
               <hr />
 
               <div>
@@ -1082,6 +1116,7 @@ const email = ref(''),
   lastname = ref(''),
   fonction = ref(''),
   location = ref(''),
+  avatar = ref(null),
   phone = ref(''),
   mobile = ref(''),
   naissance = ref(''),
@@ -1362,6 +1397,7 @@ export default defineComponent({
 
     return {
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
+      folderPictureUsers: process.env.WEBSITE + '/users/images/',
       showDetailEstablishement (id) {
         $('#right-info-' + id).toggleClass('show');
       },
@@ -1682,7 +1718,8 @@ export default defineComponent({
     ]);
 
     return {
-      showDetailBanner (clicks, vues, bannerId, start, end, campaign_id, image) {
+      preview: null,
+      showDetailBanner (clicks, vues, bannerId, start, end, campaign_id, image, image2) {
 
         var aYear = (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear())
 
@@ -1692,8 +1729,8 @@ export default defineComponent({
 
               optionsBannerViews.value = []
               optionsBannerClick.value = []
-                      arrayClick.value = []
-                      arrayViews.value = []
+              arrayClick.value = []
+              arrayViews.value = []
 
               var views = res.data.views,
                 click = res.data.click,
@@ -1841,8 +1878,9 @@ export default defineComponent({
           $('#endCampaign').html('<strong>Fin de la campagne</strong> <br/>' + moment(end).format('DD MMMM YYYY'))
           $('#titleCampaign').html('<strong>Campagne publicitaire n°' + campaign_id + '</strong>')
           $('#imageCampaign').attr('src', process.env.WEBSITE + '/banners/images/' + image)
+          $('#image2Campaign').attr('src', process.env.WEBSITE + '/banners/images/' + image2)
 
-          if((moment(start).format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(end).format('YYYY-MM-DD'))) $('#statusCampaign').html('<strong>Statut de la campagne</strong> <br/>' + '<span><i style="font-size: 18px;" class="fa-solid fa-check text-success me-2"></i>Actif</span>')
+          if ((moment(start).format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(end).format('YYYY-MM-DD'))) $('#statusCampaign').html('<strong>Statut de la campagne</strong> <br/>' + '<span><i style="font-size: 18px;" class="fa-solid fa-check text-success me-2"></i>Actif</span>')
           else $('#statusCampaign').html('<strong>Statut de la campagne</strong> <br/>' + '<span><i style="font-size: 18px;" class="fa-solid fa-xmark text-danger me-2"></i>Inactif</span>')
 
           $('#modalBannerShow').modal('show');
@@ -1888,6 +1926,7 @@ export default defineComponent({
       lastname,
       fonction,
       location,
+      avatar,
       phone,
       mobile,
       naissance,
@@ -2024,6 +2063,123 @@ export default defineComponent({
         })
 
     },
+    saveImage () {
+
+      const form_data = new FormData();
+
+      form_data.append('file', this.image);
+      form_data.append('userEmail', email.value);
+
+      axios({
+        method: "POST",
+        url: process.env.WEBSITE + '/update-profil-picture',
+        data: form_data,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+        .then((res) => {
+
+          if (res.data.succes === true) {
+
+            $('.removeImage').hide()
+            $('.addImage').hide()
+            $('.file-input').show()
+            $('.preview').show()
+            $('.first-preview').hide()
+            this.image = null
+            $('.image-error').hide()
+            $('.image-error').html('')
+
+          } else {
+            this.errorNotif()
+          }
+
+        })
+        .catch((error) => {
+          this.errorNotif()
+        })
+
+    },
+    removeImage () {
+      $('.removeImage').hide()
+      $('.addImage').hide()
+      $('.file-input').show()
+      $('.preview').hide()
+      $('.first-preview').show()
+      this.image = null
+      $('.image-error').hide()
+      $('.image-error').html('')
+    },
+    handleFileChange: function (event) {
+
+      const file = event.files[0],
+        ext = file.name.split('.').pop(),
+        extValid = ['png', 'jpeg', 'jpg']
+
+      if (event.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            if (extValid.indexOf(ext) !== -1) {
+
+              // dimension de l'image
+              if (img.width === 150 && img.height === 150) {
+
+                this.image = file
+
+                $('.removeImage').show()
+                $('.addImage').show()
+                $('.file-input').hide()
+                $('.first-preview').hide()
+                $('.preview').show()
+                this.preview = URL.createObjectURL(file);
+
+              } else {
+
+                this.image = null
+                $('.image-error').show()
+                $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être au format 150 pixels par 150 pixels.')
+
+              }
+
+            } else {
+
+              this.image = null
+              $('.image-error').show()
+              $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image-error').hide()
+          $('.image-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage').hide()
+        $('.addImage').hide()
+        this.image = null
+        $('.image-error').show()
+        $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+
+    },
   },
   validations () {
   },
@@ -2107,6 +2263,7 @@ export default defineComponent({
               admin.value = res.data.user.admin
               subscription.value = res.data.subscription
               date_subcription.value = res.data.dateSubcription
+              avatar.value = res.data.user.image
 
               // Form dynamique values
               this.reg_firstname = res.data.user.firstname

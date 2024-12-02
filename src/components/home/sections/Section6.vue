@@ -1,4 +1,5 @@
 <template name="SectionHome6">
+
   <div id="blog" class="section fadeIn6 last-blog">
 
     <div class="column-inner">
@@ -23,7 +24,7 @@
 
             <div class="section text-center">
 
-              <div class="row">
+              <div class="row mb-5">
 
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" v-for="blog in blogs" :key="blog.id">
 
@@ -50,7 +51,8 @@
 
                       <p>{{ blog.small_content.substr(0, 250) + '...' }}</p>
 
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title" class="btn btn-bakery">Lire la suite</a>
+                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"
+                        class="btn btn-bakery">Lire la suite</a>
 
                     </div>
 
@@ -66,6 +68,8 @@
 
               </div>
 
+              <BannerComponent :margin="false" :top="true" />
+
             </div>
 
           </div>
@@ -77,18 +81,23 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
+import BannerComponent from 'components/Banner.vue'
 
 moment.locale('fr')
 
 export default defineComponent({
   name: 'SectionHome6',
-  setup() {
+  components: {
+    BannerComponent,
+  },
+  setup () {
     const store = useStore()
 
     const blogs = computed(() => {

@@ -30,7 +30,7 @@
 
     <div class="container">
 
-      <div class="row gutters-sm u-column1" v-show="showSimulatedReturnData">
+      <div class="row gutters-sm u-column1 mb-3" v-show="showSimulatedReturnData">
 
         <div class="snip1265">
 
@@ -86,7 +86,7 @@
 
       </div>
 
-      <div v-show="product2" class="row gutters-sm u-column2 head-banniere">
+      <div v-show="product2" class="row gutters-sm u-column2 head-banniere mb-3">
 
         <div class="card-banniere">
 
@@ -139,16 +139,19 @@
 
           <div>
             <p class="subtitle">Sélectionner votre créneau : </p>
+
             <VueDatePicker v-model="date" :disabled-dates="disabledDates" :loading="loading"
-              :month-change-on-scroll="false" @range-start="onRangeStart" @range-end="onRangeEnd" no-today
+              :month-change-on-scroll="false" no-today
               :min-date="new Date()" :markers="markers" :enable-time-picker="false" locale="fr" dark inline auto-apply
-              range />
+              :range="{ minRange: 6 }" @update:model-value="handleDate" />
 
             <div class="affichage-price">
-              <p class="subtitle2">Affichage pendant {{ Number(moment(dateE).diff(moment(dateS), "days")) + 1 }} jour(s)
+              <p class="subtitle2">Affichage pendant {{ moment(dateE).add(1, 'days').diff(moment(dateS), "days") }}
+                jour(s)
               </p>
-              <p class="subtitle2 text-right">{{ (Number(moment(dateE).diff(moment(dateS), "days")) + 1 > 6) ?
-                'Jours supplémentaire ' + (Number(moment(dateE).diff(moment(dateS), "days")) + 1 - 7) *
+              <p class="subtitle2 text-right">{{ (Number(moment(dateE).add(1, 'days').diff(moment(dateS), "days")) > 6)
+                ?
+                'Jours supplémentaire ' + (Number(moment(dateE).add(1, 'days').diff(moment(dateS), "days")) - 7) *
                 parseFloat(0.25).toFixed(2) + ' €' : 'Jours supplémentaire 0 €'
                 }}</p>
             </div>
@@ -157,7 +160,7 @@
 
           <hr />
 
-          <h3>Télécharger votre bannière</h3>
+          <h3>Télécharger votre bannière (Large)</h3>
 
           <div>
 
@@ -172,6 +175,27 @@
                 l'image</a></div>
 
             <div class="error-text image-error"></div>
+
+          </div>
+
+          <hr />
+
+          <h3>Télécharger votre bannière (Carré)</h3>
+
+          <div>
+
+            <div class="dropzone2" @dragover.prevent @dragenter.prevent @dragstart.prevent
+              @drop.prevent="handleFileChange2($event.dataTransfer)">
+              <input id="file-input2" type="file" accept="image/*" @change="handleFileChange2($event.target)"
+                required />
+              <h2 class="file-input2" for="file-input2">Cliquez ou faites glisser l'image</h2>
+              <img class="preview2" v-bind:src="preview2" />
+            </div>
+
+            <div class="removeImage2 text-center mt-4"><a @click="removeImage2" class="btn btn-danger">Supprimer
+                l'image</a></div>
+
+            <div class="error-text image2-error"></div>
 
           </div>
 
@@ -200,6 +224,8 @@
 
       </div>
 
+      <BannerComponent v-show="showSimulatedReturnData2" :margin="false" :top="true" />
+
       <div class="productsLoad loadingDiv" v-show="visible">
         <q-spinner-grid size="70px" color="info" />
       </div>
@@ -221,21 +247,16 @@ import addDays from 'date-fns/addDays';
 import moment from 'moment'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
+import BannerComponent from 'components/Banner.vue'
 
 moment.locale('fr')
 
 const showCart = ref(false),
   shoppingCart = ref(0),
   date = ref(''),
-  dateS = ref([]),
-  dateE = ref([]),
+  dateS = ref(0),
+  dateE = ref(0),
   markers = ref([]),
-  onRangeStart = (value) => {
-    dateS.value = moment(value).format('YYYY-MM-DD')
-  },
-  onRangeEnd = (value) => {
-    dateE.value = moment(value).format('YYYY-MM-DD')
-  },
   loading = ref(true),
   disabledDates = ref([]),
   additional_information = ref('')
@@ -248,13 +269,15 @@ const arrayListBakery = ref(0),
 export default defineComponent({
   name: 'CartComponent',
   components: {
-    VueDatePicker
+    VueDatePicker,
+    BannerComponent,
   },
   setup () {
     const $q = useQuasar()
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true),
+      showSimulatedReturnData2 = ref(true),
       product2 = ref(false)
 
     const products = computed(() => {
@@ -264,6 +287,11 @@ export default defineComponent({
     const bakerysList = computed(() => {
       return store.state.bakerysList
     })
+
+    const handleDate = (modelData) => {
+     dateS.value = moment(modelData[0]).format("YYYY-MM-DD")
+     dateE.value = moment(modelData[1]).format("YYYY-MM-DD")
+    }
 
     onMounted(() => {
       store.dispatch('fetchBakeryList')
@@ -280,6 +308,7 @@ export default defineComponent({
     })
 
     return {
+      handleDate,
       loaderSearch,
       showSearch () {
         if (searchBoxShow.value === false) searchBoxShow.value = true
@@ -295,13 +324,12 @@ export default defineComponent({
         })
       },
       image: null,
+      image2: null,
       additional_information,
       disabledDates,
       loading,
       dateS,
       dateE,
-      onRangeStart,
-      onRangeEnd,
       markers,
       moment,
       date,
@@ -376,29 +404,34 @@ export default defineComponent({
         visible.value = true
         $('.u-column1').fadeOut(300)
         showSimulatedReturnData.value = false
+        showSimulatedReturnData2.value = false
         product2.value = false
 
         if (express === null) {
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = true
+            showSimulatedReturnData2.value = true
           }, 1500)
         } else if (express === true) {
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = false
+            showSimulatedReturnData2.value = true
             product2.value = true
           }, 1500)
         } else if (express === false) {
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = true
+            showSimulatedReturnData2.value = true
             product2.value = false
           }, 1500)
         }
       },
       visible,
       showSimulatedReturnData,
+      showSimulatedReturnData2,
       product2,
       products,
       showCart,
@@ -428,6 +461,7 @@ export default defineComponent({
         LocalStorage.removeItem('banner_date_start')
         LocalStorage.removeItem('banner_date_end')
         LocalStorage.removeItem('banner_name')
+        LocalStorage.removeItem('banner_square_name')
         LocalStorage.removeItem('bakery_id_event')
 
         showCart.value = true
@@ -451,6 +485,7 @@ export default defineComponent({
           const form_data = new FormData();
 
           form_data.append('file', this.image);
+          form_data.append('file', this.image2);
 
           axios({
             method: "POST",
@@ -468,6 +503,7 @@ export default defineComponent({
                 LocalStorage.setItem('banner_date_start', dateS.value)
                 LocalStorage.setItem('banner_date_end', dateE.value)
                 LocalStorage.setItem('banner_name', res.data.banner)
+                LocalStorage.setItem('banner_square_name', res.data.banner_square)
 
                 setTimeout(() => {
                   this.$router.push('/cart')
@@ -496,6 +532,10 @@ export default defineComponent({
           $('.dropzone').addClass('error-form-banner')
         }
 
+        if ($('#file-input2').get(0).files.length === 0) {
+          $('.dropzone2').addClass('error-form-banner')
+        }
+
         if (!LocalStorage.hasItem('bakery_id_event')) {
           $('.li-list').addClass('error-form-banner')
         }
@@ -507,6 +547,7 @@ export default defineComponent({
 
     return {
       preview: null,
+      preview2: null,
       formData: null,
       success: "",
     }
@@ -554,11 +595,19 @@ export default defineComponent({
       $('.image-error').hide()
       $('.image-error').html('')
     },
+    removeImage2 () {
+      $('.removeImage2').hide()
+      $('.file-input2').show()
+      $('.preview2').hide()
+      this.image2 = null
+      $('.image2-error').hide()
+      $('.image2-error').html('')
+    },
     handleFileChange: function (event) {
 
       const file = event.files[0],
         ext = file.name.split('.').pop(),
-        extValid = ['png', 'gif', 'jpeg', 'jpg', 'svg']
+         extValid = ['png', 'jpeg', 'jpg']
 
       if (event.files[0].size <= 1684688109387) {
 
@@ -620,6 +669,72 @@ export default defineComponent({
       }
 
     },
+    handleFileChange2: function (event) {
+
+      const file = event.files[0],
+        ext = file.name.split('.').pop(),
+         extValid = ['png', 'jpeg', 'jpg']
+
+      if (event.files[0].size <= 1684688109387) {
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = evt => {
+
+          let img = new Image();
+
+          img.onload = () => {
+
+            if (extValid.indexOf(ext) !== -1) {
+
+              // dimension de l'image
+              if (img.width === 300 && img.height === 250) {
+
+                this.image2 = file
+
+                $('.removeImage2').show()
+                $('.file-input2').hide()
+                $('.preview2').show()
+                this.preview2 = URL.createObjectURL(file);
+
+              } else {
+
+                this.image = null
+                $('.image2-error').show()
+                $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être au format 300 pixels par 250 pixels.')
+
+              }
+
+            } else {
+
+              this.image = null
+              $('.image2-error').show()
+              $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
+
+            }
+
+          }
+
+          img.src = evt.target.result;
+
+          $('.image2-error').hide()
+          $('.image2-error').html('')
+
+        }
+
+        reader.onerror = evt => {
+          console.error(evt);
+        }
+
+      } else {
+        $('.removeImage2').hide()
+        this.image = null
+        $('.image2-error').show()
+        $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
+      }
+
+    }
   },
   mounted () {
 
@@ -651,9 +766,9 @@ export default defineComponent({
 
           $('.searchbox-result-list ul').html('')
 
-            $.each(res.data.searchAll, function (index, bakery) {
-              $('.searchbox-result-list ul').append('<li data-id="' + bakery.id + '" class="li-list list-bakerys"><div><img src="logo-list.png" /><p>' + bakery.title + '</p></div><p class="add-list"><a><i class="fa-solid fa-check text-success"></i></a></p></li>')
-            })
+          $.each(res.data.searchAll, function (index, bakery) {
+            $('.searchbox-result-list ul').append('<li data-id="' + bakery.id + '" class="li-list list-bakerys"><div><img src="logo-list.png" /><p>' + bakery.title + '</p></div><p class="add-list"><a><i class="fa-solid fa-check text-success"></i></a></p></li>')
+          })
 
         })
         .catch((error) => {
@@ -666,6 +781,7 @@ export default defineComponent({
     LocalStorage.removeItem('banner_date_start')
     LocalStorage.removeItem('banner_date_end')
     LocalStorage.removeItem('banner_name')
+    LocalStorage.removeItem('banner_square_name')
     LocalStorage.removeItem('bakery_id_event')
 
     date.value = ''
