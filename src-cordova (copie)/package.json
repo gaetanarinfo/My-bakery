@@ -70,11 +70,14 @@
         "PLAY-SERVICES-VISION-IMAGE-LABEL": "18.0.0",
         "PLAY-SERVICES-WALLET": "17.0.0",
         "PLAY-SERVICES-WEARABLE": "17.0.0"
-      }
+      },
+      "cordova-plugin-screen-orientation": {}
     }
   },
   "devDependencies": {
     "cordova-android": "^12.0.0",
-    "cordova-android-play-services-gradle-release": "^4.0.0"
+    "cordova-android-play-services-gradle-release": "^4.0.0",
+    "cordova-plugin-screen-orientation": "^3.0.4",
+    "es6-promise-plugin": "^4.2.2"
   }
 }

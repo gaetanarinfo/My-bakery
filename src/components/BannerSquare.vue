@@ -1,8 +1,10 @@
 <template name="BannerSquareComponent">
 
-  <div :class="(margin === false) ? 'container-xl container-square section fadeIn padding' : 'container-xl container-square section fadeIn'">
+  <div
+    :class="(margin === false) ? 'container-xl container-square section fadeIn padding' : 'container-xl container-square section fadeIn'">
 
-    <div :class="(margin === false) ? 'ads_campaign square margin' : (top === true) ? 'ads_campaign square top' : 'ads_campaign square'">
+    <div
+      :class="(margin === false) ? 'ads_campaign square margin' : (top === true) ? 'ads_campaign square top' : 'ads_campaign square'">
 
       <a v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
         @click="addClick(banner.id, '/bakery/' + banner.bakeryUrl, this.$route.path.slice(1))" target="_blank"
@@ -47,8 +49,6 @@ export default defineComponent({
       banner,
       addClick (id, url, page) {
 
-        console.log(page);
-
         fetch('https://api.ipify.org?format=json')
           .then(x => x.json())
           .then(({ ip }) => {
@@ -83,18 +83,22 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
 
-    fetch('https://api.ipify.org?format=json')
-      .then(x => x.json())
-      .then(({ ip }) => {
+    if (this.banner.length >= 1) {
 
-        store.dispatch('fetchBannerAddViews', {
-          bannerId: this.banner.id,
-          ip,
-          page: route.path.slice(1),
-          type: 'square'
+      fetch('https://api.ipify.org?format=json')
+        .then(x => x.json())
+        .then(({ ip }) => {
+
+          store.dispatch('fetchBannerAddViews', {
+            bannerId: this.banner.id,
+            ip,
+            page: route.path.slice(1),
+            type: 'square'
+          })
+
         })
 
-      })
+    }
 
   },
   props: {

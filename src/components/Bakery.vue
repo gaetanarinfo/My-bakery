@@ -262,13 +262,16 @@
 
               </li>
 
-              <li class="me-0" id="btn_settings">
+              <li v-if="isLoggedIn && user_subscription === true" class="me-0" id="btn_settings">
 
-                <a v-if="isLoggedIn" aria-controls="tab_settings" role="tab" data-toggle="tab"
-                  aria-expanded="false">Revendiquer cet
+                <a aria-controls="tab_settings" role="tab" data-toggle="tab" aria-expanded="false">Revendiquer cet
                   établissement</a>
 
-                <a v-else class="disabled">Revendiquer
+              </li>
+
+              <li v-else class="me-0">
+
+                <a class="disabled">Revendiquer
                   cet
                   établissement</a>
 
@@ -569,7 +572,7 @@
 
             </div>
 
-            <div v-if="isLoggedIn" class="tab-pane" role="tabpanel" id="tab_settings">
+            <div v-if="isLoggedIn && user_subscription === true" class="tab-pane" role="tabpanel" id="tab_settings">
               <div id="review-form-rapper">
 
                 <div class="bs-bakery-review">
@@ -1030,7 +1033,8 @@ import slick_css from "../css/slick.scss";
 
 slick_css
 
-const addSmallContent = ref('')
+const addSmallContent = ref(''),
+  user_subscription = ref(false)
 
 export default defineComponent({
   name: 'BakeryComponent',
@@ -1139,6 +1143,12 @@ export default defineComponent({
   },
   data () {
 
+    const store = useStore()
+
+    const user = computed(() => {
+      return store.state.stateUser.user
+    })
+
     $(document).on('change', '#form-comment', function (e) {
 
       var emailComment = $('#emailComment').val(),
@@ -1154,6 +1164,8 @@ export default defineComponent({
     })
 
     return {
+      user,
+      user_subscription,
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
       map: null,
       v$: useValidate(),
@@ -1604,7 +1616,7 @@ export default defineComponent({
     setImage (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -1669,7 +1681,7 @@ export default defineComponent({
     setImage2 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -1731,7 +1743,7 @@ export default defineComponent({
     setImage3 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -1793,7 +1805,7 @@ export default defineComponent({
     setImage4 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -1931,6 +1943,23 @@ export default defineComponent({
     });
 
     setTimeout(() => {
+
+      if (this.user !== null) {
+
+        axios.get(process.env.WEBSITE + '/user-profil/' + this.user.email)
+          .then((res) => {
+
+            if (res.status === 200) {
+
+              // Static values
+              user_subscription.value = res.data.subscription
+
+            }
+
+          })
+
+      }
+
       this.addDesc = this.bakery.content
       this.addName = this.bakery.title
       this.addPhone = this.bakery.phone

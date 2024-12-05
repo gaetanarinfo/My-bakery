@@ -70,11 +70,30 @@
         "PLAY-SERVICES-VISION-IMAGE-LABEL": "18.0.0",
         "PLAY-SERVICES-WALLET": "17.0.0",
         "PLAY-SERVICES-WEARABLE": "17.0.0"
-      }
+      },
+      "cordova-plugin-screen-orientation": {},
+      "wonderpush-cordova-sdk": {
+        "CLIENT_ID": "7e5413474fcd03c6586fc05532335db26cf81f9f",
+        "CLIENT_SECRET": "ae3a6abd96dbe9634b856bb184ae371fcf2c7d13366622b5ba8709d13267af44",
+        "SENDER_ID": "546679997911",
+        "REQUIRES_USER_CONSENT": "true",
+        "LOGGING": "false"
+      },
+      "cordova-plugin-androidx": {},
+      "cordova-plugin-firebase": {},
+      "cordova-plugin-network-information": {}
     }
   },
   "devDependencies": {
     "cordova-android": "^12.0.0",
-    "cordova-android-play-services-gradle-release": "^4.0.0"
+    "cordova-android-play-services-gradle-release": "^4.0.0",
+    "cordova-plugin-firebase": "2.0.6",
+    "cordova-plugin-network-information": "^3.0.0",
+    "cordova-plugin-screen-orientation": "^3.0.4",
+    "es6-promise-plugin": "^4.2.2",
+    "wonderpush-cordova-sdk": "^3.3.2"
+  },
+  "dependencies": {
+    "cordova-plugin-androidx": "3.0.0"
   }
 }

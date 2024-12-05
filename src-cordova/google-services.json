@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "812405164534",
-    "project_id": "my-bakery-abe92",
-    "storage_bucket": "my-bakery-abe92.appspot.com"
+    "project_number": "546679997911",
+    "project_id": "my-bakery-a65fa",
+    "storage_bucket": "my-bakery-a65fa.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:812405164534:android:078a2866fbce68d3d0dfd7",
+        "mobilesdk_app_id": "1:546679997911:android:43ba816f5d432aac797792",
         "android_client_info": {
           "package_name": "org.mybakery.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "812405164534-cbupsttae35b34mv6qgdt9udbkckjceo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.mybakery.app",
-            "certificate_hash": "9c1cbdff865580f7d1e1f184c9de88019cf3e2b9"
-          }
-        },
-        {
-          "client_id": "812405164534-31geufq783hm58770al5mmujg2jm1sds.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBBZhZCfiPZ3nb--zZ4NfU73-OVTLZaCFA"
+          "current_key": "AIzaSyA7CJ1CYD3bY38HBc9DwO3jbbfJq5qChNc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "812405164534-31geufq783hm58770al5mmujg2jm1sds.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -141,9 +141,9 @@
             <p class="subtitle">Sélectionner votre créneau : </p>
 
             <VueDatePicker v-model="date" :disabled-dates="disabledDates" :loading="loading"
-              :month-change-on-scroll="false" no-today
-              :min-date="new Date()" :markers="markers" :enable-time-picker="false" locale="fr" dark inline auto-apply
-              :range="{ minRange: 6 }" @update:model-value="handleDate" />
+              :month-change-on-scroll="false" no-today :min-date="new Date()" :markers="markers"
+              :enable-time-picker="false" locale="fr" dark inline auto-apply :range="{ minRange: 6 }"
+              @update:model-value="handleDate" />
 
             <div class="affichage-price">
               <p class="subtitle2">Affichage pendant {{ moment(dateE).add(1, 'days').diff(moment(dateS), "days") }}
@@ -289,8 +289,8 @@ export default defineComponent({
     })
 
     const handleDate = (modelData) => {
-     dateS.value = moment(modelData[0]).format("YYYY-MM-DD")
-     dateE.value = moment(modelData[1]).format("YYYY-MM-DD")
+      dateS.value = moment(modelData[0]).format("YYYY-MM-DD")
+      dateE.value = moment(modelData[1]).format("YYYY-MM-DD")
     }
 
     onMounted(() => {
@@ -322,6 +322,41 @@ export default defineComponent({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
         })
+      },
+      showNotifUpload (percentage) {
+
+        const notif = $q.notify({
+          group: false, // required to be updatable
+          timeout: 0, // we want to be in control when it gets dismissed
+          spinner: true,
+          message: 'Téléchargement des fichiers...',
+          caption: '0%',
+          classes: 'loaderUpload'
+        })
+
+        // we simulate some progress here...
+        const interval = setInterval(() => {
+          percentage = Math.min(100, percentage + Math.floor(Math.random() * 22))
+
+          // we update the dialog
+          notif({
+            caption: `${percentage} %`
+          })
+
+          // if we are done...
+          if (percentage === 100) {
+            notif({
+              icon: 'done', // we add an icon
+              spinner: false, // we reset the spinner setting so the icon can be displayed
+              message: 'Téléchargement terminé !',
+              timeout: 2500, // we will timeout it in 2.5s
+              classes: 'loaderUpload'
+            })
+            clearInterval(interval)
+            this.$router.push('/cart')
+          }
+
+        }, 500)
       },
       image: null,
       image2: null,
@@ -372,11 +407,11 @@ export default defineComponent({
                     disabledDates.value.push(dates.add(i, "days").format("YYYY-MM-DD"))
                   }
 
-                  setTimeout(() => {
-                    loading.value = false
-                  }, 2500);
-
                 });
+
+                setTimeout(() => {
+                  loading.value = false
+                }, 2500);
 
               } else {
 
@@ -400,31 +435,36 @@ export default defineComponent({
         this.showTextLoading(false);
       },
       shoppingCart,
-      showTextLoading (express = null) {
+      showTextLoading (express) {
         visible.value = true
         $('.u-column1').fadeOut(300)
         showSimulatedReturnData.value = false
         showSimulatedReturnData2.value = false
         product2.value = false
 
-        if (express === null) {
-          setTimeout(() => {
-            visible.value = false
-            showSimulatedReturnData.value = true
-            showSimulatedReturnData2.value = true
-          }, 1500)
-        } else if (express === true) {
+        if (express === true) {
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = false
             showSimulatedReturnData2.value = true
             product2.value = true
           }, 1500)
-        } else if (express === false) {
+        }
+
+        if (express === false) {
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = true
             showSimulatedReturnData2.value = true
+            product2.value = false
+          }, 1500)
+        }
+
+        if (express === 'loading') {
+          setTimeout(() => {
+            visible.value = true
+            showSimulatedReturnData.value = false
+            showSimulatedReturnData2.value = false
             product2.value = false
           }, 1500)
         }
@@ -473,13 +513,14 @@ export default defineComponent({
           scrollTop: $('#products').offset().top
         }, '200')
 
-        if (date.value.length >= 1 && additional_information.value.length >= 1 && $('#file-input').get(0).files.length >= 1 && LocalStorage.hasItem('bakery_id_event')) {
+        if (date.value.length >= 1 && additional_information.value.length >= 1 && this.image !== 0 && this.image2 !== 0 && LocalStorage.hasItem('bakery_id_event')) {
 
           $(document).find('.error-form-banner').removeClass('error-form-banner')
 
           visible.value = true
           $('.u-column1').fadeOut(300)
           showSimulatedReturnData.value = false
+          showSimulatedReturnData2.value = false
           product2.value = false
 
           const form_data = new FormData();
@@ -487,13 +528,25 @@ export default defineComponent({
           form_data.append('file', this.image);
           form_data.append('file', this.image2);
 
+          this.startLoading();
+
           axios({
             method: "POST",
             url: process.env.WEBSITE + '/add-banner',
             data: form_data,
             headers: {
               "Content-Type": "multipart/form-data"
-            }
+            },
+            onUploadProgress: (progressEvent) => {
+
+              const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+
+              if (totalLength !== null) {
+                this.progressData = Math.round((progressEvent.loaded * 100) / totalLength);
+
+              }
+
+            },
           })
             .then((res) => {
 
@@ -505,10 +558,6 @@ export default defineComponent({
                 LocalStorage.setItem('banner_name', res.data.banner)
                 LocalStorage.setItem('banner_square_name', res.data.banner_square)
 
-                setTimeout(() => {
-                  this.$router.push('/cart')
-                }, 2500);
-
               } else {
                 this.errorNotif()
               }
@@ -517,6 +566,7 @@ export default defineComponent({
             .catch((error) => {
               this.errorNotif()
             })
+
 
         }
 
@@ -528,11 +578,11 @@ export default defineComponent({
           $('#additional_information').addClass('error-form-banner')
         }
 
-        if ($('#file-input').get(0).files.length === 0) {
+        if (this.image !== 0) {
           $('.dropzone').addClass('error-form-banner')
         }
 
-        if ($('#file-input2').get(0).files.length === 0) {
+        if (this.image2 !== 0) {
           $('.dropzone2').addClass('error-form-banner')
         }
 
@@ -546,6 +596,8 @@ export default defineComponent({
   data () {
 
     return {
+      loadingData: this.loading,
+      progressData: this.progress,
       preview: null,
       preview2: null,
       formData: null,
@@ -553,6 +605,30 @@ export default defineComponent({
     }
   },
   methods: {
+    startLoading () {
+      this.loadingData = true;
+      this.progressData = 0;
+      const incrementOrFinishLoading = () => {
+        if (this.progressData < 100) {
+          this.incProgress(10);
+        } else {
+          clearInterval(fauxProgress);
+          this.finishLoading();
+        }
+      }
+      this.showNotifUpload(this.progressData)
+      const fauxProgress = setInterval(incrementOrFinishLoading, 100);
+
+    },
+    incProgress (step) {
+      this.progressData += step;
+    },
+    finishLoading () {
+      this.progressData = 100;
+      setTimeout(() => {
+        this.loadingData = false;
+      }, this.finishedDelay);
+    },
     search (search = null) {
 
       $(document).find('.clear').addClass('activate');
@@ -591,7 +667,7 @@ export default defineComponent({
       $('.removeImage').hide()
       $('.file-input').show()
       $('.preview').hide()
-      this.image = null
+      this.image = 0
       $('.image-error').hide()
       $('.image-error').html('')
     },
@@ -607,7 +683,7 @@ export default defineComponent({
 
       const file = event.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (event.files[0].size <= 1684688109387) {
 
@@ -634,7 +710,7 @@ export default defineComponent({
 
               } else {
 
-                this.image = null
+                this.image = 0
                 $('.image-error').show()
                 $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être au format 970 pixels par 260 pixels.')
 
@@ -642,7 +718,7 @@ export default defineComponent({
 
             } else {
 
-              this.image = null
+              this.image = 0
               $('.image-error').show()
               $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
 
@@ -663,7 +739,7 @@ export default defineComponent({
 
       } else {
         $('.removeImage').hide()
-        this.image = null
+        this.image = 0
         $('.image-error').show()
         $('.image-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
@@ -673,7 +749,7 @@ export default defineComponent({
 
       const file = event.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (event.files[0].size <= 1684688109387) {
 
@@ -700,7 +776,7 @@ export default defineComponent({
 
               } else {
 
-                this.image = null
+                this.image2 = 0
                 $('.image2-error').show()
                 $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être au format 300 pixels par 250 pixels.')
 
@@ -708,7 +784,7 @@ export default defineComponent({
 
             } else {
 
-              this.image = null
+              this.image2 = 0
               $('.image2-error').show()
               $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher doit être de type image.')
 
@@ -729,7 +805,7 @@ export default defineComponent({
 
       } else {
         $('.removeImage2').hide()
-        this.image = null
+        this.image2 = 0
         $('.image2-error').show()
         $('.image2-error').html('<i class="fa-solid fa-xmark me-1"></i>Votre ficher est trop lourd ! Il ne doit pas dépasser 8 mo.')
       }
@@ -740,7 +816,7 @@ export default defineComponent({
 
     const store = useStore()
 
-    this.showTextLoading();
+    this.showTextLoading(false);
 
     $(document).on('click', '.li-list', function () {
 

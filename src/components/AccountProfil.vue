@@ -47,8 +47,10 @@
                     <input id="file-input" type="file" accept="image/*" @change="handleFileChange($event.target)"
                       required />
 
-                    <img v-if="avatar === null" class="rounded-circle first-preview" src="users/avatar.png" v-bind:src="preview" alt="">
-                    <img v-else class="rounded-circle first-preview" :src="folderPictureUsers + avatar" v-bind:src="preview" alt="">
+                    <img v-if="avatar === null" class="rounded-circle first-preview" src="users/avatar.png"
+                      v-bind:src="preview" alt="">
+                    <img v-else class="rounded-circle first-preview" :src="folderPictureUsers + avatar"
+                      v-bind:src="preview" alt="">
 
                     <img class="rounded-circle preview" v-bind:src="preview" alt="">
 
@@ -62,13 +64,14 @@
 
                   <div class="button-picture">
 
-                  <div class="addImage text-center mt-4"><a @click="saveImage" class="btn btn-success">Enregistrer</a>
-                  </div>
+                    <div class="addImage text-center mt-4"><a @click="saveImage" class="btn btn-success">Enregistrer</a>
+                    </div>
 
-                  <div class="removeImage text-center mt-4"><a @click="removeImage" class="btn btn-danger">Supprimer</a>
-                  </div>
+                    <div class="removeImage text-center mt-4"><a @click="removeImage"
+                        class="btn btn-danger">Supprimer</a>
+                    </div>
 
-                </div>
+                  </div>
 
                 </div>
 
@@ -93,7 +96,7 @@
 
                     <p class="text-muted text-bold font-size-sm mb-0"><i
                         class="fa-solid fa-coins text-brown-5 me-1"></i>
-                      {{ credits }} Crédits disponible </p>
+                      {{ credits }} crédits disponible </p>
 
                     <hr />
 
@@ -128,6 +131,19 @@
                 </a>
               </li>
 
+              <li v-if="!notificationsActiveShow"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="notificationsActive">
+                  <p class="mb-0"> <i class="fa-solid fa-bell me-2"></i>Activer les notications</p>
+                </a>
+              </li>
+
+              <li v-else class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="notificationsInactive">
+                  <p class="mb-0"> <i class="fa-solid fa-bell-slash me-2"></i>Désactiver les notications</p>
+                </a>
+              </li>
+
               <li id="card5" v-if="admin === 1"
                 :class="(yearRouter !== undefined) ? 'active-list list-group-item d-flex justify-content-between align-items-center flex-wrap' : 'list-group-item d-flex justify-content-between align-items-center flex-wrap'">
                 <a @click="showBudget">
@@ -142,8 +158,9 @@
                 </a>
               </li>
 
-              <li id="card8" v-else class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                <a @click="showBannerAll">
+              <li id="card8" v-else
+                class="disabled list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a>
                   <p class="mb-0"><i class="fa-solid fa-bullhorn me-2"></i>Mes bannières</p>
                 </a>
               </li>
@@ -162,9 +179,16 @@
                 </a>
               </li>
 
-              <li id="card6" v-if="user_bakery.succes === true"
+              <li id="card6" v-if="user_bakery.succes === true && subscription === true"
                 class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <a @click="showUserBakery">
+                  <p class="mb-0"><i class="fa-regular fa-building me-2"></i>Mes établissements</p>
+                </a>
+              </li>
+
+              <li id="card6" v-if="user_bakery.succes === true && subscription === false"
+                class="disabled list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a>
                   <p class="mb-0"><i class="fa-regular fa-building me-2"></i>Mes établissements</p>
                 </a>
               </li>
@@ -408,7 +432,7 @@
 
               <p v-else class="fw-bolder" style="text-align: center;margin-top: 1rem;">
                 <i class="fa fa-warning text-warning"></i>
-                Vous n'avez pas encore de commande sur My Nakery.
+                Vous n'avez pas encore de commande sur My Bakery.
               </p>
 
             </div>
@@ -835,7 +859,7 @@
                 <div class="col-10">Vous voulez de l'aide ? &nbsp;<a href="mailto:contact@my-bakery.fr">
                     Contactez-nous</a></div>
                 <div class="text-right">
-                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                  <a class="btn btn-bakery mt-2" @click="closeModal()" data-bs-dismiss="modal">Fermer</a>
                 </div>
               </div>
 
@@ -897,7 +921,7 @@
               <div class="row">
 
                 <div class="text-right">
-                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                  <a class="btn btn-bakery mt-2" @click="closeModal()" data-bs-dismiss="modal">Fermer</a>
                 </div>
 
               </div>
@@ -997,7 +1021,7 @@
               <div class="row">
 
                 <div class="text-right">
-                  <a class="btn btn-bakery mt-2" data-bs-dismiss="modal">Fermer</a>
+                  <a class="btn btn-bakery mt-2" @click="closeModal()" data-bs-dismiss="modal">Fermer</a>
                 </div>
 
               </div>
@@ -1198,6 +1222,8 @@ const config = reactive({
 
 const bannerTable = ref([])
 
+const notificationsActiveShow = ref(true)
+
 export default defineComponent({
   name: 'AccountProfilComponent',
   components: {
@@ -1396,6 +1422,13 @@ export default defineComponent({
     }, 1000);
 
     return {
+      closeModal () {
+
+        window.addEventListener("orientationchange", function () {
+          screen.orientation.unlock()
+        });
+
+      },
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
       folderPictureUsers: process.env.WEBSITE + '/users/images/',
       showDetailEstablishement (id) {
@@ -1672,6 +1705,22 @@ export default defineComponent({
       moment: moment,
       Cookies: Cookies,
       showSimulatedReturnData,
+      notificationsInactive () {
+
+        notificationsActiveShow.value = false
+        window.WonderPush = window.WonderPush || [];
+        WonderPush.unsubscribeFromNotifications();
+        this.showNotif('Vous avez annulé votre inscription aux notifications de My Bakery.')
+
+      },
+      notificationsActive () {
+
+        notificationsActiveShow.value = true
+        WonderPush.subscribeToNotifications();
+        this.showNotif('Vous avez donné votre accord pour recevoir les notifications de My Bakery.')
+
+      },
+      notificationsActiveShow
     }
   },
   data () {
@@ -2193,6 +2242,19 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
 
+    window.WonderPush = window.WonderPush || [];
+    WonderPush.push(function () {
+      WonderPush.isSubscribedToNotifications().then(function (isSubscribed) {
+
+        if (isSubscribed) {
+          notificationsActiveShow.value = true
+        } else {
+          notificationsActiveShow.value = false
+        }
+
+      });
+    });
+
     this.showTextLoading()
 
     if (this.$route.params.year !== undefined) this.year = this.$route.params.year
@@ -2224,10 +2286,8 @@ export default defineComponent({
                 $('#card7').removeClass('active-list');
                 $('#card8').removeClass('active-list');
 
-                $([document.documentElement, document.body]).animate({
-                  scrollTop: $('#my-account-profil').offset().top
-                }, '200')
               } else {
+
                 cardProfil.value = true
                 cardUpdateProfil.value = false
                 cardActivity.value = false
@@ -2245,9 +2305,6 @@ export default defineComponent({
                 $('#card7').removeClass('active-list');
                 $('#card8').removeClass('active-list');
 
-                $([document.documentElement, document.body]).animate({
-                  scrollTop: $('#my-account-profil').offset().top
-                }, '200')
               }
 
               // Static values
@@ -2340,6 +2397,10 @@ export default defineComponent({
 
                     function refundOrder (id, tokenPaiement, date) {
 
+                      window.addEventListener("orientationchange", function () {
+                        screen.orientation.lock('landscape');
+                      });
+
                       if (moment().add(14, 'days').format('YYYY-MM-DD') >= moment(date).format('YYYY-MM-DD')) {
 
                         store.dispatch('fetchRefundOrder', { 'tokenPaiement': tokenPaiement })
@@ -2404,6 +2465,10 @@ export default defineComponent({
                     }
 
                     function showOrder (paypalId) {
+
+                      window.addEventListener("orientationchange", function () {
+                        screen.orientation.lock('landscape');
+                      });
 
                       store.dispatch('fetchShowOrder', { 'paypalId': paypalId })
 
@@ -2526,6 +2591,10 @@ export default defineComponent({
 
                     // Modal Show Details Establishement
                     function showDetailEstablishement (bakeryId) {
+
+                      window.addEventListener("orientationchange", function () {
+                        screen.orientation.lock('landscape');
+                      });
 
                       optionsEstablishementViews.value = []
                       optionsEstablishementClick.value = []
@@ -2701,7 +2770,9 @@ export default defineComponent({
                 })
 
               // Calendar
-              this.loadEvents();
+              if (bannerTable.value.length >= 1) {
+                this.loadEvents();
+              }
             }
 
           })

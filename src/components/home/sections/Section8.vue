@@ -51,10 +51,10 @@
                       <i>y</i>
 
                       <h4>
-                        Pas de frais caché
+                        Nos offres diversifiées
                       </h4>
 
-                      <p>Ajouter autant de boulangerie que vous désirez, notre application est payante pour nous
+                      <p>En achetant un pack sur notre boutique vous avez la possibilité d'ajouter votre établissement et de le modifier, notre application est payante pour nous
                         rémunérer, ce qui permet de faire avancer le développement de My Bakery.</p>
 
                     </div>

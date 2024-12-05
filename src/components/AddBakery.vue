@@ -29,9 +29,9 @@
 
   <div class="bakery-single bakery-add section fadeIn3">
 
-    <div class="container">
+    <div class="container clear">
 
-      <div class="bakery-detail">
+      <div class="bakery-detail" v-show="showSimulatedReturnData">
 
         <div class="bakery">
 
@@ -317,9 +317,14 @@
 
       </div>
 
+      <div class="loadingDiv" v-show="visible">
+        <q-spinner-grid size="70px" color="info" />
+      </div>
+
     </div>
 
   </div>
+
 </template>
 
 <style lang="css">
@@ -467,13 +472,11 @@
 </style>
 
 <script>
-import { defineComponent, onMounted, computed } from 'vue'
-import { useQuasar } from 'quasar'
+import { defineComponent, onMounted, computed, ref } from 'vue'
+import { useQuasar, SessionStorage, Cookies } from 'quasar'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import moment from 'moment'
-import { ref } from 'vue'
-import { Cookies } from 'quasar'
 import axios from 'axios'
 
 moment.locale('fr')
@@ -483,10 +486,36 @@ export default defineComponent({
   components: {
   },
   setup () {
-    const visible = ref(false)
-    const showSimulatedReturnData = ref(true)
+
+    const visible = ref(true)
+    const showSimulatedReturnData = ref(false)
     const $q = useQuasar()
     const FormData = require('form-data');
+
+    if (SessionStorage.getItem('token') !== null) {
+
+      axios.get(process.env.WEBSITE + '/user-profil/' + SessionStorage.getItem('email'))
+        .then((res) => {
+
+          if (res.status === 200) {
+
+            // Static values
+            if (res.data.subscription === false) {
+              window.location.href = "#/"
+            }
+
+            setTimeout(() => {
+              visible.value = false
+              showSimulatedReturnData.value = true
+            }, 1500)
+
+          }
+
+        })
+
+    } else {
+      window.location.href = "#/"
+    }
 
     $q.notify.registerType('success-form', {
       icon: 'fa-solid fa-check',
@@ -507,15 +536,6 @@ export default defineComponent({
     })
 
     return {
-      showTextLoading () {
-        visible.value = true
-        showSimulatedReturnData.value = true
-
-        setTimeout(() => {
-          visible.value = false
-          showSimulatedReturnData.value = true
-        }, 1500)
-      },
       Cookies: Cookies,
       visible,
       FormData: FormData,
@@ -643,7 +663,7 @@ export default defineComponent({
     setImage (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -708,7 +728,7 @@ export default defineComponent({
     setImage2 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -770,7 +790,7 @@ export default defineComponent({
     setImage3 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -832,7 +852,7 @@ export default defineComponent({
     setImage4 (e) {
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
-         extValid = ['png', 'jpeg', 'jpg']
+        extValid = ['png', 'jpeg', 'jpg']
 
       if (e.target.files[0].size <= 1684688109387) {
 

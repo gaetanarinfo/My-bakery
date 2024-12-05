@@ -1,6 +1,7 @@
 <template name="BannerComponent">
 
-  <div :class="(margin === false) ? 'container-xl container-large section fadeIn padding' : 'container-xl container-large section fadeIn'">
+  <div
+    :class="(margin === false) ? 'container-xl container-large section fadeIn padding' : 'container-xl container-large section fadeIn'">
 
     <div :class="(margin === false) ? 'ads_campaign margin' : (top === true) ? 'ads_campaign top' : 'ads_campaign'">
 
@@ -47,8 +48,6 @@ export default defineComponent({
       banner,
       addClick (id, url, page) {
 
-        console.log(page);
-
         fetch('https://api.ipify.org?format=json')
           .then(x => x.json())
           .then(({ ip }) => {
@@ -83,18 +82,22 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
 
-    fetch('https://api.ipify.org?format=json')
-      .then(x => x.json())
-      .then(({ ip }) => {
+    if (this.banner.length >= 1) {
 
-        store.dispatch('fetchBannerAddViews', {
-          bannerId: this.banner.id,
-          ip,
-          page: route.path.slice(1),
-          type: 'large'
+      fetch('https://api.ipify.org?format=json')
+        .then(x => x.json())
+        .then(({ ip }) => {
+
+          store.dispatch('fetchBannerAddViews', {
+            bannerId: this.banner.id,
+            ip,
+            page: route.path.slice(1),
+            type: 'large'
+          })
+
         })
 
-      })
+    }
 
   },
   props: {

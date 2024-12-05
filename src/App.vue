@@ -33,20 +33,28 @@ export default defineComponent({
       // hiding in 2s
       setTimeout(() => {
         this.show = true
-      }, 2500)
+      }, 1500)
     }
   },
 
   beforeUnmount () {
     setTimeout(() => {
       this.$q.loading.hide()
-    }, 2500)
+    }, 1500)
   },
   computed: {
   },
 
   mounted () {
     this.showLoading()
+
+    function onDeviceReady() {
+      // Prompt user for push subscription
+      WonderPush.subscribeToNotifications();
+    }
+    // In this example, we'll prompt the user as soon as the 'deviceready' event is fired
+    // There's good chances you'll find a more suitable moment in the user journey
+    document.addEventListener('deviceready', onDeviceReady);
 
     if(Cookies.has('bakerysList') === false) {
       Cookies.set('bakerysList', '')

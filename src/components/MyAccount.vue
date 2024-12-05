@@ -182,6 +182,7 @@
 </style>
 
 <script>
+
 import { defineComponent, onMounted, computed } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
@@ -210,6 +211,8 @@ $(document).on('click', '#show-password', function (e) {
   }
 
 })
+
+const application_id = ref('')
 
 export default defineComponent({
   name: 'MyAccount',
@@ -242,6 +245,7 @@ export default defineComponent({
     })
 
     return {
+      application_id,
       showTextLoading (express = null) {
         visible.value = true
         $('.u-column1').fadeOut(300)
@@ -320,6 +324,7 @@ export default defineComponent({
             'location': this.reg_location,
             'phone': this.reg_phone,
             'mobile': this.reg_mobile,
+            'application_id': application_id.value
           })
             .then((res) => {
 
@@ -417,7 +422,7 @@ export default defineComponent({
 
         if (this.username && this.password) {
 
-          axios.post(process.env.WEBSITE + '/login', { 'username': this.username, 'password': this.password })
+          axios.post(process.env.WEBSITE + '/login', { 'username': this.username, 'password': this.password, 'application_id': application_id.value })
             .then((res) => {
 
               this.showTextLoading('login')
@@ -443,7 +448,7 @@ export default defineComponent({
                   if (LocalStorage.has('prev_url')) {
                     this.$router.push(LocalStorage.getItem('prev_url'));
                   } else {
-                    this.$router.push("/")
+                    this.$router.push("/my-account-profil")
                   }
 
                 }, 3500);
@@ -457,6 +462,8 @@ export default defineComponent({
             .catch((error) => {
               this.errorNotif()
             })
+
+          // })
 
         } else {
 
@@ -516,6 +523,15 @@ export default defineComponent({
     if (sessionStorage.getItem('token') !== null) {
       location.href = '/'
     }
+
+    window.WonderPush = window.WonderPush || [];
+    WonderPush.push(function () {
+
+      WonderPush.getInstallationId().then(data => {
+        application_id.value = data
+      });
+
+    });
 
     $('#menu-main-menu').removeAttr('style')
 

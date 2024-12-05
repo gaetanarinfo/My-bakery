@@ -4,7 +4,7 @@
 
     <div class="background-p">
 
-      
+
     </div>
 
   </div>
@@ -48,8 +48,20 @@
                   envisager”
                 </p>
 
-                <p class="button"><a @click="this.$router.push('/add-bakery');" class="btn btn-bakery">Ajouter ma
-                    boulangerie</a></p>
+                <p class="button">
+
+                  <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" class="btn btn-bakery">Ajouter ma
+                    boulangerie</a>
+
+                  <a v-if="isLoggedIn && user_subscription === false" @click="this.$router.push('/products');"
+                    class="btn btn-bakery">Ajouter ma
+                    boulangerie</a>
+
+                  <a v-if="isLoggedIn && user_subscription === true" @click="this.$router.push('/add-bakery');"
+                    class="btn btn-bakery">Ajouter ma
+                    boulangerie</a>
+
+                </p>
 
                 <small>Gaëtan Seigneur - Développeur pour My bakery</small>
 
@@ -79,11 +91,50 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import axios from 'axios'
+
+const user_subscription = ref(false)
 
 export default defineComponent({
   name: 'SectionHome9',
-  setup () {
+  data () {
+
+    const store = useStore()
+
+    const user = computed(() => {
+      return store.state.stateUser.user
+    })
+
+    return {
+      user,
+      user_subscription,
+      isLoggedIn: store.getters.isLoggedIn,
+    }
+
+  },
+  mounted () {
+
+    setTimeout(() => {
+
+      if (this.user !== null) {
+
+        axios.get(process.env.WEBSITE + '/user-profil/' + this.user.email)
+          .then((res) => {
+
+            if (res.status === 200) {
+
+              // Static values
+              user_subscription.value = res.data.subscription
+
+            }
+
+          })
+
+      }
+
+    }, 1500);
 
   }
 })

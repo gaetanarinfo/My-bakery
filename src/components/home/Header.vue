@@ -236,6 +236,7 @@
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import { date, LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import moment from 'moment'
 import { ref } from 'vue'
 import axios from 'axios'
@@ -257,7 +258,7 @@ export default defineComponent({
       return store.state.stateUser.user
     })
 
-    if (sessionStorage.getItem('token') !== null) {
+    if (SessionStorage.getItem('token') !== null) {
 
       onMounted(() => {
         store.dispatch('fetchVerificationAccount')

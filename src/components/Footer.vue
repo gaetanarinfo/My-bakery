@@ -65,8 +65,8 @@
 
                 <div class="form-group">
 
-                  <input v-model="emailNewsletter" id="email_newsletter" name="email_newsletter" class="form-control" type="email"
-                    placeholder="Votre adresse email...">
+                  <input v-model="emailNewsletter" id="email_newsletter" name="email_newsletter" class="form-control"
+                    type="email" placeholder="Votre adresse email...">
 
                   <button id="submit_newsletter" v-bind:class="submit !== false ? '' : 'disabled'"
                     @click="submitNewsletter" type="submit">S'abonner</button>
@@ -116,31 +116,36 @@
                     </li>
 
                     <li>
-                      <a v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="contact"><i
-                          class="fa-solid fa-chevron-right me-1"></i> Contact</a>
+                      <a v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'"
+                        data-scroll="contact"><i class="fa-solid fa-chevron-right me-1"></i> Contact</a>
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/bakerys');"><i
-                          class="fa-solid fa-chevron-right me-1"></i> Boulangeries</a>
+                      <a @click="this.$router.push('/bakerys');"><i class="fa-solid fa-chevron-right me-1"></i>
+                        Boulangeries</a>
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/blogs');" class="scroll-click" data-scroll="blog"><i class="fa-solid fa-chevron-right me-1"></i>
+                      <a @click="this.$router.push('/blogs');" class="scroll-click" data-scroll="blog"><i
+                          class="fa-solid fa-chevron-right me-1"></i>
                         Blog</a>
                     </li>
 
                     <li>
-                      <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
-                      <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');"><i class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
+                      <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');"><i
+                          class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
+                      <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');"><i
+                          class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/cgu');"><i class="fa-solid fa-chevron-right me-1"></i> Conditions générales d'utilisation</a>
+                      <a @click="this.$router.push('/cgu');"><i class="fa-solid fa-chevron-right me-1"></i> Conditions
+                        générales d'utilisation</a>
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/politique-confidentialite');"><i class="fa-solid fa-chevron-right me-1"></i> Politique de confidentialité</a>
+                      <a @click="this.$router.push('/politique-confidentialite');"><i
+                          class="fa-solid fa-chevron-right me-1"></i> Politique de confidentialité</a>
                     </li>
 
                   </ul>
@@ -191,7 +196,7 @@ import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'FooterComponent',
-  setup() {
+  setup () {
 
     const $q = useQuasar()
     const visible = ref(false)
@@ -217,6 +222,7 @@ export default defineComponent({
     })
 
     return {
+      onLine: navigator.onLine,
       isLoggedIn: store.getters.isLoggedIn,
       plateform: $q.platform.is.name,
       version: process.env.VERSION,
@@ -224,7 +230,7 @@ export default defineComponent({
       visible,
       moment: moment,
       showSimulatedReturnData,
-      showTextLoading() {
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = false
 
@@ -233,18 +239,42 @@ export default defineComponent({
           showSimulatedReturnData.value = true
         }, 3000)
       },
-      showNotif() {
+      showNotif () {
         $q.notify({
           type: 'success-form',
           message: 'Votre demande de d\'inscrition à notre lettre d\'actualité à bien été pris en compte.'
         })
       },
-      errorNotif(message = null) {
+      errorNotif (message = null) {
         $q.notify({
           type: 'error-form',
           message: message ? message : 'Une erreur est survenue dans le formulaire.'
         })
-      }
+      },
+      connectionNotif () {
+
+        $q.notify({
+          icon: 'signal_wifi_on',
+          progress: true,
+          color: 'green-9',
+          textColor: 'white',
+          type: 'success-form',
+          message: 'Vous avez retrouver la connexion à Internet. My Bakery est en ligne.'
+        })
+
+      },
+      connectionNotif2 () {
+
+        $q.notify({
+          icon: 'signal_wifi_off',
+          progress: true,
+          color: 'red-9',
+          textColor: 'white',
+          type: 'error-form',
+          message: 'Vous avez perdu la connexion à Internet. My Bakery est hors ligne.'
+        })
+
+      },
     }
   },
   data () {
@@ -265,7 +295,7 @@ export default defineComponent({
     }
   },
   methods: {
-    submitNewsletter(e) {
+    submitNewsletter (e) {
       e.preventDefault();
 
       this.v$.$validate() // checks all inputs
@@ -334,9 +364,73 @@ export default defineComponent({
         $('.' + 'email_newsletter' + '_error').text("Le champs adresse email n'est pas valide !");
 
       }
+    },
+    updateOnlineStatus (e) {
+      if (e.type == "offline") this.connectionNotif2()
+      if (e.type == "online") this.connectionNotif()
     }
   },
-  validations() {
+  watch: {
+    onLine (v) {
+      if (v) {
+        this.showBackOnline = true
+        setTimeout(() => {
+          this.showBackOnline = false
+        }, 1000)
+      }
+    }
+  },
+  mounted () {
+
+    const $q = useQuasar()
+
+    window.addEventListener('online', this.updateOnlineStatus)
+    window.addEventListener('offline', this.updateOnlineStatus)
+
+    document.addEventListener("deviceready", function () {
+
+      const networkState = navigator.connection.type
+
+      const states = {}
+      // eslint-disable-next-line no-undef
+      states[Connection.UNKNOWN] = false
+      // eslint-disable-next-line no-undef
+      states[Connection.ETHERNET] = true
+      // eslint-disable-next-line no-undef
+      states[Connection.WIFI] = true
+      // eslint-disable-next-line no-undef
+      states[Connection.CELL_2G] = false
+      // eslint-disable-next-line no-undef
+      states[Connection.CELL_3G] = true
+      // eslint-disable-next-line no-undef
+      states[Connection.CELL_4G] = true
+      // eslint-disable-next-line no-undef
+      states[Connection.CELL] = false
+      // eslint-disable-next-line no-undef
+      states[Connection.NONE] = false
+
+      if (states[networkState] === true) {
+        //
+      } else {
+        setInterval(() => {
+          $q.notify({
+            icon: 'signal_wifi_off',
+            progress: true,
+            color: 'red-9',
+            textColor: 'white',
+            message: 'Vous avez perdu la connexion à Internet. My Bakery est hors ligne.'
+          })
+        }, 5000)
+      }
+
+    })
+
+  },
+  beforeDestroy () {
+    window.removeEventListener('online', this.updateOnlineStatus)
+    window.removeEventListener('offline', this.updateOnlineStatus)
+  },
+  validations () {
     return {
       emailNewsletter: { required },
     }
