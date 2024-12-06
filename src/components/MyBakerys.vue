@@ -294,7 +294,7 @@
 
                         <div class="empty-comments" v-else>
 
-                          Aucun commentaire pour cette boulangerie !
+                          Il n'y a aucun commentaire sur cette boulangerie !
 
                         </div>
 
@@ -701,7 +701,7 @@ export default defineComponent({
 
     $(document).on('click', '#back-top', function (e) {
       e.preventDefault()
-      $('html, body').animate({ scrollTop: 0 }, 600)
+      $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
     // Header menu

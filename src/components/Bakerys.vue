@@ -73,15 +73,15 @@
 
       <div class="wrapper">
 
-        <BannerComponent :margin="true" />
+        <BannerComponent :margin="true" v-show="showSimulatedReturnData" />
 
         <div class="bloc container">
 
-          <div class="hp-container">
+          <div class="hp-container" v-show="showSimulatedReturnData">
 
             <div class="section text-center">
 
-              <div v-show="showSimulatedReturnData" id="blocGrid" class="row">
+              <div id="blocGrid" class="row">
 
                 <div class="col-lg-4 col-md-4 bakery" v-for="bakery in bakerysAll" :key="bakery.id">
 
@@ -229,7 +229,7 @@
 
                         <div class="empty-comments" v-else>
 
-                          Aucun commentaire pour cette boulangerie !
+                          Il n'y a aucun commentaire sur cette boulangerie !
 
                         </div>
 
@@ -274,7 +274,7 @@
 
               </div>
 
-              <div v-show="showSimulatedReturnData">
+              <div>
 
                 <div class="b-pagination">
 
@@ -308,12 +308,12 @@
 
               </div>
 
-              <div v-show="paginationData">
-                <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
-              </div>
-
             </div>
 
+          </div>
+
+          <div class="loadingDiv" v-show="visible">
+            <q-spinner-grid size="70px" color="info" />
           </div>
 
         </div>
@@ -522,12 +522,13 @@ export default defineComponent({
       },
       showTextLoading () {
         visible.value = true
-        showSimulatedReturnData.value = true
+        showSimulatedReturnData.value = false
 
         setTimeout(() => {
           visible.value = false
           showSimulatedReturnData.value = true
-        }, 1500)
+        }, 1500);
+
       },
       bakerysAll,
       Cookies: Cookies,
@@ -606,19 +607,23 @@ export default defineComponent({
     chargeBakery (getPage, search = null, location = null) {
 
       if (search.trim() == "" && location.trim() == "") {
-        this.showTextLoading()
+        this.visible = true
+        this.showSimulatedReturnData = false
       }
 
       if (search.trim() != "" && location.trim() != "" && this.search.length >= 3 && this.location.length >= 3) {
-        this.showTextLoading()
+        this.visible = true
+        this.showSimulatedReturnData = false
       }
 
       if (search.trim() == "" && location.trim() != "" && this.location.length >= 3) {
-        this.showTextLoading()
+        this.visible = true
+        this.showSimulatedReturnData = false
       }
 
       if (search.trim() != "" && location == "" && this.search.length >= 3) {
-        this.showTextLoading()
+        this.visible = true
+        this.showSimulatedReturnData = false
       }
 
       setTimeout(() => {
@@ -654,8 +659,8 @@ export default defineComponent({
 
                   galeries += '<div class="carousel-inner">'
 
-                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center; src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
-                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
+                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center;border-radius: 6px;" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
+                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="border-radius:6px;width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
 
                   galeries += '</div></div></div>'
 
@@ -676,7 +681,7 @@ export default defineComponent({
 
                   // Commentaire
                   if (bakery.author_comment == null) {
-                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                    var bloc_comment = '<div class="empty-comments">Il n\'y a aucun commentaire sur cette boulangerie !</div>'
                   }
 
                   var devanture = '',
@@ -778,9 +783,18 @@ export default defineComponent({
 
               } else {
 
-                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
+                $('#blocGrid').html(`<div class="p-404">
+                    <div class="container">
+                        <h1>DÉSOLER</h1>
+                        <h3>Aucun résultat n'a été trouvé pour votre recherche.</h3>
+                        <p>Nous vous suggérons de chercher avec un autre terme.</p>
+                    </div>
+                </div>`)
 
               }
+
+              this.visible = false
+              this.showSimulatedReturnData = true
 
             })
             .catch((error) => {
@@ -819,8 +833,8 @@ export default defineComponent({
 
                   galeries += '<div class="carousel-inner">'
 
-                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center; src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
-                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
+                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center;border-radius: 6px;" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
+                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="border-radius:6px;width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
 
                   galeries += '</div></div></div>'
 
@@ -841,7 +855,7 @@ export default defineComponent({
 
                   // Commentaire
                   if (bakery.author_comment == null) {
-                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                    var bloc_comment = '<div class="empty-comments">Il n\'y a aucun commentaire sur cette boulangerie !</div>'
                   }
 
                   var devanture = '',
@@ -943,9 +957,18 @@ export default defineComponent({
 
               } else {
 
-                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
+                $('#blocGrid').html(`<div class="p-404">
+                    <div class="container">
+                        <h1>DÉSOLER</h1>
+                        <h3>Aucun résultat n'a été trouvé pour votre recherche.</h3>
+                        <p>Nous vous suggérons de chercher avec un autre terme.</p>
+                    </div>
+                </div>`)
 
               }
+
+              this.visible = false
+              this.showSimulatedReturnData = true
 
             })
             .catch((error) => {
@@ -984,8 +1007,8 @@ export default defineComponent({
 
                   galeries += '<div class="carousel-inner">'
 
-                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center; src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
-                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
+                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center;border-radius: 6px;" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
+                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="border-radius:6px;width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
 
                   galeries += '</div></div></div>'
 
@@ -1006,7 +1029,7 @@ export default defineComponent({
 
                   // Commentaire
                   if (bakery.author_comment == null) {
-                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                    var bloc_comment = '<div class="empty-comments">Il n\'y a aucun commentaire sur cette boulangerie !</div>'
                   }
 
                   var devanture = '',
@@ -1107,8 +1130,17 @@ export default defineComponent({
                 })
 
               } else {
-                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
+                $('#blocGrid').html(`<div class="p-404">
+                    <div class="container">
+                        <h1>DÉSOLER</h1>
+                        <h3>Aucun résultat n'a été trouvé pour votre recherche.</h3>
+                        <p>Nous vous suggérons de chercher avec un autre terme.</p>
+                    </div>
+                </div>`)
               }
+
+              this.visible = false
+              this.showSimulatedReturnData = true
 
             }).catch((error) => {
               console.log(error);
@@ -1144,8 +1176,8 @@ export default defineComponent({
 
                   galeries += '<div class="carousel-inner">'
 
-                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center; src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
-                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
+                  if (bakery.image === 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><img class="d-block w-100" style="width: 100%;height: 265px;display: grid;justify-content: center;border-radius: 6px;" src="bakerys/' + bakery.image + '" alt="' + bakery.title + '"></a></div>'
+                  else if (bakery.image !== 'default.jpg') galeries += '<div class="carousel-item active"><a class="addClick" data-id="' + bakery.id + '" href="#/bakery/' + bakery.url + '"><div class="d-block w-100" style="border-radius:6px;width: 100%;height: 265px;background-position: center !important;background-repeat: no-repeat !important;background-attachment: static !important;background-size: cover !important;background: url(https://serveur.my-bakery.fr/bakerys/images/' + bakery.image + ')"></div></a></div>'
 
                   galeries += '</div></div></div>'
 
@@ -1166,7 +1198,7 @@ export default defineComponent({
 
                   // Commentaire
                   if (bakery.author_comment == null) {
-                    var bloc_comment = '<div class="empty-comments">Aucun commentaire pour cette boulangerie !</div>'
+                    var bloc_comment = '<div class="empty-comments">Il n\'y a aucun commentaire sur cette boulangerie !</div>'
                   }
 
                   var devanture = '',
@@ -1267,8 +1299,17 @@ export default defineComponent({
                 })
 
               } else {
-                $('#blocGrid').html('<div class="alert alert-info">Aucune boulangerie n\'a été trouvé.</div>')
+                $('#blocGrid').html(`<div class="p-404">
+                    <div class="container">
+                        <h1>DÉSOLER</h1>
+                        <h3>Aucun résultat n'a été trouvé pour votre recherche.</h3>
+                        <p>Nous vous suggérons de chercher avec un autre terme.</p>
+                    </div>
+                </div>`)
               }
+
+              this.visible = false
+              this.showSimulatedReturnData = true
 
             }).catch((error) => {
               console.log(error);
@@ -1292,6 +1333,8 @@ export default defineComponent({
     }
   },
   mounted () {
+
+    this.showTextLoading()
 
     $(document).on('click', '.addClick', function (e) {
 

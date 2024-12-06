@@ -1,6 +1,6 @@
 <template name="ArticleComponent">
 
-  <div class="background fadeIn2 bb background2">
+  <div class="background bb background2" v-show="showSimulatedReturnData">
 
     <div class="content">
 
@@ -30,9 +30,9 @@
 
   <div class="blog-single section fadeIn3">
 
-    <div class="container">
+    <div class="container" v-show="showSimulatedReturnData">
 
-      <div class="row u-column1" v-show="showSimulatedReturnData">
+      <div class="row">
 
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
 
@@ -123,13 +123,14 @@
 
       </div>
 
-      <div class="loadingDiv" v-show="visible">
-        <q-spinner-grid size="70px" color="info" />
-      </div>
+    </div>
 
+    <div class="loadingDiv" v-show="visible">
+      <q-spinner-grid size="70px" color="info" />
     </div>
 
   </div>
+
 
 </template>
 
@@ -279,17 +280,9 @@ export default defineComponent({
     })
 
     return {
-      showTextLoading (express = null) {
+      showTextLoading () {
         visible.value = true
-        $('.u-column1').fadeOut(300)
         showSimulatedReturnData.value = false
-
-        if (express === null) {
-          setTimeout(() => {
-            visible.value = false
-            showSimulatedReturnData.value = true
-          }, 1500)
-        }
       },
       showSimulatedReturnData,
       visible,
@@ -303,14 +296,17 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
 
-    setTimeout(() => {
-      store.dispatch('fetchBlog',
-      {
-        'url': route.params.url
-      })
-    }, 1500);
-
     this.showTextLoading()
+
+    store.dispatch('fetchBlog',
+        {
+          'url': route.params.url
+        })
+
+    setTimeout(() => {
+      visible.value = false
+      showSimulatedReturnData.value = true
+    }, 1500);
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -384,8 +380,7 @@ export default defineComponent({
 
     $(document).on('click', '#back-top', function (e) {
       e.preventDefault()
-      console.log('test')
-      $('html, body').animate({ scrollTop: 0 }, 600)
+      $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
     // Header menu

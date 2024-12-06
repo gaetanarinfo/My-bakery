@@ -1,5 +1,6 @@
 <template>
-  <q-page>
+
+  <q-page class="home">
 
     <HeaderComponent />
 
@@ -10,6 +11,7 @@
     <FooterComponent />
 
   </q-page>
+
 </template>
 
 <script>

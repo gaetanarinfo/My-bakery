@@ -31,15 +31,15 @@
 
       <div class="wrapper">
 
-        <BannerComponent :margin="false" :top="false" />
+        <BannerComponent v-show="showSimulatedReturnData" :margin="false" :top="false" />
 
         <div class="bloc container">
 
-          <div class="hp-container">
+          <div class="hp-container" v-show="showSimulatedReturnData">
 
             <div class="section text-center">
 
-              <div v-show="showSimulatedReturnData" id="blocGrid" class="row">
+              <div id="blocGrid" class="row">
 
                 <div v-show="showSimulatedReturnData" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
                   v-for="blog in blogsAll" :key="blog.id">
@@ -79,7 +79,7 @@
 
               </div>
 
-              <div class="mt-5" v-show="showSimulatedReturnData">
+              <div class="mt-5">
 
                 <div class="b-pagination">
 
@@ -106,10 +106,12 @@
 
               </div>
 
-              <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
-
             </div>
 
+          </div>
+
+          <div class="loadingDiv" v-show="visible">
+            <q-spinner-grid size="70px" color="info" />
           </div>
 
         </div>
@@ -271,12 +273,12 @@ export default defineComponent({
     return {
       showTextLoading () {
         visible.value = true
-        showSimulatedReturnData.value = true
+        showSimulatedReturnData.value = false
 
         setTimeout(() => {
           visible.value = false
           showSimulatedReturnData.value = true
-        }, 3000)
+        }, 1500)
       },
       blogsAll,
       blogsAllCount,
@@ -339,6 +341,7 @@ export default defineComponent({
   },
   mounted () {
 
+    this.showTextLoading()
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -416,8 +419,7 @@ export default defineComponent({
 
     $(document).on('click', '#back-top', function (e) {
       e.preventDefault()
-      console.log('test')
-      $('html, body').animate({ scrollTop: 0 }, 600)
+      $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
     // Header menu

@@ -216,7 +216,7 @@ export default defineComponent({
 
     $(document).on('click', '#back-top', function (e) {
       e.preventDefault()
-      $('html, body').animate({ scrollTop: 0 }, 600)
+      $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
     // Header menu

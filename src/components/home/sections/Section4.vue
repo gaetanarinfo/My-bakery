@@ -169,7 +169,7 @@
 
                         <div class="empty-comments" v-else>
 
-                          Aucun commentaire pour cette boulangerie !
+                          Il n'y a aucun commentaire sur cette boulangerie !
 
                         </div>
 

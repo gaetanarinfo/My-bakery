@@ -10,10 +10,31 @@
 
           <div class="container">
 
+            <div class="bloc container">
+
+              <div class="hp-container">
+
+                <div class="section text-center">
+
+                  <h2 class="title">Les boulangeries dans nos régions !</h2>
+
+                  <p class="description"></p>
+
+                  <div>
+                    <img class="delicious" src="floral.png" alt="Delicieux">
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
             <ul>
 
               <li v-for="ville in villesFrance">
-                <a :title="'Boulangerie ' + ville.nom " :href="'/#/bakerys-region/' + ville.nom_slug">{{ ville.nom }}</a>
+                <a :title="'Boulangerie ' + ville.nom" :href="'/#/bakerys-region/' + ville.nom_slug">{{ ville.nom
+                  }}</a>
               </li>
 
             </ul>

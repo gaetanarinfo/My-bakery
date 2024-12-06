@@ -1,5 +1,6 @@
 /* IMPORT */
 @import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 @font-face {
   font-family: Bakery;
@@ -869,7 +870,7 @@ a:hover {
 }
 
 .section-blog {
-  margin-top: 5rem;
+  padding-top: 5rem;
 }
 
 @media all and (max-width: 48rem) {
@@ -1189,12 +1190,38 @@ a:hover {
 
 .last-bakery {
   margin-bottom: 0 !important;
+  position: relative;
 }
 
-.last-bakery .column-inner .wrapper {
-  background: url("../../public/home-product.jpg");
-  background-position: 50% 50% !important;
-  background-size: cover !important;
+.home #classement:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  content: "";
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, rgba(255, 255, 255, 0)), to(white));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 50%, white 100%);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 50%, white 100%);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0) 50%, white 100%);
+}
+
+@media all and (max-width: 768px) {
+
+  .home #classement:before {
+    height: 5%;
+  }
+
+}
+
+.home #bakery-add .wrapper,
+.home #blog .wrapper,
+.home #bakery-list .wrapper,
+.home #phone-section .wrapper,
+.home #ordi-section .wrapper,
+.home #footer-link-bakerys .wrapper,
+.home #classement .column-inner .wrapper {
+  background-color: #f7f7f7;
 }
 
 .last-bakery .column-inner .wrapper .bloc {
@@ -2642,7 +2669,7 @@ footer.footer .footer-copyright p a:hover {
   bottom: 30px;
   visibility: visible;
   opacity: 1;
-  z-index: 9999;
+  z-index: 10;
 }
 
 #back-top i {
@@ -2751,6 +2778,32 @@ footer.footer .footer-copyright p a:hover {
 
 .p-404 {
   max-width: 100%;
+}
+
+#classement #blocGrid .p-404 {
+  padding-top: 0;
+  text-align: center;
+}
+
+#classement #blocGrid .p-404 h1 {
+  color: #cd9b33;
+  font-size: 72px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+#classement #blocGrid .p-404 h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2a2a2a;
+  text-transform: uppercase;
+}
+
+#classement #blocGrid .p-404 p {
+  margin-bottom: 30px;
+  font-size: 18px;
+  line-height: 1.6em;
+  color: #2a2a2a;
 }
 
 /* ALL PAGES */
@@ -4550,6 +4603,31 @@ footer.footer .footer-copyright p a:hover {
   align-items: center;
 }
 
+.loadingDiv.banner {
+  min-height: 250px;
+}
+
+.blog-single .loadingDiv.banner {
+  min-height: 169px;
+}
+
+.loadingDiv.banner-square {
+  min-height: 250px;
+}
+
+@media all and (max-width: 768px) {
+
+  .home .loadingDiv.banner {
+    min-height: 86px;
+  }
+
+  .loadingDiv.banner-square {
+    min-height: 90px;
+  }
+
+}
+
+
 /* Cart */
 
 #cart {
@@ -6080,7 +6158,7 @@ button.ps-btn:hover {
 
 /* Modal */
 
-@media (min-width: 576px) {
+@media (max-width: 768px) {
 
   .modal-dialog {
     max-width: 100%;
@@ -6624,6 +6702,10 @@ button.ps-btn:hover {
 }
 
 @media all and (max-width: 768px) {
+
+  .home .ads_campaign {
+    margin-bottom: 0 !important;
+  }
 
   .ads_campaign {
     margin-bottom: 2rem !important;

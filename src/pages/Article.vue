@@ -1,4 +1,5 @@
 <template>
+
   <HeaderComponent />
 
   <ArticleComponent />
@@ -6,6 +7,7 @@
   <Section7 />
 
   <FooterComponent />
+
 </template>
 
 <script>
