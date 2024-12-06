@@ -14,7 +14,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:title',
@@ -22,7 +22,7 @@ const routes = [
             },
             {
               property: 'og:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:url',
@@ -38,7 +38,7 @@ const routes = [
             },
             {
               property: 'twitter:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             }
           ]
         }
@@ -53,7 +53,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:title',
@@ -61,7 +61,7 @@ const routes = [
             },
             {
               property: 'og:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'twitter:title',
@@ -69,7 +69,7 @@ const routes = [
             },
             {
               property: 'twitter:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             }
           ]
         }
@@ -81,7 +81,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:title',
@@ -89,7 +89,7 @@ const routes = [
             },
             {
               property: 'og:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'twitter:title',
@@ -97,7 +97,7 @@ const routes = [
             },
             {
               property: 'twitter:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             }
           ]
         }
@@ -109,7 +109,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:title',
@@ -117,7 +117,7 @@ const routes = [
             },
             {
               property: 'og:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:url',
@@ -137,7 +137,7 @@ const routes = [
             },
             {
               property: 'twitter:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'twitter:image',
@@ -153,7 +153,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:title',
@@ -161,7 +161,7 @@ const routes = [
             },
             {
               property: 'og:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'og:url',
@@ -181,7 +181,7 @@ const routes = [
             },
             {
               property: 'twitter:description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
             {
               property: 'twitter:image',
@@ -197,7 +197,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -209,7 +209,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -221,7 +221,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -239,7 +239,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -251,7 +251,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -263,7 +263,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -275,7 +275,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }
@@ -287,7 +287,7 @@ const routes = [
           metaTags: [
             {
               name: 'description',
-              content: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.'
+              content: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.'
             },
           ]
         }

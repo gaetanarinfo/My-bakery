@@ -79,7 +79,7 @@
                         Qualité des annonces
                       </h4>
 
-                      <p>La qualité des annonces de boulangerie sur My bakery est primordiale, notre équipe veille au
+                      <p>La qualité des annonces de boulangerie sur My Bakery est primordiale, notre équipe veille au
                         grain. Nous vérifions chaque avis utilisateur, nous vous garantissons une totale transparence.
                       </p>
 
@@ -105,7 +105,7 @@
                         Avis des boulangeries
                       </h4>
 
-                      <p>Les avis sont honnêtes et authentiques sur My bakery, vous pouvez alors choisir une bonne
+                      <p>Les avis sont honnêtes et authentiques sur My Bakery, vous pouvez alors choisir une bonne
                         boulangerie en fermant les yeux. Cela nous tient à coeur de vous faire partager de merveilleux
                         moment.</p>
 

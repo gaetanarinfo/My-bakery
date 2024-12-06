@@ -35,7 +35,7 @@
 
             <div class="footer">
 
-              <p><strong>{{ rating.author }}</strong> - Utilisateur de My bakery</p>
+              <p><strong>{{ rating.author }}</strong> - Utilisateur de My Bakery</p>
 
             </div>
 

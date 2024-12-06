@@ -511,14 +511,40 @@ export default createStore({
     async fetchBannerAddCLick ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/banner-add-click', { bannerId: data.bannerId, ip: data.ip, page: data.page, type: data.type })
-        .then((res) => {})
+        .then((res) => { })
 
     },
 
     async fetchBannerAddViews ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/banner-add-views', { bannerId: data.bannerId, ip: data.ip, page: data.page, type: data.type })
-        .then((res) => {})
+        .then((res) => { })
+
+    },
+
+    async fetchVerificationOrder ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-verification-mobile', { userId: data.userId })
+        .then((res) => {
+
+          if (res.data.succes === true) {
+
+            LocalStorage.removeItem('shopping_cart_qte')
+            LocalStorage.removeItem('shopping_total_ht')
+            LocalStorage.removeItem('shopping_total_ttc')
+            LocalStorage.removeItem('shopping_cart')
+            LocalStorage.removeItem('shopping_product_id')
+            LocalStorage.removeItem('prev_url')
+            LocalStorage.removeItem('additional_information')
+            LocalStorage.removeItem('banner_date_start')
+            LocalStorage.removeItem('banner_date_end')
+            LocalStorage.removeItem('banner_name')
+            LocalStorage.removeItem('bakery_id_event')
+
+            this.$router.push('/my-account-profil')
+          }
+
+        })
 
     },
 

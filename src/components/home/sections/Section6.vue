@@ -14,7 +14,7 @@
 
               <h2 class="title">Notre blog</h2>
 
-              <p class="description">Consulter les dernières actualités de My bakery.</p>
+              <p class="description">Consulter les dernières actualités de My Bakery.</p>
 
               <div>
                 <img class="delicious" src="floral.png" alt="Delicieux">

@@ -176,6 +176,7 @@ import { LocalStorage } from 'quasar';
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
+import { Platform } from 'quasar'
 
 moment.locale('fr')
 
@@ -237,7 +238,22 @@ export default defineComponent({
             scrollTop: $('#cart').offset().top
           }, '200')
 
-          this.showTextLoading(3000)
+          visible.value = true
+          $('.u-column1').fadeOut(300)
+          showSimulatedReturnData.value = false
+
+          if (!Platform.is.desktop) {
+
+            setInterval(() => {
+
+              store.dispatch('fetchVerificationOrder', {
+                'userId': this.user.id,
+              })
+
+            }, 5000);
+
+          }
+
           store.dispatch('setInsertCommandeClient', {
             'user_id': this.user.id,
             'product_id': LocalStorage.getItem('shopping_cart'),
@@ -252,6 +268,7 @@ export default defineComponent({
             'banner_square_name': (LocalStorage.hasItem('banner_square_name')) ? LocalStorage.getItem('banner_square_name') : null,
             'bakery_id_event': (LocalStorage.hasItem('bakery_id_event')) ? LocalStorage.getItem('bakery_id_event') : null,
           })
+
         } else {
           LocalStorage.setItem('prev_url', '/cart')
           this.$router.push('/my-account')

@@ -149,82 +149,37 @@
 
               <div class="row">
 
-                <div class="col-lg-4 col-md-4 bakery" v-for="bakery in bakerys" :key="bakery.id">
+                <div class="col-lg-4 bakery" v-for="bakery in bakerys" :key="bakery.id">
 
                   <div class="row">
 
                     <div>
 
-                      <div :id="'carouselBakery' + bakery.id" class="carousel slide slider-bakery carousel-fade"
+                      <div :id="'carouselBakery' + bakery.id"
+                        :class="(bakery.highlighting_at !== null) ? 'carousel ahead slide slider-bakery carousel-fade' : 'carousel slide slider-bakery carousel-fade'"
                         data-ride="carousel">
-
-                        <div class="carousel-indicators">
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
-                            aria-label="Slide 4"></button>
-
-                        </div>
 
                         <div class="carousel-inner">
 
                           <div class="carousel-item active">
 
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image" :alt="bakery.title">
-                            </a>
-
-                          </div>
-
-                          <div class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_2" :alt="bakery.title">
-                            </a>
-
-                          </div>
-
-                          <div class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_3" :alt="bakery.title">
-                            </a>
-
-                          </div>
-
-                          <div class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <img class="d-block w-100" :src="'bakerys/' + bakery.image_4" :alt="bakery.title">
+                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                              class="carousel-action">
+                              <img v-if="bakery.image === 'default.jpg'"
+                                style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
+                                :src="'bakerys/' + bakery.image" :alt="bakery.title">
+                              <img v-else class="d-block w-100" :src="folderPicture + bakery.image" :alt="bakery.title">
                             </a>
 
                           </div>
 
                         </div>
 
-                        <button class="carousel-control-prev" type="button"
-                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-
-                        <button class="carousel-control-next" type="button"
-                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
-
                       </div>
 
-                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title }}</a>
+                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                        class="title">{{ bakery.title
+                        }}</a>
 
                       <div>
                         <p class="content">{{ bakery.small_content }}</p>
@@ -247,7 +202,7 @@
 
                           <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_devanture * 5 /
-                              bakery.sum_devanture) }}</div>
+                            bakery.sum_devanture) }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
                         </div>
@@ -268,7 +223,7 @@
 
                           <div class="br-current-rating" v-if="bakery.counter_proprete !== 0">{{
                             Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)
-                          }}</div>
+                            }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -290,7 +245,7 @@
 
                           <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
-                          }}</div>
+                            }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -312,7 +267,7 @@
 
                           <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
-                          }}</div>
+                            }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -359,7 +314,9 @@
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                          class="btn btn-bakery">En savoir
+                          +</a>
 
                       </div>
 
@@ -368,7 +325,9 @@
                         <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir +</a>
+                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                          class="btn btn-bakery">En savoir
+                          +</a>
 
                       </div>
 
@@ -377,7 +336,6 @@
                   </div>
 
                 </div>
-
 
               </div>
 
@@ -399,7 +357,7 @@
   max-width: 100%;
   cursor: pointer;
   width: 100%;
-  height: 300px;
+  height: 100%;
 }
 
 .disabled {
@@ -527,7 +485,7 @@ var bakerysFavorites = ''
 
 export default defineComponent({
   name: 'BlogcComponent',
-  setup() {
+  setup () {
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
@@ -561,7 +519,8 @@ export default defineComponent({
         store.dispatch('fetchClickBakery', { 'bakeryId': id })
         window.location.href = `${url}`
       },
-      showTextLoading() {
+      folderPicture: process.env.WEBSITE + '/bakerys/images/',
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = true
 
@@ -579,7 +538,7 @@ export default defineComponent({
     }
   },
   methods: {
-    saveBakeryList(id) {
+    saveBakeryList (id) {
 
       const bakerysList = Cookies.has('bakerysList'),
         cookies = Cookies.get('bakerysList')
@@ -628,7 +587,7 @@ export default defineComponent({
       $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass('delete-bakery-list-' + id)
 
     },
-    removeFavorite(id) {
+    removeFavorite (id) {
 
       if (Cookies.has('bakerysList')) {
 
@@ -668,7 +627,7 @@ export default defineComponent({
 
     }
   },
-  mounted() {
+  mounted () {
 
     $('#menu-main-menu').removeAttr('style')
 
@@ -770,4 +729,3 @@ export default defineComponent({
   }
 })
 </script>
-

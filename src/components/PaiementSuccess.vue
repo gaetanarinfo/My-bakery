@@ -36,7 +36,7 @@
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
-        <h3>Merci pour votre commande {{ paiement_status.firstname }}</h3>
+        <h3>Merci pour votre commande</h3>
 
         <p class="mt-3 mb-1">Félicitations pour l'achat de votre pack sur My Bakery.</p>
 
@@ -52,7 +52,7 @@
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
-        <h3>Oups {{ paiement_status.firstname }},<br />votre commande a déjà été validée</h3>
+        <h3>Oups, <br />votre commande a déjà été validée</h3>
 
         <p class="mt-1 mb-1">Dans quelques instants, vous pourrez profiter de celui-ci.</p>
 
@@ -128,7 +128,7 @@ export default defineComponent({
           setTimeout(() => {
             visible.value = false
             showSimulatedReturnData.value = true
-          }, 1500)
+          }, 2500)
         }
       },
       visible,
@@ -146,21 +146,6 @@ export default defineComponent({
     }, '200')
 
     this.showTextLoading()
-
-    setTimeout(() => {
-      if (sessionStorage.getItem('token') !== null) {
-        axios.get(process.env.WEBSITE + '/user-profil/' + SessionStorage.getItem('email'))
-          .then((res) => {
-            if (res.status === 200) {
-
-              // Static values
-              firstname.value = res.data.user.firstname
-            }
-          })
-      } else {
-        this.$router.push('/')
-      }
-    }, 200)
 
   }
 

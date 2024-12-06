@@ -5,7 +5,7 @@
 
     <div class="content">
 
-      <h1>Politique de confidentialité du site My bakery</h1>
+      <h1>Politique de confidentialité du site My Bakery</h1>
 
       <div class="b-breadcrumb">
 
@@ -15,7 +15,7 @@
 
             <li><a href="/">Accueil</a></li>
 
-            <li class="active">Politique de confidentialité du site My bakery</li>
+            <li class="active">Politique de confidentialité du site My Bakery</li>
 
           </ol>
 
@@ -33,20 +33,20 @@
 
       <div class="container py-5">
 
-        <p>Le site web My bakery est détenu par My bakery, qui est un contrôleur
+        <p>Le site web My Bakery est détenu par My Bakery, qui est un contrôleur
           de données de vos données personnelles.</p>
 
         <p>Nous avons adopté cette politique de confidentialité, qui détermine la manière
-          dont nous traitons les informations collectées par My bakery, qui fournit
+          dont nous traitons les informations collectées par My Bakery, qui fournit
           également les raisons pour lesquelles nous devons collecter certaines données personnelles
           vous concernant. Par conséquent, vous devez lire cette politique de confidentialité avant
-          d'utiliser le site web de My bakery.</p>
+          d'utiliser le site web de My Bakery.</p>
 
         <p>Nous prenons soin de vos données personnelles et nous nous engageons à en garantir la
           confidentialité et la sécurité.</p>
 
         <p><span class="text-bold">Les informations personnelles que nous collectons :</span><br>
-          Lorsque vous visitez le My bakery, nous recueillons automatiquement certaines informations sur
+          Lorsque vous visitez le My Bakery, nous recueillons automatiquement certaines informations sur
           votre appareil, notamment des informations sur votre navigateur web, votre adresse IP, votre fuseau horaire
           et certains des cookies installés sur votre appareil. En outre, lorsque vous naviguez sur le site,
           nous recueillons des informations sur les pages web ou les produits individuels que vous consultez, sur les
@@ -259,7 +259,7 @@ import { useMeta } from 'quasar'
 import Section7 from 'components/home/sections/Section7.vue'
 
 const metaData = {
-  title: 'Politique de confidentialité du site My bakery',
+  title: 'Politique de confidentialité du site My Bakery',
   titleTemplate: title => `${title}`,
 }
 

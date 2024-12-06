@@ -63,7 +63,7 @@
 
                 </p>
 
-                <small>Gaëtan Seigneur - Développeur pour My bakery</small>
+                <small>Gaëtan Seigneur - Développeur pour My Bakery</small>
 
                 <p class="signature">
                   <img src="signature.png" width="129" alt="Dev72" />

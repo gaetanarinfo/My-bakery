@@ -17,7 +17,7 @@
           l'importance de la baguette de pain dans la culture française et rend hommage au savoir-faire des boulangers.”
         </p>
 
-        <small>Gaëtan Seigneur - Développeur pour My bakery</small>
+        <small>Gaëtan Seigneur - Développeur pour My Bakery</small>
 
         <img src="signature.png" alt="Dev72">
 

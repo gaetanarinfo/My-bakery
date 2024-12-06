@@ -85,7 +85,7 @@
 
         <div class="nav-center">
           <a href="" class="logo">
-            <img src="logo-light.png" alt="My bakery - classement des meilleurs boulangerie de France">
+            <img src="logo-light.png" alt="My Bakery - classement des meilleurs boulangerie de France">
           </a>
         </div>
 
@@ -152,7 +152,7 @@
       <div class="hn-container">
 
         <a class="logo" href="/">
-          <img src="logo-light.png" alt="My bakery - classement des meilleurs boulangerie de France">
+          <img src="logo-light.png" alt="My Bakery - classement des meilleurs boulangerie de France">
         </a>
 
         <ul id="menu-main-menu">

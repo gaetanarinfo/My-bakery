@@ -32,31 +32,15 @@
 
                     <div>
 
-                      <div :id="'carouselBakery' + bakery.id" class="carousel slide slider-bakery carousel-fade"
+                      <div :id="'carouselBakery' + bakery.id" :class="(bakery.highlighting_at !== null) ? 'carousel ahead slide slider-bakery carousel-fade' : 'carousel slide slider-bakery carousel-fade'"
                         data-ride="carousel">
-
-                        <div class="carousel-indicators">
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-
-                          <button type="button" :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide-to="3"
-                            aria-label="Slide 4"></button>
-
-                        </div>
 
                         <div class="carousel-inner">
 
                           <div class="carousel-item active">
 
                             <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
-                              style="text-align: center;display: grid;justify-content: center;background-color: white;">
+                            class="carousel-action">
                               <img v-if="bakery.image === 'default.jpg'"
                                 style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
                                 :src="'bakerys/' + bakery.image" :alt="bakery.title">
@@ -65,50 +49,7 @@
 
                           </div>
 
-                          <div v-if="bakery.image_2 !== 'default2.jpg'" class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <div
-                                :style="'background: url(' + folderPicture + bakery.image_2 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                              </div>
-                            </a>
-
-                          </div>
-
-                          <div v-if="bakery.image_3 !== 'default.jpg'" class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <div
-                                :style="'background: url(' + folderPicture + bakery.image_3 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                              </div>
-                            </a>
-
-                          </div>
-
-                          <div v-if="bakery.image_4 !== 'default2.jpg'" class="carousel-item">
-
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url">
-                              <div
-                                :style="'background: url(' + folderPicture + bakery.image_4 + ');max-width: 100px;width: 100%;height: 60px;background-position: center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;'">
-                              </div>
-                            </a>
-
-                          </div>
-
-
                         </div>
-
-                        <button class="carousel-control-prev" type="button"
-                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-
-                        <button class="carousel-control-next" type="button"
-                          :data-bs-target="'#carouselBakery' + bakery.id" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
 
                       </div>
 

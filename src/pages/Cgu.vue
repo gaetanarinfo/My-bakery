@@ -5,7 +5,7 @@
 
     <div class="content">
 
-      <h1>Conditions générales d'utilisation du site My bakery</h1>
+      <h1>Conditions générales d'utilisation du site My Bakery</h1>
 
       <div class="b-breadcrumb">
 
@@ -41,12 +41,12 @@
           « l’Utilisateur ».</p>
         <p class="text-bold">Article 1 - Principes</p>
         <p>Les présentes conditions générales d'utilisation ont pour objet l'encadrement
-          juridique de l’utilisation du site My bakery</p>
+          juridique de l’utilisation du site My Bakery</p>
         <p>et de ses services.</p>
         <p>Le site Internet <a data-fr-linked="true" href="https://my-bakery.fr">https://my-bakery.fr</a>
           est un service de
           :</p>
-        <p>L'entreprise individuelle My bakery</p>
+        <p>L'entreprise individuelle My Bakery</p>
         <p>située 125 Avenue Félix Geneslay 72100 Le Mans, France</p>
         <p>adresse URL du site : <a data-fr-linked="true"
             href="https://my-bakery.fr">https://my-bakery.fr</a></p>
@@ -65,7 +65,7 @@
         <p>tout moment et sans justification.</p>
         <p class="text-bold">Article 3 - Accès au site</p>
         <p>Tout Utilisateur ayant accès à internet peut accéder gratuitement et depuis
-          n’importe où au site My bakery .</p>
+          n’importe où au site My Bakery .</p>
         <p>Les frais supportés par l’Utilisateur pour y accéder (connexion internet, matériel
           informatique, etc.) ne sont pas à</p>
         <p>la charge de l’Éditeur.</p>
@@ -99,8 +99,8 @@
         <p>pourra retourner contre lui pour obtenir indemnisation de tous les préjudices, sommes, condamnations
           et frais qui pourraient</p>
         <p>découler de cette procédure.</p>
-        <p>Il est permis à l'Utilisateur de publier sur le site My bakery :Il est permis
-          à l'Utilisateur de publier sur le site My bakery :</p>
+        <p>Il est permis à l'Utilisateur de publier sur le site My Bakery :Il est permis
+          à l'Utilisateur de publier sur le site My Bakery :</p>
         <p>- Annonce professionel.</p>
         <p>L'Utilisateur s’engage à tenir des propos respectueux des autres et de la loi et accepte
           que ces publications soient modérées</p>
@@ -115,7 +115,7 @@
           soumis à des droits d'auteur</p>
         <p>et sont protégés par le Code de la propriété intellectuelle. Lorsqu'ils sont
           remis à nos clients, ils demeurent la propriété</p>
-        <p>exclusive de My bakery , seul titulaire des droits de propriété intellectuelle sur
+        <p>exclusive de My Bakery , seul titulaire des droits de propriété intellectuelle sur
           ces documents, qui</p>
         <p>doivent lui être rendus à sa demande.</p>
         <p>Nos clients s'engagent à ne faire aucun usage de ces documents, susceptible de porter atteinte
@@ -409,7 +409,7 @@ import { useMeta } from 'quasar'
 import Section7 from 'components/home/sections/Section7.vue'
 
 const metaData = {
-  title: 'Conditions générales d\'utilisation du site My bakery',
+  title: 'Conditions générales d\'utilisation du site My Bakery',
   titleTemplate: title => `${title}`,
 }
 

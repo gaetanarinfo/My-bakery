@@ -15,7 +15,7 @@
                 <img src="logo-dark.png" alt="My Bakery">
               </a>
 
-              <p>Retrouvez toutes les meilleures boulangeries en France sur My bakery.</p>
+              <p>Retrouvez toutes les meilleures boulangeries en France sur My Bakery.</p>
 
               <ul class="list-social">
 

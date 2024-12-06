@@ -9872,9 +9872,9 @@ module.exports = configure(function (ctx) {
       // if using workbox in InjectManifest mode
 
       manifest: {
-        name: 'My bakery - classement des meilleurs boulangerie de France',
-        short_name: 'My bakery - classement des meilleurs boulangerie de France',
-        description: 'Retrouvez toutes les meilleures boulangeries en France sur My bakery.',
+        name: 'My Bakery - classement des meilleurs boulangerie de France',
+        short_name: 'My Bakery - classement des meilleurs boulangerie de France',
+        description: 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

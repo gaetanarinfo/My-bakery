@@ -531,7 +531,7 @@
                       class="highlighting">
                       <i class="fa-solid fa-highlighter text-warning"></i> <span>{{
                         moment(bakery.highlighting_at).diff(moment().format('YYYY-MM-DD'), "days") }} jour(s)
-                        Restant</span>
+                        restant</span>
                     </div>
 
                     <p>
@@ -1710,13 +1710,46 @@ export default defineComponent({
         notificationsActiveShow.value = false
         window.WonderPush = window.WonderPush || [];
         WonderPush.unsubscribeFromNotifications();
+
+        document.addEventListener('deviceready', onDeviceReady, false)
+
+        function onDeviceReady () {
+          // L'utilisateur s'inscrit aux notifications de WonderPush
+          WonderPush.unsubscribeFromNotifications(function () {
+          })
+
+          // You can also use this variation that will show an alert dialog
+          // to Android users who have repeatedly denied the permission, taking them to the settings
+          // of your app where they can flip the permission switch:
+          // eslint-disable-next-line no-undef
+          WonderPush.unsubscribeFromNotifications(true, function () {
+          })
+        }
+
         this.showNotif('Vous avez annulé votre inscription aux notifications de My Bakery.')
 
       },
       notificationsActive () {
 
         notificationsActiveShow.value = true
+        window.WonderPush = window.WonderPush || [];
         WonderPush.subscribeToNotifications();
+
+        document.addEventListener('deviceready', onDeviceReady, false)
+
+        function onDeviceReady () {
+          // L'utilisateur s'inscrit aux notifications de WonderPush
+          WonderPush.subscribeToNotifications(function () {
+          })
+
+          // You can also use this variation that will show an alert dialog
+          // to Android users who have repeatedly denied the permission, taking them to the settings
+          // of your app where they can flip the permission switch:
+          // eslint-disable-next-line no-undef
+          WonderPush.subscribeToNotifications(true, function () {
+          })
+        }
+
         this.showNotif('Vous avez donné votre accord pour recevoir les notifications de My Bakery.')
 
       },
@@ -2241,6 +2274,23 @@ export default defineComponent({
     const $q = useQuasar()
     const store = useStore()
     const route = useRoute()
+
+    function onDeviceReady () {
+      // Prompt user for push subscription
+      WonderPush.isSubscribedToNotifications(function (isSubscribed) {
+
+        if (isSubscribed) {
+          notificationsActiveShow.value = true
+        } else {
+          notificationsActiveShow.value = false
+        }
+
+      });
+
+    }
+    // In this example, we'll prompt the user as soon as the 'deviceready' event is fired
+    // There's good chances you'll find a more suitable moment in the user journey
+    document.addEventListener('deviceready', onDeviceReady);
 
     window.WonderPush = window.WonderPush || [];
     WonderPush.push(function () {

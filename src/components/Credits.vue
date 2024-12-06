@@ -173,7 +173,7 @@ export default defineComponent({
               this.showNotif('Vous avez été débité de ' + res.data.credits + ' crédits !');
               this.showTextLoading()
               setTimeout(() => {
-                this.showTextLoading()
+                this.$router.push('/my-account-profil')
               }, 1000);
             } else {
               this.showTextLoading()

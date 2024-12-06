@@ -1,6 +1,6 @@
-# My bakery - classement des meilleurs boulangerie de France (my-bakery)
+# My Bakery - classement des meilleurs boulangerie de France (my-bakery)
 
-Retrouvez toutes les meilleures boulangeries en France sur My bakery.
+Retrouvez toutes les meilleures boulangeries en France sur My Bakery.
 
 ## Install the dependencies
 ```bash
