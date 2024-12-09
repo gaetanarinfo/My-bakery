@@ -16,7 +16,7 @@
 
                 <div class="section text-center">
 
-                  <h2 class="title">Les boulangeries dans nos régions !</h2>
+                  <h2 class="title">Les boulangeries dans nos villes !</h2>
 
                   <p class="description"></p>
 
@@ -33,7 +33,7 @@
             <ul>
 
               <li v-for="ville in villesFrance">
-                <a :title="'Boulangerie ' + ville.nom" :href="'/#/bakerys-region/' + ville.nom_slug">{{ ville.nom
+                <a class="cursor-pointer" :title="'Boulangerie à ' + ville.ville" @click="this.$router.push('/bakerys-city/' + ville.ville_slug + '/' + ville.id)">Boulangerie à {{ ville.ville
                   }}</a>
               </li>
 

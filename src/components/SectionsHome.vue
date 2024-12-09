@@ -9,6 +9,8 @@
 
   <Section4 />
 
+  <Section13 />
+
   <Section9 />
 
   <Section5 />
@@ -41,6 +43,7 @@ import Section7 from 'components/home/sections/Section7.vue'
 import Section10 from 'components/home/sections/Section10.vue'
 import Section11 from 'components/home/sections/Section11.vue'
 import Section12 from 'components/home/sections/Section12.vue'
+import Section13 from 'components/home/sections/Section13.vue'
 import BannerComponent from 'components/Banner.vue'
 
 export default defineComponent({
@@ -58,6 +61,7 @@ export default defineComponent({
     Section10,
     Section11,
     Section12,
+    Section13,
     BannerComponent,
   }
 })

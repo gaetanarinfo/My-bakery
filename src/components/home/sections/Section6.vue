@@ -1,6 +1,6 @@
 <template name="SectionHome6">
 
-  <div id="blog" class="section fadeIn6 last-blog">
+  <div id="blog" class="section fadeIn6 last-blog mb-0">
 
     <div class="column-inner">
 
@@ -22,9 +22,9 @@
 
             </div>
 
-            <div class="section text-center">
+            <div class="section section-spec text-center mb-0">
 
-              <div class="row mb-5">
+              <div class="row">
 
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" v-for="blog in blogs" :key="blog.id">
 
@@ -66,9 +66,9 @@
 
                 </div>
 
-              </div>
+                <BannerComponent :margin="false" :top="true" />
 
-              <BannerComponent :margin="false" :top="true" />
+              </div>
 
             </div>
 

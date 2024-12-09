@@ -12,7 +12,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="before"><a role="button" @click="this.$router.push('/blogs')">Blog</a></li>
 
@@ -28,7 +28,7 @@
 
   </div>
 
-  <div class="blog-single section fadeIn3">
+  <div class="page-article-blog blog-single section fadeIn3">
 
     <div class="container" v-show="showSimulatedReturnData">
 
@@ -135,11 +135,13 @@
 </template>
 
 <style lang="css">
+
 .disabled {
   pointer-events: none;
 }
 
-.section {
+.page-article-blog.section,
+.page-article-blog .section {
   margin-bottom: 0;
 }
 
@@ -153,98 +155,6 @@
   }
 }
 
-#blog {
-  padding: 5rem 0;
-}
-
-.b-pagination {
-  padding-top: 40px;
-  text-align: center;
-}
-
-.b-pagination .pagination {
-  margin: 0;
-  display: inline-block;
-}
-
-.b-pagination .pagination li {
-  display: inline-block;
-  margin-right: 15px;
-  text-align: center;
-}
-
-.b-pagination .pagination li>a:before,
-.b-pagination .pagination li>a:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-}
-
-.b-pagination .pagination li.active {
-  border: none;
-}
-
-.b-pagination .pagination li a {
-  text-decoration: none;
-  padding: 0 17px;
-  position: relative;
-  display: inline-block;
-  z-index: 30;
-  font-family: "Lora", serif;
-  font-size: 16px;
-  color: #313131;
-  line-height: 50px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  border: none;
-  background-color: transparent !important;
-}
-
-.b-pagination .pagination li.active a,
-.b-pagination .pagination li a:hover {
-  color: #fff;
-}
-
-.b-pagination .pagination li.active a:before,
-.b-pagination .pagination li a:hover:before {
-  background-color: #cd9b33;
-}
-
-.b-pagination .pagination li.active a:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.b-pagination .pagination li a:before {
-  width: 50px;
-  height: 50px;
-  background-color: #e4e4e4;
-}
-
-.b-pagination .pagination li a:after {
-  width: 45px;
-  height: 45px;
-  background-color: #cd9b33;
-  z-index: -1;
-  visibility: hidden;
-  opacity: 0;
-}
 </style>
 
 <script>

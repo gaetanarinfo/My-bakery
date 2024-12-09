@@ -26,7 +26,7 @@ const routes = [
             },
             {
               property: 'og:url',
-              content: 'https://my-bakery.fr/#/bakerys'
+              content: 'https://my-bakery.fr/bakerys'
             },
             {
               property: 'twitter:title',
@@ -34,7 +34,7 @@ const routes = [
             },
             {
               property: 'twitter:url',
-              content: 'https://my-bakery.fr/#/bakerys'
+              content: 'https://my-bakery.fr/bakerys'
             },
             {
               property: 'twitter:description',
@@ -121,7 +121,7 @@ const routes = [
             },
             {
               property: 'og:url',
-              content: 'https://my-bakery.fr/#/add-bakery'
+              content: 'https://my-bakery.fr/add-bakery'
             },
             {
               property: 'og:image',
@@ -133,7 +133,7 @@ const routes = [
             },
             {
               property: 'twitter:url',
-              content: 'https://my-bakery.fr/#/add-bakery'
+              content: 'https://my-bakery.fr/add-bakery'
             },
             {
               property: 'twitter:description',
@@ -165,7 +165,7 @@ const routes = [
             },
             {
               property: 'og:url',
-              content: 'https://my-bakery.fr/#/my-account'
+              content: 'https://my-bakery.fr/my-account'
             },
             {
               property: 'og:image',
@@ -177,7 +177,7 @@ const routes = [
             },
             {
               property: 'twitter:url',
-              content: 'https://my-bakery.fr/#/my-account'
+              content: 'https://my-bakery.fr/my-account'
             },
             {
               property: 'twitter:description',
@@ -215,9 +215,9 @@ const routes = [
         }
       },
       {
-        path: '/bakerys-region/:region', component: () => import('pages/BakerysRegion.vue'),
+        path: '/bakerys-city/:ville/:id', component: () => import('pages/BakerysCity.vue'),
         meta: {
-          title: 'Boulangeries par région',
+          title: 'Boulangeries par ville',
           metaTags: [
             {
               name: 'description',

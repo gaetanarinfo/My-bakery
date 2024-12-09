@@ -11,7 +11,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="before"><a role="button" @click="this.$router.push('/bakerys')">Boulangeries</a></li>
 
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="bakery-single bakery-add section fadeIn3">
+  <div class="page-add-bakery bakery-single bakery-add section fadeIn3">
 
     <div class="container clear">
 
@@ -88,8 +88,8 @@
 
                 <div>
                   <p>
-                    <input v-model="addPhone" type="text" class="form-control" id="addPhone" name="addPhone"
-                      placeholder="Téléphone de la boulangerie*">
+                    <input v-model="addPhone" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" type="text"
+                      class="form-control" id="addPhone" name="addPhone" placeholder="Téléphone de la boulangerie*">
                   </p>
                   <p class="error-text addPhone_error"></p>
                 </div>
@@ -131,6 +131,22 @@
                     </select>
                   </p>
                   <p class="error-text addRestauration_error"></p>
+                </div>
+
+                <div>
+                  <p>
+                    <input v-model="addNote" pattern="[0-5]{1} [0-9]{1}" type="text" class="form-control" id="addNote"
+                      name="addNote" placeholder="Note google de la boulangerie* Ex: 3.5">
+                  </p>
+                  <p class="error-text addNote_error"></p>
+                </div>
+
+                <div>
+                  <p>
+                    <input v-model="addTotalNote" type="number" class="form-control" id="addTotalNote"
+                      name="addTotalNote" placeholder="Total des personnes qui ont noté la boulangerie">
+                  </p>
+                  <p class="error-text addTotalNote_error"></p>
                 </div>
 
                 <div class="short-desc">
@@ -350,7 +366,8 @@
   pointer-events: none;
 }
 
-.section {
+.page-add-bakery.section,
+.page-add-bakery .section {
   margin-bottom: 0;
 }
 
@@ -362,112 +379,6 @@
   .h-bakery {
     min-height: auto;
   }
-}
-
-#classement {
-  padding: 5rem 0;
-}
-
-.b-pagination {
-  text-align: center;
-}
-
-.b-pagination .pagination {
-  margin: 0;
-  display: inline-block;
-}
-
-.b-pagination .pagination li {
-  display: inline-block;
-  margin-right: 15px;
-  text-align: center;
-}
-
-@media all and (max-width: 768px) {
-  .b-pagination .pagination li {
-    margin-bottom: 1rem;
-  }
-}
-
-.b-pagination .pagination li>a:before,
-.b-pagination .pagination li>a:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-}
-
-.b-pagination .pagination li.active {
-  border: none;
-}
-
-.b-pagination .pagination li a {
-  text-decoration: none;
-  padding: 0 17px;
-  position: relative;
-  display: inline-block;
-  z-index: 30;
-  font-family: "Lora", serif;
-  font-size: 16px;
-  color: #313131;
-  line-height: 50px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  border: none;
-  background-color: transparent !important;
-}
-
-.b-pagination .pagination li.active a,
-.b-pagination .pagination li a:hover {
-  color: #fff;
-}
-
-.b-pagination .pagination li.active a:before,
-.b-pagination .pagination li a:hover:before {
-  background-color: #cd9b33;
-}
-
-.b-pagination .pagination li.active a:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.b-pagination .pagination li a:before {
-  width: 50px;
-  height: 50px;
-  background-color: #e4e4e4;
-}
-
-.b-pagination .pagination li a:after {
-  width: 45px;
-  height: 45px;
-  background-color: #cd9b33;
-  z-index: -1;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.last-bakery .column-inner .wrapper {
-  background: none;
-}
-
-.last-bakery .column-inner .wrapper .bloc {
-  padding: 0 0;
 }
 </style>
 
@@ -501,7 +412,7 @@ export default defineComponent({
 
             // Static values
             if (res.data.subscription === false) {
-              window.location.href = "#/"
+              this.$router.push('/')
             }
 
             setTimeout(() => {
@@ -514,7 +425,7 @@ export default defineComponent({
         })
 
     } else {
-      window.location.href = "#/"
+      this.$router.push('/')
     }
 
     $q.notify.registerType('success-form', {
@@ -606,6 +517,8 @@ export default defineComponent({
       submit: false,
       image: null,
       image2: null,
+      image3: null,
+      image4: null,
       addName: null,
       addWebsite: null,
       addAdresse: null,
@@ -613,6 +526,8 @@ export default defineComponent({
       addHandicap: null,
       addLivraison: null,
       addRestauration: null,
+      addNote: null,
+      addTotalNote: null,
       addSmallContent: null,
       addDesc: null,
       addHours1: null,
@@ -729,6 +644,8 @@ export default defineComponent({
       const file = e.target.files[0],
         ext = file.name.split('.').pop(),
         extValid = ['png', 'jpeg', 'jpg']
+
+        console.log(ext);
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -915,77 +832,119 @@ export default defineComponent({
 
       e.preventDefault();
 
+     this.visible = true
+     this.showSimulatedReturnData = false
+
       this.v$.$validate() // checks all inputs
 
       if (!this.v$.$error) {
 
-        const config = {
-          headers: {
-            "content-type": "multipart/form-data"
-          }
-        };
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('.page-add-bakery').offset().top
+        }, '200')
 
-        const form_data = new FormData();
+        fetch('https://api.ipify.org?format=json')
+          .then(x => x.json())
+          .then(({ ip }) => {
 
-        form_data.append('file', this.image);
-        form_data.append('file', this.image2);
-        form_data.append('file', this.image3);
-        form_data.append('file', this.image4);
-        form_data.append("addName", this.addName);
-        form_data.append("addAdresse", this.addAdresse);
-        form_data.append("addPhone", this.addPhone);
-        form_data.append("addWebsite", this.addWebsite);
-        form_data.append("addHandicap", this.addHandicap);
-        form_data.append("addLivraison", this.addLivraison);
-        form_data.append("addRestauration", this.addRestauration);
-        form_data.append("addSmallContent", this.addSmallContent);
-        form_data.append("addDesc", this.addDesc);
-        form_data.append("addHours1", this.addHours1);
-        form_data.append("addHours2", this.addHours2);
-        form_data.append("addHours3", this.addHours3);
-        form_data.append("addHours4", this.addHours4);
-        form_data.append("addHours5", this.addHours5);
-        form_data.append("addHours6", this.addHours6);
-        form_data.append("addHours7", this.addHours7);
+            const config = {
+              headers: {
+                "content-type": "multipart/form-data"
+              }
+            };
 
-        axios({
-          method: "POST",
-          url: process.env.WEBSITE + '/add-bakery',
-          data: form_data,
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-          .then((res) => {
+            const form_data = new FormData();
 
-            if (res.data.success === true) {
+            form_data.append('file', this.image);
+            form_data.append('file', this.image2);
+            form_data.append('file', this.image3);
+            form_data.append('file', this.image4);
+            form_data.append("addName", this.addName);
+            form_data.append("addAdresse", this.addAdresse);
+            form_data.append("addPhone", this.addPhone);
+            form_data.append("addWebsite", this.addWebsite);
+            form_data.append("addHandicap", this.addHandicap);
+            form_data.append("addLivraison", this.addLivraison);
+            form_data.append("addRestauration", this.addRestauration);
+            form_data.append("addNote", this.addNote);
+            form_data.append("addTotalNote", this.addTotalNote);
+            form_data.append("addSmallContent", this.addSmallContent);
+            form_data.append("addDesc", this.addDesc);
+            form_data.append("addHours1", this.addHours1);
+            form_data.append("addHours2", this.addHours2);
+            form_data.append("addHours3", this.addHours3);
+            form_data.append("addHours4", this.addHours4);
+            form_data.append("addHours5", this.addHours5);
+            form_data.append("addHours6", this.addHours6);
+            form_data.append("addHours7", this.addHours7);
+            form_data.append("ip", ip);
 
-              this.showNotif()
+            axios({
+              method: "POST",
+              url: process.env.WEBSITE + '/add-bakery',
+              data: form_data,
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            })
+              .then((res) => {
 
-              setTimeout(() => {
-                $(document).find('.error-text').text('')
-                $(document).find('.error-text').removeAttr()
-                $('.bakery-single').find('input').val('')
-                $('.bakery-single').find('textarea').val('')
-                this.submit = false
-                $('#submit_bakery').addClass('disabled')
+                if (res.data.success === true) {
 
-                this.firstname = null
-                this.lastname = null
-                this.email = null
-                this.phone = null
-                this.sujet = null
-                this.content = null
+                  this.showNotif()
 
-              }, 3500);
+                  $(document).find('.error-text').text('')
+                  $(document).find('.error-text').removeAttr()
+                  $('.bakery-single').find('input').val('')
+                  $('.bakery-single').find('textarea').val('')
+                  this.submit = false
+                  $('#submit_bakery').addClass('disabled')
 
-            } else {
-              this.errorNotif()
-            }
+                  this.image = null
+                  this.image2 = null
+                  this.image3 = null
+                  this.image4 = null
+                  this.addName = null
+                  this.addAdresse = null
+                  this.addPhone = null
+                  this.addWebsite = null
+                  this.addHandicap = null
+                  this.addLivraison = null
+                  this.addRestauration = null
+                  this.addNote = null
+                  this.addTotalNote = null
+                  this.addSmallContent = null
+                  this.addDesc = null
+                  this.addHours1 = null
+                  this.addHours2 = null
+                  this.addHours3 = null
+                  this.addHours4 = null
+                  this.addHours5 = null
+                  this.addHours6 = null
+                  this.addHours7 = null
 
-          })
-          .catch((error) => {
-            this.errorNotif()
+                  this.imageSrc = 'bakerys/add-bakery.jpg'
+                  this.imageSrc2 = 'bakerys/add-bakery.jpg'
+                  this.imageSrc3 = 'bakerys/add-bakery.jpg'
+                  this.imageSrc4 = 'bakerys/add-bakery.jpg'
+
+                  $('.removeImage').hide()
+                  $('.removeImage2').hide()
+                  $('.removeImage3').hide()
+                  $('.removeImage4').hide()
+
+                  this.visible = false
+                  this.showSimulatedReturnData = true
+
+                } else {
+                  this.errorNotif()
+                }
+
+              })
+              .catch((error) => {
+                this.errorNotif()
+              })
+
           })
 
       } else {
@@ -998,6 +957,8 @@ export default defineComponent({
           && this.addHandicap
           && this.addLivraison
           && this.addRestauration
+          && this.addNote
+          && this.addTotalNote
           && this.addSmallContent
           && this.addDesc
           && this.image
@@ -1070,6 +1031,22 @@ export default defineComponent({
           $('.' + 'addRestauration' + '_error').text("");
         }
 
+        if (!this.addNote) {
+          $('.' + 'addNote' + '_error').attr('style', 'display: block')
+          $('.' + 'addNote' + '_error').text("Le champs note est obligatoire !");
+        } else {
+          $('.' + 'addNote' + '_error').removeAttr()
+          $('.' + 'addNote' + '_error').text("");
+        }
+
+        if (!this.addTotalNote) {
+          $('.' + 'addTotalNote' + '_error').attr('style', 'display: block')
+          $('.' + 'addTotalNote' + '_error').text("Le champs total note est obligatoire !");
+        } else {
+          $('.' + 'addTotalNote' + '_error').removeAttr()
+          $('.' + 'addTotalNote' + '_error').text("");
+        }
+
         if (!this.addSmallContent) {
           $('.' + 'addSmallContent' + '_error').attr('style', 'display: block')
           $('.' + 'addSmallContent' + '_error').text("Le champs description est obligatoire !");
@@ -1110,6 +1087,8 @@ export default defineComponent({
       addHandicap: { required },
       addLivraison: { required },
       addRestauration: { required },
+      addNote: { required },
+      addTotalNote: { required },
       addSmallContent: { required },
       addDesc: { required },
       addHours1: { required },
@@ -1308,6 +1287,74 @@ export default defineComponent({
       $(this).nextAll().removeClass('br-active')
 
     })
+
+    function autoFormatNoteNumber (ref) {
+      try {
+        let noteNumberString = ref.value
+        var cleaned = ("" + noteNumberString).replace(/\D/g, "");
+        var match = cleaned.match(/^(\d{0,1})?(\d{0,1})?/);
+        return [match[1] ? "" : "",
+        match[1],
+        match[2] ? "." : "",
+        match[2]].join("")
+
+      } catch (err) {
+        return "";
+      }
+    }
+
+    $('document').on('input', '#addNote', (e) => {
+      let cursorPos = e.target.selectionStart
+      let formatInput = autoFormatNoteNumber(e.target)
+      e.target.value = String(formatInput)
+      let isBackspace = (e?.data == null) ? true : false
+    })
+
+    $('document').on('input', '#addPhone', (e) => {
+      let cursorPos = e.target.selectionStart
+      let formatInput = autoFormatPhoneNumber(e.target)
+      e.target.value = String(formatInput)
+      let isBackspace = (e?.data == null) ? true : false
+    })
+
+    function autoFormatPhoneNumber (ref) {
+      try {
+        let phoneNumberString = ref.value
+        var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+        var match = cleaned.match(/^(\d{0,2})?(\d{0,2})?(\d{0,2})?(\d{0,2})?(\d{0,2})?/);
+        return [match[1] ? "" : "",
+        match[1],
+        match[2] ? " " : "",
+        match[2],
+        match[3] ? " " : "",
+        match[3],
+        match[3] ? " " : "",
+        match[4],
+        match[4] ? " " : "",
+        match[5]].join("")
+
+      } catch (err) {
+        return "";
+      }
+    }
+
+    function nextDigit (input, cursorpos, isBackspace) {
+      if (isBackspace) {
+        for (let i = cursorpos - 1; i > 0; i--) {
+          if (/\d/.test(input[i])) {
+            return i
+          }
+        }
+      } else {
+        for (let i = cursorpos - 1; i < input.length; i++) {
+          if (/\d/.test(input[i])) {
+            return i
+          }
+        }
+      }
+
+      return cursorpos
+    }
 
   }
 })

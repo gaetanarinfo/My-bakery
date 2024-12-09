@@ -33,7 +33,17 @@ export default defineComponent({
     SliderComponent,
     SectionsHome
   },
-  mounted() {
+  mounted () {
+
+    // Header
+
+    $(window).scroll(function () {
+      if ($(this).scrollTop() >= 300) {
+        $('.fadeIn.header').addClass('navigation-sticky navigation-unpin')
+      } else {
+        $('.fadeIn.header').removeClass('navigation-sticky navigation-unpin')
+      }
+    })
 
     $('.fadeIn').fadeIn(600)
     $('.fadeIn2').fadeIn(600)
@@ -48,6 +58,7 @@ export default defineComponent({
     $('.fadeIn11').fadeIn(600)
     $('.fadeIn12').fadeIn(600)
     $('.fadeIn13').fadeIn(600)
+    $('.fadeIn14').fadeIn(600)
 
   }
 })

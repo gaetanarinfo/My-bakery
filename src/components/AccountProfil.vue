@@ -26,7 +26,7 @@
 
   </div>
 
-  <div id="my-account-profil" class="section fadeIn3">
+  <div id="my-account-profil" class="page-my-account-profil section fadeIn3">
 
     <div class="container">
 
@@ -391,12 +391,12 @@
 
                   <tr :id="'activityRow-' + activity.id" v-for="activity in activityTable" :key="activity.id">
                     <th scope="row">{{ activity.id }}</th>
-                    <td><a :href="'#/bakery/' + activity.url">Renvendication de <strong>{{ activity.title
+                    <td><a @click="'bakery/' + activity.url">Renvendication de <strong>{{ activity.title
                           }}</strong></a></td>
                     <td>{{ moment(activity.userCreatedAt).format('DD MMMM YYYY') }}</td>
                     <td>
 
-                      <a :href="'#/bakery/' + activity.url" class="text-success cursor-pointer me-2"><i
+                      <a @click="'bakery/' + activity.url" class="text-success cursor-pointer me-2"><i
                           class="fa fa-eye"></i></a>
 
                       <a @click="deleteActivity(activity.id)" class="text-danger cursor-pointer"><i
@@ -1041,6 +1041,7 @@
 </template>
 
 <style lang="scss">
+
 .event {
   position: absolute;
   inset: 0 0 0 5px;
@@ -1100,10 +1101,35 @@
   background-color: #5a6268;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 </style>
 
 <style lang="css">
 @import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+</style>
+
+
+<style lang="css">
+
+.disabled {
+  pointer-events: none;
+}
+
+.page-my-account-profil.section,
+.page-my-account-profil .section {
+  margin-bottom: 0;
+}
+
+.h-blog {
+  min-height: 200px;
+}
+
+@media all and (max-width: 768px) {
+  .h-blog {
+    min-height: 100%;
+  }
+}
+
 </style>
 
 <script>
@@ -1437,7 +1463,7 @@ export default defineComponent({
       user_bakery,
       yearRouter: route.params.year,
       changeYearSelected (e) {
-        window.location.href = '/#/my-account-profil/' + e.target.value
+        window.location.href = '/my-account-profil/' + e.target.value
         router.go()
       },
       year: (route.params.year !== undefined) ? route.params.year : String(new Date().getFullYear()),

@@ -1,4 +1,5 @@
 <template name="MyBakerys">
+
   <div class="background fadeIn2 bb background2">
 
     <div class="content">
@@ -11,7 +12,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Liste de souhaits</li>
 
@@ -25,7 +26,7 @@
 
   </div>
 
-  <div class="section fadeIn3">
+  <div class="page-my-bakerys section fadeIn3">
 
     <div class="ps-content b-80 b-80">
 
@@ -123,7 +124,7 @@
 
   </div>
 
-  <div id="classement-my-bakerys" class="section last-bakery">
+  <div id="classement-my-bakerys" class="page-my-bakerys section last-bakery">
 
     <div class="column-inner">
 
@@ -163,7 +164,7 @@
 
                           <div class="carousel-item active">
 
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                            <a @click="addClick(bakery.id, 'bakery/' + bakery.url)"
                               class="carousel-action">
                               <img v-if="bakery.image === 'default.jpg'"
                                 style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
@@ -177,7 +178,7 @@
 
                       </div>
 
-                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                      <a @click="addClick(bakery.id, 'bakery/' + bakery.url)"
                         class="title">{{ bakery.title
                         }}</a>
 
@@ -202,7 +203,7 @@
 
                           <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_devanture * 5 /
-                            bakery.sum_devanture) }}</div>
+                              bakery.sum_devanture) }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
                         </div>
@@ -223,7 +224,7 @@
 
                           <div class="br-current-rating" v-if="bakery.counter_proprete !== 0">{{
                             Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)
-                            }}</div>
+                          }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -245,7 +246,7 @@
 
                           <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
-                            }}</div>
+                          }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -267,7 +268,7 @@
 
                           <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                             Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
-                            }}</div>
+                          }}</div>
 
                           <div class="br-current-rating" v-else>0</div>
 
@@ -314,7 +315,7 @@
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                        <a @click="addClick(bakery.id, 'bakery/' + bakery.url)"
                           class="btn btn-bakery">En savoir
                           +</a>
 
@@ -325,7 +326,7 @@
                         <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                        <a @click="addClick(bakery.id, 'bakery/' + bakery.url)"
                           class="btn btn-bakery">En savoir
                           +</a>
 
@@ -350,21 +351,16 @@
     </div>
 
   </div>
+
 </template>
 
-<style lang="css">
-.last-bakery .column-inner .wrapper .bloc .section:last-child img {
-  max-width: 100%;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
+<style lang="scss">
+.page-my-bakerys.last-bakery .column-inner .wrapper .bloc {
+  padding-bottom: 0;
 }
 
-.disabled {
-  pointer-events: none;
-}
-
-.section {
+.page-my-bakerys.section,
+.page-my-bakerys .section {
   margin-bottom: 0;
 }
 
@@ -376,99 +372,6 @@
   .h-blog {
     min-height: 100%;
   }
-}
-
-#blog {
-  padding: 5rem 0;
-}
-
-.b-pagination {
-  padding-top: 40px;
-  text-align: center;
-}
-
-.b-pagination .pagination {
-  margin: 0;
-  display: inline-block;
-}
-
-.b-pagination .pagination li {
-  display: inline-block;
-  margin-right: 15px;
-  text-align: center;
-}
-
-.b-pagination .pagination li>a:before,
-.b-pagination .pagination li>a:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-}
-
-.b-pagination .pagination li.active {
-  border: none;
-}
-
-.b-pagination .pagination li a {
-  text-decoration: none;
-  padding: 0 17px;
-  position: relative;
-  display: inline-block;
-  z-index: 30;
-  font-family: "Lora", serif;
-  font-size: 16px;
-  color: #313131;
-  line-height: 50px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  border: none;
-  background-color: transparent !important;
-}
-
-.b-pagination .pagination li.active a,
-.b-pagination .pagination li a:hover {
-  color: #fff;
-}
-
-.b-pagination .pagination li.active a:before,
-.b-pagination .pagination li a:hover:before {
-  background-color: #cd9b33;
-}
-
-.b-pagination .pagination li.active a:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.b-pagination .pagination li a:before {
-  width: 50px;
-  height: 50px;
-  background-color: #e4e4e4;
-}
-
-.b-pagination .pagination li a:after {
-  width: 45px;
-  height: 45px;
-  background-color: #cd9b33;
-  z-index: -1;
-  visibility: hidden;
-  opacity: 0;
 }
 </style>
 
@@ -517,7 +420,7 @@ export default defineComponent({
     return {
       addClick (id, url) {
         store.dispatch('fetchClickBakery', { 'bakeryId': id })
-        window.location.href = `${url}`
+        this.$router.push(`${url}`)
       },
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
       showTextLoading () {

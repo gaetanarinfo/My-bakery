@@ -12,9 +12,9 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="before"><a href="#/cart">Panier</a></li>
+            <li class="before"><a @click="this.$router.push('/cart')">Panier</a></li>
 
             <li class="active">{{ paiement_status.title }}</li>
 
@@ -28,7 +28,7 @@
 
   </div>
 
-  <div id="cart" class="section fadeIn3">
+  <div id="cart" class="page-paiment-succes section fadeIn3">
 
     <div class="container">
 
@@ -44,7 +44,7 @@
 
         <p class="mt-1">Nous vous souhaitons un agréable moment sur My Bakery.</p>
 
-        <a class="ps-btn" href="#/">Retour à l'accueil</a>
+        <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
 
       </div>
 
@@ -61,7 +61,7 @@
         <a class="ps-btn ps-btn-mobile me-2"
           @click="this.$router.push('/my-account-profil/historique-commandes')">Historique de mes commandes</a>
 
-        <a class="ps-btn" href="#/">Retour à l'accueil</a>
+        <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
 
       </div>
 
@@ -75,6 +75,28 @@
 
 </template>
 
+<style lang="css">
+
+.disabled {
+  pointer-events: none;
+}
+
+.page-paiment-succes.section,
+.page-paiment-succes .section {
+  margin-bottom: 0;
+}
+
+.h-blog {
+  min-height: 200px;
+}
+
+@media all and (max-width: 768px) {
+  .h-blog {
+    min-height: 100%;
+  }
+}
+
+</style>
 
 <script>
 

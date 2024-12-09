@@ -112,7 +112,7 @@
                   <ul>
 
                     <li>
-                      <a href="/"><i class="fa-solid fa-chevron-right me-1"></i> Accueil</a>
+                      <a @click="this.$router.push('/')"><i class="fa-solid fa-chevron-right me-1"></i> Accueil</a>
                     </li>
 
                     <li>
@@ -383,6 +383,27 @@ export default defineComponent({
   mounted () {
 
     const $q = useQuasar()
+
+    // onSuccess Callback
+    // This method accepts a Position object, which contains the
+    // current GPS coordinates
+    //
+    // var onSuccess = function (position) {
+    //   alert('Latitude: ' + position.coords.latitude + '\n' +
+    //     'Longitude: ' + position.coords.longitude + '\n');
+    // };
+
+    // onError Callback receives a PositionError object
+    //
+    // function onError (error) {
+    //   alert('code: ' + error.code + '\n' +
+    //     'message: ' + error.message + '\n');
+    // }
+
+    // navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+    $(document).find('.axeptio_mount').show()
+    $(document).find('.wonderpush-bell').show()
 
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)

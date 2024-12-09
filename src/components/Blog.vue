@@ -11,7 +11,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Blog</li>
 
@@ -25,7 +25,7 @@
 
   </div>
 
-  <div id="blog" class="section fadeIn3 last-blog">
+  <div id="blog" class="page-blog section fadeIn3 last-blog">
 
     <div class="column-inner">
 
@@ -124,11 +124,46 @@
 </template>
 
 <style lang="css">
+.page-blog .loadingDiv {
+  margin-bottom: 5rem;
+}
+
+@media all and (max-width: 768px) {
+  .page-blog .loadingDiv {
+    margin-bottom: 2rem;
+  }
+}
+
+#blog.page-blog .section {
+  margin-bottom: 5rem;
+}
+
+@media all and (max-width: 768px) {
+  #blog.page-blog .section {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+
+  #blog.page-blog .ads_campaign {
+    margin-bottom: 0 !important;
+  }
+
+}
+
+#blog.page-blog .container-xl.section.fadeIn.padding {
+  padding-top: 0 !important;
+  padding-right: var(--bs-gutter-x, 0.75rem) !important;
+  padding-left: var(--bs-gutter-x, 0.75rem) !important;
+}
+
 .disabled {
   pointer-events: none;
 }
 
-.section {
+.page-blog.section,
+.page-blog .section {
   margin-bottom: 0;
 }
 
@@ -142,8 +177,25 @@
   }
 }
 
-#blog {
-  padding: 5rem 0;
+#blog.page-blog {
+  padding: 5rem 0 0 0;
+}
+
+@media all and (max-width: 768px) {
+
+  #blog.page-blog {
+    padding: 2rem 0 0 0;
+  }
+
+  #blog {
+    padding: 2rem 0;
+  }
+
+  .page-blog.section,
+  .page-blog .section {
+    margin-bottom: 2rem;
+  }
+
 }
 
 .b-pagination {
@@ -319,7 +371,7 @@ export default defineComponent({
               vues = ''
             }
 
-            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
+            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
           })
 

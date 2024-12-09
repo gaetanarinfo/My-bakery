@@ -39,7 +39,7 @@
 
                           <div class="carousel-item active">
 
-                            <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url"
+                            <a @click="addClick(bakery.id, '/bakery/' + bakery.url)"
                             class="carousel-action">
                               <img v-if="bakery.image === 'default.jpg'"
                                 style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
@@ -53,7 +53,7 @@
 
                       </div>
 
-                      <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="title">{{ bakery.title
+                      <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="title">{{ bakery.title
                         }}</a>
 
                       <div>
@@ -189,7 +189,7 @@
                           :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir
+                        <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="btn btn-bakery">En savoir
                           +</a>
 
                       </div>
@@ -199,7 +199,7 @@
                         <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
                             class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
 
-                        <a @click="addClick(bakery.id, '#/bakery/' + bakery.url)" :href="'#/bakery/' + bakery.url" class="btn btn-bakery">En savoir
+                        <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="btn btn-bakery">En savoir
                           +</a>
 
                       </div>
@@ -255,7 +255,7 @@ export default defineComponent({
     return {
       addClick (id, url) {
         store.dispatch('fetchClickBakery', { 'bakeryId': id })
-        window.location.href = `${url}`
+        this.$router.push(`${url}`)
       },
       folderPicture: process.env.WEBSITE + '/bakerys/images/',
       Cookies: Cookies,

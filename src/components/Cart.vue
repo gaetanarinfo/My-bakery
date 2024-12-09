@@ -12,7 +12,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Panier</li>
 
@@ -26,7 +26,7 @@
 
   </div>
 
-  <div id="cart" class="section fadeIn3">
+  <div id="cart" class="page-cart section fadeIn3">
 
     <div class="container">
 
@@ -154,7 +154,7 @@
             livrera vos produits
             dans les plus brefs délais.</p>
 
-          <a class="ps-btn" href="#/">Retour à l'accueil</a>
+          <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
 
         </div>
 
@@ -169,6 +169,30 @@
   </div>
 
 </template>
+
+<style lang="css">
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+
+.disabled {
+  pointer-events: none;
+}
+
+.page-cart.section,
+.page-cart .section {
+  margin-bottom: 0;
+}
+
+.h-blog {
+  min-height: 200px;
+}
+
+@media all and (max-width: 768px) {
+  .h-blog {
+    min-height: 100%;
+  }
+}
+
+</style>
 
 <script>
 

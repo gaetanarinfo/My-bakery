@@ -11,7 +11,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Modification de votre mot de passe</li>
 
@@ -25,7 +25,7 @@
 
   </div>
 
-  <div v-if="!route.params.token" id="login" class="forgot section fadeIn3">
+  <div v-if="!route.params.token" id="login" class="page-forgot-password forgot section fadeIn3">
 
     <div class="content b-80 b-80">
 
@@ -123,33 +123,9 @@
 </template>
 
 <style lang="css">
-.last-bakery .column-inner .wrapper .bloc .section:last-child img {
-  max-width: 100%;
-  cursor: pointer;
-  width: 100%;
-  height: 300px;
-}
-
-.disabled {
-  pointer-events: none;
-}
-
-.section {
+.page-forgot-password.section,
+.page-forgot-password .section {
   margin-bottom: 0;
-}
-
-.h-blog {
-  min-height: 200px;
-}
-
-@media all and (max-width: 768px) {
-  .h-blog {
-    min-height: 100%;
-  }
-}
-
-#blog {
-  padding: 5rem 0;
 }
 </style>
 
@@ -386,7 +362,7 @@ export default defineComponent({
 
         } else {
           if (!this.passwordForgotConfirmation) {
-           $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
+            $('.' + 'password_confirmation_forgot' + '_error').attr('style', 'display: block')
             $('.' + 'password_confirmation_forgot' + '_error').text("Le champs confirmation du mot de passe est obligatoire !");
           } else {
             $('.' + 'password_confirmation_forgot' + '_error').removeAttr()
@@ -409,7 +385,7 @@ export default defineComponent({
         $('.' + 'password_forgot' + '_error').attr('style', 'display: block')
         $('.' + 'password_forgot' + '_error').text("Le champs mot de passe est obligatoire !");
       } else {
-       $('.' + 'password_forgot' + '_error').removeAttr()
+        $('.' + 'password_forgot' + '_error').removeAttr()
         $('.' + 'password_forgot' + '_error').text("");
       }
 

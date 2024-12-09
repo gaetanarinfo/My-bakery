@@ -11,7 +11,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Mon compte</li>
 
@@ -25,7 +25,7 @@
 
   </div>
 
-  <div id="login" class="section fadeIn3">
+  <div id="login" class="page-my-account section fadeIn3">
 
     <div class="content b-80 b-80">
 
@@ -151,18 +151,8 @@
 </template>
 
 <style lang="css">
-.last-bakery .column-inner .wrapper .bloc .section:last-child img {
-  max-width: 100%;
-  cursor: pointer;
-  width: 100%;
-  height: 300px;
-}
-
-.disabled {
-  pointer-events: none;
-}
-
-.section {
+.page-my-account.section,
+.page-my-account .section {
   margin-bottom: 0;
 }
 
@@ -174,10 +164,6 @@
   .h-blog {
     min-height: 100%;
   }
-}
-
-#blog {
-  padding: 5rem 0;
 }
 </style>
 

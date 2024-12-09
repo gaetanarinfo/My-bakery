@@ -67,7 +67,7 @@
         <div class="nav-left">
 
           <ul class="menu-left">
-            <li class="menu-item"><a href="/" v-bind:class="this.$route.path === '/' ? 'active' : ''"
+            <li class="menu-item"><a @click="this.$router.push('/')" v-bind:class="this.$route.path === '/' ? 'active' : ''"
                 aria-current="page">Accueil</a></li>
 
             <li class="menu-item"><a role="button"
@@ -84,7 +84,7 @@
         </div>
 
         <div class="nav-center">
-          <a href="" class="logo">
+          <a @click="this.$router.push('/')" class="logo">
             <img src="logo-light.png" alt="My Bakery - classement des meilleurs boulangerie de France">
           </a>
         </div>
@@ -151,14 +151,14 @@
 
       <div class="hn-container">
 
-        <a class="logo" href="/">
+        <a class="logo" @click="this.$router.push('/')">
           <img src="logo-light.png" alt="My Bakery - classement des meilleurs boulangerie de France">
         </a>
 
         <ul id="menu-main-menu">
 
           <li class="menu-item">
-            <a href="/" class="active" aria-current="page">Accueil</a>
+            <a @click="this.$router.push('/')" class="active" aria-current="page">Accueil</a>
           </li>
 
           <li class="menu-item">
@@ -310,7 +310,7 @@ export default defineComponent({
                     vues = ''
                   }
 
-                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="#/blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="#/blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
+                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
                 })
 

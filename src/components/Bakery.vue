@@ -11,7 +11,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="before"><a role="button" @click="this.$router.push('/bakerys')">Boulangeries</a></li>
 
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="bakery-single section fadeIn3">
+  <div class="page-bakery-one bakery-single section fadeIn3">
 
     <div class="container">
 
@@ -136,33 +136,33 @@
 
                 <div>
                   <p><i class="fa-brands fa-accessible-icon me-2"></i> Accès handicapé <span
-                      :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'">{{ (bakery.handicap == 0) ? 'non'
-                        :
-                        'oui' }}</span></p>
+                      :class="(bakery.handicap == 0) ? 'text-danger' : 'text-success'"><i v-if="bakery.handicap == 0"
+                        class="fa-solid fa-xmark text-danger ms-2"></i><i v-else
+                        class="fa-solid text-success fa-check ms-2"></i></span></p>
                 </div>
 
                 <div>
                   <p><i class="fa-solid fa-truck me-2"></i>Livraison <span
-                      :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'">{{ (bakery.delivery == 0) ? 'non'
-                        :
-                        'oui' }}</span></p>
+                      :class="(bakery.delivery == 0) ? 'text-danger' : 'text-success'"><i v-if="bakery.delivery == 0"
+                        class="fa-solid fa-xmark text-danger ms-2"></i><i v-else
+                        class="fa-solid text-success fa-check ms-2"></i></span></p>
                 </div>
 
                 <div>
                   <p><i class="fa-solid fa-utensils me-2"></i>Restauration sur place <span
-                      :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'">{{ (bakery.dine_in == 0) ? 'non' :
-                        'oui' }}</span></p>
+                      :class="(bakery.dine_in == 0) ? 'text-danger' : 'text-success'"><i v-if="bakery.dine_in == 0"
+                        class="fa-solid fa-xmark text-danger ms-2"></i><i v-else
+                        class="fa-solid text-success fa-check ms-2"></i></span></p>
                 </div>
 
                 <div v-if="bakery.website !== null && bakery.website !== ''">
                   <p class="website"><a :href="bakery.website" target="_blank"><i
-                        class="fa-solid fa-globe me-2"></i>Site
-                      internet</a></p>
+                        class="fa-solid fa-globe me-2"></i>Visiter le site internet</a></p>
                 </div>
 
                 <div class="short-desc">
 
-                  <p>{{ bakery.small_content }}</p>
+                  <p><strong>{{ bakery.small_content }}</strong></p>
 
                 </div>
 
@@ -888,11 +888,22 @@
   }
 }
 
+@media (max-width: 768px) {
+  .page-bakery-one .ads_campaign {
+    margin-bottom: 0 !important;
+  }
+
+  .page-bakery-one .ads_campaign.top {
+    padding-top: 0 !important;
+  }
+}
+
 .disabled {
   pointer-events: none;
 }
 
-.section {
+.page-bakery-one.section,
+.page-bakery-one .section {
   margin-bottom: 0;
 }
 
@@ -906,109 +917,11 @@
   }
 }
 
-#classement {
-  padding: 5rem 0;
-}
-
-.b-pagination {
-  text-align: center;
-}
-
-.b-pagination .pagination {
-  margin: 0;
-  display: inline-block;
-}
-
-.b-pagination .pagination li {
-  display: inline-block;
-  margin-right: 15px;
-  text-align: center;
-}
-
-@media all and (max-width: 768px) {
-  .b-pagination .pagination li {
-    margin-bottom: 1rem;
-  }
-}
-
-.b-pagination .pagination li>a:before,
-.b-pagination .pagination li>a:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-}
-
-.b-pagination .pagination li.active {
-  border: none;
-}
-
-.b-pagination .pagination li a {
-  text-decoration: none;
-  padding: 0 17px;
-  position: relative;
-  display: inline-block;
-  z-index: 30;
-  font-family: "Lora", serif;
-  font-size: 16px;
-  color: #313131;
-  line-height: 50px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  border: none;
-  background-color: transparent !important;
-}
-
-.b-pagination .pagination li.active a,
-.b-pagination .pagination li a:hover {
-  color: #fff;
-}
-
-.b-pagination .pagination li.active a:before,
-.b-pagination .pagination li a:hover:before {
-  background-color: #cd9b33;
-}
-
-.b-pagination .pagination li.active a:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.b-pagination .pagination li a:before {
-  width: 50px;
-  height: 50px;
-  background-color: #e4e4e4;
-}
-
-.b-pagination .pagination li a:after {
-  width: 45px;
-  height: 45px;
-  background-color: #cd9b33;
-  z-index: -1;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.last-bakery .column-inner .wrapper {
+.page-bakery-one .last-bakery .column-inner .wrapper {
   background: none;
 }
 
-.last-bakery .column-inner .wrapper .bloc {
+.page-bakery-one .last-bakery .column-inner .wrapper .bloc {
   padding: 0 0;
 }
 </style>

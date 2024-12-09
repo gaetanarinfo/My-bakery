@@ -13,7 +13,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Conditions générales d'utilisation</li>
 
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div class="section fadeIn3">
+  <div class="page-cgu section fadeIn3">
 
     <div class="column-inner">
 
@@ -293,7 +293,8 @@
   pointer-events: none;
 }
 
-.section {
+.page-cgu.section,
+.page-cgu .section {
   margin-bottom: 0;
 }
 

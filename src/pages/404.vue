@@ -1,4 +1,5 @@
 <template>
+
   <HeaderComponent />
 
   <div class="p-404">
@@ -20,6 +21,7 @@
     </div>
 
   </div>
+
 </template>
 
 <style lang="css">
@@ -39,14 +41,6 @@
   .bb .content {
     padding: 2rem 2rem;
   }
-}
-
-.disabled {
-  pointer-events: none;
-}
-
-.section {
-  margin-bottom: 0;
 }
 
 .h-bakery {
@@ -69,7 +63,7 @@ export default defineComponent({
   components: {
     HeaderComponent
   },
-  mounted() {
+  mounted () {
     $('.header').addClass('h-bakery')
     $('body').removeClass('loading')
     $('.fadeIn').fadeIn(600)

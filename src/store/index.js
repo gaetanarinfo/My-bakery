@@ -22,6 +22,7 @@ export default createStore({
     blog_tags: [],
     activateAccount: [],
     markersBakerys: [],
+    markersBakerys2: [],
     products_cart: [],
     paiement_status: [],
     show_order: [],
@@ -30,6 +31,8 @@ export default createStore({
     credits: [],
     banner: [],
     bakerysList: [],
+    markersBakerysHome: [],
+    markersBakerysHome2: [],
     stateUser: {
       user: null,
       token: null,
@@ -55,6 +58,7 @@ export default createStore({
     getActivateAccount: (state) => state.activateAccount,
     getToken: (state) => state.stateUser.token,
     getMarkerBakerys: (state) => state.markersBakerys,
+    getMarkerBakerys2: (state) => state.markersBakerys2,
     getProducts: (state) => state.products,
     getProductsCart: (state) => state.products_cart,
     getPaiementStatus: (state) => state.paiement_status,
@@ -64,6 +68,8 @@ export default createStore({
     getCredits: (state) => state.credits,
     getBanner: (state) => state.banner,
     getBakerysList: (state) => state.bakerysList,
+    getMarkersBakeryHome: (state) => state.markersBakerysHome,
+    getMarkersBakeryHome2: (state) => state.markersBakerysHome2,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -133,7 +139,6 @@ export default createStore({
       }
 
     },
-
     // Liste des articles sur le blog
     async fetchBlogs ({ commit }) {
       try {
@@ -171,7 +176,7 @@ export default createStore({
 
           localStorage.setItem('article-title', getUrl.data.blog.title)
           localStorage.setItem('article-description', getUrl.data.blog.small_content)
-          localStorage.setItem('article-url', 'https://my-bakery.fr/#/blogs/' + getUrl.data.blog.url)
+          localStorage.setItem('article-url', 'https://my-bakery.fr/blogs/' + getUrl.data.blog.url)
           localStorage.setItem('article-image', 'https://my-bakery.fr/blogs/' + getUrl.data.blog.image)
 
           this.blog = getUrl.data.blog
@@ -284,13 +289,33 @@ export default createStore({
     async fetchMarkersBakerys ({ commit, state }, data) {
       try {
 
-        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers/' + data.region)
+        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers/' + data.ville + '/' + data.id)
 
         if (getUrl.data.markers.length >= 1) {
 
           this.markersBakerys = getUrl.data
 
           commit('SET_MARKER_BAKERY', getUrl.data)
+
+        } else {
+          this.$router.push('/')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async fetchMarkersBakerys2 ({ commit, state }, data) {
+      try {
+
+        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers/' + data.ville + '/' + data.id)
+
+        if (getUrl.data.markers.length >= 1) {
+
+          this.markersBakerys2 = getUrl.data
+
+          commit('SET_MARKER_BAKERY2', getUrl.data)
 
         } else {
           this.$router.push('/')
@@ -547,9 +572,43 @@ export default createStore({
         })
 
     },
+    async fetchMarkersBakerysHome ({ commit, state }, data) {
+
+      const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers-home/' + data.lat + '/' + data.lng)
+
+      if (getUrl.data.markers.length >= 1) {
+
+        this.markersBakerysHome = getUrl.data
+
+        commit('SET_MARKER_BAKERY_HOME', getUrl.data)
+
+      }
+
+    },
+    async fetchMarkersBakerysHome2 ({ commit, state }, data) {
+
+      const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-markers-home/' + data.lat + '/' + data.lng)
+
+      if (getUrl.data.markers.length >= 1) {
+
+        this.markersBakerysHome2 = getUrl.data
+
+        commit('SET_MARKER_BAKERY_HOME2', getUrl.data)
+
+      }
+
+    },
 
   },
   mutations: {
+
+    SET_MARKER_BAKERY_HOME2 (state, markersBakerysHome2) {
+      state.markersBakerysHome2 = markersBakerysHome2
+    },
+
+    SET_MARKER_BAKERY_HOME (state, markersBakerysHome) {
+      state.markersBakerysHome = markersBakerysHome
+    },
 
     SET_BAkERYS_LIST (state, bakerysList) {
       state.bakerysList = bakerysList
@@ -589,6 +648,10 @@ export default createStore({
 
     SET_MARKER_BAKERY (state, markersBakerys) {
       state.markersBakerys = markersBakerys
+    },
+
+    SET_MARKER_BAKERY2 (state, markersBakerys2) {
+      state.markersBakerys2 = markersBakerys2
     },
 
     SET_BAKERYS (state, bakerys) {

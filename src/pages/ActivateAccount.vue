@@ -13,7 +13,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/">Accueil</a></li>
+            <li><a @click="this.$router.push('/')">Accueil</a></li>
 
             <li class="active">Activation de votre compte</li>
 
@@ -27,7 +27,7 @@
 
   </div>
 
-  <div id="login" class="section fadeIn3">
+  <div id="login" class="page-activate-account section fadeIn3">
 
     <div class="content b-80 b-80" style="min-height: 100%;">
 
@@ -64,37 +64,41 @@
   <FooterComponent />
 </template>
 
-<style lang="css">
-.last-bakery .column-inner .wrapper .bloc .section:last-child img {
-  max-width: 100%;
-  cursor: pointer;
-  width: 100%;
-  height: 300px;
+<style lang="scss">
+
+.bb .content {
+  margin: 0 auto;
+  padding: 4rem 0;
+  display: flex;
+  max-width: 1170px;
+  text-align: center;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-.disabled {
-  pointer-events: none;
+@media all and (max-width: 768px) {
+  .bb .content {
+    padding: 2rem 2rem;
+  }
 }
 
-.section {
+.page-activate-account .section {
   margin-bottom: 0;
 }
 
-.h-blog {
+.h-bakery {
   min-height: 200px;
 }
 
 @media all and (max-width: 768px) {
-  .h-blog {
-    min-height: 100%;
+  .h-bakery {
+    min-height: auto;
   }
 }
 
-#blog {
-  padding: 5rem 0;
-}
 </style>
-
 
 <script>
 import { defineComponent, onMounted, computed } from 'vue'
