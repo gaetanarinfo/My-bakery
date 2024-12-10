@@ -4,7 +4,7 @@
 
     <div class="content">
 
-      <h1>{{ markersBakerys.nom }}</h1>
+      <h1>Boulangerie à {{ markersBakerys.nom }}</h1>
 
       <div class="b-breadcrumb">
 
@@ -14,7 +14,7 @@
 
             <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="active link-letter">{{ markersBakerys.nom }}</li>
+            <li class="active link-letter">Boulangerie à {{ markersBakerys.nom }}</li>
 
           </ol>
 
@@ -81,7 +81,7 @@
                   <li v-for="markerBakery in markersBakerys2.markers" class="bakerys">
                     <a
                       @click="search(markerBakery.id, markerBakery.lat, markerBakery.lng, markerBakery.adresse, markerBakery.title, markerBakery.url)">{{
-                        markerBakery.title }}</a>
+                        markerBakery.title }} ({{ markerBakery.postcode }})</a>
                   </li>
 
                 </ul>
@@ -142,7 +142,6 @@
   }
 }
 </style>
-
 
 <script>
 import { defineComponent, onMounted, computed, ref } from 'vue'

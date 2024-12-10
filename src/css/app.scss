@@ -88,7 +88,6 @@
 
 .carousel-action {
   display: grid;
-  justify-content: center;
 }
 
 .carousel-item img {
@@ -530,7 +529,7 @@ a:hover {
 .header .navigation .nav-right .actions a {
   position: relative;
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 4px;
   vertical-align: top;
   width: 32px;
   height: 32px;
@@ -626,6 +625,85 @@ a:hover {
 .header .navigation-mobile .menu-toggle-2 {
   margin-top: 10px;
   float: right;
+}
+
+.material-symbols-outlined.animated {
+  -webkit-animation: shake-vertical 1.5s 1s infinite alternate both;
+  animation: shake-vertical 1.5s 1s infinite alternate both;
+}
+
+/**
+ * ----------------------------------------
+ * animation shake-vertical
+ * ----------------------------------------
+ */
+
+@-webkit-keyframes shake-vertical {
+
+  0%,
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+
+  80% {
+    -webkit-transform: translateY(6.4px);
+    transform: translateY(6.4px);
+  }
+
+  90% {
+    -webkit-transform: translateY(-6.4px);
+    transform: translateY(-6.4px);
+  }
+}
+
+@keyframes shake-vertical {
+
+  0%,
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+
+  80% {
+    -webkit-transform: translateY(6.4px);
+    transform: translateY(6.4px);
+  }
+
+  90% {
+    -webkit-transform: translateY(-6.4px);
+    transform: translateY(-6.4px);
+  }
 }
 
 .menu-toggle:hover,
@@ -6355,6 +6433,15 @@ button.ps-btn:hover {
   color: rgb(252, 103, 49);
 }
 
+.modalSpecial .footer .btn-bakery {
+  color: #cd9b33;
+}
+
+.modalSpecial .footer .btn-bakery i {
+  color: #cd9b33;
+  font-size: inherit;
+}
+
 .modalSpecial .footer .col-10,
 .modalSpecial .footer .col-2 {
   display: flex;
@@ -6954,3 +7041,43 @@ button.ps-btn:hover {
   }
 
 }
+
+/* Add Bakery */
+
+.page-add-bakery .search-place {
+  top: 50px;
+  background: #faf7f3;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 100%;
+  position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
+  border-left: 1px solid #c79732;
+  border-bottom: 1px solid #c79732;
+  border-right: 1px solid #c79732;
+  display: none;
+  padding: 1rem;
+}
+
+.page-add-bakery .search-place ul {
+  padding: 0;
+  margin: 0;
+}
+
+.page-add-bakery .search-place ul li {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.page-add-bakery .search-place ul li:last-child {
+  margin-bottom: 0;
+}
+
+.page-add-bakery .search-place ul li i {
+  color: #467d97;
+}
+
+.html2canvas-container { width: 1920px !important; height: 1080px !important; }

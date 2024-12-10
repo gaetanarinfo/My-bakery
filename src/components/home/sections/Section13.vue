@@ -1,6 +1,6 @@
-<template name="SectionHome13">
+<template name="SectionHome13" >
 
-  <div class="section fadeIn14 ratings">
+  <div v-if="enableMap" class="section fadeIn14 ratings">
 
     <div class="background-p">
 
@@ -10,7 +10,7 @@
   </div>
 
 
-  <div id="bakery-list" class="section fadeIn9">
+  <div v-if="enableMap" id="bakery-list" class="section fadeIn9">
 
     <div class="column-inner">
 
@@ -89,7 +89,7 @@
                     <li v-for="markerBakery in markersBakerysHome2.markers" class="bakerys">
                       <a
                         @click="search(markerBakery.id, markerBakery.lat, markerBakery.lng, markerBakery.adresse, markerBakery.title, markerBakery.url)">{{
-                          markerBakery.title }}</a>
+                          markerBakery.title }} ({{ markerBakery.postcode }})</a>
                     </li>
 
                   </ul>
@@ -120,6 +120,8 @@ import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
 import { marker } from 'leaflet';
 
+const enableMap = ref(true);
+
 export default defineComponent({
   name: 'SectionHome13',
   components: {
@@ -144,6 +146,7 @@ export default defineComponent({
     })
 
     return {
+      enableMap,
       search (id, lat, lng, adresse, title, url) {
 
         markersBakerysHome.value.markers = [{
@@ -195,70 +198,75 @@ export default defineComponent({
           'lng': position.coords.longitude
         })
 
+      enableMap.value = true
+
     };
 
     // onError Callback receives a PositionError object
     //
     function onError (error) {
-      alert('code: ' + error.code + '\n' +
-        'message: ' + error.message + '\n');
+      enableMap.value = false
     }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
+    if (enableMap.value) {
+
     setTimeout(() => {
 
-      this.map = 1
+        this.map = 1
 
-      if (this.markersBakerysHome2.markers !== undefined) {
+        if (this.markersBakerysHome2.markers !== undefined) {
 
-        const toSlugAdvanced = (str) => {
-          return str
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[\W_]+/g, "-")
-            .toLowerCase()
-            .replace(/^-+|-+$/g, "");
-        };
+          const toSlugAdvanced = (str) => {
+            return str
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/[\W_]+/g, "-")
+              .toLowerCase()
+              .replace(/^-+|-+$/g, "");
+          };
 
-        /**
-        * Trie pour la barre de recherche
-        * @param {*} letter
-        * @param {*} nakery
-        * @param {*} elements
-        */
-        function filterCity (letter, city, elements) {
-          for (let i = 0; i < city.length; i++) {
-            if (toSlugAdvanced(city[i].textContent).includes(letter)) {
-              elements[i].style.display = "block";
-            } else {
-              elements[i].style.display = "none";
+          /**
+          * Trie pour la barre de recherche
+          * @param {*} letter
+          * @param {*} nakery
+          * @param {*} elements
+          */
+          function filterCity (letter, city, elements) {
+            for (let i = 0; i < city.length; i++) {
+              if (toSlugAdvanced(city[i].textContent).includes(letter)) {
+                elements[i].style.display = "block";
+              } else {
+                elements[i].style.display = "none";
+              }
             }
           }
+
+          /**
+           * Gestion barre de recherche
+           */
+          $(document).on("input", "#search-bakerys", function (e) {
+
+            let searchValue = e.target.value;
+            let elements = $(".bakerys");
+            let bakerys_name = $(".bakerys_name");
+
+            if (searchValue != "") {
+              filterCity(toSlugAdvanced(searchValue), bakerys_name, elements);
+            } else {
+              elements.each(function (index, element) {
+                element.style.display = "block";
+              });
+            }
+
+          });
+
         }
 
-        /**
-         * Gestion barre de recherche
-         */
-        $(document).on("input", "#search-bakerys", function (e) {
-
-          let searchValue = e.target.value;
-          let elements = $(".bakerys");
-          let bakerys_name = $(".bakerys_name");
-
-          if (searchValue != "") {
-            filterCity(toSlugAdvanced(searchValue), bakerys_name, elements);
-          } else {
-            elements.each(function (index, element) {
-              element.style.display = "block";
-            });
-          }
-
-        });
-
-      }
-
     }, 3500);
+
+  }
 
   },
 

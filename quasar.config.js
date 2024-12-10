@@ -375,7 +375,7 @@ const paths = [
     path: "/bakery/maison-le-gouallec-reze"
   },
   {
-    path: "/bakery/boulangerie-saint-paul-|-maison-farine-|-lyon"
+    path: "/bakery/boulangerie-saint-paul-maison-farine-lyon"
   },
   {
     path: "/bakery/boulangerie-saint-paul"
@@ -1116,7 +1116,7 @@ const paths = [
     path: "/bakery/patissier-chocolatier-glacier-moles"
   },
   {
-    path: "/bakery/boulangerie-patisserie-maison-vie-|-hauterives"
+    path: "/bakery/boulangerie-patisserie-maison-vie-hauterives"
   },
   {
     path: "/bakery/patisserie-du-donjon"
@@ -2157,7 +2157,7 @@ const paths = [
     path: "/bakery/fantastiks-cakes"
   },
   {
-    path: "/bakery/la-fantasquerie-|-patisserie-&-biscuiterie-|-jura-|-bletterans"
+    path: "/bakery/la-fantasquerie-patisserie-&-biscuiterie-jura-bletterans"
   },
   {
     path: "/bakery/boulangerie-la-lussassoise"
@@ -4596,7 +4596,7 @@ const paths = [
     path: "/bakery/paton-boulangerie-la-rochelle"
   },
   {
-    path: "/bakery/boulangerie-de-la-barriere-|-cedric-lassau"
+    path: "/bakery/boulangerie-de-la-barriere-cedric-lassau"
   },
   {
     path: "/bakery/boulangerie-benony"
@@ -8199,7 +8199,7 @@ const paths = [
     path: "/bakery/anglade-pour-sarl-anglade"
   },
   {
-    path: "/bakery/l-artisan-boulanger-|-ghislain-anglade"
+    path: "/bakery/l-artisan-boulanger-ghislain-anglade"
   },
   {
     path: "/bakery/anglade-fv-et-fils"

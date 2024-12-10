@@ -106,6 +106,20 @@
 
           <div class="actions">
 
+            <a v-if="geolocation" role="button"
+              v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'"
+              data-scroll="bakery-list">
+              <span class="material-symbols-outlined animated text-success">
+                location_on
+              </span>
+            </a>
+
+            <a v-else role="button" @click="errorNotif('Assurez-vous d\'activer votre localisation !')">
+              <span class="material-symbols-outlined text-danger">
+                location_off
+              </span>
+            </a>
+
             <a role="button" @click="this.$router.push('/cart');">
               <span class="material-symbols-outlined">
                 shopping_cart
@@ -154,7 +168,7 @@
 
       <div class="hn-container">
 
-        <a class="logo" @click="this.$router.push('/')" >
+        <a class="logo" @click="this.$router.push('/')">
           <img src="logo-light.png" alt="My Bakery - classement des meilleurs boulangerie de France">
         </a>
 
@@ -189,41 +203,55 @@
         <div class="menu-toggle"><span></span></div>
 
         <div class="actions">
+
+          <a v-if="geolocation" role="button"
+            v-bind:class="this.$route.path === '/' ? 'scroll-click' : 'scroll-click-s'" data-scroll="bakery-list">
+            <span class="material-symbols-outlined animated text-success">
+              location_on
+            </span>
+          </a>
+
+          <a v-else role="button" @click="errorNotif('Assurez-vous d\'activer votre localisation !')">
+            <span class="material-symbols-outlined text-danger">
+              location_off
+            </span>
+          </a>
+
           <a role="button" @click="this.$router.push('/cart');">
-              <span class="material-symbols-outlined">
-                shopping_cart
-              </span>
-            </a>
+            <span class="material-symbols-outlined">
+              shopping_cart
+            </span>
+          </a>
 
-            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
-              <span class="material-symbols-outlined">
-                login
-              </span>
-            </a>
+          <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
+            <span class="material-symbols-outlined">
+              login
+            </span>
+          </a>
 
-            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
-              <span class="material-symbols-outlined">
-                account_circle
-              </span>
-            </a>
+          <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
+            <span class="material-symbols-outlined">
+              account_circle
+            </span>
+          </a>
 
-            <a v-if="isLoggedIn" @click="logout" role="button">
-              <span class="material-symbols-outlined">
-                logout
-              </span>
-            </a>
+          <a v-if="isLoggedIn" @click="logout" role="button">
+            <span class="material-symbols-outlined">
+              logout
+            </span>
+          </a>
 
-            <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
-              <span class="material-symbols-outlined">
-                favorite
-              </span>
-            </a>
+          <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
+            <span class="material-symbols-outlined">
+              favorite
+            </span>
+          </a>
 
-            <a href="">
-              <span class="material-symbols-outlined search-btn">
-                search
-              </span>
-            </a>
+          <a href="">
+            <span class="material-symbols-outlined search-btn">
+              search
+            </span>
+          </a>
 
         </div>
 
@@ -243,7 +271,8 @@ import moment from 'moment'
 import { ref } from 'vue'
 import axios from 'axios'
 
-const searchHeader = null
+const searchHeader = null,
+  geolocation = ref(true)
 
 export default defineComponent({
   name: 'HeaderComponent',
@@ -251,6 +280,7 @@ export default defineComponent({
     const store = useStore()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
+    const $q = useQuasar()
 
     const searchAll = computed(() => {
       return store.state.searchAll
@@ -268,7 +298,23 @@ export default defineComponent({
 
     }
 
+    $q.notify.registerType('error-form', {
+      icon: 'location_off',
+      progress: false,
+      color: 'red-6',
+      textColor: 'white',
+      classes: 'glossy',
+      timeout: 3500
+    })
+
     return {
+      errorNotif (message = null) {
+        $q.notify({
+          type: 'error-form',
+          message
+        })
+      },
+      geolocation,
       showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = true
@@ -344,6 +390,24 @@ export default defineComponent({
 
     }
   },
-  props: {}
+  mounted () {
+
+    // onSuccess Callback
+    // This method accepts a Position object, which contains the
+    // current GPS coordinates
+    //
+    var onSuccess = function (position) {
+      geolocation.value = true
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError (error) {
+      geolocation.value = false
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+  },
 })
 </script>

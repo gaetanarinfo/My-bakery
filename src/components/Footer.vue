@@ -148,6 +148,11 @@
                           class="fa-solid fa-chevron-right me-1"></i> Politique de confidentialité</a>
                     </li>
 
+                    <li>
+                      <a @click="this.$router.push('/cgv');"><i class="fa-solid fa-chevron-right me-1"></i> Conditions
+                        générales de vernte</a>
+                    </li>
+
                   </ul>
 
                 </div>
@@ -254,11 +259,11 @@ export default defineComponent({
       connectionNotif () {
 
         $q.notify({
-          icon: 'signal_wifi_on',
-          progress: true,
-          color: 'green-9',
+          progress: false,
+          icon: 'fa-solid fa-wifi',
+          color: 'green-6',
           textColor: 'white',
-          type: 'success-form',
+          classes: 'glossy',
           message: 'Vous avez retrouver la connexion à Internet. My Bakery est en ligne.'
         })
 
@@ -267,10 +272,9 @@ export default defineComponent({
 
         $q.notify({
           icon: 'signal_wifi_off',
-          progress: true,
-          color: 'red-9',
+          color: 'red-6',
           textColor: 'white',
-          type: 'error-form',
+          classes: 'glossy',
           message: 'Vous avez perdu la connexion à Internet. My Bakery est hors ligne.'
         })
 
@@ -383,24 +387,6 @@ export default defineComponent({
   mounted () {
 
     const $q = useQuasar()
-
-    // onSuccess Callback
-    // This method accepts a Position object, which contains the
-    // current GPS coordinates
-    //
-    // var onSuccess = function (position) {
-    //   alert('Latitude: ' + position.coords.latitude + '\n' +
-    //     'Longitude: ' + position.coords.longitude + '\n');
-    // };
-
-    // onError Callback receives a PositionError object
-    //
-    // function onError (error) {
-    //   alert('code: ' + error.code + '\n' +
-    //     'message: ' + error.message + '\n');
-    // }
-
-    // navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
     $(document).find('.axeptio_mount').show()
     $(document).find('.wonderpush-bell').show()

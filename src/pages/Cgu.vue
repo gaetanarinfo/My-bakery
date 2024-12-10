@@ -289,6 +289,7 @@
 </template>
 
 <style lang="css">
+
 .disabled {
   pointer-events: none;
 }
@@ -308,122 +309,56 @@
   }
 }
 
-#blog {
-  padding: 5rem 0;
-}
-
-.b-pagination {
-  padding-top: 40px;
-  text-align: center;
-}
-
-.b-pagination .pagination {
-  margin: 0;
-  display: inline-block;
-}
-
-.b-pagination .pagination li {
-  display: inline-block;
-  margin-right: 15px;
-  text-align: center;
-}
-
-.b-pagination .pagination li>a:before,
-.b-pagination .pagination li>a:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: -2;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
-}
-
-.b-pagination .pagination li.active {
-  border: none;
-}
-
-.b-pagination .pagination li a {
-  text-decoration: none;
-  padding: 0 17px;
-  position: relative;
-  display: inline-block;
-  z-index: 30;
-  font-family: "Lora", serif;
-  font-size: 16px;
-  color: #313131;
-  line-height: 50px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  border: none;
-  background-color: transparent !important;
-}
-
-.b-pagination .pagination li.active a,
-.b-pagination .pagination li a:hover {
-  color: #fff;
-}
-
-.b-pagination .pagination li.active a:before,
-.b-pagination .pagination li a:hover:before {
-  background-color: #cd9b33;
-}
-
-.b-pagination .pagination li.active a:after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.b-pagination .pagination li a:before {
-  width: 50px;
-  height: 50px;
-  background-color: #e4e4e4;
-}
-
-.b-pagination .pagination li a:after {
-  width: 45px;
-  height: 45px;
-  background-color: #cd9b33;
-  z-index: -1;
-  visibility: hidden;
-  opacity: 0;
-}
 </style>
 
 <script>
-import { defineComponent } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import FooterComponent from 'components/Footer.vue'
-import { useMeta } from 'quasar'
 import Section7 from 'components/home/sections/Section7.vue'
 
-const metaData = {
-  title: 'Conditions générales d\'utilisation du site My Bakery',
-  titleTemplate: title => `${title}`,
-}
+import { defineComponent } from 'vue'
+
+// Balise Méta
+import { useMeta } from 'quasar'
+
+const title = 'My bakery - conditions générales d\'utilisation',
+  description = 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.',
+  url = 'https://my-bakery.fr/cgu',
+  metaData = {
+    title: title,
+    description: description,
+    titleTemplate: title => `${title}`,
+    descriptionTemplate: description => `${description}`
+  }
+
+$(document).find('title').text(title)
+
+$(document).find('meta').attr('og:title', title)
+$(document).find('meta').attr('og:desciption', description)
+$(document).find('meta').attr('og:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('og:url', url)
+
+$(document).find('meta').attr('twitter:title', title)
+$(document).find('meta').attr('twitter:description', description)
+$(document).find('meta').attr('twitter:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('twitter:url', url)
 
 export default defineComponent({
   name: 'Cgu',
-  setup() {
-    // needs to be called in setup()
-    useMeta(metaData)
-  },
   components: {
     HeaderComponent,
     FooterComponent,
     Section7
+  },
+  setup() {
+
+    // needs to be called in setup()
+    useMeta(metaData)
+
+    return {
+
+    }
+
   },
   mounted() {
 

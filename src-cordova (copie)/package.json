@@ -2,7 +2,7 @@
   "name": "org.mybakery.app",
   "displayName": "My bakery",
   "version": "1.0.2",
-  "description": "Retrouvez toutes les meilleures boulangeries en France sur My bakery.",
+  "description": "Retrouvez toutes les meilleures boulangeries en France sur My Bakery.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

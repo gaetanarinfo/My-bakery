@@ -11,13 +11,15 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, computed, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router';
 import HeaderComponent from 'components/Header.vue'
 import BakerysCityComponent from 'components/BakerysCity.vue'
 import Section7 from 'components/home/sections/Section7.vue'
 import FooterComponent from 'components/Footer.vue'
+
+import { defineComponent } from 'vue'
+import { useRoute } from 'vue-router';
+import { useMeta } from 'quasar'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'BakerysCity',
@@ -29,20 +31,42 @@ export default defineComponent({
   },
   setup () {
 
-    const store = useStore()
-    const route = useRoute();
+    const route = useRoute()
+
+    axios.get(process.env.WEBSITE + '/bakerys-markers/' + route.params.ville + '/' + route.params.id)
+      .then(res => {
+
+        const title = 'My bakery - boulangerie à ' + res.data.nom,
+          description = 'Découvrez toutes les boulangeries classées par ville, découvrez les boulangeries à ' + res.data.nom,
+          url = 'https://my-bakery.fr/bakerys-city/' + route.params.ville + '/' + route.params.id,
+          metaData = {
+            title: title,
+            description: description,
+            titleTemplate: title => `${title}`,
+            descriptionTemplate: description => `${description}`
+          }
+
+        $(document).find('title').text(title)
+
+        $(document).find('meta').attr('og:title', title)
+        $(document).find('meta').attr('og:desciption', description)
+        $(document).find('meta').attr('og:image', process.env.BANNER_URL + '/boulanger.png')
+        $(document).find('meta').attr('og:url', url)
+
+        $(document).find('meta').attr('twitter:title', title)
+        $(document).find('meta').attr('twitter:description', description)
+        $(document).find('meta').attr('twitter:image', process.env.BANNER_URL + '/boulanger.png')
+        $(document).find('meta').attr('twitter:url', url)
+
+        // Balise Méta
+        useMeta(metaData)
+
+      })
 
     return {
+
     }
 
-  },
-  data () {
-
-    return {
-    }
-
-  },
-  methods: {
   },
   mounted () {
 

@@ -33,6 +33,7 @@ export default createStore({
     bakerysList: [],
     markersBakerysHome: [],
     markersBakerysHome2: [],
+    searchPlace: [],
     stateUser: {
       user: null,
       token: null,
@@ -70,6 +71,7 @@ export default createStore({
     getBakerysList: (state) => state.bakerysList,
     getMarkersBakeryHome: (state) => state.markersBakerysHome,
     getMarkersBakeryHome2: (state) => state.markersBakerysHome2,
+    getSearchPlace: (state) => state.searchPlace,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -598,9 +600,26 @@ export default createStore({
       }
 
     },
+    async fetchSearchPlace ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/bakery-search-place', { search: data.search })
+        .then((res) => {
+
+          if (res.data.succes === true) {
+            this.searchPlace = res.data.search
+            commit('SET_SEARCH_PLACE', res.data.search)
+          }
+
+        })
+
+    },
 
   },
   mutations: {
+
+    SET_SEARCH_PLACE (state, searchPlace) {
+      state.searchPlace = searchPlace
+    },
 
     SET_MARKER_BAKERY_HOME2 (state, markersBakerysHome2) {
       state.markersBakerysHome2 = markersBakerysHome2

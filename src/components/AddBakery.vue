@@ -78,12 +78,19 @@
                   <p class="error-text addWebsite_error"></p>
                 </div>
 
-                <div>
+                <div class="position-relative">
+
                   <p>
-                    <input v-model="addAdresse" type="text" class="form-control" id="addAdresse" name="addAdresse"
-                      placeholder="Adresse de la boulangerie*">
+                    <input v-model="addAdresse" @keyup="getAdresseApi(addAdresse)" type="text" class="form-control"
+                      id="addAdresse" name="addAdresse" placeholder="Adresse de la boulangerie*">
                   </p>
+
+                  <div class="search-place">
+                    <ul></ul>
+                  </div>
+
                   <p class="error-text addAdresse_error"></p>
+
                 </div>
 
                 <div>
@@ -389,6 +396,8 @@ import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import moment from 'moment'
 import axios from 'axios'
+import { useStore } from 'vuex'
+import { useRoute, useRouter } from 'vue-router';
 
 moment.locale('fr')
 
@@ -402,6 +411,12 @@ export default defineComponent({
     const showSimulatedReturnData = ref(false)
     const $q = useQuasar()
     const FormData = require('form-data');
+    const store = useStore()
+    const router = useRouter()
+
+    const searchPlace = computed(() => {
+      return store.state.searchPlace
+    })
 
     if (SessionStorage.getItem('token') !== null) {
 
@@ -412,7 +427,7 @@ export default defineComponent({
 
             // Static values
             if (res.data.subscription === false) {
-              this.$router.push('/')
+              router.push('/')
             }
 
             setTimeout(() => {
@@ -425,7 +440,7 @@ export default defineComponent({
         })
 
     } else {
-      this.$router.push('/')
+      router.push('/')
     }
 
     $q.notify.registerType('success-form', {
@@ -447,11 +462,47 @@ export default defineComponent({
     })
 
     return {
+      searchPlace,
       Cookies: Cookies,
       visible,
       FormData: FormData,
       moment: moment,
       showSimulatedReturnData,
+      getAdresseApi (value) {
+
+        if (value.length >= 2) {
+
+          $('.search-place').fadeIn(200)
+
+          $('.search-place ul').html('<div style="position: relative;display: flex;width: 100%;align-items: center;justify-content: center;"><svg class="q-spinner text-warning" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-20,-20)"><path d="M79.9,52.6C80,51.8,80,50.9,80,50s0-1.8-0.1-2.6l-5.1-0.4c-0.3-2.4-0.9-4.6-1.8-6.7l4.2-2.9c-0.7-1.6-1.6-3.1-2.6-4.5 L70,35c-1.4-1.9-3.1-3.5-4.9-4.9l2.2-4.6c-1.4-1-2.9-1.9-4.5-2.6L59.8,27c-2.1-0.9-4.4-1.5-6.7-1.8l-0.4-5.1C51.8,20,50.9,20,50,20 s-1.8,0-2.6,0.1l-0.4,5.1c-2.4,0.3-4.6,0.9-6.7,1.8l-2.9-4.1c-1.6,0.7-3.1,1.6-4.5,2.6l2.1,4.6c-1.9,1.4-3.5,3.1-5,4.9l-4.5-2.1 c-1,1.4-1.9,2.9-2.6,4.5l4.1,2.9c-0.9,2.1-1.5,4.4-1.8,6.8l-5,0.4C20,48.2,20,49.1,20,50s0,1.8,0.1,2.6l5,0.4 c0.3,2.4,0.9,4.7,1.8,6.8l-4.1,2.9c0.7,1.6,1.6,3.1,2.6,4.5l4.5-2.1c1.4,1.9,3.1,3.5,5,4.9l-2.1,4.6c1.4,1,2.9,1.9,4.5,2.6l2.9-4.1 c2.1,0.9,4.4,1.5,6.7,1.8l0.4,5.1C48.2,80,49.1,80,50,80s1.8,0,2.6-0.1l0.4-5.1c2.3-0.3,4.6-0.9,6.7-1.8l2.9,4.2 c1.6-0.7,3.1-1.6,4.5-2.6L65,69.9c1.9-1.4,3.5-3,4.9-4.9l4.6,2.2c1-1.4,1.9-2.9,2.6-4.5L73,59.8c0.9-2.1,1.5-4.4,1.8-6.7L79.9,52.6 z M50,65c-8.3,0-15-6.7-15-15c0-8.3,6.7-15,15-15s15,6.7,15,15C65,58.3,58.3,65,50,65z" fill="currentColor"><animateTransform attributeName="transform" type="rotate" from="90 50 50" to="0 50 50" dur="1s" repeatCount="indefinite"></animateTransform></path></g><g transform="translate(20,20) rotate(15 50 50)"><path d="M79.9,52.6C80,51.8,80,50.9,80,50s0-1.8-0.1-2.6l-5.1-0.4c-0.3-2.4-0.9-4.6-1.8-6.7l4.2-2.9c-0.7-1.6-1.6-3.1-2.6-4.5 L70,35c-1.4-1.9-3.1-3.5-4.9-4.9l2.2-4.6c-1.4-1-2.9-1.9-4.5-2.6L59.8,27c-2.1-0.9-4.4-1.5-6.7-1.8l-0.4-5.1C51.8,20,50.9,20,50,20 s-1.8,0-2.6,0.1l-0.4,5.1c-2.4,0.3-4.6,0.9-6.7,1.8l-2.9-4.1c-1.6,0.7-3.1,1.6-4.5,2.6l2.1,4.6c-1.9,1.4-3.5,3.1-5,4.9l-4.5-2.1 c-1,1.4-1.9,2.9-2.6,4.5l4.1,2.9c-0.9,2.1-1.5,4.4-1.8,6.8l-5,0.4C20,48.2,20,49.1,20,50s0,1.8,0.1,2.6l5,0.4 c0.3,2.4,0.9,4.7,1.8,6.8l-4.1,2.9c0.7,1.6,1.6,3.1,2.6,4.5l4.5-2.1c1.4,1.9,3.1,3.5,5,4.9l-2.1,4.6c1.4,1,2.9,1.9,4.5,2.6l2.9-4.1 c2.1,0.9,4.4,1.5,6.7,1.8l0.4,5.1C48.2,80,49.1,80,50,80s1.8,0,2.6-0.1l0.4-5.1c2.3-0.3,4.6-0.9,6.7-1.8l2.9,4.2 c1.6-0.7,3.1-1.6,4.5-2.6L65,69.9c1.9-1.4,3.5-3,4.9-4.9l4.6,2.2c1-1.4,1.9-2.9,2.6-4.5L73,59.8c0.9-2.1,1.5-4.4,1.8-6.7L79.9,52.6 z M50,65c-8.3,0-15-6.7-15-15c0-8.3,6.7-15,15-15s15,6.7,15,15C65,58.3,58.3,65,50,65z" fill="currentColor"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="90 50 50" dur="1s" repeatCount="indefinite"></animateTransform></path></g></svg></div>')
+
+          setTimeout(() => {
+
+            $('.search-place ul').html('')
+
+            store.dispatch('fetchSearchPlace', {
+              search: value.trim()
+            })
+
+            console.log(this.searchPlace.length);
+
+            if (this.searchPlace.length >= 1) {
+              this.searchPlace.forEach(element => {
+                $('.search-place ul').append('<li class="place-clic" data-adresse="' + element.formatted + '" data-pays="' + element.country + '" data-pays_code="' + element.country_code + '" data-departement="' + element.formatted + '" data-ville="' + element.city + '" data-postcode="' + element.postcode + '" data-department_code="' + element.department_COG + '"><i class="fa-solid fa-location-dot me-2"></i>' + element.formatted + '</li>')
+              });
+            } else {
+              $('.search-place ul').html('<li>Il n\'y a aucun résultat correspondant à votre recherche !</li>')
+              this.searchPlace = []
+            }
+
+          }, 2000);
+
+        } else {
+          $('.search-place').fadeOut(200)
+          this.searchPlace = []
+        }
+
+      },
       showNotif () {
         $q.notify({
           type: 'success-form',
@@ -496,6 +547,8 @@ export default defineComponent({
         && $('#addName').val().length >= 2
         && $('#image').val().length >= 2
         && $('#addPhone').val().length >= 2
+        && $('#addNote').val().length >= 2
+        && $('#addTotalNote').val().length >= 2
         && $('#addSmallContent').val().length >= 2
         && $('#addDesc').val().length >= 2
         && $('#addHours1').val().length >= 2
@@ -540,7 +593,13 @@ export default defineComponent({
       imageSrc: 'bakerys/add-bakery.jpg',
       imageSrc2: 'bakerys/add-bakery.jpg',
       imageSrc3: 'bakerys/add-bakery.jpg',
-      imageSrc4: 'bakerys/add-bakery.jpg'
+      imageSrc4: 'bakerys/add-bakery.jpg',
+      pays: null,
+      pays_code: null,
+      departement: null,
+      ville: null,
+      postcode: null,
+      department_code: null,
     }
   },
   methods: {
@@ -645,7 +704,7 @@ export default defineComponent({
         ext = file.name.split('.').pop(),
         extValid = ['png', 'jpeg', 'jpg']
 
-        console.log(ext);
+      console.log(ext);
 
       if (e.target.files[0].size <= 1684688109387) {
 
@@ -832,8 +891,8 @@ export default defineComponent({
 
       e.preventDefault();
 
-     this.visible = true
-     this.showSimulatedReturnData = false
+      this.visible = true
+      this.showSimulatedReturnData = false
 
       this.v$.$validate() // checks all inputs
 
@@ -878,6 +937,13 @@ export default defineComponent({
             form_data.append("addHours6", this.addHours6);
             form_data.append("addHours7", this.addHours7);
             form_data.append("ip", ip);
+
+            form_data.append("pays", this.pays);
+            form_data.append("pays_code", this.pays_code);
+            form_data.append("departement", this.ville);
+            form_data.append("ville", this.postcode);
+            form_data.append("postcode", this.department_code);
+            form_data.append("department_code", this.department_code);
 
             axios({
               method: "POST",
@@ -927,6 +993,13 @@ export default defineComponent({
                   this.imageSrc2 = 'bakerys/add-bakery.jpg'
                   this.imageSrc3 = 'bakerys/add-bakery.jpg'
                   this.imageSrc4 = 'bakerys/add-bakery.jpg'
+
+                  this.pays = null
+                  this.pays_code = null
+                  this.departement = null
+                  this.ville = null
+                  this.postcode = null
+                  this.department_code = null
 
                   $('.removeImage').hide()
                   $('.removeImage2').hide()
@@ -1303,58 +1376,36 @@ export default defineComponent({
       }
     }
 
-    $('document').on('input', '#addNote', (e) => {
-      let cursorPos = e.target.selectionStart
-      let formatInput = autoFormatNoteNumber(e.target)
-      e.target.value = String(formatInput)
-      let isBackspace = (e?.data == null) ? true : false
+    $(document).on('click', '.place-clic', function (e) {
+
+      e.preventDefault();
+
+      var adresse = $(this).data('adresse'),
+        pays = $(this).data('pays'),
+        pays_code = $(this).data('pays_code'),
+        departement = $(this).data('departement'),
+        ville = $(this).data('ville'),
+        postcode = $(this).data('postcode'),
+        department_code = $(this).data('department_code')
+
+      this.addAdresse = adresse
+      this.pays = pays
+      this.pays_code = pays_code
+      this.departement = departement
+      this.ville = ville
+      this.postcode = postcode
+      this.department_code = department_code
+
+      $('#addAdresse').val(adresse)
+
+      $('.search-place').fadeOut(200)
+
+      setTimeout(() => {
+        $('.search-place ul').html('')
+        this.searchPlace = []
+      }, 300);
+
     })
-
-    $('document').on('input', '#addPhone', (e) => {
-      let cursorPos = e.target.selectionStart
-      let formatInput = autoFormatPhoneNumber(e.target)
-      e.target.value = String(formatInput)
-      let isBackspace = (e?.data == null) ? true : false
-    })
-
-    function autoFormatPhoneNumber (ref) {
-      try {
-        let phoneNumberString = ref.value
-        var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
-        var match = cleaned.match(/^(\d{0,2})?(\d{0,2})?(\d{0,2})?(\d{0,2})?(\d{0,2})?/);
-        return [match[1] ? "" : "",
-        match[1],
-        match[2] ? " " : "",
-        match[2],
-        match[3] ? " " : "",
-        match[3],
-        match[3] ? " " : "",
-        match[4],
-        match[4] ? " " : "",
-        match[5]].join("")
-
-      } catch (err) {
-        return "";
-      }
-    }
-
-    function nextDigit (input, cursorpos, isBackspace) {
-      if (isBackspace) {
-        for (let i = cursorpos - 1; i > 0; i--) {
-          if (/\d/.test(input[i])) {
-            return i
-          }
-        }
-      } else {
-        for (let i = cursorpos - 1; i < input.length; i++) {
-          if (/\d/.test(input[i])) {
-            return i
-          }
-        }
-      }
-
-      return cursorpos
-    }
 
   }
 })

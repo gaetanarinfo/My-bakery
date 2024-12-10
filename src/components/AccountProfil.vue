@@ -760,8 +760,8 @@
   </div>
 
   <!-- Modal Ticket Paiement -->
-  <div class="modal fade modalSpecial" id="modalOrderShow" data-bs-backdrop="static" data-bs-keyboard="false"
-    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade modalSpecial" id="modalOrderShow" ref="printcontent" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered modal-lg">
 
@@ -858,9 +858,12 @@
                 <div class="col-2"><img class="img-fluid" src="contact.png"></div>
                 <div class="col-10">Vous voulez de l'aide ? &nbsp;<a href="mailto:contact@my-bakery.fr">
                     Contactez-nous</a></div>
+
                 <div class="text-right">
+                  <a class="btn btn-bakery mt-2 me-3" @click="printThis()"><i class="fa-solid fa-download me-2"></i> Télécharger la facture</a>
                   <a class="btn btn-bakery mt-2" @click="closeModal()" data-bs-dismiss="modal">Fermer</a>
                 </div>
+
               </div>
 
             </div>
@@ -1041,7 +1044,6 @@
 </template>
 
 <style lang="scss">
-
 .event {
   position: absolute;
   inset: 0 0 0 5px;
@@ -1101,7 +1103,6 @@
   background-color: #5a6268;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 </style>
 
 <style lang="css">
@@ -1110,7 +1111,6 @@
 
 
 <style lang="css">
-
 .disabled {
   pointer-events: none;
 }
@@ -1129,18 +1129,16 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
 
-import { defineComponent, onMounted, reactive, computed } from 'vue'
+import { defineComponent, onMounted, reactive, computed, ref } from 'vue'
 import useValidate from '@vuelidate/core'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
 import { date, LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import moment from 'moment'
-import { ref } from 'vue'
 import { Cookies } from 'quasar'
 import axios from 'axios'
 
@@ -2076,6 +2074,30 @@ export default defineComponent({
     }
   },
   methods: {
+    async printThis () {
+
+      const el = this.$refs.printcontent;
+
+      const options = {
+        type: "dataURL",
+        background: '#FFFFFF',
+        logging: true,
+        allowTaint: true,
+        useCORS: true,
+      };
+      const printCanvas = await html2canvas(el, options);
+
+      const link = document.createElement("a");
+      link.setAttribute("download", 'facture-' + moment().format('YYYY-MM-DD-HH-mm-ss') + '.jpg');
+      link.setAttribute(
+        "href",
+        printCanvas
+          .toDataURL("image/jpg")
+          .replace("image/jpg", "image/octet-stream")
+      );
+      link.click();
+
+    },
     updateProfil (e) {
 
       e.preventDefault()
@@ -2859,6 +2881,7 @@ export default defineComponent({
     }, 200)
 
   }
+
 })
 
 </script>

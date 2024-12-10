@@ -55,7 +55,10 @@
           terme "informations sur les appareils". En outre, nous pourrions collecter les données
           personnelles que vous nous fournissez (y compris, mais sans s'y limiter, le nom, le prénom,
           l'adresse, les informations de paiement, etc.) lors de l'inscription afin de pouvoir exécuter le
-          contrat.</p>
+          contrat. Nous récoltons aussi votre localisation pour vous offrir la meilleure expérience possible.
+          Nous nous engageons à ne pas enregistrer votre localisation. Cela sert simplement à vous localiser et à
+          trouver des boulangeries dans les alentours.
+          Il est possible de la désactiver à tout moment.</p>
 
         <p><span class="text-bold">Pourquoi traitons-nous vos données ?</span><br>
           Notre priorité absolue est la sécurité des données des clients et, à ce
@@ -139,7 +142,6 @@
 </template>
 
 <style lang="css">
-
 .page-p-confidentialite.section,
 .page-p-confidentialite .section {
   margin-bottom: 0;
@@ -154,33 +156,58 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
-import { defineComponent } from 'vue'
 import HeaderComponent from 'components/Header.vue'
 import FooterComponent from 'components/Footer.vue'
-import { useMeta } from 'quasar'
 import Section7 from 'components/home/sections/Section7.vue'
 
-const metaData = {
-  title: 'Politique de confidentialité du site My Bakery',
-  titleTemplate: title => `${title}`,
-}
+import { defineComponent } from 'vue'
+
+// Balise Méta
+import { useMeta } from 'quasar'
+
+const title = 'My bakery - politique de confidentialité',
+  description = 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.',
+  url = 'https://my-bakery.fr/politique-confidentialite',
+  metaData = {
+    title: title,
+    description: description,
+    titleTemplate: title => `${title}`,
+    descriptionTemplate: description => `${description}`
+  }
+
+$(document).find('title').text(title)
+
+$(document).find('meta').attr('og:title', title)
+$(document).find('meta').attr('og:desciption', description)
+$(document).find('meta').attr('og:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('og:url', url)
+
+$(document).find('meta').attr('twitter:title', title)
+$(document).find('meta').attr('twitter:description', description)
+$(document).find('meta').attr('twitter:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('twitter:url', url)
 
 export default defineComponent({
   name: 'PolitiqueConfidentialite',
-  setup() {
-    // needs to be called in setup()
-    useMeta(metaData)
-  },
   components: {
     HeaderComponent,
     FooterComponent,
     Section7
   },
-  mounted() {
+  setup () {
+
+    // needs to be called in setup()
+    useMeta(metaData)
+
+    return {
+
+    }
+
+  },
+  mounted () {
 
     $('#menu-main-menu').removeAttr('style')
 

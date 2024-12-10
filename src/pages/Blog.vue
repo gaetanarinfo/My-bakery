@@ -9,47 +9,54 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+
 import HeaderComponent from 'components/Header.vue'
 import BlogComponent from 'components/Blog.vue'
 import FooterComponent from 'components/Footer.vue'
-import { useMeta } from 'quasar'
 import Section7 from 'components/home/sections/Section7.vue'
 
-const metaData = {
-  title: 'Notre blog sur my bakery',
-  description: 'Bienvenue sur le blog de my bakery, retrouvez tous nos articles liée à la boulangerie, à nos applications, ou au mise à jour du site internet.',
-  titleTemplate: title => `${title}`,
-  descriptionTemplate: description => `${description}`,
+import { defineComponent } from 'vue'
+import { useMeta } from 'quasar'
 
-  // meta tags
-  meta: {
-    title: { name: 'title', content: 'Notre blog sur my bakery' },
-    description: { name: 'description', content: 'Bienvenue sur le blog de my bakery, retrouvez tous nos articles liée à la boulangerie, à nos applications, ou au mise à jour du site internet.' },
-
-    // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-    ogTitle: {
-      property: 'og:title',
-      // optional; similar to titleTemplate, but allows templating with other meta properties
-      template() {
-        return `Notre blog sur my bakery`
-      }
-    }
+const title = 'My bakery - notre blog',
+  description = 'Nous vous invitons à découvrir tous les articles que nous publions sur le blog, qu\'ils concernent la boulangerie, notre application ou les dernières mises à jour de notre site internet.',
+  url = 'https://my-bakery.fr/bakerys',
+  metaData = {
+    title: title,
+    description: description,
+    titleTemplate: title => `${title}`,
+    descriptionTemplate: description => `${description}`
   }
-}
+
+$(document).find('title').text(title)
+
+$(document).find('meta').attr('og:title', title)
+$(document).find('meta').attr('og:desciption', description)
+$(document).find('meta').attr('og:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('og:url', url)
+
+$(document).find('meta').attr('twitter:title', title)
+$(document).find('meta').attr('twitter:description', description)
+$(document).find('meta').attr('twitter:image', process.env.BANNER_URL + '/boulanger.png')
+$(document).find('meta').attr('twitter:url', url)
 
 export default defineComponent({
   name: 'Blog',
-  setup () {
-    // needs to be called in setup()
-    useMeta(metaData)
-  },
   components: {
     HeaderComponent,
     BlogComponent,
     FooterComponent,
     Section7
-  }
+  },
+  setup () {
 
+    // Balise Méta
+    useMeta(metaData)
+
+    return {
+
+    }
+
+  },
 })
 </script>
