@@ -45,6 +45,16 @@
         <p>Nous prenons soin de vos données personnelles et nous nous engageons à en garantir la
           confidentialité et la sécurité.</p>
 
+        <p>
+          <span class="text-bold">Connexion via la plateforme google</span>
+        </p>
+
+        <p>
+          <span class="text-bold">Les informations personnelles que nous collectons :</span><br>
+          Votre image de profil, ainsi que l'adresse email, le nom, le prénom, ces données ne sont
+          ni vendu ni partagé à des tiers personnes ou qui pourrait servir de rémunération à My Bakery.
+        </p>
+
         <p><span class="text-bold">Les informations personnelles que nous collectons :</span><br>
           Lorsque vous visitez le My Bakery, nous recueillons automatiquement certaines informations sur
           votre appareil, notamment des informations sur votre navigateur web, votre adresse IP, votre fuseau horaire

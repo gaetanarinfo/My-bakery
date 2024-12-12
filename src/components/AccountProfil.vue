@@ -49,8 +49,8 @@
 
                     <img v-if="avatar === null" class="rounded-circle first-preview" src="users/avatar.png"
                       v-bind:src="preview" alt="">
-                    <img v-else class="rounded-circle first-preview" :src="folderPictureUsers + avatar"
-                      v-bind:src="preview" alt="">
+
+                    <img v-else class="rounded-circle first-preview" :src="avatar" v-bind:src="preview" alt="">
 
                     <img class="rounded-circle preview" v-bind:src="preview" alt="">
 
@@ -83,8 +83,26 @@
 
                   <div class="text-start">
 
-                    <p class="text-secondary text-bold mb-0"><i class="fa-solid fa-briefcase text-blue me-1"></i>
-                      {{ fonction }}</p>
+                    <p v-if="status_legale === 2" class="text-secondary text-bold mb-0"><i
+                        v-bind:class="(status_legale === 1) ? 'fa-solid fa-user text-indigo-5 me-1' : 'fa-solid fa-user-tie text-indigo-5 me-1'"></i>
+                      Statut : <br />{{ (status_legale === 1) ? 'Particulier' : 'Professionnel' }}</p>
+
+                    <hr v-if="status_legale === 2" />
+
+                    <p v-if="status_legale === 2" class="text-secondary text-bold mb-0"><i
+                        class="fa-solid fa-hashtag text-green-5 me-1"></i>
+                      SIRET : <br />{{ siret }}</p>
+
+                    <hr v-if="status_legale === 2" />
+
+                    <p v-if="status_legale === 2" class="text-secondary text-bold mb-0"><i
+                        class="fa-solid fa-hashtag text-brown-5 me-1"></i>
+                      TVA : <br />{{ tva }}</p>
+
+                    <hr v-if="status_legale === 2" />
+
+                    <p class="text-secondary text-bold mb-0"><i class="fa-solid fa-briefcase text-blue-5 me-1"></i>
+                      Fonction : <br />{{ fonction }}</p>
 
                     <hr />
 
@@ -236,6 +254,19 @@
 
               <div class="row">
 
+                <div class="bio-row" v-if="status_legale === 2">
+                  <p><span class="text-bold">Statut </span>: {{ (status_legale === 1) ? 'Particulier' : 'Professionnel'
+                    }}</p>
+                </div>
+
+                <div class="bio-row" v-if="status_legale === 2">
+                  <p><span class="text-bold">Numéro de SIRET </span>: {{ siret }}</p>
+                </div>
+
+                <div class="bio-row" v-if="status_legale === 2">
+                  <p><span class="text-bold">Numéro de TVA </span>: {{ tva }}</p>
+                </div>
+
                 <div class="bio-row">
                   <p><span class="text-bold">Prénom </span>: {{ firstname }}</p>
                 </div>
@@ -253,7 +284,7 @@
                 </div>
 
                 <div class="bio-row">
-                  <p><span class="text-bold">Poste </span>: {{ fonction }}</p>
+                  <p><span class="text-bold">Fonction </span>: {{ fonction }}</p>
                 </div>
 
                 <div class="bio-row">
@@ -261,11 +292,11 @@
                 </div>
 
                 <div class="bio-row mb-0">
-                  <p class="mb-0"><span class="text-bold">Mobile </span>: {{ mobile }}</p>
+                  <p class="mb-0"><span class="text-bold">Téléphone Mobile </span>: {{ mobile }}</p>
                 </div>
 
                 <div class="bio-row mb-0">
-                  <p class="mb-0"><span class="text-bold">Téléphone </span>: {{ phone }}</p>
+                  <p class="mb-0"><span class="text-bold">Téléphone fixe </span>: {{ phone }}</p>
                 </div>
 
               </div>
@@ -281,6 +312,36 @@
               <h3 class="text-bold title"><i class="fa fa-edit me-2"></i>Modifier mon profil</h3>
 
               <form method="post" class="d-grid bakery-detail">
+
+                <div class="p-2">
+                  <p class="form-group">
+
+                    <label for="reg_status_legale">Statut <span class="required">*</span></label>
+                    <select class="form-select select-bakery" name="reg_status_legale" id="reg_status_legale"
+                      v-model="reg_status_legale">
+                      <option :selected="(status_legale === 1) ? 'selected' : ''" value="1">Particulier</option>
+                      <option :selected="(status_legale === 2) ? 'selected' : ''" value="2">Professionnel</option>
+                    </select>
+                  <p class="error-text reg_status_legale_error"></p>
+
+                  </p>
+                </div>
+
+                <div class="p-2">
+                  <p class="form-group">
+                    <label for="req_siret">Numéro de SIRET <span class="required">*</span></label>
+                    <input v-model="reg_siret" type="text" class="form-control" name="req_siret" id="req_siret">
+                  <p class="error-text req_siret_error"></p>
+                  </p>
+                </div>
+
+                <div class="p-2">
+                  <p class="form-group">
+                    <label for="reg_tva">Numéro de TVA <span class="required">*</span></label>
+                    <input v-model="reg_tva" type="text" class="form-control" name="reg_tva" id="reg_tva">
+                  <p class="error-text reg_tva_error"></p>
+                  </p>
+                </div>
 
                 <div class="p-2">
                   <p class="form-group">
@@ -320,14 +381,19 @@
 
                 </div>
 
-                <div class="p-2">
+                <div class="p-2 position-relative">
 
                   <p class="form-group">
                     <label for="reg_location">Localisation <span class="required">*</span></label>
-                    <input v-model="reg_location" placeholder="ex : Le Mans" type="text" class="form-control"
-                      name="location" id="reg_location">
-                  <p class="error-text reg_location_error"></p>
+                    <input @keyup="getAdresseApi()" v-model="reg_location" placeholder="ex : Le Mans" type="text"
+                      class="form-control" name="location" id="reg_location">
                   </p>
+
+                  <div class="search-place">
+                    <ul></ul>
+                  </div>
+
+                  <p class="error-text reg_location_error"></p>
 
                 </div>
 
@@ -349,18 +415,13 @@
 
                 </div>
 
-                <div class="p-2">
-
-                </div>
-
-                <div class="p-2">
+                <div style="padding: 0.5rem;">
 
                   <p class="form-group woocomerce-FormRow form-row">
-                    <button @click="updateProfil" type="submit" class="btn btn-bakery">Valider</button>
+                    <button @click="updateProfil" type="submit" class="btn btn-bakery">Valider les modifications</button>
                   </p>
 
                 </div>
-
 
               </form>
 
@@ -860,7 +921,8 @@
                     Contactez-nous</a></div>
 
                 <div class="text-right">
-                  <a class="btn btn-bakery mt-2 me-3" @click="printThis()"><i class="fa-solid fa-download me-2"></i> Télécharger la facture</a>
+                  <a class="btn btn-bakery mt-2 me-3" @click="printThis()"><i class="fa-solid fa-download me-2"></i>
+                    Télécharger la facture</a>
                   <a class="btn btn-bakery mt-2" @click="closeModal()" data-bs-dismiss="modal">Fermer</a>
                 </div>
 
@@ -1163,6 +1225,13 @@ const email = ref(''),
   firstname = ref(''),
   lastname = ref(''),
   fonction = ref(''),
+  status_legale = ref(''),
+  siret = ref(''),
+  tva = ref(''),
+  reg_status_legale = ref(''),
+  reg_siret = ref(''),
+  reg_tva = ref(''),
+  reg_location = ref(''),
   location = ref(''),
   avatar = ref(null),
   phone = ref(''),
@@ -1188,7 +1257,13 @@ const email = ref(''),
   date_subcription = ref(''),
   totalTTC = ref(0),
   totalHT = ref(0),
-  totalOrders = ref(0)
+  totalOrders = ref(0),
+  reg_pays = ref(''),
+  reg_pays_code = ref(''),
+  reg_departement = ref(''),
+  reg_ville = ref(''),
+  reg_postcode = ref(''),
+  reg_department_code = ref('')
 
 // Row Data: The data to be displayed.
 const rowData = ref([]),
@@ -1273,6 +1348,10 @@ export default defineComponent({
 
     const user_bakery = computed(() => {
       return store.state.user_bakery
+    })
+
+    const searchPlace = computed(() => {
+      return store.state.searchPlace
     })
 
     $q.notify.registerType('success-form', {
@@ -1446,6 +1525,42 @@ export default defineComponent({
     }, 1000);
 
     return {
+      getAdresseApi () {
+
+        var value = $('#reg_location').val()
+
+        if (value.length >= 2) {
+
+          $('.search-place').fadeIn(200)
+
+          $('.search-place ul').html('<div style="position: relative;display: flex;width: 100%;align-items: center;justify-content: center;"><svg class="q-spinner text-warning" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-20,-20)"><path d="M79.9,52.6C80,51.8,80,50.9,80,50s0-1.8-0.1-2.6l-5.1-0.4c-0.3-2.4-0.9-4.6-1.8-6.7l4.2-2.9c-0.7-1.6-1.6-3.1-2.6-4.5 L70,35c-1.4-1.9-3.1-3.5-4.9-4.9l2.2-4.6c-1.4-1-2.9-1.9-4.5-2.6L59.8,27c-2.1-0.9-4.4-1.5-6.7-1.8l-0.4-5.1C51.8,20,50.9,20,50,20 s-1.8,0-2.6,0.1l-0.4,5.1c-2.4,0.3-4.6,0.9-6.7,1.8l-2.9-4.1c-1.6,0.7-3.1,1.6-4.5,2.6l2.1,4.6c-1.9,1.4-3.5,3.1-5,4.9l-4.5-2.1 c-1,1.4-1.9,2.9-2.6,4.5l4.1,2.9c-0.9,2.1-1.5,4.4-1.8,6.8l-5,0.4C20,48.2,20,49.1,20,50s0,1.8,0.1,2.6l5,0.4 c0.3,2.4,0.9,4.7,1.8,6.8l-4.1,2.9c0.7,1.6,1.6,3.1,2.6,4.5l4.5-2.1c1.4,1.9,3.1,3.5,5,4.9l-2.1,4.6c1.4,1,2.9,1.9,4.5,2.6l2.9-4.1 c2.1,0.9,4.4,1.5,6.7,1.8l0.4,5.1C48.2,80,49.1,80,50,80s1.8,0,2.6-0.1l0.4-5.1c2.3-0.3,4.6-0.9,6.7-1.8l2.9,4.2 c1.6-0.7,3.1-1.6,4.5-2.6L65,69.9c1.9-1.4,3.5-3,4.9-4.9l4.6,2.2c1-1.4,1.9-2.9,2.6-4.5L73,59.8c0.9-2.1,1.5-4.4,1.8-6.7L79.9,52.6 z M50,65c-8.3,0-15-6.7-15-15c0-8.3,6.7-15,15-15s15,6.7,15,15C65,58.3,58.3,65,50,65z" fill="currentColor"><animateTransform attributeName="transform" type="rotate" from="90 50 50" to="0 50 50" dur="1s" repeatCount="indefinite"></animateTransform></path></g><g transform="translate(20,20) rotate(15 50 50)"><path d="M79.9,52.6C80,51.8,80,50.9,80,50s0-1.8-0.1-2.6l-5.1-0.4c-0.3-2.4-0.9-4.6-1.8-6.7l4.2-2.9c-0.7-1.6-1.6-3.1-2.6-4.5 L70,35c-1.4-1.9-3.1-3.5-4.9-4.9l2.2-4.6c-1.4-1-2.9-1.9-4.5-2.6L59.8,27c-2.1-0.9-4.4-1.5-6.7-1.8l-0.4-5.1C51.8,20,50.9,20,50,20 s-1.8,0-2.6,0.1l-0.4,5.1c-2.4,0.3-4.6,0.9-6.7,1.8l-2.9-4.1c-1.6,0.7-3.1,1.6-4.5,2.6l2.1,4.6c-1.9,1.4-3.5,3.1-5,4.9l-4.5-2.1 c-1,1.4-1.9,2.9-2.6,4.5l4.1,2.9c-0.9,2.1-1.5,4.4-1.8,6.8l-5,0.4C20,48.2,20,49.1,20,50s0,1.8,0.1,2.6l5,0.4 c0.3,2.4,0.9,4.7,1.8,6.8l-4.1,2.9c0.7,1.6,1.6,3.1,2.6,4.5l4.5-2.1c1.4,1.9,3.1,3.5,5,4.9l-2.1,4.6c1.4,1,2.9,1.9,4.5,2.6l2.9-4.1 c2.1,0.9,4.4,1.5,6.7,1.8l0.4,5.1C48.2,80,49.1,80,50,80s1.8,0,2.6-0.1l0.4-5.1c2.3-0.3,4.6-0.9,6.7-1.8l2.9,4.2 c1.6-0.7,3.1-1.6,4.5-2.6L65,69.9c1.9-1.4,3.5-3,4.9-4.9l4.6,2.2c1-1.4,1.9-2.9,2.6-4.5L73,59.8c0.9-2.1,1.5-4.4,1.8-6.7L79.9,52.6 z M50,65c-8.3,0-15-6.7-15-15c0-8.3,6.7-15,15-15s15,6.7,15,15C65,58.3,58.3,65,50,65z" fill="currentColor"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="90 50 50" dur="1s" repeatCount="indefinite"></animateTransform></path></g></svg></div>')
+
+          setTimeout(() => {
+
+            $('.search-place ul').html('')
+
+            store.dispatch('fetchSearchPlace', {
+              search: value.trim()
+            })
+
+            if (this.searchPlace.length >= 1) {
+              this.searchPlace.forEach(element => {
+                $('.search-place ul').append('<li class="place-clic" data-adresse="' + element.formatted + '" data-pays="' + element.country + '" data-pays_code="' + element.country_code + '" data-departement="' + element.county + '" data-ville="' + element.city + '" data-postcode="' + element.postcode + '" data-department_code="' + element.department_COG + '"><i class="fa-solid fa-location-dot me-2"></i>' + element.formatted + '</li>')
+              });
+            } else {
+              $('.search-place ul').html('<li>Il n\'y a aucun résultat correspondant à votre recherche !</li>')
+              this.searchPlace = []
+            }
+
+          }, 2000);
+
+        } else {
+          $('.search-place').fadeOut(200)
+          this.searchPlace = []
+        }
+
+      },
+      searchPlace,
       closeModal () {
 
         window.addEventListener("orientationchange", function () {
@@ -2031,6 +2146,9 @@ export default defineComponent({
       firstname,
       lastname,
       fonction,
+      status_legale,
+      siret,
+      tva,
       location,
       avatar,
       phone,
@@ -2058,9 +2176,20 @@ export default defineComponent({
       reg_firstname: '',
       reg_lastname: '',
       reg_function: '',
-      reg_location: '',
+      reg_location,
       reg_mobile: '',
       reg_phone: '',
+
+      reg_pays,
+      reg_pays_code,
+      reg_departement,
+      reg_ville,
+      reg_postcode,
+      reg_department_code,
+
+      reg_status_legale,
+      reg_siret,
+      reg_tva,
 
       replaces: function (st, rep, repWith) {
         const result = st.split(rep).join(repWith)
@@ -2104,26 +2233,37 @@ export default defineComponent({
 
       this.v$.$validate() // checks all inputs
 
-      if (this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
+      var options = {
+        'id': this.user.id,
+        'email': this.user.email,
+        'status_legale': $('#reg_status_legale').val(),
+        'siret': reg_siret.value,
+        'tva': reg_tva.value,
+        'firstname': this.reg_firstname,
+        'lastname': this.reg_lastname,
+        'naissance': this.reg_naissance,
+        'fonction': this.reg_function,
+        'location': reg_location.value,
+        'phone': this.reg_phone,
+        'mobile': this.reg_mobile,
+        'pays': reg_pays.value,
+        'pays_code': reg_pays_code.value,
+        'departement': reg_departement.value,
+        'ville': reg_ville.value,
+        'postcode': reg_postcode.value,
+        'department_code': reg_department_code.value,
+      }
+
+      if ($('#reg_status_legale').val() === '1' && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location.value) {
 
         this.showTextLoading()
 
-        axios.post(process.env.WEBSITE + '/update-profil', {
-          'id': this.user.id,
-          'email': this.user.email,
-          'firstname': this.reg_firstname,
-          'lastname': this.reg_lastname,
-          'naissance': this.reg_naissance,
-          'fonction': this.reg_function,
-          'location': this.reg_location,
-          'phone': this.reg_phone,
-          'mobile': this.reg_mobile,
-        })
+        axios.post(process.env.WEBSITE + '/update-profil', options)
           .then((res) => {
 
-            if (res.data.success === true) {
+            if (res.data.succes === true) {
 
-              this.showNotif('Votre inscription a bien été pris en compte, un email de validation vous a été adressé !')
+              this.showNotif('La modification de votre profil a été effectuée avec succès !')
 
               setTimeout(() => {
                 $(document).find('.error-text').text('')
@@ -2140,6 +2280,50 @@ export default defineComponent({
             this.errorNotif()
           })
 
+      }
+
+      if ($('#reg_status_legale').val() === '2' && reg_siret.value && reg_tva.value && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location.value) {
+
+        this.showTextLoading()
+
+        axios.post(process.env.WEBSITE + '/update-profil', options)
+          .then((res) => {
+
+            if (res.data.succes === true) {
+
+              this.showNotif('La modification de votre profil a été effectuée avec succès !')
+
+              setTimeout(() => {
+                $(document).find('.error-text').text('')
+                $(document).find('.error-text').removeAttr()
+
+              }, 3500);
+
+            } else {
+              this.errorNotif(res.data.message)
+            }
+
+          })
+          .catch((error) => {
+            this.errorNotif()
+          })
+
+      }
+
+      if (!reg_siret.value) {
+        $('.' + 'reg_siret' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_siret' + '_error').text("Le champs siret est obligatoire !");
+      } else {
+        $('.' + 'reg_siret' + '_error').removeAttr()
+        $('.' + 'reg_siret' + '_error').text("");
+      }
+
+      if (!reg_tva.value) {
+        $('.' + 'reg_tva' + '_error').attr('style', 'display: block')
+        $('.' + 'reg_tva' + '_error').text("Le champs tva est obligatoire !");
+      } else {
+        $('.' + 'reg_tva' + '_error').removeAttr()
+        $('.' + 'reg_tva' + '_error').text("");
       }
 
       if (!this.reg_firstname) {
@@ -2166,7 +2350,7 @@ export default defineComponent({
         $('.' + 'reg_function' + '_error').text("");
       }
 
-      if (!this.reg_location) {
+      if (!reg_location.value) {
         $('.' + 'reg_location' + '_error').attr('style', 'display: block')
         $('.' + 'reg_location' + '_error').text("Le champs location est obligatoire !");
       } else {
@@ -2411,6 +2595,9 @@ export default defineComponent({
               lastname.value = res.data.user.lastname
               location.value = res.data.user.location
               fonction.value = res.data.user.fonction
+              status_legale.value = res.data.user.status_legale
+              siret.value = res.data.user.siret
+              tva.value = res.data.user.tva
               phone.value = res.data.user.phone
               mobile.value = res.data.user.mobile
               naissance.value = res.data.user.naissance
@@ -2423,11 +2610,25 @@ export default defineComponent({
               // Form dynamique values
               this.reg_firstname = res.data.user.firstname
               this.reg_lastname = res.data.user.lastname
-              this.reg_location = res.data.user.location
+              reg_location.value = res.data.user.location
               this.reg_function = res.data.user.fonction
               this.reg_phone = res.data.user.phone
               this.reg_mobile = res.data.user.mobile
               this.reg_naissance = res.data.user.naissance
+
+              reg_status_legale.value = res.data.user.status_legale
+              $('#reg_status_legale').val(res.data.user.status_legale)
+              reg_siret.value = res.data.user.siret
+              reg_tva.value = res.data.user.tva
+
+              console.log(res.data.user);
+
+              reg_pays.value = res.data.user.pays
+              reg_pays_code.value = res.data.user.pays_code
+              reg_departement.value = res.data.user.departement
+              reg_ville.value = res.data.user.ville
+              reg_postcode.value = res.data.user.postcode
+              reg_department_code.value = res.data.user.department_code
 
               // Verificaiton si l'user est dans une boulangerie
               store.dispatch('fetchUserBakery', { 'email': userEmail, 'id': userId })
@@ -2879,6 +3080,37 @@ export default defineComponent({
         this.$router.push('/')
       }
     }, 200)
+
+    $(document).on('click', '.place-clic', function (e) {
+
+      e.preventDefault();
+
+      var adresse = $(this).data('adresse'),
+        pays = $(this).data('pays'),
+        pays_code = $(this).data('pays_code'),
+        departement = $(this).data('departement'),
+        ville = $(this).data('ville'),
+        postcode = $(this).data('postcode'),
+        department_code = $(this).data('department_code')
+
+      reg_location.value = adresse
+      reg_pays.value = pays
+      reg_pays_code.value = pays_code
+      reg_departement.value = departement
+      reg_ville.value = ville
+      reg_postcode.value = postcode
+      reg_department_code.value = department_code
+
+      $('#reg_location').val(adresse)
+
+      $('.search-place').fadeOut(200)
+
+      setTimeout(() => {
+        $('.search-place ul').html('')
+        this.searchPlace = []
+      }, 300);
+
+    })
 
   }
 

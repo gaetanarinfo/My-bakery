@@ -79,7 +79,7 @@ export default defineComponent({
 
           }).then(res => {
             setTimeout(() => {
-              window.location.href = process.env.BANNER_URL + '/#' + url
+              window.location.href = process.env.BANNER_URL + '/' + url
               location.reload()
             }, 200);
           })

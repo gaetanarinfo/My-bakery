@@ -128,7 +128,7 @@
                   <p><strong>{{ bakery.adresse }}</strong></p>
                 </div>
 
-                <div>
+                <div v-if="bakery.phone !== null">
                   <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-2"></i><strong>{{
                     bakery.phone
                         }}</strong></a></p>
@@ -225,7 +225,7 @@
 
               </div>
 
-              <div v-else>
+              <div v-else class="bloc-rating">
 
                 <img src="avis-google.svg" alt="Logo Google">
 
@@ -477,27 +477,32 @@
 
                             </div>
 
+
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                              <div class="form-group">
+                              <div class="row">
 
-                                <label for="author"><strong>Votre nom <sup>*</sup></strong></label>
+                                <div class="col form-group">
 
-                                <input v-model="author" id="author" name="author" type="text" size="30"
-                                  class="form-control" aria-required="true">
+                                  <label for="author"><strong>Votre nom <sup>*</sup></strong></label>
 
-                                <span class="error-text author_error"></span>
+                                  <input v-model="author" id="author" name="author" type="text" size="30"
+                                    class="form-control" aria-required="true">
 
-                              </div>
+                                  <span class="error-text author_error"></span>
 
-                              <div class="form-group">
+                                </div>
 
-                                <label for="emailComment"><strong>Adresse email <sup>*</sup></strong></label>
+                                <div class="col form-group">
 
-                                <input v-model="emailComment" id="emailComment" name="emailComment" type="email"
-                                  class="form-control" size="30" aria-required="true">
+                                  <label for="emailComment"><strong>Adresse email <sup>*</sup></strong></label>
 
-                                <span class="error-text email_error"></span>
+                                  <input v-model="emailComment" id="emailComment" name="emailComment" type="email"
+                                    class="form-control" size="30" aria-required="true">
+
+                                  <span class="error-text email_error"></span>
+
+                                </div>
 
                               </div>
 
@@ -1188,54 +1193,61 @@ export default defineComponent({
 
         if (!this.v$.$error && $('#devanture').val().length >= 1 && $('#prix').val().length >= 1 && $('#choix').val().length >= 1 && $('#proprete').val().length >= 1) {
 
-          axios.post(process.env.WEBSITE + '/bakery-comment', {
-            'url': $('#url').val(),
-            'devanture': $('#devanture').val(),
-            'proprete': $('#proprete').val(),
-            'prix': $('#prix').val(),
-            'choix': $('#choix').val(),
-            'email': this.emailComment,
-            'author': this.author,
-            'comment': this.comment,
-          })
-            .then((res) => {
+          fetch('https://api.ipify.org?format=json')
+            .then(x => x.json())
+            .then(({ ip }) => {
 
-              if (res.data.success === true) {
+              axios.post(process.env.WEBSITE + '/bakery-comment', {
+                'url': $('#url').val(),
+                'ip': ip,
+                'devanture': $('#devanture').val(),
+                'proprete': $('#proprete').val(),
+                'prix': $('#prix').val(),
+                'choix': $('#choix').val(),
+                'email': this.emailComment,
+                'author': this.author,
+                'comment': this.comment,
+              })
+                .then((res) => {
 
-                this.showNotifComment()
+                  if (res.data.succes === true) {
 
-                $([document.documentElement, document.body]).animate({
-                  scrollTop: $('.commentlist').offset().top
-                }, 300)
+                    this.showNotifComment()
 
-                setTimeout(() => {
-                  $('#tab_reviews .commentlist .bypostauthor').prepend('<div class="comment-container"><div class="bs-review-thumbnail"><img :alt="' + this.author + '" src="users/028cac9c481f4f5c4269f34ace3667a0.png" height="80"width="80" loading="lazy"></div><div class="bs-review-content"><header><p class="meta mb-0">Par <a>' + this.author + '</a> - ' + moment().format('DD MMMM YYYY à H: mm') + '</p></header><div class="description"><p class="mb-0">' + this.comment + '</p></div></div></div>').hide().fadeIn(600)
-                }, 600);
+                    $([document.documentElement, document.body]).animate({
+                      scrollTop: $('.commentlist').offset().top
+                    }, 300)
 
-                setTimeout(() => {
-                  $(document).find('.error-text').text('')
-                  $(document).find('.error-text').removeAttr()
-                  $('#form-comment').find('input').val('')
-                  this.submit = false
-                  $('#form-comment button').addClass('disabled')
-                  $(document).find('#form-comment a.br-active').removeClass('br-active')
-                  this.devanture = null
-                  this.proprete = null
-                  this.prix = null
-                  this.choix = null
-                  this.emailComment = null
-                  this.author = null
-                  this.comment = null
+                    setTimeout(() => {
+                      $('#tab_reviews .commentlist .bypostauthor').prepend('<div class="comment-container"><div class="bs-review-thumbnail"><img :alt="' + this.author + '" src="users/028cac9c481f4f5c4269f34ace3667a0.png" height="80"width="80" loading="lazy"></div><div class="bs-review-content"><header><p class="meta mb-0">Par <a>' + this.author + '</a> - ' + moment().format('DD MMMM YYYY à H: mm') + '</p></header><div class="description"><p class="mb-0">' + this.comment + '</p></div></div></div>').hide().fadeIn(600)
+                    }, 600);
 
-                }, 3500);
+                    setTimeout(() => {
+                      $(document).find('.error-text').text('')
+                      $(document).find('.error-text').removeAttr()
+                      $('#form-comment').find('input').val('')
+                      this.submit = false
+                      $('#form-comment button').addClass('disabled')
+                      $(document).find('#form-comment a.br-active').removeClass('br-active')
+                      this.devanture = ''
+                      this.proprete = ''
+                      this.prix = ''
+                      this.choix = ''
+                      this.emailComment = ''
+                      this.author = ''
+                      this.comment = ''
 
-              } else {
-                this.errorNotifComment(res.data.message)
-              }
+                    }, 3500);
 
-            })
-            .catch((error) => {
-              this.errorNotifComment()
+                  } else {
+                    this.errorNotifComment(res.data.message)
+                  }
+
+                })
+                .catch((error) => {
+                  this.errorNotifComment()
+                })
+
             })
 
         } else {
@@ -1344,7 +1356,7 @@ export default defineComponent({
           .then(x => x.json())
           .then(({ ip }) => {
 
-            form_data.append("ip", this.ip);
+            form_data.append("ip", ip);
             form_data.append("addDesc", this.addDesc);
             form_data.append('file', this.image);
             form_data.append('file', this.image2);

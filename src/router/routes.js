@@ -5,7 +5,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Home.vue') },
+      { path: '/', component: () => import('pages/Home.vue') },
+      { path: '/#', component: () => import('pages/Home.vue') },
       { path: '/blogs', component: () => import('pages/Blog.vue') },
       { path: '/bakerys', component: () => import('pages/Bakerys.vue') },
       { path: '/cgu', component: () => import('pages/Cgu.vue') },
@@ -16,6 +17,7 @@ const routes = [
       { path: '/blogs/:url', component: () => import('pages/Article.vue') },
       { path: '/add-bakery', component: () => import('pages/AddBakery.vue') },
       { path: '/my-account', component: () => import('pages/MyAccount.vue') },
+      { path: '/my-account/:token', component: () => import('pages/MyAccount.vue') },
       { path: '/my-account-profil', component: () => import('pages/MyAccountProfil.vue') },
       { path: '/my-account-profil/:year', component: () => import('pages/MyAccountProfil.vue') },
       { path: '/bakerys-city/:ville/:id', component: () => import('pages/BakerysCity.vue') },

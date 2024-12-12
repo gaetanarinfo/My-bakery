@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.mybakery.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.mybakery.app" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>My bakery</name>
     <description>Retrouvez toutes les meilleures boulangeries en France sur My Bakery.</description>
     <author email="contact@my-bakery.fr" href="https://my-bakery.fr">
         Dev72
   </author>
     <content src="index.html" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-navigation href="about:*" />
+    <allow-intent href="market:*" />
+    <access origin="*" />
+    <allow-intent href="*" />
+    <allow-navigation href="*" />
     <preference name="BackgroundColor" value="0xffffff" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashScreenDelay" value="0" />
@@ -21,4 +22,5 @@
     <plugin name="cordova-android-play-services-gradle-release" spec="^4.0.0">
         <variable name="play-services-location" value="17.0.0" />
     </plugin>
+    <allow-navigation href="about:*" />
 </widget>

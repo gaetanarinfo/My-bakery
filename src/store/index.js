@@ -8,7 +8,6 @@ export default createStore({
     bakery: [],
     bakeryComments: [],
     bakerys: [],
-    bakerysAll: [],
     bakerysAllCount: [],
     blogs: [],
     blogsAll: [],
@@ -45,7 +44,6 @@ export default createStore({
     getBakeryComments: (state) => state.bakeryComments,
     getBakeryHours: (state) => state.bakeryHours,
     getBakerys: (state) => state.bakerys,
-    getBakerysAll: (state) => state.bakerysAll,
     getBakerysAllCount: (state) => state.bakerysAllCount,
     getBlog: (state) => state.blog,
     getBlogTags: (state) => state.blog_tags,
@@ -91,18 +89,6 @@ export default createStore({
 
         this.bakerys = getUrl.data.bakerys
         commit('SET_BAKERYS', getUrl.data.bakerys)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async fetchBakerysAll ({ commit }) {
-      try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/bakerys-all')
-        this.bakerysAll = getUrl.data.bakerysAll
-        commit('SET_BAKERYS_ALL', getUrl.data.bakerysAll)
-
-        this.bakerysAll = getUrl.data.bakerysAllCount
-        commit('SET_BAKERYS_ALL_COUNT', getUrl.data.bakerysAllCount)
       } catch (error) {
         console.log(error)
       }
@@ -683,10 +669,6 @@ export default createStore({
 
     SET_BAKERY_COMMENTS (state, bakeryComments) {
       state.bakeryComments = bakeryComments
-    },
-
-    SET_BAKERYS_ALL (state, bakerysAll) {
-      state.bakerysAll = bakerysAll
     },
 
     SET_BAKERYS_ALL_COUNT (state, bakerysAllCount) {

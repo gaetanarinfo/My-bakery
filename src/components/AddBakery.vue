@@ -484,11 +484,9 @@ export default defineComponent({
               search: value.trim()
             })
 
-            console.log(this.searchPlace.length);
-
             if (this.searchPlace.length >= 1) {
               this.searchPlace.forEach(element => {
-                $('.search-place ul').append('<li class="place-clic" data-adresse="' + element.formatted + '" data-pays="' + element.country + '" data-pays_code="' + element.country_code + '" data-departement="' + element.formatted + '" data-ville="' + element.city + '" data-postcode="' + element.postcode + '" data-department_code="' + element.department_COG + '"><i class="fa-solid fa-location-dot me-2"></i>' + element.formatted + '</li>')
+                $('.search-place ul').append('<li class="place-clic" data-adresse="' + element.formatted + '" data-pays="' + element.country + '" data-pays_code="' + element.country_code + '" data-departement="' + element.county + '" data-ville="' + element.city + '" data-postcode="' + element.postcode + '" data-department_code="' + element.department_COG + '"><i class="fa-solid fa-location-dot me-2"></i>' + element.formatted + '</li>')
               });
             } else {
               $('.search-place ul').html('<li>Il n\'y a aucun résultat correspondant à votre recherche !</li>')

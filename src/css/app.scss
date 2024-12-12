@@ -167,6 +167,29 @@ a:hover {
   transition: all 0.4s ease-in-out;
 }
 
+.btn-check:checked+.btn,
+.btn:checked,
+.btn-check:focus+.btn,
+.btn:focus {
+  box-shadow: 0 0 0 0.1rem rgb(224 183 94 / 47%);
+  color: #000000;
+}
+
+label.btn-bakery {
+  font-weight: 500;
+}
+
+label.btn-bakery:enabled,
+label.btn-bakery::selection,
+label.btn-bakery:checked,
+label.btn-bakery:focus,
+label.btn-bakery:focus-visible,
+label.btn-bakery:focus-within,
+label.btn-bakery:active,
+label.btn-bakery:hover {
+  color: #000000;
+}
+
 .btn-bakery:focus,
 .btn-bakery:focus-visible,
 .btn-bakery:focus-within,
@@ -181,6 +204,65 @@ a:hover {
 .btn-bakery:focus,
 .btn-bakery:focus-visible {
   box-shadow: 0 0 0 0.25rem #e0b75e54;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+  input[type='range']::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    color: #e0b75ebd;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track:focus-visible,
+  input[type='range']::-webkit-slider-runnable-track:focus-within,
+  input[type='range']::-webkit-slider-runnable-track:hover,
+  input[type='range']::-webkit-slider-runnable-track:focus,
+  input[type='range']::-webkit-slider-runnable-track:active {
+    color: #e0b75ebd;
+  }
+
+  input[type='range']::-moz-range-track {
+    color: #e0b75ebd;
+  }
+
+  input[type='range']::-webkit-range-track {
+    color: #e0b75ebd;
+    background: #e0b75ebd;
+  }
+
+  input[type='range']::-webkit-range-track:focus-visible,
+  input[type='range']::-webkit-range-track:focus-within,
+  input[type='range']::-webkit-range-track:hover,
+  input[type='range']::-webkit-range-track:focus,
+  input[type='range']::-webkit-range-track:active {
+    color: #e0b75ebd;
+    background: #e0b75ebd;
+  }
+
+  input[type='range']::-moz-range-track:focus-visible,
+  input[type='range']::-moz-range-track:focus-within,
+  input[type='range']::-moz-range-track:hover,
+  input[type='range']::-moz-range-track:focus,
+  input[type='range']::-moz-range-track:active {
+    color: #e0b75ebd;
+    background: #e0b75ebd;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: ew-resize;
+    background: #e0b75ebd;
+  }
+
+  input[type='range']::-webkit-slider-thumb:focus-visible,
+  input[type='range']::-webkit-slider-thumb:focus-within,
+  input[type='range']::-webkit-slider-thumb:hover,
+  input[type='range']::-webkit-slider-thumb:focus,
+  input[type='range']::-webkit-slider-thumb:active {
+    color: #e0b75ebd;
+    box-shadow: 0 0 0 0.25rem #e0b75e54;
+  }
+
 }
 
 .error-text {
@@ -529,7 +611,7 @@ a:hover {
 .header .navigation .nav-right .actions a {
   position: relative;
   display: inline-block;
-  margin-right: 4px;
+  margin-right: 8px;
   vertical-align: top;
   width: 32px;
   height: 32px;
@@ -4546,6 +4628,7 @@ footer.footer .footer-copyright p a:hover {
   min-width: 200px;
 }
 
+.page-my-account-profil .select-bakery,
 .bakery-single .select-bakery {
   outline: none;
   -ms-box-shadow: none;
@@ -4731,6 +4814,43 @@ footer.footer .footer-copyright p a:hover {
 
 #login .error-text {
   color: red;
+}
+
+.register .status_legale {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.register .status_legale div:first-child {
+  margin-right: 1rem;
+}
+
+.google-button {
+  display: flex;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #989898;
+  background: rgba(152, 152, 152, 0.0588235294);
+  font-size: 16px;
+  line-height: normal;
+  color: black !important;
+  font-weight: 500;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+.google-button:hover {
+  color: black !important;
+  opacity: 0.5;
+}
+
+.google-button img {
+  max-width: 25px;
+  margin-right: 0.5rem;
 }
 
 .input-group-prepend {
@@ -6084,7 +6204,6 @@ button.ps-btn:hover {
   height: 323px;
 }
 
-
 #products .card-banniere .plan-select a {
   color: #ffffff;
   text-decoration: none;
@@ -6311,6 +6430,11 @@ button.ps-btn:hover {
   color: white;
   font-weight: 500;
   font-size: 14px;
+}
+
+#products .inactive {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 /* Modal */
@@ -7044,6 +7168,8 @@ button.ps-btn:hover {
 
 /* Add Bakery */
 
+.page-my-account-profil .search-place,
+.page-my-account .search-place,
 .page-add-bakery .search-place {
   top: 50px;
   background: #faf7f3;
@@ -7060,11 +7186,23 @@ button.ps-btn:hover {
   padding: 1rem;
 }
 
+.page-my-account .search-place {
+  top: 83px;
+}
+
+.page-my-account-profil .search-place {
+  top: 83px;
+}
+
+.page-my-account .search-place ul,
+.page-my-account-profil .search-place ul,
 .page-add-bakery .search-place ul {
   padding: 0;
   margin: 0;
 }
 
+.page-my-account .search-place ul li,
+.page-my-account-profil .search-place li,
 .page-add-bakery .search-place ul li {
   font-size: 14px;
   font-weight: 500;
@@ -7072,12 +7210,33 @@ button.ps-btn:hover {
   cursor: pointer;
 }
 
+.page-my-account .search-place ul li:last-child,
+.page-my-account-profil .search-place li:last-child,
 .page-add-bakery .search-place ul li:last-child {
   margin-bottom: 0;
 }
 
+.page-my-account .search-place ul li i,
+.page-my-account-profil .search-place ul li i,
 .page-add-bakery .search-place ul li i {
   color: #467d97;
 }
 
-.html2canvas-container { width: 1920px !important; height: 1080px !important; }
+.html2canvas-container {
+  width: 1920px !important;
+  height: 1080px !important;
+}
+
+.qr-code {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.qr-code img {
+  max-width: 105px;
+}
+
+.page-my-account-profil .p-2 {
+  margin: 0.5rem !important;
+  padding: 0 !important;
+}

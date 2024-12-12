@@ -35,7 +35,7 @@
         <div class="snip1265">
 
           <div :id="'product_' + product.id" v-for="product in products" v-bind:key="product.id"
-            :class="(product.ahead === 1) ? 'plan featured' : 'plan'">
+            :class="(product.ahead === 1) ? (user_subscription && (product.id === 3 || product.id === 4)) ? 'plan featured inactive' : 'plan featured' : (user_subscription && (product.id === 3 || product.id === 4)) ? 'plan inactive' : 'plan'">
 
             <header>
 
@@ -53,7 +53,7 @@
 
             <ul class="plan-features" v-html="product.content"></ul>
 
-            <div class="plan-select"><a @click="addCart(product.id)">Ajouter au panier</a></div>
+            <div class="plan-select"><a @click="(user_subscription && (product.id === 3 || product.id === 4)) ? '' : addCart(product.id)">Ajouter au panier</a></div>
 
           </div>
 
@@ -65,7 +65,7 @@
 
             <div class="plan-select">
 
-              <a v-if="shoppingCart <= 3" @click="this.$router.push('/cart')"><i
+              <a v-if="shoppingCart <= 2" @click="this.$router.push('/cart')"><i
                   class="fa-solid fa-cart-shopping me-2"></i>Voir le
                 panier</a>
 
@@ -611,7 +611,6 @@
 </style>
 
 <style lang="css">
-
 .page-products.section,
 .page-products .section {
   margin-bottom: 0;
@@ -626,7 +625,6 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
@@ -657,7 +655,8 @@ const showCart = ref(false),
 const arrayListBakery = ref(0),
   searchBox = ref(''),
   searchBoxShow = ref(false),
-  loaderSearch = ref(false)
+  loaderSearch = ref(false),
+  user_subscription = ref(false)
 
 export default defineComponent({
   name: 'CartComponent',
@@ -681,6 +680,10 @@ export default defineComponent({
       return store.state.bakerysList
     })
 
+    const user = computed(() => {
+      return store.state.stateUser.user
+    })
+
     const handleDate = (modelData) => {
       dateS.value = moment(modelData[0]).format("YYYY-MM-DD")
       dateE.value = moment(modelData[1]).format("YYYY-MM-DD")
@@ -701,6 +704,8 @@ export default defineComponent({
     })
 
     return {
+      user,
+      user_subscription,
       handleDate,
       loaderSearch,
       showSearch () {
@@ -889,13 +894,6 @@ export default defineComponent({
         LocalStorage.setItem('shopping_cart', id)
         LocalStorage.setItem('shopping_cart_qte', 1)
         shoppingCart.value = id
-
-        LocalStorage.removeItem('additional_information')
-        LocalStorage.removeItem('banner_date_start')
-        LocalStorage.removeItem('banner_date_end')
-        LocalStorage.removeItem('banner_name')
-        LocalStorage.removeItem('banner_square_name')
-        LocalStorage.removeItem('bakery_id_event')
 
         showCart.value = true
 
@@ -1210,6 +1208,42 @@ export default defineComponent({
     const store = useStore()
 
     this.showTextLoading(false);
+
+    setTimeout(() => {
+
+      if (this.user !== null) {
+
+        axios.get(process.env.WEBSITE + '/user-profil/' + this.user.email)
+          .then((res) => {
+
+            if (res.status === 200) {
+
+              // Static values
+              user_subscription.value = res.data.subscription
+
+              if (user_subscription.value === true) {
+
+                LocalStorage.removeItem('shopping_cart_qte')
+                LocalStorage.removeItem('shopping_total_ht')
+                LocalStorage.removeItem('shopping_total_ttc')
+                LocalStorage.removeItem('shopping_cart')
+                LocalStorage.removeItem('shopping_product_id')
+                LocalStorage.removeItem('prev_url')
+                LocalStorage.removeItem('additional_information')
+                LocalStorage.removeItem('banner_date_start')
+                LocalStorage.removeItem('banner_date_end')
+                LocalStorage.removeItem('banner_name')
+                LocalStorage.removeItem('bakery_id_event')
+
+              }
+
+            }
+
+          })
+
+      }
+
+    }, 1500);
 
     $(document).on('click', '.li-list', function () {
 

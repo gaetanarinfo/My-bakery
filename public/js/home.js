@@ -113,28 +113,6 @@ $(document).on('click', '#back-top', function (e) {
   $('html, body').animate({ scrollTop: 0 })
 })
 
-// Header SearchBox
-
-setTimeout(() => {
-  $('.search-btn').on('click', function (e) {
-    e.preventDefault()
-
-    $('.searchbox').addClass('active')
-    $('body').css({
-      overflow: 'hidden'
-    })
-  })
-
-  $('.searchbox-remove').on('click', function (e) {
-    e.preventDefault()
-
-    $('.searchbox').removeClass('active')
-    $('body').css({
-      overflow: 'auto'
-    })
-  })
-}, 4000)
-
 // Scroll click
 
 $(document).on('click', '.scroll-click', function (e) {

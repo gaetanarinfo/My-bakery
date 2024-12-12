@@ -1,63 +1,4 @@
 <template name="HeaderComponent">
-  <div class="searchbox">
-
-    <div class="searchbox-remove">
-      <i class="fa fa-remove"></i>
-    </div>
-
-    <div class="container">
-
-      <header>
-
-        <p>Entrer un mot clé :</p>
-
-        <form id="search-header-product">
-
-          <input v-model="searchHeader" @keyup="searchBlog(this.searchHeader)" type="text" class="form-control">
-
-          <button type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-
-        </form>
-
-      </header>
-
-      <div class="searchbox-result section last-blog">
-
-        <div class="column-inner">
-
-          <div class="wrapper">
-
-            <div class="bloc container">
-
-              <div class="hp-container">
-
-                <div class="section text-center">
-
-                  <div id="blocGrids" v-show="showSimulatedReturnData" class="row">
-
-                  </div>
-
-                  <q-inner-loading style="z-index: 9999;" size="5rem" color="blue-5" :showing="visible" />
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <footer class="text-center"></footer>
-
-    </div>
-
-  </div>
 
   <header class="header">
     <nav class="navigation">
@@ -103,6 +44,15 @@
 
           <div class="actions">
 
+            <a href="https://www.paypal.com/donate/?hosted_button_id=4VAGCN2585TPL&locale.x=fr_FR" role="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                <rect width="24" height="24" fill="none" />
+                <path
+                  d="M8.32 21.97a.546.546 0 0 1-.26-.32c-.03-.15-.06.11.6-4.09c.6-3.8.59-3.74.67-3.85c.13-.17.11-.17 1.61-.18c1.32-.03 1.6-.03 2.19-.12c3.25-.45 5.26-2.36 5.96-5.66c.04-.22.08-.41.09-.41c0-.01.07.04.15.1c1.03.78 1.38 2.22.99 4.14c-.46 2.29-1.68 3.81-3.58 4.46c-.81.28-1.49.39-2.69.42c-.8.04-.82.04-1.05.19c-.17.17-.16.14-.55 2.55c-.27 1.7-.37 2.25-.41 2.35c-.07.16-.21.3-.37.38l-.11.07H10c-1.29 0-1.62 0-1.68-.03m-4.5-2.23c-.19-.1-.32-.27-.32-.47C3.5 19 6.11 2.68 6.18 2.5c.09-.18.32-.37.5-.44L6.83 2h3.53c3.91 0 3.76 0 4.64.2c2.62.55 3.82 2.3 3.37 4.93c-.5 2.93-1.98 4.67-4.5 5.3c-.87.21-1.48.27-3.14.27c-1.31 0-1.41.01-1.67.15c-.26.15-.47.42-.56.75c-.04.07-.27 1.47-.53 3.1a241.3 241.3 0 0 0-.47 3.02l-.03.06H5.69c-1.58 0-1.8 0-1.87-.04z"
+                  fill="#38b0d5" />
+              </svg>
+            </a>
+
             <a v-if="geolocation" @click="this.$route.path !== '/' ? this.$router.push('/') : ''" role="button">
               <span class="material-symbols-outlined animated text-success">
                 location_on
@@ -142,12 +92,6 @@
             <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
               <span class="material-symbols-outlined">
                 favorite
-              </span>
-            </a>
-
-            <a href="">
-              <span class="material-symbols-outlined search-btn">
-                search
               </span>
             </a>
 
@@ -194,11 +138,24 @@
             <a @click="this.$router.push('/products')">Nos produits</a>
           </li>
 
+          <li class="menu-item">
+            <a href="https://www.paypal.com/donate/?hosted_button_id=4VAGCN2585TPL&locale.x=fr_FR">Faire un don</a>
+          </li>
+
         </ul>
 
         <div class="menu-toggle-2"><span></span></div>
 
         <div class="actions">
+
+          <a href="https://www.paypal.com/donate/?hosted_button_id=4VAGCN2585TPL&locale.x=fr_FR" role="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+              <rect width="24" height="24" fill="none" />
+              <path
+                d="M8.32 21.97a.546.546 0 0 1-.26-.32c-.03-.15-.06.11.6-4.09c.6-3.8.59-3.74.67-3.85c.13-.17.11-.17 1.61-.18c1.32-.03 1.6-.03 2.19-.12c3.25-.45 5.26-2.36 5.96-5.66c.04-.22.08-.41.09-.41c0-.01.07.04.15.1c1.03.78 1.38 2.22.99 4.14c-.46 2.29-1.68 3.81-3.58 4.46c-.81.28-1.49.39-2.69.42c-.8.04-.82.04-1.05.19c-.17.17-.16.14-.55 2.55c-.27 1.7-.37 2.25-.41 2.35c-.07.16-.21.3-.37.38l-.11.07H10c-1.29 0-1.62 0-1.68-.03m-4.5-2.23c-.19-.1-.32-.27-.32-.47C3.5 19 6.11 2.68 6.18 2.5c.09-.18.32-.37.5-.44L6.83 2h3.53c3.91 0 3.76 0 4.64.2c2.62.55 3.82 2.3 3.37 4.93c-.5 2.93-1.98 4.67-4.5 5.3c-.87.21-1.48.27-3.14.27c-1.31 0-1.41.01-1.67.15c-.26.15-.47.42-.56.75c-.04.07-.27 1.47-.53 3.1a241.3 241.3 0 0 0-.47 3.02l-.03.06H5.69c-1.58 0-1.8 0-1.87-.04z"
+                fill="#38b0d5" />
+            </svg>
+          </a>
 
           <a v-if="geolocation" @click="this.$route.path !== '/' ? this.$router.push('/') : ''" role="button">
             <span class="material-symbols-outlined animated text-success">
@@ -239,12 +196,6 @@
           <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
             <span class="material-symbols-outlined">
               favorite
-            </span>
-          </a>
-
-          <a href="">
-            <span class="material-symbols-outlined search-btn">
-              search
             </span>
           </a>
 
@@ -327,50 +278,6 @@ export default defineComponent({
     }
   },
   methods: {
-    searchBlog (search = null) {
-
-      if (this.searchHeader.length >= 3) {
-        this.showTextLoading()
-      }
-
-      setTimeout(() => {
-        if (this.searchHeader.length >= 3) {
-
-          axios.get(process.env.WEBSITE + '/search/' + search.trim())
-            .then((res) => {
-
-              $('.searchbox-result #blocGrids').html('')
-
-              if (res.data.searchAll.length != 0) {
-
-                $.each(res.data.searchAll, function (index, blog) {
-
-                  var vues = ''
-
-                  if (blog.vue >= 2) {
-                    vues = '<span>s</span>'
-                  } else {
-                    vues = ''
-                  }
-
-                  $('.searchbox-result #blocGrids').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
-
-                })
-
-              } else {
-
-                $('.searchbox-result #blocGrids').html('<div class="alert alert-info">Aucun article n\'a été trouvé.</div>')
-
-              }
-
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        }
-      }, 1500);
-
-    },
     logout (e) {
 
       e.preventDefault()

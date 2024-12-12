@@ -20,7 +20,7 @@
               <ul class="list-social">
 
                 <li>
-                  <a href="https://www.facebook.com/profile.php?id=100093129302668" target="_blank">
+                  <a href="https://www.facebook.com/profile.php?id=61570207567436&sk" target="_blank">
                     <i class="fa fa-facebook"></i>
                   </a>
                 </li>
@@ -87,11 +87,17 @@
 
               <div class="footer-contact text-center">
 
-                <h4>Contactez-moi</h4>
+                <h4>Une question ? Contactez-moi</h4>
 
                 <p>125 avenue Félix Geneslay 72100 Le Mans, France</p>
 
                 <p>(+33) 6-50-55-87-31</p>
+
+              </div>
+
+              <div class="qr-code">
+
+                <img src="qr-code.png" alt="Don My Bakery">
 
               </div>
 

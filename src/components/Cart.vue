@@ -191,7 +191,6 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
@@ -201,12 +200,14 @@ import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
 import { Platform } from 'quasar'
+import axios from 'axios'
 
 moment.locale('fr')
 
 const shopping_total_ht = ref(LocalStorage.getItem('shopping_total_ht')),
   shopping_total_ttc = ref(LocalStorage.getItem('shopping_total_ttc')),
-  shopping_cart_qte = ref(LocalStorage.getItem('shopping_cart_qte'))
+  shopping_cart_qte = ref(LocalStorage.getItem('shopping_cart_qte')),
+  user_subscription = ref(false)
 
 var verifBanner = ref(false),
   dateS = null,
@@ -237,6 +238,7 @@ export default defineComponent({
     dateE = LocalStorage.getItem('banner_date_end')
 
     return {
+      user_subscription,
       dateS,
       dateE,
       verifBanner,
@@ -265,18 +267,6 @@ export default defineComponent({
           visible.value = true
           $('.u-column1').fadeOut(300)
           showSimulatedReturnData.value = false
-
-          if (!Platform.is.desktop) {
-
-            setInterval(() => {
-
-              store.dispatch('fetchVerificationOrder', {
-                'userId': this.user.id,
-              })
-
-            }, 5000);
-
-          }
 
           store.dispatch('setInsertCommandeClient', {
             'user_id': this.user.id,
@@ -357,6 +347,41 @@ export default defineComponent({
     setTimeout(() => {
 
       if (LocalStorage.hasItem('shopping_cart')) {
+
+        if (this.user !== null) {
+
+          axios.get(process.env.WEBSITE + '/user-profil/' + this.user.email)
+            .then((res) => {
+
+              if (res.status === 200) {
+
+                // Static values
+                user_subscription.value = res.data.subscription
+
+                if (user_subscription.value === true && (LocalStorage.getItem('shopping_cart') === 3 || LocalStorage.getItem('shopping_cart') === 4)) {
+
+                  LocalStorage.removeItem('shopping_cart_qte')
+                  LocalStorage.removeItem('shopping_total_ht')
+                  LocalStorage.removeItem('shopping_total_ttc')
+                  LocalStorage.removeItem('shopping_cart')
+                  LocalStorage.removeItem('shopping_product_id')
+                  LocalStorage.removeItem('prev_url')
+                  LocalStorage.removeItem('additional_information')
+                  LocalStorage.removeItem('banner_date_start')
+                  LocalStorage.removeItem('banner_date_end')
+                  LocalStorage.removeItem('banner_name')
+                  LocalStorage.removeItem('bakery_id_event')
+
+                  this.$router.push('/products')
+
+                }
+
+              }
+
+            })
+
+        }
+
 
         var dateS = LocalStorage.getItem('banner_date_start'),
           dateE = LocalStorage.getItem('banner_date_end'),
