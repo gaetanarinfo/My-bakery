@@ -39,35 +39,42 @@
 
             <div class="section text-center">
 
-              <div id="blocGrid" class="row">
+              <div class="row mobile">
 
-                <div v-show="showSimulatedReturnData" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
-                  v-for="blog in blogsAll" :key="blog.id">
+                <div v-if="blogsAllCount >= 1" id="blocGrid" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 
-                  <article>
+                  <article v-for="blog in blogsAll" :key="blog.id">
 
                     <div class="thumbnail">
 
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"></a>
+                      <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'">
 
-                      <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
+                      </div>
+
+                      <div class="blog-pic-inner">
+
+                        <div class="label">{{ blog.name }}</div>
+
+                        <ul>
+                          <li>Par <span>{{ blog.author }}</span></li>
+                          <li><i class="fa-solid fa-clock me-1"></i> Créer le {{
+                            moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
+                          <li>{{ blog.views }} vues</li>
+                        </ul>
+
+                      </div>
 
                     </div>
 
                     <div class="content text-start">
 
-                      <span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le {{
-                        moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+                      <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title">
+                        <h3 class="title">{{ blog.title }}</h3>
+                      </a>
 
-                      <h3 class="title">{{ blog.title }}</h3>
+                      <p>{{ substrats(blog.small_content) }}</p>
 
-                      <span class="author">Par <span>{{ blog.author }}</span></span>
-                      <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span
-                          v-if="blog.views >= 2">s</span></span>
-
-                      <p>{{ blog.small_content }}</p>
-
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"
+                      <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title"
                         class="btn btn-bakery">Lire la
                         suite</a>
 
@@ -77,27 +84,135 @@
 
                 </div>
 
+                <div v-else id="blocGrid" class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+                  style="display: flex; align-items: center;justify-content: center;">
+
+                  <div class="cartEmpty">
+
+                    <img style="max-width: 500px" src="bakerys/large-5.jpg" alt="My Bakery">
+
+                    <h3>Aucun résultat ne correspond<br />aux critères de recherche.</h3>
+
+                    <p>Vous le saviez ? avec My Bakery, vous pouvez commander à tout moment,<br class="br-no"> notre
+                      service technique
+                      vous
+                      livrera vos produits dans les plus brefs délais.</p>
+
+                    <a class="ps-btn cursor-pointer" @click="this.$router.push('/products')">Nos produits</a>
+
+                  </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 column-search-blog">
+
+                  <div class="form-order">
+
+                    <div class="column-search">
+
+                      <h5>Rechercher</h5>
+
+                      <div class="form-group">
+
+                        <p class="mb-0"><strong>{{ blogsAllCount }}</strong> actualités</p>
+
+                      </div>
+
+                      <div class="form-group">
+
+                        <span class="select">
+                          <input v-model="search" type="text" class="form-control" placeholder="Entrer un mot clé...">
+                        </span>
+
+                      </div>
+
+                      <div class="form-group validate mt-0">
+
+                        <a role="button" class="btn btn-bakery me-3"
+                          @click="chargeBlog(current, search, categorieId, true)">Rechercher</a>
+
+                        <a role="button" class="btn btn-bakery"
+                          @click="chargeBlog(current, search, categorieId, true, true)">Effacer</a>
+
+                      </div>
+
+                      <hr class="w-100" />
+
+                    </div>
+
+                    <div class="column-search">
+
+                      <h5>Articles populaires</h5>
+
+                      <div class="blog-sidebar-recent">
+
+                        <a @click="" v-for="views in viewsBlogs" class="blog-sidebar-recent-item">
+
+                          <div class="blog-sidebar-recent-item-pic">
+
+                            <img :src="'blogs/' + views.image" :alt="views.title">
+
+                          </div>
+
+                          <div class="blog-sidebar-recent-item-text">
+
+                            <a @click="this.$router.push('/article/' + views.url)" :title="views.title">
+                              <h4>{{ views.title }}</h4>
+                            </a>
+
+                            <span>{{ moment(views.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+
+                          </div>
+
+                        </a>
+
+                      </div>
+
+                    </div>
+
+                    <div class="column-search">
+
+                      <h5>Catégories</h5>
+
+                      <div class="blog-sidebar-item-categories">
+
+                        <ul>
+                          <li v-for="categorie in categoriesBlogs"><a class="addTagCategorie" :data-id="categorie.id"
+                              @click="changeCategorie(categorie.id), chargeBlog(current, search, categorieId)">{{
+                                categorie.name }} <span>{{
+                                categorie.counter }}</span></a></li>
+                        </ul>
+
+                      </div>
+
+                    </div>
+
+                    <BannerSquareComponent />
+
+                  </div>
+
+                </div>
+
               </div>
 
-              <div class="mt-5">
+              <div v-if="pagination">
 
                 <div class="b-pagination">
 
                   <ul class="pagination">
 
                     <li>
-                      <a role="button" v-bind:class="this.current === 1 ? 'disabled' : ''"
-                        @click="chargeBlog(this.current - 1)"><i class="fa fa-angle-left"></i></a>
+                      <a role="button" v-bind:class="current === 1 ? 'disabled' : ''"
+                        @click="chargeBlog(current - 1, search, categorieId)"><i class="fa fa-angle-left"></i></a>
                     </li>
 
                     <li v-for="page in max" :key="page" v-bind:class="current === page ? 'active' : ''">
-                      <a role="button" @click="chargeBlog(page)">{{ page }}</a>
+                      <a role="button" @click="chargeBlog(page, search, categorieId)">{{ page }}</a>
                     </li>
 
                     <li>
-                      <a role="button"
-                        v-bind:class="this.current === Math.round(this.blogsAllCount / 9) ? 'disabled' : ''"
-                        @click="chargeBlog(this.current + 1)"><i class="fa fa-angle-right"></i></a>
+                      <a role="button" v-bind:class="current === Math.round(blogsAllCount / 9) ? 'disabled' : ''"
+                        @click="chargeBlog(current + 1, search, categorieId)"><i class="fa fa-angle-right"></i></a>
                     </li>
 
                   </ul>
@@ -295,139 +410,190 @@ import moment from 'moment'
 import { ref } from 'vue'
 import axios from 'axios'
 import BannerComponent from 'components/Banner.vue'
+import BannerSquareComponent from 'components/BannerSquare.vue'
 
 moment.locale('fr')
 
 var counter = 1
 
+const pageMax = ref(0),
+  max = ref(1),
+  blogsAll = ref([]),
+  blogsAllCount = ref([]),
+  current = ref(1),
+  search = ref(''),
+  showSimulatedReturnData = ref(false),
+  visible = ref(true),
+  pagination = ref(false),
+  categorieId = ref(0)
+
 export default defineComponent({
   name: 'BlogcComponent',
   components: {
     BannerComponent,
+    BannerSquareComponent,
   },
   setup () {
     const store = useStore()
-    const visible = ref(false)
-    const showSimulatedReturnData = ref(true)
 
-    const blogsAll = computed(() => {
-      return store.state.blogsAll
+    const categoriesBlogs = computed(() => {
+      return store.state.categoriesBlogs
     })
 
-    const blogsAllCount = computed(() => {
-      return store.state.blogsAllCount
+    const viewsBlogs = computed(() => {
+      return store.state.viewsBlogs
     })
 
     onMounted(() => {
-      store.dispatch('fetchBlogsAll')
+      store.dispatch('fetchBlogsCategoires')
+      store.dispatch('fetchBlogsViews')
     })
 
     return {
+      changeCategorie (id) {
+        categorieId.value = id
+      },
+      categorieId,
+      viewsBlogs,
+      categoriesBlogs,
+      pagination,
+      max,
+      pageMax,
+      current,
+      search,
+      blogsAll,
+      blogsAllCount,
       showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = false
-
-        setTimeout(() => {
-          visible.value = false
-          showSimulatedReturnData.value = true
-        }, 1500)
       },
-      blogsAll,
-      blogsAllCount,
       visible,
       moment: moment,
       showSimulatedReturnData,
     }
   },
-  data () {
-    return {
-      current: ref(1),
-      max: 1,
-    }
-  },
   methods: {
-    chargeBlog (getPage) {
+    substrats (value) {
+      return value.substr(0, 249) + '...'
+    },
+    chargeBlog (page, searchs = null, categorieIds, button = false, deletes = false) {
 
-      axios.get(process.env.WEBSITE + '/blogs-page/' + getPage)
-        .then((res) => {
+      if (deletes) {
+        current.value = 1
+        page = 1
+        search.value = ''
+        categorieId.value = 0
+        $(document).find('.addTagCategorie').removeClass('active')
+      }
 
-          this.current = getPage
+      if (button) {
+        current.value = 1
+        page = 1
+      }
 
-          $('#blocGrid').html('')
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $('#blog').offset().top
+      }, '600')
 
-          $([document.documentElement, document.body]).animate({
-            scrollTop: $('#blocGrid').offset().top
-          }, '200')
+      this.showTextLoading()
 
-          this.showTextLoading()
+      setTimeout(() => {
 
-          $.each(res.data.blogsAll, function (index, blog) {
+        axios.post(process.env.WEBSITE + '/blogs-page-search', { page, search: searchs, categorieId: categorieIds })
+          .then((res) => {
 
-            var vues = ''
+            current.value = page
+            blogsAll.value = []
+            blogsAllCount.value = 0
+            counter = 1
 
-            if (blog.vue >= 2) {
-              vues = '<span>s</span>'
-            } else {
-              vues = ''
+            if (res.data.succes === true) {
+              blogsAll.value = res.data.search
+              blogsAllCount.value = res.data.blogsAllCount
+
+              if (res.data.blogsAllCount <= 10) {
+                pagination.value = false
+              } else {
+                pagination.value = true
+              }
+
+              visible.value = false
+              showSimulatedReturnData.value = true
+
+              this.countBlog(res.data.search, res.data.blogsAllCount)
+
             }
-
-            $('#blocGrid').append('<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><article><div class="thumbnail"><a href="blogs/' + blog.url + '" title="' + blog.title + '"></a><img width="450" height="300" src="blogs/' + blog.image + '" alt=""></div><div class="content text-start"><span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le ' + moment(blog.created_at).format('DD MMMM YYYY à H:mm') + '</span><h3 class="title">' + blog.title + '</h3><span class="author">Par <span>' + blog.author + '</span></span><span class="views me-2"><i class="fa-solid fa-eye me-1"></i> ' + blog.views + ' vue' + vues + '</span><p>' + blog.small_content + '</p><a href="blogs/' + blog.url + '" title="' + blog.title + '" class="btn btn-bakery">Lire la suite</a></div></article></div>')
 
           })
 
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+
+      }, 2500);
 
     },
-    countBlog () {
+    countBlog (data1, data2) {
+
+      max.value = 0
+      pageMax.value = 0
+
       if (counter <= 1) {
+
         setTimeout(() => {
-          if (this.blogsAll.length <= 8) this.max = 1;
-          else this.max = Math.round(this.blogsAllCount / 9);
+
+          if ((Math.round((data2) / data1.length)) <= 8) max.value = Math.round((data2) / data1.length) - 1;
+          else max.value = data1.length
+
+          if ((Math.round((data2) / data1.length)) <= 8) pageMax.value = Math.round((data2) / data1.length);
+          else pageMax.value = Math.round((data2) / 9)
+
+
           counter++;
+
         }, 300);
+
       }
+
     }
+
   },
   mounted () {
 
     this.showTextLoading()
 
-    $('#menu-main-menu').removeAttr('style')
-
     setTimeout(() => {
-      this.countBlog()
+
+      axios.get(process.env.WEBSITE + '/blogs-all').then(res => {
+
+        if (res.data.succes === true) {
+
+          current.value = 1
+          blogsAll.value = []
+          blogsAllCount.value = 0
+          counter = 1
+          blogsAll.value = res.data.blogsAll
+          blogsAllCount.value = res.data.blogsAllCount
+
+          if (res.data.blogsAllCount <= 10) {
+            pagination.value = false
+          } else {
+            pagination.value = true
+          }
+
+          if (counter <= 1) {
+            if ((Math.round((res.data.blogsAllCount) / res.data.blogsAll.length)) <= 8) max.value = Math.round((res.data.blogsAllCount) / res.data.length) - 1;
+            else max.value = res.data.blogsAll.length
+
+            pageMax.value = Math.round((res.data.blogsAllCount) / res.data.blogsAll.length);
+            counter++;
+          }
+
+          visible.value = false
+          showSimulatedReturnData.value = true
+
+        }
+
+      })
+
     }, 1000);
-
-    // Header menu
-
-    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
-      e.preventDefault()
-
-      $(this).addClass('active')
-
-      $('#menu-main-menu').fadeIn(300)
-
-    })
-
-    $(document).on('click', '.menu-toggle-2.active', function (e) {
-      e.preventDefault()
-
-      $(this).removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#menu-main-menu .menu-item', function (e) {
-
-      $('.menu-toggle-2').removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
 
     $(document).on('click', '#blog .btn-target', function (e) {
       e.preventDefault()
@@ -474,27 +640,14 @@ export default defineComponent({
       $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
-    // Header menu
+    $(document).on('click', '.addTagCategorie', function (e) {
 
-    setTimeout(() => {
-      $('.search-btn').on('click', function (e) {
-        e.preventDefault()
+      e.preventDefault()
 
-        $('.searchbox').addClass('active')
-        $('body').css({
-          overflow: 'hidden'
-        })
-      })
+      $(document).find('.addTagCategorie').removeClass('active')
+      $(this).addClass('active')
 
-      $('.searchbox-remove').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').removeClass('active')
-        $('body').css({
-          overflow: 'auto'
-        })
-      })
-    }, 1000)
+    })
 
   }
 })

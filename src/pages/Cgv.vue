@@ -339,42 +339,6 @@ export default defineComponent({
   },
   mounted () {
 
-    $('#menu-main-menu').removeAttr('style')
-
-    // Header menu
-
-    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
-      e.preventDefault()
-
-      $(this).addClass('active')
-
-      $('#menu-main-menu').fadeIn(300)
-
-    })
-
-    $(document).on('click', '.menu-toggle-2.active', function (e) {
-      e.preventDefault()
-
-      $(this).removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#menu-main-menu .menu-item', function (e) {
-
-      $('.menu-toggle-2').removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#blog .btn-target', function (e) {
-      e.preventDefault()
-      var url = $(this).attr('href')
-      location.href = url
-    })
-
     // Header
 
     $('.header').addClass('h-blog')
@@ -414,27 +378,6 @@ export default defineComponent({
       $('html, body').animate({ scrollTop: 0 }, 200)
     })
 
-    // Header menu
-
-    setTimeout(() => {
-      $('.search-btn').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').addClass('active')
-        $('body').css({
-          overflow: 'hidden'
-        })
-      })
-
-      $('.searchbox-remove').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').removeClass('active')
-        $('body').css({
-          overflow: 'auto'
-        })
-      })
-    }, 1000)
   }
 })
 </script>

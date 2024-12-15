@@ -20,6 +20,13 @@
                 data-scroll="contact">Contact</a>
             </li>
 
+            <li class="menu-item"><a @click="this.$router.push('/bakerys-pastry')"
+                v-bind:class="this.$route.path === '/bakerys-pastry' ? 'active' : ''" data-scroll="classement">Boulangeries</a>
+            </li>
+
+            <li class="menu-item"><a @click="this.$router.push('/blogs-bakerys')"
+                v-bind:class="this.$route.path === '/blog' ? 'active' : ''" data-scroll="blog">Blog</a></li>
+
           </ul>
 
         </div>
@@ -31,18 +38,6 @@
         </div>
 
         <div class="nav-right">
-
-          <ul class="menu-right">
-
-            <li class="menu-item"><a @click="this.$router.push('/bakerys')"
-                v-bind:class="this.$route.path === '/bakerys' ? 'active' : ''"
-                data-scroll="classement">Boulangeries</a></li>
-
-            <li class="menu-item"><a @click="this.$router.push('/blogs')"
-                v-bind:class="this.$route.path === '/blog' ? 'active' : ''"
-                data-scroll="blog">Blog</a></li>
-
-          </ul>
 
           <div class="actions">
 
@@ -68,19 +63,15 @@
               </span>
             </a>
 
-            <a role="button" @click="this.$router.push('/cart');">
-              <span class="material-symbols-outlined">
-                shopping_cart
-              </span>
-            </a>
-
-            <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
+            <a v-if="!isLoggedIn" v-bind:class="this.$route.path === '/my-account' ? 'active' : ''"
+              @click="this.$router.push('/my-account');" role="button">
               <span class="material-symbols-outlined">
                 login
               </span>
             </a>
 
-            <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
+            <a v-if="isLoggedIn" v-bind:class="this.$route.path === '/my-account-profil' ? 'active' : ''"
+              @click="this.$router.push('/my-account-profil');" role="button">
               <span class="material-symbols-outlined">
                 account_circle
               </span>
@@ -92,11 +83,25 @@
               </span>
             </a>
 
-            <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
+            <a role="button" v-bind:class="this.$route.path === '/my-bakerys' ? 'active heart-btn' : 'heart-btn'"
+              @click="this.$router.push('/my-bakerys');">
               <span class="material-symbols-outlined">
                 favorite
               </span>
             </a>
+
+            <div class="d-flex cart-nav">
+
+              <a role="button" v-bind:class="this.$route.path === '/cart' ? 'active' : ''"
+                @click="this.$router.push('/cart');">
+                <span class="material-symbols-outlined">
+                  shopping_cart
+                </span>
+              </a>
+
+              <div class="cart-price"><span>{{ cart }} €</span></div>
+
+            </div>
 
           </div>
 
@@ -129,11 +134,11 @@
           </li>
 
           <li class="menu-item">
-            <a href="#" class="scroll-click" data-scroll="classement">Boulangeries</a>
+            <a @click="this.$router.push('/bakerys-pastry')">Boulangeries</a>
           </li>
 
           <li class="menu-item">
-            <a href="#" class="scroll-click" data-scroll="blog">Blog</a>
+            <a @click="this.$router.push('/blogs-bakerys')">Blog</a>
           </li>
 
           <li class="menu-item">
@@ -172,19 +177,15 @@
             </span>
           </a>
 
-          <a role="button" @click="this.$router.push('/cart');">
-            <span class="material-symbols-outlined">
-              shopping_cart
-            </span>
-          </a>
-
-          <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');" role="button">
+          <a v-if="!isLoggedIn" v-bind:class="this.$route.path === '/my-account' ? 'active' : ''"
+            @click="this.$router.push('/my-account');" role="button">
             <span class="material-symbols-outlined">
               login
             </span>
           </a>
 
-          <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');" role="button">
+          <a v-if="isLoggedIn" v-bind:class="this.$route.path === '/my-account-profil' ? 'active' : ''"
+            @click="this.$router.push('/my-account-profil');" role="button">
             <span class="material-symbols-outlined">
               account_circle
             </span>
@@ -196,11 +197,25 @@
             </span>
           </a>
 
-          <a role="button" @click="this.$router.push('/my-bakerys');" class="heart-btn">
+          <a role="button" v-bind:class="this.$route.path === '/my-bakerys' ? 'active heart-btn' : 'heart-btn'"
+            @click="this.$router.push('/my-bakerys');">
             <span class="material-symbols-outlined">
               favorite
             </span>
           </a>
+
+          <div class="d-flex cart-nav">
+
+            <a role="button" v-bind:class="this.$route.path === '/cart' ? 'active' : ''"
+              @click="this.$router.push('/cart');">
+              <span class="material-symbols-outlined">
+                shopping_cart
+              </span>
+            </a>
+
+            <div class="cart-price"><span>{{ cart }} €</span></div>
+
+          </div>
 
         </div>
 
@@ -218,10 +233,10 @@ import { useStore } from 'vuex'
 import { date, LocalStorage, SessionStorage, useQuasar } from 'quasar'
 import moment from 'moment'
 import { ref } from 'vue'
-import axios from 'axios'
 
 const searchHeader = null,
-  geolocation = ref(true)
+  geolocation = ref(true),
+  cart = ref((LocalStorage.hasItem('shopping_total_ttc')) ? LocalStorage.getItem('shopping_total_ttc') : '0.00')
 
 export default defineComponent({
   name: 'HeaderComponent',
@@ -257,6 +272,7 @@ export default defineComponent({
     })
 
     return {
+      cart,
       errorNotif (message = null) {
         $q.notify({
           type: 'error-form',

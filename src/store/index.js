@@ -10,8 +10,7 @@ export default createStore({
     bakerys: [],
     bakerysAllCount: [],
     blogs: [],
-    blogsAll: [],
-    blogsAllCount: 0,
+    categoriesBlogs: [],
     ratings: [],
     villesFrance: [],
     searchAll: [],
@@ -33,6 +32,7 @@ export default createStore({
     markersBakerysHome: [],
     markersBakerysHome2: [],
     searchPlace: [],
+    viewsBlogs: [],
     stateUser: {
       user: null,
       token: null,
@@ -48,8 +48,7 @@ export default createStore({
     getBlog: (state) => state.blog,
     getBlogTags: (state) => state.blog_tags,
     getBlogs: (state) => state.blogs,
-    getBlogsAll: (state) => state.blogsAll,
-    getBlogsAllCount: (state) => state.blogsAllCount,
+    getCategoiresBlogs: (state) => state.categoriesBlogs,
     getRatings: (state) => state.ratings,
     getVillesFrance: (state) => state.villesFrance,
     getSearchAll: (state) => state.searchAll,
@@ -70,6 +69,7 @@ export default createStore({
     getMarkersBakeryHome: (state) => state.markersBakerysHome,
     getMarkersBakeryHome2: (state) => state.markersBakerysHome2,
     getSearchPlace: (state) => state.searchPlace,
+    getBlogsViews: (state) => state.viewsBlogs,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -138,19 +138,6 @@ export default createStore({
         console.log(error)
       }
     },
-    async fetchBlogsAll ({ commit }) {
-      try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/blogs-all')
-
-        this.blogsAll = getUrl.data.blogsAll
-        commit('SET_BLOGS_ALL', getUrl.data.blogsAll)
-
-        this.blogsAll = getUrl.data.blogsAllCount
-        commit('SET_BLOGS_ALL_COUNT', getUrl.data.blogsAllCount)
-      } catch (error) {
-        console.log(error)
-      }
-    },
     async fetchBlog ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/blogs/' + data.url)
@@ -209,7 +196,6 @@ export default createStore({
     async fetchBakerysFavorites ({ commit, state }, data) {
       try {
         const getUrl = await axios.get(process.env.WEBSITE + '/favorites/' + data.favorites)
-
         this.favorites = getUrl.data.favorites
         commit('SET_FAVORITES', getUrl.data.favorites)
       } catch (error) {
@@ -381,10 +367,51 @@ export default createStore({
 
     },
 
+    async setInsertCommandeClientMobilie ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-insert-mobilie', {
+        'user_id': data.user_id,
+        'product_id': data.product_id,
+        'status': data.status,
+        'qte': data.qte,
+        'total_ht': data.total_ht,
+        'total_ttc': data.total_ttc,
+        'dateStart': data.dateStart,
+        'dateEnd': data.dateEnd,
+        'additional_information': data.additional_information,
+        'banner_name': data.banner_name,
+        'banner_square_name': data.banner_square_name,
+        'bakery_id_event': data.bakery_id_event,
+      })
+        .then((res) => {
+          if (res.data.succes === true) {
+            location.href = process.env.WEBSITE + '/mobilie/create/' + res.data.order_id
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
     async fetchRefundOrder ({ commit, state }, data) {
 
       axios.post(process.env.WEBSITE + '/order-refund', { 'tokenPaiement': data.tokenPaiement })
         .then((res) => {
+          this.paiement_status = res.data
+          commit('SET_PAIEMENT_STATUS', res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+
+    async fetchRefundOrderMobilie ({ commit, state }, data) {
+
+      axios.post(process.env.WEBSITE + '/order-refund-mobilie', { 'tokenPaiement': data.tokenPaiement })
+        .then((res) => {
+          console.log(res.data);
           this.paiement_status = res.data
           commit('SET_PAIEMENT_STATUS', res.data)
         })
@@ -599,9 +626,39 @@ export default createStore({
         })
 
     },
+    async fetchBlogsCategoires ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/blogs-categories')
+        .then((res) => {
+
+          if (res.data.succes === true) {
+            this.categoriesBlogs = res.data.categories
+            commit('SET_BLOGS_CATEGORIES', res.data.categories)
+          }
+
+        })
+
+    },
+    async fetchBlogsViews ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/blogs-all-views')
+        .then((res) => {
+
+          if (res.data.succes === true) {
+            this.viewsBlogs = res.data.blogsAll
+            commit('SET_BLOGS_VIEWS', res.data.blogsAll)
+          }
+
+        })
+
+    },
 
   },
   mutations: {
+
+    SET_BLOGS_VIEWS (state, viewsBlogs) {
+      state.viewsBlogs = viewsBlogs
+    },
 
     SET_SEARCH_PLACE (state, searchPlace) {
       state.searchPlace = searchPlace
@@ -687,12 +744,8 @@ export default createStore({
       state.blog_tags = blog_tags
     },
 
-    SET_BLOGS_ALL (state, blogsAll) {
-      state.blogsAll = blogsAll
-    },
-
-    SET_BLOGS_ALL_COUNT (state, blogsAllCount) {
-      state.blogsAllCount = blogsAllCount
+    SET_BLOGS_CATEGORIES (state, categoriesBlogs) {
+      state.categoriesBlogs = categoriesBlogs
     },
 
     SET_RATINGS (state, ratings) {

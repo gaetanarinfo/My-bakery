@@ -21,7 +21,7 @@ import { useMeta } from 'quasar'
 // Balise Méta
 const title = 'My bakery - nos meilleures boulangeries sont ici',
   description = 'Retrouvez toutes les meilleures boulangeries en France sur My Bakery.',
-  url = 'https://my-bakery.fr/bakerys',
+  url = 'https://my-bakery.fr/bakerys-pastry',
   metaData = {
     title: title,
     description: description,

@@ -36,35 +36,6 @@ $(window).scroll(function () {
   }
 })
 
-
-// Header menu
-
-$(document).on('click', '.menu-toggle:not(.active)', function (e) {
-  e.preventDefault()
-
-  $(this).addClass('active')
-
-  $('#menu-main-menu').fadeIn(300)
-
-})
-
-$(document).on('click', '.menu-toggle.active', function (e) {
-  e.preventDefault()
-
-  $(this).removeClass('active')
-
-  $('#menu-main-menu').fadeOut(300)
-
-})
-
-$(document).on('click', '#menu-main-menu .menu-item', function (e) {
-
-  $('.menu-toggle').removeClass('active')
-
-  $('#menu-main-menu').fadeOut(300)
-
-})
-
 // Slider home
 
 setTimeout(() => {

@@ -129,15 +129,19 @@
             </div>
 
             <div class="ps-cart__total">
+
               <h3 class="mb-1">Prix ​​total HT : <span> {{ shopping_total_ht }} €</span>
               </h3>
-              <h3>Prix ​​total TTC <span class="tva">TVA 20%</span> : <span> {{ shopping_total_ttc }} €</span></h3><a
-                class="ps-btn" @click="createPaiement()">Passer à la
+
+              <h3>Prix ​​total TTC <span class="tva">TVA 20%</span> : <span> {{ shopping_total_ttc }} €</span></h3>
+
+              <a class="ps-btn" @click="createPaiement()">Passer à la
                 caisse</a>
 
               <!-- PayPal Logo -->
               <img src="https://www.paypalobjects.com/webstatic/mktg/logo-center/logo_paypal_moyens_paiement_fr.jpg"
                 alt="PayPal Acceptance Mark" />
+
             </div>
 
           </div>
@@ -154,7 +158,7 @@
             livrera vos produits
             dans les plus brefs délais.</p>
 
-          <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
+          <a class="ps-btn cursor-pointer" @click="this.$router.push('/')">Retour à l'accueil</a>
 
         </div>
 
@@ -199,7 +203,6 @@ import { LocalStorage } from 'quasar';
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import moment from 'moment'
-import { Platform } from 'quasar'
 import axios from 'axios'
 
 moment.locale('fr')
@@ -207,7 +210,10 @@ moment.locale('fr')
 const shopping_total_ht = ref(LocalStorage.getItem('shopping_total_ht')),
   shopping_total_ttc = ref(LocalStorage.getItem('shopping_total_ttc')),
   shopping_cart_qte = ref(LocalStorage.getItem('shopping_cart_qte')),
-  user_subscription = ref(false)
+  user_subscription = ref(false),
+  carte = ref(true),
+  paypal = ref(false),
+  methode = ref(false)
 
 var verifBanner = ref(false),
   dateS = null,
@@ -238,6 +244,20 @@ export default defineComponent({
     dateE = LocalStorage.getItem('banner_date_end')
 
     return {
+      changePaiement (value) {
+
+        if (value) {
+          carte.value = true
+          paypal.value = false
+        } else {
+          carte.value = false
+          paypal.value = true
+        }
+
+      },
+      methode,
+      paypal,
+      carte,
       user_subscription,
       dateS,
       dateE,
@@ -269,6 +289,39 @@ export default defineComponent({
           showSimulatedReturnData.value = false
 
           store.dispatch('setInsertCommandeClient', {
+            'user_id': this.user.id,
+            'product_id': LocalStorage.getItem('shopping_cart'),
+            'status': '1',
+            'qte': LocalStorage.getItem('shopping_cart_qte'),
+            'total_ht': LocalStorage.getItem('shopping_total_ht'),
+            'total_ttc': LocalStorage.getItem('shopping_total_ttc'),
+            'dateStart': (LocalStorage.hasItem('banner_date_start')) ? LocalStorage.getItem('banner_date_start') : null,
+            'dateEnd': (LocalStorage.hasItem('banner_date_end')) ? LocalStorage.getItem('banner_date_end') : null,
+            'additional_information': (LocalStorage.hasItem('additional_information')) ? LocalStorage.getItem('additional_information') : null,
+            'banner_name': (LocalStorage.hasItem('banner_name')) ? LocalStorage.getItem('banner_name') : null,
+            'banner_square_name': (LocalStorage.hasItem('banner_square_name')) ? LocalStorage.getItem('banner_square_name') : null,
+            'bakery_id_event': (LocalStorage.hasItem('bakery_id_event')) ? LocalStorage.getItem('bakery_id_event') : null,
+          })
+
+        } else {
+          LocalStorage.setItem('prev_url', '/cart')
+          this.$router.push('/my-account')
+        }
+
+      },
+      createPaiementMobilie () {
+
+        if (sessionStorage.getItem('token') !== null) {
+
+          $([document.documentElement, document.body]).animate({
+            scrollTop: $('#cart').offset().top
+          }, '200')
+
+          visible.value = true
+          $('.u-column1').fadeOut(300)
+          showSimulatedReturnData.value = false
+
+          store.dispatch('setInsertCommandeClientMobilie', {
             'user_id': this.user.id,
             'product_id': LocalStorage.getItem('shopping_cart'),
             'status': '1',

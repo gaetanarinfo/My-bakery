@@ -20,7 +20,7 @@ import { useMeta } from 'quasar'
 
 const title = 'My bakery - notre blog',
   description = 'Nous vous invitons à découvrir tous les articles que nous publions sur le blog, qu\'ils concernent la boulangerie, notre application ou les dernières mises à jour de notre site internet.',
-  url = 'https://my-bakery.fr/bakerys',
+  url = 'https://my-bakery.fr/blogs-bakerys',
   metaData = {
     title: title,
     description: description,

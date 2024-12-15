@@ -14,7 +14,7 @@
 
             <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="before"><a role="button" @click="this.$router.push('/blogs')">Blog</a></li>
+            <li class="before"><a role="button" @click="this.$router.push('/blogs-bakerys')">Blog</a></li>
 
             <li class="active">{{ blog.title }}</li>
 
@@ -28,58 +28,73 @@
 
   </div>
 
-  <div class="page-article-blog blog-single section fadeIn3">
+  <div class="page-article-blog blog-single section fadeIn3 last-blog">
 
     <div class="container" v-show="showSimulatedReturnData">
 
       <div class="row">
 
-        <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 
           <div class="post-detail">
 
-            <div class="post-thumbnail">
+            <article>
 
-              <img width="675" height="450" :src="'blogs/' + blog.image" :alt="blog.title" />
+              <div class="thumbnail">
 
-            </div>
-
-            <div class="post-content">
-
-              <div class="post-container none">
-
-                <div class="post-byline">
-
-                  Par {{ blog.author }} - {{ blog.categorie }} - <span class="post-posted">
-                    {{ moment(blog.created_at).format('DD MMMM YYYY') }}
-                  </span>
+                <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'">
 
                 </div>
 
-                <div class="post-content-inner" v-html="blog.large_description">
-                </div>
+                <div class="blog-pic-inner">
 
-                <div class="sharing">
+                  <div class="label">{{ blog.name }}</div>
 
-                  <p class="text-right">Partager sur :
-
-                    <a :href="'https://www.facebook.com/sharer/sharer.php?u=https://my-bakery.fr' + $route.fullPath"><i
-                        class="fa fa-facebook"></i></a>
-
-                    <a :href="'https://twitter.com/share?url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title + '&via=my-bakery'"
-                      onclick="window.open(this.href);return false;"><i class="fa-brands fa-x-twitter"></i></a>
-
-                    <a
-                      :href="'https://www.linkedin.com/shareArticle?mini=true&url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title"><i
-                        class="fa fa-linkedin"></i></a>
-
-                  </p>
+                  <ul>
+                    <li>Par <span>{{ blog.author }}</span></li>
+                    <li><i class="fa-solid fa-clock me-1"></i> Créer le {{
+                      moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
+                    <li>{{ blog.views }} vues</li>
+                  </ul>
 
                 </div>
 
               </div>
 
-            </div>
+              <div class="content text-start">
+
+                <div class="post-container none">
+
+                  <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title">
+                    <h3 class="title">{{ blog.title }}</h3>
+                  </a>
+
+                  <div class="post-content-inner" v-html="blog.large_description">
+                  </div>
+
+                  <div class="sharing">
+
+                    <p class="text-right">Partager sur :
+
+                      <a :href="'https://www.facebook.com/sharer/sharer.php?u=https://my-bakery.fr' + $route.fullPath"><i
+                          class="fa fa-facebook"></i></a>
+
+                      <a :href="'https://twitter.com/share?url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title + '&via=my-bakery'"
+                        onclick="window.open(this.href);return false;"><i class="fa-brands fa-x-twitter"></i></a>
+
+                      <a
+                        :href="'https://www.linkedin.com/shareArticle?mini=true&url=https://my-bakery.fr' + $route.fullPath + '&text=' + blog.title"><i
+                          class="fa fa-linkedin"></i></a>
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </article>
 
             <BannerComponent :margin="false" />
 
@@ -89,17 +104,19 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 column-search-blog">
 
-          <div class="widget categories-2 widget-categories widget-category">
+          <div class="column-search widget categories-2 widget-categories widget-category">
 
-            <h3 class="widget-title">Categories</h3>
+            <h5 class="widget-title">Catégories</h5>
 
             <div class="widget-content">
 
               <ul class="list-arrow">
 
-                <li class="cat-item"><a>Blog</a></li>
+                <li :class="(blog.categorie === categorie.id) ? 'active cat-item' : 'cat-item'"
+                  v-for="categorie in categoriesBlogs"><a>{{ categorie.name }} <span>{{
+                    categorie.counter }}</span></a></li>
 
               </ul>
 
@@ -107,9 +124,40 @@
 
           </div>
 
-          <div class="widget tag-cloud-2 widget-tags">
+          <div class="column-search">
 
-            <h3 class="widget-title">Tags</h3>
+            <h5>Articles populaires</h5>
+
+            <div class="blog-sidebar-recent">
+
+              <a @click="" v-for="views in viewsBlogs" class="blog-sidebar-recent-item">
+
+                <div class="blog-sidebar-recent-item-pic">
+
+                  <img :src="'blogs/' + views.image" :alt="views.title">
+
+                </div>
+
+                <div class="blog-sidebar-recent-item-text">
+
+                  <a @click="this.$router.push('/article/' + views.url)" :title="views.title">
+                    <h4>{{ views.title }}</h4>
+                  </a>
+
+                  <span>{{ moment(views.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+
+                </div>
+
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <div class="column-search widget tag-cloud-2 widget-tags">
+
+            <h5 class="widget-title">Tags</h5>
 
             <div class="tagcloud"><a v-for="blog_tag in blog_tags" v-bind:id="blog_tag.id" role="button">{{
               blog_tag.title
@@ -135,7 +183,6 @@
 </template>
 
 <style lang="css">
-
 .disabled {
   pointer-events: none;
 }
@@ -154,7 +201,6 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
@@ -185,11 +231,26 @@ export default defineComponent({
       return store.state.blog
     })
 
+    const categoriesBlogs = computed(() => {
+      return store.state.categoriesBlogs
+    })
+
     const blog_tags = computed(() => {
       return store.state.blog_tags
     })
 
+    const viewsBlogs = computed(() => {
+      return store.state.viewsBlogs
+    })
+
+    onMounted(() => {
+      store.dispatch('fetchBlogsCategoires')
+      store.dispatch('fetchBlogsViews')
+    })
+
     return {
+      viewsBlogs,
+      categoriesBlogs,
       showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = false
@@ -209,50 +270,14 @@ export default defineComponent({
     this.showTextLoading()
 
     store.dispatch('fetchBlog',
-        {
-          'url': route.params.url
-        })
+      {
+        'url': route.params.url
+      })
 
     setTimeout(() => {
       visible.value = false
       showSimulatedReturnData.value = true
     }, 1500);
-
-    $('#menu-main-menu').removeAttr('style')
-
-    // Header menu
-
-    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
-      e.preventDefault()
-
-      $(this).addClass('active')
-
-      $('#menu-main-menu').fadeIn(300)
-
-    })
-
-    $(document).on('click', '.menu-toggle-2.active', function (e) {
-      e.preventDefault()
-
-      $(this).removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#menu-main-menu .menu-item', function (e) {
-
-      $('.menu-toggle-2').removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#blog .btn-target', function (e) {
-      e.preventDefault()
-      var url = $(this).attr('href')
-      location.href = url
-    })
 
     // Header
 
@@ -292,28 +317,6 @@ export default defineComponent({
       e.preventDefault()
       $('html, body').animate({ scrollTop: 0 }, 200)
     })
-
-    // Header menu
-
-    setTimeout(() => {
-      $('.search-btn').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').addClass('active')
-        $('body').css({
-          overflow: 'hidden'
-        })
-      })
-
-      $('.searchbox-remove').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').removeClass('active')
-        $('body').css({
-          overflow: 'auto'
-        })
-      })
-    }, 1000)
 
   }
 })

@@ -13,7 +13,7 @@
 
             <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="before"><a role="button" @click="this.$router.push('/bakerys')">Boulangeries</a></li>
+            <li class="before"><a role="button" @click="this.$router.push('/bakerys-pastry')">Boulangeries</a></li>
 
             <li class="active">Ajouter une boulangerie</li>
 
@@ -1173,34 +1173,6 @@ export default defineComponent({
   },
   mounted () {
 
-    $('#menu-main-menu').removeAttr('style')
-
-    // Header menu
-
-    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
-      e.preventDefault()
-
-      $(this).addClass('active')
-
-      $('#menu-main-menu').fadeIn(300)
-
-    })
-
-    $(document).on('click', '.menu-toggle-2.active', function (e) {
-      e.preventDefault()
-
-      $(this).removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#blog .btn-target', function (e) {
-      e.preventDefault()
-      var url = $(this).attr('href')
-      location.href = url
-    })
-
     // Header
 
     $(window).scroll(function () {
@@ -1250,32 +1222,7 @@ export default defineComponent({
 
     // Header menu
 
-    $(document).on('click', '.menu-toggle', function (e) {
-      e.preventDefault()
-
-      $(this).toggleClass('active')
-
-      $('#menu-main-menu').fadeToggle(300)
-    })
-
     setTimeout(() => {
-      $('.search-btn').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').addClass('active')
-        $('body').css({
-          overflow: 'hidden'
-        })
-      })
-
-      $('.searchbox-remove').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').removeClass('active')
-        $('body').css({
-          overflow: 'auto'
-        })
-      })
 
       $('#btn_description').on('click', function (e) {
 

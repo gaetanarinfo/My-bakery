@@ -14,8 +14,8 @@ const { configure } = require('quasar/wrappers'),
 const paths = [
   { path: '/' },
   { path: '/my-account' },
-  { path: '/blogs' },
-  { path: '/bakerys' },
+  { path: '/blogs-bakerys' },
+  { path: '/bakerys-pastry' },
   { path: '/products' },
   {
     path: "/bakery/boulangerie-l-atelier-de-l-ozanne-barjouville"
@@ -8922,10 +8922,10 @@ const paths = [
     path: "/bakery/boulangerie-victor-martin-cayenne"
   },
   {
-    path: "/blogs/my-bakery-classement-des-meilleurs-boulangerie-de-france"
+    path: "/article/my-bakery-classement-des-meilleurs-boulangerie-de-france"
   },
   {
-    path: "/blogs/comment-definir-une-bonne-boulangerie-sur-my-bakery"
+    path: "/article/comment-definir-une-bonne-boulangerie-sur-my-bakery"
   },
   {
     path: "/bakerys-city/acheres/435"
@@ -14750,7 +14750,7 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-webpack/developing-ssr/configuring-ssr
     ssr: {
-      pwa: false,
+      pwa: true,
 
       // manualStoreHydration: true,
       // manualPostHydrationTrigger: true,

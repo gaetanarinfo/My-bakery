@@ -4,7 +4,7 @@
 
     <div class="content">
 
-      <h1 class="text-white">Gestion de mon compte</h1>
+      <h1>Gestion de mon compte</h1>
 
       <div class="b-breadcrumb">
 
@@ -12,7 +12,7 @@
 
           <ol class="breadcrumb">
 
-            <li><a href="/" class="text-white">Accueil</a></li>
+            <li><a href="/">Accueil</a></li>
 
             <li class="active">Gestion de mon compte</li>
 
@@ -418,7 +418,8 @@
                 <div style="padding: 0.5rem;">
 
                   <p class="form-group woocomerce-FormRow form-row">
-                    <button @click="updateProfil" type="submit" class="btn btn-bakery">Valider les modifications</button>
+                    <button @click="updateProfil" type="submit" class="btn btn-bakery">Valider les
+                      modifications</button>
                   </p>
 
                 </div>
@@ -834,7 +835,7 @@
 
             <div class="title">Reçu de votre achat
               <div>
-                <img src="paypal.png" style="max-width: 60px;">
+                <img class="imagePaiement" style="max-width: 60px;">
               </div>
             </div>
 
@@ -1354,6 +1355,10 @@ export default defineComponent({
       return store.state.searchPlace
     })
 
+    const paiement_status = computed(() => {
+      return store.state.paiement_status
+    })
+
     $q.notify.registerType('success-form', {
       icon: 'fa-solid fa-check',
       progress: false,
@@ -1395,7 +1400,7 @@ export default defineComponent({
 
       budget.budget.forEach(element => {
         i++
-        arrayBudget.value.push({ month: months[i], Paypal: element.totalTTC, Remboursement: element.total })
+        arrayBudget.value.push({ month: months[i], Paiement: element.totalTTC, Remboursement: element.total })
       });
 
       budget.refund.forEach(element => {
@@ -1415,7 +1420,7 @@ export default defineComponent({
             type: 'line', xKey: 'month', stroke: "#129fc4", marker: {
               fill: '#129fc4',
               stroke: '#129fc4',
-            }, stacked: true, yKey: 'Paypal', yName: "Paiement Paypal"
+            }, stacked: true, yKey: 'Paiement', yName: "Paiement Paypal / Mollie"
           },
         ],
         locale: {
@@ -1474,7 +1479,7 @@ export default defineComponent({
             type: 'line', xKey: 'month', stroke: "#D21E75", stacked: true, marker: {
               fill: '#D21E75',
               stroke: '#D21E75',
-            }, yKey: 'Remboursement', yName: "Remboursement Paypal"
+            }, yKey: 'Remboursement', yName: "Remboursement Paypal / Mollie"
           }
         ],
         locale: {
@@ -1905,11 +1910,13 @@ export default defineComponent({
 
     // Column Definitions: Defines the columns to be displayed.
     const colDefs = ref([
+      { field: "methode", hide: true },
       { field: "CreatedAt", hide: true },
       { field: "idProduct", hide: true },
       { field: "TooltipStatus", hide: true },
       { field: "Nom2", hide: true },
       { field: "IconPack", hide: true },
+      { field: "PaiementStatusValidate", hide: true },
       { field: "PaiementStatus", hide: true },
       { field: "Id", hide: true },
       { field: "#", filter: false, maxWidth: 80 },
@@ -1921,6 +1928,7 @@ export default defineComponent({
       { field: "Quantité", filter: false, maxWidth: 120, cellClass: 'cellCenter' },
       { field: "Total HT", filter: true, maxWidth: 130 },
       { field: "Total TTC", filter: true, maxWidth: 140 },
+      { field: "Paiement par", filter: true, maxWidth: 140 },
       {
         field: "Statut", cellRenderer (params) {
           return '<span class="missionSpan"><img src="' + params.data.PaiementStatus + '" class="missionIcon"/></span>'
@@ -1933,7 +1941,16 @@ export default defineComponent({
       { field: "Rembourser le", filter: false },
       {
         field: "Actions", filter: false, sortable: false, cellRenderer (params) {
-          return '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a><a id="refundButton" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
+
+          var data = ''
+
+          if (params.data.PaiementStatusValidate !== 3 && params.data.PaiementStatusValidate !== 4) {
+            data = '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a><a id="refundButton" data-methode="' + params.data.methode + '" data-id="' + params.data.idProduct + '" data-token="' + params.data.Id + '" data-date="' + params.data.CreatedAt + '" class="text-danger cursor-pointer"><i class="fa-solid fa-cart-arrow-down"></i></a>'
+          } else {
+            data = '<a id="showOrderButton" data-paypal="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-regular fa-folder-open"></i></a>'
+          }
+
+          return data
         }, maxWidth: 100, cellClass: 'cellCenter'
       }
     ]);
@@ -2621,8 +2638,6 @@ export default defineComponent({
               reg_siret.value = res.data.user.siret
               reg_tva.value = res.data.user.tva
 
-              console.log(res.data.user);
-
               reg_pays.value = res.data.user.pays
               reg_pays_code.value = res.data.user.pays_code
               reg_departement.value = res.data.user.departement
@@ -2658,20 +2673,21 @@ export default defineComponent({
 
                     res.data.ordersTable.forEach(element => {
 
-                      var paypal_id = element.paypal_id
-
                       rowData.value.push({
+                        'methode': element.paiement,
                         'CreatedAt': moment(element.created_at).format('YYYY-MM-DD'),
                         'idProduct': element.id,
                         'TooltipStatus': element.titleStatus,
                         'Nom2': 'Pack ' + element.title,
                         'IconPack': element.image,
+                        'PaiementStatusValidate': element.status,
                         'PaiementStatus': (element.status === 1) ? 'cross-in-warning.png' : (element.status === 2) ? 'tick-in-circle.png' : (element.status === 3) ? 'cross-in-circle.png' : (element.status === 4) ? 'cross-in-circle.png' : '',
                         'Id': element.paypal_id,
                         '#': element.id,
                         'Quantité': element.qte,
                         'Total HT': element.total_ht + ' €',
                         'Total TTC': element.total_ttc + ' €',
+                        'Paiement par': element.paiement,
                         'Statut': true,
                         'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
                         'Payé le': (element.validate_at !== null) ? moment(element.validate_at).format('DD MMMM YYYY à HH:mm') : '/',
@@ -2694,7 +2710,7 @@ export default defineComponent({
                       })
                     }
 
-                    function refundOrder (id, tokenPaiement, date) {
+                    function refundOrder (id, methode, tokenPaiement, date) {
 
                       window.addEventListener("orientationchange", function () {
                         screen.orientation.lock('landscape');
@@ -2702,59 +2718,48 @@ export default defineComponent({
 
                       if (moment().add(14, 'days').format('YYYY-MM-DD') >= moment(date).format('YYYY-MM-DD')) {
 
-                        store.dispatch('fetchRefundOrder', { 'tokenPaiement': tokenPaiement })
+                        if (methode === "Paypal") {
 
-                        const paiement_status = computed(() => {
-                          return store.state.paiement_status
-                        })
+                          axios.post(process.env.WEBSITE + '/order-refund', { 'tokenPaiement': tokenPaiement })
+                            .then((res) => {
 
-                        if (paiement_status.value.succes === true) {
-                          showNotif('Votre demande de remboursement à bien été pris en compte !');
+                              if (res.data.succes === true) {
 
-                          rowData.value = []
+                                showNotif('Votre demande de remboursement à bien été pris en compte !');
 
-                          setTimeout(() => {
+                                setTimeout(() => {
 
-                            var axYear = (this.$route.params.year !== undefined) ? this.$route.params.year : String(new Date().getFullYear())
+                                  window.location.reload()
 
-                            axios.get(process.env.WEBSITE + '/user-orders/' + email.value + '/' + userId + '/' + axYear)
-                              .then((res) => {
-                                if (res.status === 200) {
-                                  // Static values
-                                  orders.value = (res.data.orders == []) ? 0 : res.data.orders
-                                  ordersTable.value = res.data.ordersTable
+                                }, 2500);
 
-                                  res.data.ordersTable.forEach(element => {
+                              } else {
+                                errorNotif(paiement_status.message);
+                              }
 
-                                    var paypal_id = element.paypal_id
+                            })
 
-                                    rowData.value.push({
-                                      'CreatedAt': moment(element.created_at).format('YYYY-MM-DD'),
-                                      'idProduct': element.id,
-                                      'TooltipStatus': element.titleStatus,
-                                      'Nom2': 'Pack ' + element.title,
-                                      'IconPack': element.image,
-                                      'PaiementStatus': (element.status === 1) ? 'cross-in-warning.png' : (element.status === 2) ? 'tick-in-circle.png' : (element.status === 3) ? 'cross-in-circle.png' : (element.status === 4) ? 'cross-in-circle.png' : '',
-                                      'Id': element.paypal_id,
-                                      '#': element.id,
-                                      'Quantité': element.qte,
-                                      'Total HT': element.total_ht + ' €',
-                                      'Total TTC': element.total_ttc + ' €',
-                                      'Statut': true,
-                                      'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
-                                      'Payé le': (element.validate_at !== null) ? moment(element.validate_at).format('DD MMMM YYYY à HH:mm') : '/',
-                                      'Rembourser le': (element.refund_at !== null) ? moment(element.refund_at).format('DD MMMM YYYY à HH:mm') : '/',
-                                    })
+                        } else if (methode === "Mollie") {
 
-                                  })
+                          axios.post(process.env.WEBSITE + '/order-refund-mobilie', { 'tokenPaiement': tokenPaiement })
+                            .then((res) => {
 
-                                }
-                              })
+                              if (res.data.succes === true) {
 
-                          }, 1000);
+                                showNotif('Votre demande de remboursement à bien été pris en compte !');
 
-                        } else {
-                          errorNotif(paiement_status.value.message);
+                                setTimeout(() => {
+
+                                  window.location.reload()
+
+                                }, 2500);
+
+                              } else {
+                                errorNotif(paiement_status.message);
+                              }
+
+                            })
+
                         }
 
                       } else {
@@ -2782,8 +2787,9 @@ export default defineComponent({
                       // Modal Static Values
 
                       setTimeout(() => {
+                        console.log(show_order.value.order)
                         if (show_order.value.order.status >= 5) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
-                        if (show_order.value.order.status === 4) $('#staticOrderShow2').text(moment('Rembourser le ' + show_order.value.order.refund_at).format('DD MMMM YYYY à HH:mm'))
+                        if (show_order.value.order.status === 4) $('#staticOrderShow2').text(moment(show_order.value.order.refund_at).format('DD MMMM YYYY à HH:mm'))
                         if (show_order.value.order.status === 1) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
                         if (show_order.value.order.status === 2) $('#staticOrderShow2').text(moment(show_order.value.order.validate_at).format('DD MMMM YYYY à HH:mm'))
                         if (show_order.value.order.status === 3) $('#staticOrderShow2').text(moment(show_order.value.order.created_at).format('DD MMMM YYYY à HH:mm'))
@@ -2794,7 +2800,7 @@ export default defineComponent({
                         if (show_order.value.order.status === 4) $('#staticDate').text('Rembourser le')
                         if (show_order.value.order.status === 5) $('#staticDate').text('Livré le')
 
-                        $('#staticOrderShow3').text(String(show_order.value.order.paypal_id).replace('PAYID-', ''))
+                        $('#staticOrderShow3').text(String(show_order.value.order.paypal_id).replace('PAYID-', '').replace('tr_', ''))
                         $('#staticOrderShow4').html('<span><i class="me-2 ' + show_order.value.order.image + '"></i></span>' + '<span>Pack ' + show_order.value.order.title + '</span>')
                         $('#staticOrderShow5').text(show_order.value.order.total_ht + ' €')
                         $('#staticOrderShow6').text('0.00 €')
@@ -2808,6 +2814,12 @@ export default defineComponent({
                         $('#staticOrderShow12').text(show_order.value.order.country_code_payer)
 
                         $('#staticOrderShow13').html('<ul>' + show_order.value.order.content + '</ul>')
+
+                        if (show_order.value.order.paiement === 'Paypal') {
+                          $('.imagePaiement').attr('src', 'paypal.png')
+                        } else if (show_order.value.order.paiement === 'Mollie') {
+                          $('.imagePaiement').attr('src', 'mollie.jpg')
+                        }
 
                         if (show_order.value.order.recipient_name_payer === null) {
                           $('#staticOrderCoordonnees').hide()
@@ -2844,10 +2856,12 @@ export default defineComponent({
                         if (show_order.value.order.status >= 2 && show_order.value.order.status !== 3 && show_order.value.order.status !== 4) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
 
                         if (show_order.value.order.status === 3) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
+                        if (show_order.value.order.status === 4) progressLine += '<li class="step0 active text-right" id="step3">Paiement accepté</li>'
 
                         if (show_order.value.order.status <= 1) progressLine += '<li class="step0 text-right" id="step3">Paiement accepté</li>'
                         if (show_order.value.order.status === 2 && show_order.value.order.status !== 3) progressLine += '<li class="step0 active text-right" id="step4">Commande livré</li>'
                         if (show_order.value.order.status <= 3 && show_order.value.order.status !== 2) progressLine += '<li class="step0 text-right" id="step4">Commande livré</li>'
+                        if (show_order.value.order.status === 4) progressLine += '<li class="step0 active text-right" id="step4">Commande livré</li>'
 
 
                         $('#progressbar').html(progressLine)
@@ -2862,9 +2876,10 @@ export default defineComponent({
 
                       var id = $(this).data('id'),
                         date = $(this).data('date'),
+                        methode = $(this).data('methode'),
                         tokenPaiement = $(this).data('token')
 
-                      refundOrder(id, tokenPaiement, date)
+                      refundOrder(id, methode, tokenPaiement, date)
 
                     })
 

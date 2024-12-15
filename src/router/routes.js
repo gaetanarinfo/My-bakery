@@ -7,14 +7,14 @@ const routes = [
     children: [
       { path: '/', component: () => import('pages/Home.vue') },
       { path: '/#', component: () => import('pages/Home.vue') },
-      { path: '/blogs', component: () => import('pages/Blog.vue') },
-      { path: '/bakerys', component: () => import('pages/Bakerys.vue') },
+      { path: '/blogs-bakerys', component: () => import('pages/Blog.vue') },
+      { path: '/bakerys-pastry', component: () => import('pages/Bakerys.vue') },
       { path: '/cgu', component: () => import('pages/Cgu.vue') },
       { path: '/cgv', component: () => import('pages/Cgv.vue') },
       { path: '/politique-confidentialite', component: () => import('pages/PolitiqueConfidentialite.vue') },
       { path: '/my-bakerys', component: () => import('pages/MyBakerys.vue') },
       { path: '/bakery/:url', component: () => import('pages/Bakery.vue') },
-      { path: '/blogs/:url', component: () => import('pages/Article.vue') },
+      { path: '/article/:url', component: () => import('pages/Article.vue') },
       { path: '/add-bakery', component: () => import('pages/AddBakery.vue') },
       { path: '/my-account', component: () => import('pages/MyAccount.vue') },
       { path: '/my-account/:token', component: () => import('pages/MyAccount.vue') },
@@ -26,8 +26,8 @@ const routes = [
       { path: '/cart', component: () => import('pages/Cart.vue') },
       { path: '/products', component: () => import('pages/Products.vue') },
       { path: '/credits/:id', component: () => import('pages/Credits.vue') },
-      { path: '/cart/paiement/succes/:paymentId', component: () => import('src/pages/PaiementSucces.vue') },
-      { path: '/cart/paiement/cancel/:paymentId', component: () => import('src/pages/PaiementCancel.vue') },
+      { path: '/cart/paiement/succes', component: () => import('src/pages/PaiementSucces.vue') },
+      { path: '/cart/paiement/cancel', component: () => import('src/pages/PaiementCancel.vue') },
     ]
   },
 

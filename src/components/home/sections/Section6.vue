@@ -26,33 +26,42 @@
 
               <div class="row">
 
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" v-for="blog in blogs" :key="blog.id">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" v-for="blog in blogs" :key="blog.id">
 
                   <article>
 
                     <div class="thumbnail">
 
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"></a>
+                      <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'">
 
-                      <img width="450" height="300" :src="'blogs/' + blog.image" alt="">
+                      </div>
+
+                      <div class="blog-pic-inner home">
+
+                        <div class="label">{{ blog.name }}</div>
+
+                        <ul>
+                          <li>Par <span>{{ blog.author }}</span></li>
+                          <li><i class="fa-solid fa-clock me-1"></i> Créer le {{
+                            moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
+                          <li>{{ blog.views }} vues</li>
+                        </ul>
+
+                      </div>
 
                     </div>
 
                     <div class="content text-start">
 
-                      <span class="date"><i class="fa-solid fa-clock me-1"></i> Créer le {{
-                        moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</span>
+                      <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title">
+                        <h3 class="title">{{ blog.title }}</h3>
+                      </a>
 
-                      <h3 class="title">{{ blog.title }}</h3>
+                      <p>{{ substrats(blog.small_content) }}</p>
 
-                      <span class="author">Par <span>{{ blog.author }}</span></span>
-                      <span class="views me-2"><i class="fa-solid fa-eye me-1"></i>{{ blog.views }} vue<span
-                          v-if="blog.views >= 2">s</span></span>
-
-                      <p>{{ blog.small_content.substr(0, 250) + '...' }}</p>
-
-                      <a @click="this.$router.push('/blogs/' + blog.url)" :title="blog.title"
-                        class="btn btn-bakery">Lire la suite</a>
+                      <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title"
+                        class="btn btn-bakery">Lire la
+                        suite</a>
 
                     </div>
 
@@ -62,7 +71,7 @@
 
                 <div class="mt-3">
 
-                  <a @click="this.$router.push('/blogs');" class="btn btn-bakery">Voir les autres articles</a>
+                  <a @click="this.$router.push('/blogs-bakerys');" class="btn btn-bakery">Voir les autres articles</a>
 
                 </div>
 
@@ -111,6 +120,11 @@ export default defineComponent({
     return {
       blogs,
       moment: moment,
+    }
+  },
+  methods: {
+    substrats (value) {
+      return value.substr(0, 249) + '...'
     }
   }
 })

@@ -1,5 +1,5 @@
 <template name="BakeryComponent">
-  <div class="background fadeIn2 bb background1">
+  <div class="background fadeIn2 bb background7">
 
     <div class="content">
 
@@ -13,7 +13,7 @@
 
             <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="before"><a role="button" @click="this.$router.push('/bakerys')">Boulangeries</a></li>
+            <li class="before"><a role="button" @click="this.$router.push('/bakerys-pastry')">Boulangeries</a></li>
 
             <li class="active">{{ bakery.title }}</li>
 
@@ -40,6 +40,33 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 widthMaxCol">
 
               <div class="thumbnail">
+
+                <div class="favorite-bakery-dark" v-if="bakery.image === 'default.jpg'">
+
+                  <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
+                    :class="'delete-bakery-list-' + bakery.id">
+                    <i class="fa-solid fa-heart-circle-xmark text-danger"></i>
+                  </a>
+
+                  <a v-else @click="saveBakeryList(bakery.id)" :class="'bakery-list-' + bakery.id">
+                    <i class="fa-solid fa-heart text-danger"></i>
+                  </a>
+
+                </div>
+
+                <div class="favorite-bakery" v-else>
+
+                  <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
+                    :class="'delete-bakery-list-' + bakery.id">
+                    <i class="fa-solid fa-heart-circle-xmark text-danger"></i>
+                  </a>
+
+                  <a v-else @click="saveBakeryList(bakery.id)" :class="'bakery-list-' + bakery.id">
+                    <i class="fa-solid fa-heart text-danger"></i>
+                  </a>
+
+                </div>
+
 
                 <div id="slider_1" class="sliderimgSpec" tabindex="0">
                   <img class="sliderSpec" v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
@@ -105,15 +132,15 @@
 
                     <div class="br-widget">
 
-                      <a v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4" :data-rating-value="note4"
-                        :data-rating-text="note4"
-                        v-bind:class="note4 > Math.round(bakery.counter_choix * 5 / bakery.sum_choix) ? '' : 'br-selected'"></a>
+                      <a v-if="bakery.user_rating_google !== 0" v-for="note4 in 5" :key="note4"
+                        :data-rating-value="note4" :data-rating-text="note4"
+                        v-bind:class="note4 > Math.round(bakery.total_rating_google).toFixed(1) ? '' : 'br-selected'"></a>
 
-                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_choix === 0"
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.user_rating_google === 0"
                         v-for="note4 in 5" :key="note4" class=""></a>
 
-                      <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
-                        Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
+                      <div v-if="bakery.user_rating_google !== 0" class="br-current-rating">{{
+                        Math.round(bakery.total_rating_google).toFixed(1)
                       }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
@@ -160,31 +187,117 @@
                         class="fa-solid fa-globe me-2"></i>Visiter le site internet</a></p>
                 </div>
 
-                <div class="short-desc">
+                <div class="rating">
 
-                  <p><strong>{{ bakery.small_content }}</strong></p>
+                  <div class="devanture">
+
+                    <span>Devanture du magasin :</span>
+
+                    <div class="br-widget">
+
+                      <a v-if="bakery.counter_devanture !== 0" v-for="note4 in 5" :key="note4"
+                        :data-rating-value="note4" :data-rating-text="note4"
+                        v-bind:class="note4 > Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1) ? '' : 'br-selected'"></a>
+
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_devanture === 0"
+                        v-for="note4 in 5" :key="note4" class=""></a>
+
+                      <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
+                        Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1)
+                        }}</div>
+
+                      <div class="br-current-rating" v-else>0</div>
+
+                    </div>
+
+                  </div>
 
                 </div>
 
-                <div class="simple-action grid-mobile text-end">
+                <div class="rating">
 
-                  <div v-if="Cookies.has('bakerysList') !== false">
+                  <div class="proprete">
 
-                    <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
-                      :class="'btn btn-bakery delete-bakery-list-' + bakery.id"><i
-                        class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
+                    <span>Propreté du magasin :</span>
 
-                    <a v-else @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery bakery-list-' + bakery.id"><i
-                        class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+                    <div class="br-widget">
+
+                      <a v-if="bakery.counter_proprete !== 0" v-for="note4 in 5" :key="note4" :data-rating-value="note4"
+                        :data-rating-text="note4"
+                        v-bind:class="note4 > Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1) ? '' : 'br-selected'"></a>
+
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_proprete === 0"
+                        v-for="note4 in 5" :key="note4" class=""></a>
+
+                      <div v-if="bakery.counter_proprete !== 0" class="br-current-rating">{{
+                        Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1)
+                        }}</div>
+
+                      <div class="br-current-rating" v-else>0</div>
+
+                    </div>
 
                   </div>
 
-                  <div v-else>
+                </div>
 
-                    <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery bakery-list-' + bakery.id"><i
-                        class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
+                <div class="rating">
+
+                  <div class="prix">
+
+                    <span>Prix des produits :</span>
+
+                    <div class="br-widget">
+
+                      <a v-if="bakery.counter_prix !== 0" v-for="note4 in 5" :key="note4" :data-rating-value="note4"
+                        :data-rating-text="note4"
+                        v-bind:class="note4 > Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1) ? '' : 'br-selected'"></a>
+
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_prix === 0"
+                        v-for="note4 in 5" :key="note4" class=""></a>
+
+                      <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
+                        Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1)
+                        }}</div>
+
+                      <div class="br-current-rating" v-else>0</div>
+
+                    </div>
 
                   </div>
+
+                </div>
+
+                <div class="rating">
+
+                  <div class="choix">
+
+                    <span>Choix des produits :</span>
+
+                    <div class="br-widget">
+
+                      <a v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4" :data-rating-value="note4"
+                        :data-rating-text="note4"
+                        v-bind:class="note4 > Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1) ? '' : 'br-selected'"></a>
+
+                      <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_choix === 0"
+                        v-for="note4 in 5" :key="note4" class=""></a>
+
+                      <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
+                        Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1)
+                        }}</div>
+
+                      <div class="br-current-rating" v-else>0</div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="short-desc">
+
+                  <p><strong>{{ bakery.small_content }}</strong></p>
 
                 </div>
 
@@ -271,7 +384,7 @@
 
               <li v-else class="me-0">
 
-                <a class="disabled">Revendiquer
+                <a @click="this.$router.push('/products')">Revendiquer
                   cet
                   établissement</a>
 
@@ -354,51 +467,28 @@
                                 obligatoires
                                 sont marqués<span class="required" aria-hidden="true">*</span></span></p>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                            <div class="row">
 
-                              <div class="form-group">
+                              <div class="col-lg-3 col-md-3 col-sm-1 col-xs-12 ">
 
-                                <label for="rating"><strong>Devanture du magasin <sup>*</sup></strong></label>
+                                <div class="form-group">
 
-                                <div class="devanture">
+                                  <label for="rating"><strong>Devanture du magasin <sup>*</sup></strong></label>
 
-                                  <div class="br-widget">
+                                  <div class="devanture">
 
-                                    <input type="hidden" id="devanture" name="devanture">
+                                    <div class="br-widget">
 
-                                    <a role="button" v-for="note in 5" :key="note" data-name="devanture"
-                                      :data-rating-value="note" :data-rating-text="note"></a>
+                                      <input type="hidden" id="devanture" name="devanture">
 
-                                    <div class="br-current-rating">0</div>
+                                      <a role="button" v-for="note in 5" :key="note" data-name="devanture"
+                                        :data-rating-value="note" :data-rating-text="note"></a>
 
-                                    <span span class="error-text devanture_error"></span>
+                                      <div class="br-current-rating">0</div>
 
-                                  </div>
+                                      <span span class="error-text devanture_error"></span>
 
-                                </div>
-
-                              </div>
-
-                            </div>
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-
-                              <div class="form-group">
-
-                                <label for="rating"><strong>Propreté du magasin <sup>*</sup></strong></label>
-
-                                <div class="proprete">
-
-                                  <div class="br-widget">
-
-                                    <input type="hidden" id="proprete" name="proprete">
-
-                                    <a role="button" v-for="note in 5" :key="note" data-name="proprete"
-                                      :data-rating-value="note" :data-rating-text="note"></a>
-
-                                    <div class="br-current-rating">0</div>
-
-                                    <span span class="error-text proprete_error"></span>
+                                    </div>
 
                                   </div>
 
@@ -406,26 +496,26 @@
 
                               </div>
 
-                            </div>
+                              <div class="col-lg-3 col-md-3 col-sm-1 col-xs-12 ">
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <div class="form-group">
 
-                              <div class="form-group">
+                                  <label for="rating"><strong>Propreté du magasin <sup>*</sup></strong></label>
 
-                                <label for="rating"><strong>Prix des produits <sup>*</sup></strong></label>
+                                  <div class="proprete">
 
-                                <div class="prix">
+                                    <div class="br-widget">
 
-                                  <div class="br-widget">
+                                      <input type="hidden" id="proprete" name="proprete">
 
-                                    <input type="hidden" id="prix" name="prix">
+                                      <a role="button" v-for="note in 5" :key="note" data-name="proprete"
+                                        :data-rating-value="note" :data-rating-text="note"></a>
 
-                                    <a role="button" v-for="note in 5" :key="note" data-name="prix"
-                                      :data-rating-value="note" :data-rating-text="note"></a>
+                                      <div class="br-current-rating">0</div>
 
-                                    <div class="br-current-rating">0</div>
+                                      <span span class="error-text proprete_error"></span>
 
-                                    <span span class="error-text prix_error"></span>
+                                    </div>
 
                                   </div>
 
@@ -433,26 +523,53 @@
 
                               </div>
 
-                            </div>
+                              <div class="col-lg-3 col-md-3 col-sm-1 col-xs-12 ">
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <div class="form-group">
 
-                              <div class="form-group">
+                                  <label for="rating"><strong>Prix des produits <sup>*</sup></strong></label>
 
-                                <label for="rating"><strong>Choix des produits <sup>*</sup></strong></label>
+                                  <div class="prix">
 
-                                <div class="choix">
+                                    <div class="br-widget">
 
-                                  <div class="br-widget">
+                                      <input type="hidden" id="prix" name="prix">
 
-                                    <input type="hidden" id="choix" name="choix">
+                                      <a role="button" v-for="note in 5" :key="note" data-name="prix"
+                                        :data-rating-value="note" :data-rating-text="note"></a>
 
-                                    <a role="button" v-for="note in 5" :key="note" data-name="choix"
-                                      :data-rating-value="note" :data-rating-text="note"></a>
+                                      <div class="br-current-rating">0</div>
 
-                                    <div class="br-current-rating">0</div>
+                                      <span span class="error-text prix_error"></span>
 
-                                    <span span class="error-text choix_error"></span>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                              <div class="col-lg-3 col-md-3 col-sm-1 col-xs-12 ">
+
+                                <div class="form-group">
+
+                                  <label for="rating"><strong>Choix des produits <sup>*</sup></strong></label>
+
+                                  <div class="choix">
+
+                                    <div class="br-widget">
+
+                                      <input type="hidden" id="choix" name="choix">
+
+                                      <a role="button" v-for="note in 5" :key="note" data-name="choix"
+                                        :data-rating-value="note" :data-rating-text="note"></a>
+
+                                      <div class="br-current-rating">0</div>
+
+                                      <span span class="error-text choix_error"></span>
+
+                                    </div>
 
                                   </div>
 
@@ -480,7 +597,7 @@
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                              <div class="row">
+                              <div class="row mobile">
 
                                 <div class="col form-group">
 
@@ -877,7 +994,6 @@
 <style lang="css">
 .bb .content {
   margin: 0 auto;
-  padding: 4rem 0;
   display: flex;
   max-width: 1170px;
   text-align: center;
@@ -896,6 +1012,7 @@
 @media (max-width: 768px) {
   .page-bakery-one .ads_campaign {
     margin-bottom: 0 !important;
+    margin-top: 2rem !important;
   }
 
   .page-bakery-one .ads_campaign.top {
@@ -1129,7 +1246,7 @@ export default defineComponent({
       const bakerysList = Cookies.has('bakerysList'),
         cookies = Cookies.get('bakerysList')
 
-      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger me-2"></i> Supprimer')
+      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger"></i>')
 
       if ($(document).find('.bakery-list-' + id).length !== 0) {
 
@@ -1167,7 +1284,7 @@ export default defineComponent({
 
         $('.delete-bakery-list-' + id).removeClass('delete-bakery-list-' + id)
 
-        $('.bakery-list-' + id).html('<i class="fa-solid fa-heart text-danger me-2"></i> Ajouter à ma liste')
+        $('.bakery-list-' + id).html('<i class="fa-solid fa-heart text-danger"></i>')
 
         Cookies.set('bakerysList', total)
 
@@ -1287,33 +1404,37 @@ export default defineComponent({
 
           if ($('#devanture').val().length <= 0) {
             $('.' + 'devanture' + '_error').attr('style', 'display: block')
-            $('.' + 'devanture' + '_error').text("Votre note pour la devanture est obligatoire !");
+            $(document).find('a[data-name="devanture"]').addClass('error')
           } else {
+            $(document).find('a[data-name="devanture"]').removeClass('error')
             $('.' + 'devanture' + '_error').removeAttr()
             $('.' + 'devanture' + '_error').text("");
           }
 
           if ($('#choix').val().length <= 0) {
             $('.' + 'choix' + '_error').attr('style', 'display: block')
-            $('.' + 'choix' + '_error').text("Votre note pour le choix des produits est obligatoire !");
+            $(document).find('a[data-name="choix"]').addClass('error')
           } else {
+            $(document).find('a[data-name="choix"]').removeClass('error')
             $('.' + 'choix' + '_error').removeAttr()
             $('.' + 'choix' + '_error').text("");
           }
 
           if ($('#proprete').val().length <= 0) {
             $('.' + 'proprete' + '_error').attr('style', 'display: block')
-            $('.' + 'proprete' + '_error').text("Votre note pour la propreté du magasin des produits est obligatoire !");
+            $(document).find('a[data-name="proprete"]').addClass('error')
           } else {
+            $(document).find('a[data-name="proprete"]').removeClass('error')
             $('.' + 'proprete' + '_error').removeAttr()
             $('.' + 'proprete' + '_error').text("");
           }
 
           if ($('#prix').val().length <= 0) {
             $('.' + 'prix' + '_error').attr('style', 'display: block')
-            $('.' + 'prix' + '_error').text("Votre note pour le prix est obligatoire !");
+            $(document).find('a[data-name="prix"]').addClass('error')
           } else {
             $('.' + 'prix' + '_error').removeAttr()
+            $(document).find('a[data-name="prix"]').removeClass('error')
             $('.' + 'prix' + '_error').text("");
           }
 
@@ -1914,34 +2035,6 @@ export default defineComponent({
 
     }, 1500);
 
-    $('#menu-main-menu').removeAttr('style')
-
-    // Header menu
-
-    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
-      e.preventDefault()
-
-      $(this).addClass('active')
-
-      $('#menu-main-menu').fadeIn(300)
-
-    })
-
-    $(document).on('click', '.menu-toggle-2.active', function (e) {
-      e.preventDefault()
-
-      $(this).removeClass('active')
-
-      $('#menu-main-menu').fadeOut(300)
-
-    })
-
-    $(document).on('click', '#blog .btn-target', function (e) {
-      e.preventDefault()
-      var url = $(this).attr('href')
-      location.href = url
-    })
-
     // Header
 
     $(window).scroll(function () {
@@ -1991,32 +2084,7 @@ export default defineComponent({
 
     // Header menu
 
-    $(document).on('click', '.menu-toggle', function (e) {
-      e.preventDefault()
-
-      $(this).toggleClass('active')
-
-      $('#menu-main-menu').fadeToggle(300)
-    })
-
     setTimeout(() => {
-      $('.search-btn').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').addClass('active')
-        $('body').css({
-          overflow: 'hidden'
-        })
-      })
-
-      $('.searchbox-remove').on('click', function (e) {
-        e.preventDefault()
-
-        $('.searchbox').removeClass('active')
-        $('body').css({
-          overflow: 'auto'
-        })
-      })
 
       $('#btn_description').on('click', function (e) {
 
@@ -2100,6 +2168,8 @@ export default defineComponent({
       $(this).addClass('br-active')
       $(this).prevAll().addClass('br-active')
       $(this).nextAll().removeClass('br-active')
+      $(this).nextAll().removeClass('error')
+      $(this).prevAll().removeClass('error')
 
     })
 

@@ -1,6 +1,6 @@
 <template name="SectionHome4">
 
-  <div id="classement" class="section fadeIn4 last-bakery">
+  <div id="classement" class="section bakery-home fadeIn4 last-bakery">
 
     <div class="column-inner">
 
@@ -32,15 +32,41 @@
 
                     <div>
 
-                      <div :id="'carouselBakery' + bakery.id" :class="(bakery.highlighting_at !== null) ? 'carousel ahead slide slider-bakery carousel-fade' : 'carousel slide slider-bakery carousel-fade'"
+                      <div :id="'carouselBakery' + bakery.id"
+                        :class="(bakery.highlighting_at !== null) ? 'carousel ahead slide slider-bakery carousel-fade' : 'carousel slide slider-bakery carousel-fade'"
                         data-ride="carousel">
+
+                        <div class="favorite-bakery-dark" v-if="bakery.image === 'default.jpg'">
+
+                          <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1"
+                            @click="saveBakeryList(bakery.id)" :class="'delete-bakery-list-' + bakery.id">
+                            <i class="fa-solid fa-heart-circle-xmark text-danger"></i>
+                          </a>
+
+                          <a v-else @click="saveBakeryList(bakery.id)" :class="'bakery-list-' + bakery.id">
+                            <i class="fa-solid fa-heart text-danger"></i>
+                          </a>
+
+                        </div>
+
+                        <div class="favorite-bakery" v-else>
+
+                          <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1"
+                            @click="saveBakeryList(bakery.id)" :class="'delete-bakery-list-' + bakery.id">
+                            <i class="fa-solid fa-heart-circle-xmark text-danger"></i>
+                          </a>
+
+                          <a v-else @click="saveBakeryList(bakery.id)" :class="'bakery-list-' + bakery.id">
+                            <i class="fa-solid fa-heart text-danger"></i>
+                          </a>
+
+                        </div>
 
                         <div class="carousel-inner">
 
                           <div class="carousel-item active">
 
-                            <a @click="addClick(bakery.id, '/bakery/' + bakery.url)"
-                            class="carousel-action">
+                            <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="carousel-action">
                               <img v-if="bakery.image === 'default.jpg'"
                                 style="max-width: 365px;width: 100%;height: 265px;" class="d-block w-100"
                                 :src="'bakerys/' + bakery.image" :alt="bakery.title">
@@ -63,88 +89,110 @@
                     </div>
 
                     <div>
-                      <div class="devanture">
 
-                        <span>Devanture du magasin :</span>
+                      <div class="rating">
 
-                        <div class="br-widget">
+                        <div class="devanture">
 
-                          <a href="#" v-if="bakery.counter_devanture !== 0" v-for="note in 5" :key="note"
-                            :data-rating-value="note" :data-rating-text="note"
-                            v-bind:class="note > Math.round(bakery.counter_devanture * 5 / bakery.sum_devanture) ? '' : 'br-selected'"></a>
+                          <span>Devanture du magasin :</span>
 
-                          <a href="#" v-if="bakery.counter_devanture === 0" v-for="note in 5" :key="note" class=""></a>
+                          <div class="br-widget">
 
-                          <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
-                            Math.round(bakery.counter_devanture * 5 /
-                              bakery.sum_devanture) }}</div>
+                            <a v-if="bakery.counter_devanture !== 0" v-for="note4 in 5" :key="note4"
+                              :data-rating-value="note4" :data-rating-text="note4"
+                              v-bind:class="note4 > Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1) ? '' : 'br-selected'"></a>
 
-                          <div class="br-current-rating" v-else>0</div>
-                        </div>
+                            <a :data-rating-value="note4" :data-rating-text="note4"
+                              v-if="bakery.counter_devanture === 0" v-for="note4 in 5" :key="note4" class=""></a>
 
-                      </div>
+                            <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
+                              Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1)
+                              }}</div>
 
-                      <div class="proprete">
+                            <div class="br-current-rating" v-else>0</div>
 
-                        <span>Propreté du magasin :</span>
-
-                        <div class="br-widget">
-
-                          <a href="#" v-if="bakery.counter_proprete !== 0" v-for="note2 in 5" :key="note2"
-                            :data-rating-value="note2" :data-rating-text="note2"
-                            v-bind:class="note2 > Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete) ? '' : 'br-selected'"></a>
-
-                          <a href="#" v-if="bakery.counter_proprete === 0" v-for="note2 in 5" :key="note2" class=""></a>
-
-                          <div class="br-current-rating" v-if="bakery.counter_proprete !== 0">{{
-                            Math.round(bakery.counter_proprete * 5 / bakery.sum_proprete)
-                          }}</div>
-
-                          <div class="br-current-rating" v-else>0</div>
+                          </div>
 
                         </div>
 
                       </div>
 
-                      <div class="prix">
+                      <div class="rating">
 
-                        <span>Prix des produits :</span>
+                        <div class="proprete">
 
-                        <div class="br-widget">
+                          <span>Propreté du magasin :</span>
 
-                          <a href="#" v-if="bakery.counter_prix !== 0" v-for="note3 in 5" :key="note3"
-                            :data-rating-value="note3" :data-rating-text="note3"
-                            v-bind:class="note3 > Math.round(bakery.counter_prix * 5 / bakery.sum_prix) ? '' : 'br-selected'"></a>
+                          <div class="br-widget">
 
-                          <a href="#" v-if="bakery.counter_prix === 0" v-for="note3 in 5" :key="note3" class=""></a>
+                            <a v-if="bakery.counter_proprete !== 0" v-for="note4 in 5" :key="note4"
+                              :data-rating-value="note4" :data-rating-text="note4"
+                              v-bind:class="note4 > Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1) ? '' : 'br-selected'"></a>
 
-                          <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
-                            Math.round(bakery.counter_prix * 5 / bakery.sum_prix)
-                          }}</div>
+                            <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_proprete === 0"
+                              v-for="note4 in 5" :key="note4" class=""></a>
 
-                          <div class="br-current-rating" v-else>0</div>
+                            <div v-if="bakery.counter_proprete !== 0" class="br-current-rating">{{
+                              Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1)
+                              }}</div>
+
+                            <div class="br-current-rating" v-else>0</div>
+
+                          </div>
 
                         </div>
 
                       </div>
 
-                      <div class="choix">
+                      <div class="rating">
 
-                        <span>Choix des produits :</span>
+                        <div class="prix">
 
-                        <div class="br-widget">
+                          <span>Prix des produits :</span>
 
-                          <a href="#" v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4"
-                            :data-rating-value="note4" :data-rating-text="note4"
-                            v-bind:class="note4 > Math.round(bakery.counter_choix * 5 / bakery.sum_choix) ? '' : 'br-selected'"></a>
+                          <div class="br-widget">
 
-                          <a href="#" v-if="bakery.counter_choix === 0" v-for="note4 in 5" :key="note4" class=""></a>
+                            <a v-if="bakery.counter_prix !== 0" v-for="note4 in 5" :key="note4"
+                              :data-rating-value="note4" :data-rating-text="note4"
+                              v-bind:class="note4 > Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1) ? '' : 'br-selected'"></a>
 
-                          <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
-                            Math.round(bakery.counter_choix * 5 / bakery.sum_choix)
-                          }}</div>
+                            <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_prix === 0"
+                              v-for="note4 in 5" :key="note4" class=""></a>
 
-                          <div class="br-current-rating" v-else>0</div>
+                            <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
+                              Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1)
+                              }}</div>
+
+                            <div class="br-current-rating" v-else>0</div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="rating">
+
+                        <div class="choix">
+
+                          <span>Choix des produits :</span>
+
+                          <div class="br-widget">
+
+                            <a v-if="bakery.counter_choix !== 0" v-for="note4 in 5" :key="note4"
+                              :data-rating-value="note4" :data-rating-text="note4"
+                              v-bind:class="note4 > Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1) ? '' : 'br-selected'"></a>
+
+                            <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.counter_choix === 0"
+                              v-for="note4 in 5" :key="note4" class=""></a>
+
+                            <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
+                              Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1)
+                              }}</div>
+
+                            <div class="br-current-rating" v-else>0</div>
+
+                          </div>
 
                         </div>
 
@@ -179,30 +227,8 @@
 
                     <div class="text-end mt-3 grid-mobile">
 
-                      <div v-if="Cookies.has('bakerysList') !== false">
-
-                        <a v-if="Cookies.get('bakerysList').indexOf(bakery.id) != -1" @click="saveBakeryList(bakery.id)"
-                          :class="'btn btn-bakery me-3 delete-bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart-circle-xmark me-2 text-danger"></i>Supprimer</a>
-
-                        <a v-else @click="saveBakeryList(bakery.id)"
-                          :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
-
-                        <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="btn btn-bakery">En savoir
-                          +</a>
-
-                      </div>
-
-                      <div v-else>
-
-                        <a @click="saveBakeryList(bakery.id)" :class="'btn btn-bakery me-3 bakery-list-' + bakery.id"><i
-                            class="fa-solid fa-heart me-2 text-danger"></i>Ajouter à ma liste</a>
-
-                        <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="btn btn-bakery">En savoir
-                          +</a>
-
-                      </div>
+                      <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="btn btn-bakery">En savoir
+                        +</a>
 
                     </div>
 
@@ -212,7 +238,7 @@
 
                 <div class="mt-3 text-center">
 
-                  <a @click="this.$router.push('/bakerys');" class="btn btn-bakery">Voir les autres
+                  <a @click="this.$router.push('/bakerys-pastry');" class="btn btn-bakery">Voir les autres
                     boulangeries</a>
 
                 </div>
@@ -269,7 +295,7 @@ export default defineComponent({
       const bakerysList = Cookies.has('bakerysList'),
         cookies = Cookies.get('bakerysList')
 
-      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger me-2"></i> Supprimer')
+      $('.bakery-list-' + id).html('<i class="fa-solid fa-heart-circle-xmark text-danger"></i>')
 
       if ($(document).find('.bakery-list-' + id).length !== 0) {
 
@@ -279,9 +305,11 @@ export default defineComponent({
           Cookies.set('bakerysList', Cookies.get('bakerysList') + '-' + id)
         }
 
+        $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass('delete-bakery-list-' + id)
+
       } else {
 
-        var total = cookies.replace('-' + id, '');
+        var total = cookies.replace('-' + id, '')
 
         if (cookies.indexOf(id + '-') != -1) {
 
@@ -301,16 +329,19 @@ export default defineComponent({
 
         }
 
+        $('.delete-bakery-list-' + id).addClass('bakery-list-' + id)
+
+        $('.delete-bakery-list-' + id).removeClass('delete-bakery-list-' + id)
+
+        $('.bakery-list-' + id).html('<i class="fa-solid fa-heart text-danger"></i>')
+
+        Cookies.set('bakerysList', total)
+
         if (cookies.split('-').length === 1) {
           Cookies.remove('bakerysList');
         }
 
-        $('.delete-bakery-list-' + id).removeClass('delete-bakery-list-' + id).addClass('bakery-list-' + id)
-        $('.bakery-list-' + id).removeClass('delete-bakery-list').addClass('bakery-list')
-
       }
-
-      $('.bakery-list-' + id).removeClass('bakery-list-' + id).addClass('delete-bakery-list-' + id)
 
     },
   }

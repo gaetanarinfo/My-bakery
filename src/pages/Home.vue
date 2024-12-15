@@ -23,6 +23,10 @@ import FooterComponent from 'components/Footer.vue'
 import SliderComponent from 'components/Slider.vue'
 import SectionsHome from 'components/SectionsHome.vue'
 
+import scripts from "../js/home.js";
+
+scripts
+
 // Balise Méta
 import { useMeta } from 'quasar'
 

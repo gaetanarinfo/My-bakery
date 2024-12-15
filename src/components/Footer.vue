@@ -127,12 +127,12 @@
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/bakerys');"><i class="fa-solid fa-chevron-right me-1"></i>
+                      <a @click="this.$router.push('/bakerys-pastry');"><i class="fa-solid fa-chevron-right me-1"></i>
                         Boulangeries</a>
                     </li>
 
                     <li>
-                      <a @click="this.$router.push('/blogs');" class="scroll-click" data-scroll="blog"><i
+                      <a @click="this.$router.push('/blogs-bakerys');" class="scroll-click" data-scroll="blog"><i
                           class="fa-solid fa-chevron-right me-1"></i>
                         Blog</a>
                     </li>
@@ -396,6 +396,55 @@ export default defineComponent({
 
     $(document).find('.axeptio_mount').show()
     $(document).find('.wonderpush-bell').show()
+
+    $('#menu-main-menu').removeAttr('style')
+
+    // Header menu
+
+
+    $(document).on('click', '.menu-toggle:not(.active)', function (e) {
+      e.preventDefault()
+
+      $(this).addClass('active')
+
+      $('#menu-main-menu').fadeIn(300)
+
+    })
+
+    $(document).on('click', '.menu-toggle.active', function (e) {
+      e.preventDefault()
+
+      $(this).removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
+
+    $(document).on('click', '.menu-toggle-2:not(.active)', function (e) {
+      e.preventDefault()
+
+      $(this).addClass('active')
+
+      $('#menu-main-menu').fadeIn(300)
+
+    })
+
+    $(document).on('click', '.menu-toggle-2.active', function (e) {
+      e.preventDefault()
+
+      $(this).removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
+
+    $(document).on('click', '#menu-main-menu .menu-item', function (e) {
+
+      $('.menu-toggle-2').removeClass('active')
+
+      $('#menu-main-menu').fadeOut(300)
+
+    })
 
     window.addEventListener('online', this.updateOnlineStatus)
     window.addEventListener('offline', this.updateOnlineStatus)
