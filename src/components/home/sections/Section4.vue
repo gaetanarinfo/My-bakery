@@ -1,6 +1,6 @@
 <template name="SectionHome4">
 
-  <div id="classement" class="section bakery-home fadeIn4 last-bakery">
+  <div id="classement" class="section bakery-home home-section last-bakery">
 
     <div class="column-inner">
 

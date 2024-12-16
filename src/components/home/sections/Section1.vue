@@ -1,5 +1,5 @@
 <template name="SectionHome1">
-  <div class="container-xl section fadeIn">
+  <div class="container-xl section home-section">
 
     <div class="text-center">
 

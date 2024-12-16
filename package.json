@@ -39,6 +39,7 @@
     "vue-mobile-detection": "^2.0.1",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.0.0",
+    "vue-scroll-reveal": "^2.1.0",
     "vue2-google-maps": "^0.10.7",
     "vue3-leaflet": "^1.0.46",
     "vuex": "^4.1.0"

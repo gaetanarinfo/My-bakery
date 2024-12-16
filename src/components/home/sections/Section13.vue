@@ -1,6 +1,6 @@
 <template name="SectionHome13" >
 
-  <div v-if="enableMap" class="section fadeIn14 ratings">
+  <div v-if="enableMap" class="section ratings">
 
     <div class="background-p">
 
@@ -10,7 +10,7 @@
   </div>
 
 
-  <div v-if="enableMap" id="bakery-list" class="section fadeIn9">
+  <div v-if="enableMap" id="bakery-list" class="section home-section">
 
     <div class="column-inner">
 

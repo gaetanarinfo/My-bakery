@@ -1,6 +1,6 @@
 <template name="SectionHome11">
 
-  <div id="footer-link-bakerys" class="section fadeIn12">
+  <div id="footer-link-bakerys" class="section">
 
     <div class="column-inner">
 
@@ -8,7 +8,7 @@
 
         <div class="site-features">
 
-          <div class="container">
+          <div class="container home-section">
 
             <div class="bloc container">
 

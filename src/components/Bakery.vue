@@ -1039,6 +1039,12 @@
   }
 }
 
+@media all and (max-width: 1268px) {
+  .h-bakery {
+    min-height: auto;
+  }
+}
+
 .page-bakery-one .last-bakery .column-inner .wrapper {
   background: none;
 }

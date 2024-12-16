@@ -28,6 +28,7 @@ const routes = [
       { path: '/credits/:id', component: () => import('pages/Credits.vue') },
       { path: '/cart/paiement/succes', component: () => import('src/pages/PaiementSucces.vue') },
       { path: '/cart/paiement/cancel', component: () => import('src/pages/PaiementCancel.vue') },
+      { path: '/application', component: () => import('src/pages/Application.vue') },
     ]
   },
 

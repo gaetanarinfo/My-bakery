@@ -1,11 +1,11 @@
 <template name="SectionHome5">
-  <div class="section fadeIn5 ratings">
+  <div class="section ratings">
 
     <div class="background-p">
 
       <div class="pre-container">
 
-        <div class="container">
+        <div class="container home-section">
 
           <div :id="'slide-' + rating.id" v-for="rating in ratings" :key="rating.id"
             v-bind:class="rating.id === 1 ? 'card-p active' : 'card-p'">

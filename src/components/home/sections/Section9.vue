@@ -1,6 +1,6 @@
 <template name="SectionHome9">
 
-  <div class="section fadeIn5 ratings">
+  <div class="section ratings">
 
     <div class="background-p">
 
@@ -9,7 +9,7 @@
 
   </div>
 
-  <div id="bakery-add" class="section fadeIn10">
+  <div id="bakery-add" class="section home-section">
 
     <div class="column-inner">
 

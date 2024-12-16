@@ -1,5 +1,5 @@
 <template name="SectionHome7">
-  <div id="contact" class="section fadeIn7 contact">
+  <div id="contact" class="section contact">
 
     <div class="background-p">
 
@@ -7,7 +7,7 @@
 
         <div class="row">
 
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 home-section">
 
             <div class="content">
 
@@ -26,7 +26,7 @@
 
           </div>
 
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 home-section">
 
             <form id="form-contact">
 

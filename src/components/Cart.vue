@@ -56,7 +56,9 @@
 
                   <td>
                     <a class="ps-product--table">
-                      <i :class="'me-3 ' + product.image"></i>
+                      <i v-if="product.app === 0" :class="'me-3 ' + product.image"></i>
+                     <div v-html="product.image" class="me-3">
+                     </div>
                       <strong>{{ product.title }}</strong></a>
                   </td>
 
@@ -135,12 +137,31 @@
 
               <h3>Prix ​​total TTC <span class="tva">TVA 20%</span> : <span> {{ shopping_total_ttc }} €</span></h3>
 
-              <a class="ps-btn" @click="createPaiement()">Passer à la
-                caisse</a>
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" value="true" v-model="methode" @click="changePaiement(methode)" checked
+                  type="checkbox" role="switch" id="methodePaiement">
+                <label class="form-check-label" for="methodePaiement"><strong>Paypal / Carte bancaire</strong></label>
+              </div>
 
-              <!-- PayPal Logo -->
-              <img src="https://www.paypalobjects.com/webstatic/mktg/logo-center/logo_paypal_moyens_paiement_fr.jpg"
-                alt="PayPal Acceptance Mark" />
+              <div v-show="carte">
+
+                <a class="ps-btn" @click="createPaiementMobilie()">Passer à la
+                  caisse</a>
+
+                <img class="mollie-paiement" src="paiement-securise-cb.jpeg" alt="Mollie Paiements" />
+
+              </div>
+
+              <div v-show="paypal" class="paypal">
+
+                <a class="ps-btn" @click="createPaiement()">Passer à la
+                  caisse</a>
+
+                <!-- PayPal Logo -->
+                <img src="https://www.paypalobjects.com/webstatic/mktg/logo-center/logo_paypal_moyens_paiement_fr.jpg"
+                  alt="PayPal Acceptance Mark" />
+
+              </div>
 
             </div>
 

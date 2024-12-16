@@ -13,6 +13,7 @@ const { configure } = require('quasar/wrappers'),
 
 const paths = [
   { path: '/' },
+  { path: '/application' },
   { path: '/my-account' },
   { path: '/blogs-bakerys' },
   { path: '/bakerys-pastry' },

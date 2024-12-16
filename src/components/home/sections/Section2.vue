@@ -1,5 +1,5 @@
 <template name="SectionHome2">
-  <div class="container-xl section fadeIn2 award">
+  <div class="container-xl section home-section award">
 
     <div class="row">
 

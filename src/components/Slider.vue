@@ -1,5 +1,5 @@
 <template name="SliderComponent">
-  <div class="container-xl fadeIn">
+  <div class="container-xl home-section">
 
     <div id="sliders" class="carousel slide carousel-fade" data-bs-ride="carousel">
 

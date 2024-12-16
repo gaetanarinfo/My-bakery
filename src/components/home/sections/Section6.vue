@@ -1,6 +1,6 @@
 <template name="SectionHome6">
 
-  <div id="blog" class="section fadeIn6 last-blog mb-0">
+  <div id="blog" class="section home-section last-blog mb-0">
 
     <div class="column-inner">
 

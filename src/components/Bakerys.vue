@@ -517,6 +517,12 @@
   }
 }
 
+@media all and (max-width: 1268px) {
+  .h-bakery {
+    min-height: auto;
+  }
+}
+
 .page-bakerys {
   padding: 5rem 0;
 }

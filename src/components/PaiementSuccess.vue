@@ -59,7 +59,6 @@
 </template>
 
 <style lang="css">
-
 .disabled {
   pointer-events: none;
 }
@@ -78,7 +77,6 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
@@ -118,6 +116,11 @@ export default defineComponent({
   mounted () {
 
     if (LocalStorage.getItem('shopping_cart') !== null) {
+
+      if (LocalStorage.getItem('shopping_cart') === "5") {
+        window.location.href = 'https://gaetan-seigneur.fr/download-apps/18/1'
+      }
+
       LocalStorage.removeItem('shopping_cart_qte')
       LocalStorage.removeItem('shopping_total_ht')
       LocalStorage.removeItem('shopping_total_ttc')

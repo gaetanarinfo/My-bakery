@@ -52,6 +52,12 @@
     min-height: auto;
   }
 }
+
+@media all and (max-width: 1268px) {
+  .h-bakery {
+    min-height: auto;
+  }
+}
 </style>
 
 <script>

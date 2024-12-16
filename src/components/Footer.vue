@@ -1,5 +1,5 @@
 <template name="FooterComponent">
-  <footer class="footer fadeIn8">
+  <footer class="footer">
 
     <div class="footer-content">
 
@@ -7,7 +7,7 @@
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 home-section">
 
             <div class="widget">
 
@@ -40,7 +40,7 @@
               </ul>
 
               <div v-if="plateformApp" class="text-center mb-3 grid-app">
-                <a href="https://gaetan-seigneur.fr/applications/my-bakery" class="google-play">
+                <a @click="this.$router.push('/application')" class="google-play">
                   <img src="google-play.png" alt="Google play">
                 </a>
               </div>
@@ -55,7 +55,7 @@
 
           </div>
 
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 home-section">
 
             <div class="widget-newsletter-footer text-center">
 
@@ -105,7 +105,7 @@
 
           </div>
 
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 home-section">
 
             <div class="widget-text text-center">
 
@@ -394,13 +394,25 @@ export default defineComponent({
 
     const $q = useQuasar()
 
+    var controller = new ScrollMagic.Controller();
+
+    var revealElements = document.getElementsByClassName("home-section");
+    for (var i = 0; i < revealElements.length; i++) { // create a scene for each element
+      new ScrollMagic.Scene({
+        triggerElement: revealElements[i], // y value not modified, so we can use element as trigger as well
+        offset: 50,												 // start a little later
+        triggerHook: 0.9,
+      })
+        .setClassToggle(revealElements[i], "visible") // add class toggle
+        .addTo(controller);
+    }
+
     $(document).find('.axeptio_mount').show()
     $(document).find('.wonderpush-bell').show()
 
     $('#menu-main-menu').removeAttr('style')
 
     // Header menu
-
 
     $(document).on('click', '.menu-toggle:not(.active)', function (e) {
       e.preventDefault()

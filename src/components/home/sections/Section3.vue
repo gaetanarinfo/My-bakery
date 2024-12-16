@@ -1,5 +1,5 @@
 <template name="SectionHome3">
-  <div class="container-xl section fadeIn3 boulanger">
+  <div class="container-xl section home-section boulanger">
 
     <div class="row">
 

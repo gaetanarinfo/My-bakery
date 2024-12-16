@@ -11,6 +11,30 @@
 
 /* GENERALES */
 
+.home-section {
+  opacity: 0;
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  -o-transform: scale(0.9);
+  transform: scale(0.9);
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+
+.home-section.visible {
+  opacity: 1;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+
+
 .wonderpush-bell,
 .axeptio_mount {
   display: none;
@@ -3047,6 +3071,10 @@ footer.footer .footer-copyright p a:hover {
 .google-play {
   display: block;
   max-width: 160px;
+}
+
+.google-play {
+  cursor: pointer;
 }
 
 .app-store a,
