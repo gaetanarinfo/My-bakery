@@ -115,7 +115,7 @@
 
             </div>
 
-            <div class="row" v-if="reg_status_legale >= 2">
+            <div class="row" v-if="reg_status_legale === '2'">
 
               <p class="col form-group">
                 <label for="reg_siret">Numéro de siret <span class="required">*</span></label>
@@ -132,7 +132,7 @@
 
             </div>
 
-            <div class="row" v-if="reg_status_legale >= 2">
+            <div class="row" v-if="reg_status_legale === '2'">
 
               <p class="form-group">
                 <label for="reg_budget" class="form-label">Budjet publicitaire sur une année - <strong>({{ reg_budget }}
@@ -143,7 +143,7 @@
 
             </div>
 
-            <div class="row" v-if="reg_status_legale >= 2">
+            <div class="row" v-if="reg_status_legale === '2'">
 
               <p class="form-group">
                 <label for="reg_known">Comment avez vous connu My Bakery ? <span class="required">*</span></label>
@@ -154,7 +154,7 @@
 
             </div>
 
-            <hr v-if="reg_status_legale >= 2" class="mb-4" />
+            <hr v-if="reg_status_legale === '2'" class="mb-4" />
 
             <div class="row">
 
@@ -451,7 +451,7 @@ export default defineComponent({
       reg_postcode,
       reg_department_code,
 
-      reg_status_legale: 1,
+      reg_status_legale: '1',
       reg_siret: null,
       reg_tva: null,
       reg_known: null,
@@ -605,7 +605,7 @@ export default defineComponent({
 
       }
 
-      if (!this.reg_budget && this.reg_status_legale === 2) {
+      if (!this.reg_budget && this.reg_status_legale === '2') {
         $('.' + 'reg_budget' + '_error').attr('style', 'display: block')
         $('.' + 'reg_budget' + '_error').text("Le champs budget est obligatoire !");
       } else {
@@ -613,7 +613,7 @@ export default defineComponent({
         $('.' + 'reg_budget' + '_error').text("");
       }
 
-      if (!this.reg_known && this.reg_status_legale === 2) {
+      if (!this.reg_known && this.reg_status_legale === '2') {
         $('.' + 'reg_known' + '_error').attr('style', 'display: block')
         $('.' + 'reg_known' + '_error').text("Le champs histoire est obligatoire !");
       } else {
@@ -621,7 +621,7 @@ export default defineComponent({
         $('.' + 'reg_known' + '_error').text("");
       }
 
-      if (!this.reg_tva && this.reg_status_legale === 2) {
+      if (!this.reg_tva && this.reg_status_legale === '2') {
         $('.' + 'reg_tva' + '_error').attr('style', 'display: block')
         $('.' + 'reg_tva' + '_error').text("Le champs tva est obligatoire !");
       } else {
@@ -629,7 +629,7 @@ export default defineComponent({
         $('.' + 'reg_tva' + '_error').text("");
       }
 
-      if (!this.reg_siret && this.reg_status_legale === 2) {
+      if (!this.reg_siret && this.reg_status_legale === '2') {
         $('.' + 'reg_siret' + '_error').attr('style', 'display: block')
         $('.' + 'reg_siret' + '_error').text("Le champs siret est obligatoire !");
       } else {
