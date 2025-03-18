@@ -27,6 +27,9 @@
             <li class="menu-item"><a @click="this.$router.push('/blogs-bakerys');"
                 v-bind:class="this.$route.path === '/blogs-bakerys' ? 'active' : 'btn-target'">Blog</a></li>
 
+            <li class="menu-item"><a @click="this.$router.push('/products');"
+                  v-bind:class="this.$route.path === '/products' ? 'active' : 'btn-target'">Boutique</a></li>
+
           </ul>
 
         </div>
@@ -142,7 +145,7 @@
           </li>
 
           <li class="menu-item">
-            <a @click="this.$router.push('/products')">Nos produits</a>
+            <a @click="this.$router.push('/products')">Boutique</a>
           </li>
 
           <li class="menu-item">

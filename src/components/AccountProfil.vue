@@ -169,6 +169,20 @@
                 </a>
               </li>
 
+              <li id="card9" v-if="admin === 1"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showBakerys(user.email)">
+                  <p class="mb-0"><i class="fa-solid fa-building-wheat me-2"></i>Boulangeries</p>
+                </a>
+              </li>
+
+              <li id="card10" v-if="admin === 1"
+                class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <a @click="showNewsletter(user.email)">
+                  <p class="mb-0"><i class="fa-solid fa-envelope-open-text me-2"></i>Lettre d'actualité</p>
+                </a>
+              </li>
+
               <li id="card8" v-if="subscription === true"
                 class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <a @click="showBannerAll">
@@ -809,6 +823,67 @@
 
           </div>
 
+          <div v-if="admin === 1" v-show="cardBakerys" class="card">
+
+            <div id="bakerysCard">
+
+              <h3 class="text-bold title"><i class="fa-solid fa-building-wheat me-2"></i>Liste des boulangeries</h3>
+
+              <ag-grid-vue v-show="visibleLoadingBakerys" v-if="bakerysTable.length >= 1"
+                :paginationPageSize="paginationPageSize" :paginationPageSizeSelector="paginationPageSizeSelector"
+                :tooltipShowDelay="tooltipShowDelay" :tooltipHideDelay="tooltipHideDelay" :localeText="localeText"
+                :rowData="rowDataBakerys" :columnDefs="colDefsBakerys" :pagination="true"
+                class="ag-theme-quartz table-ag-grid">
+              </ag-grid-vue>
+
+              <p v-else v-show="visibleLoadingBakerys" class="fw-bolder" style="text-align: center;margin-top: 1rem;">
+                <i class="fa fa-warning text-warning"></i>
+                Il n'y a pas encore de boulangerie sur My Bakery.
+              </p>
+
+              <div class="loadingDiv bakerys-admin" v-show="!visibleLoadingBakerys">
+                <q-spinner-gears size="50px" color="orange" />
+              </div>
+
+            </div>
+
+          </div>
+
+          <div v-if="admin === 1" v-show="cardNewsletter" class="card">
+
+            <div id="newslettersCard">
+
+              <h3 class="text-bold title"><i class="fa-solid fa-envelope-open-text me-2"></i>Utilisateurs inscrits à la
+                lettre
+                d'actualité</h3>
+
+              <div  v-show="visibleLoadingNewsletter" class="text-start mb-3">
+                <a class="btn btn-bakery" @click="sendNewsletter(newsletterTable.length)">Envoyer maintenant à {{
+                  newsletterTable.length }}
+                  utilisateurs</a>
+              </div>
+
+              <ag-grid-vue v-show="visibleLoadingNewsletter" v-if="newsletterTable.length >= 1"
+                :paginationPageSize="paginationPageSize" :paginationPageSizeSelector="paginationPageSizeSelector"
+                :tooltipShowDelay="tooltipShowDelay" :tooltipHideDelay="tooltipHideDelay" :localeText="localeText"
+                :rowData="rowDataNewsletter" :columnDefs="colDefsNewsletter" :pagination="true"
+                class="ag-theme-quartz table-ag-grid">
+              </ag-grid-vue>
+
+              <p v-else v-show="visibleLoadingNewsletter" class="fw-bolder"
+                style="text-align: center;margin-top: 1rem;">
+                <i class="fa fa-warning text-warning"></i>
+                Il n'y a pas encore d'utilisateur inscrit sur la lettre d'actualité de My Bakery.
+              </p>
+
+              <div class="loadingDiv bakerys-admin" v-show="!visibleLoadingNewsletter">
+                <q-spinner-gears size="50px" color="orange" />
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -1222,7 +1297,9 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 moment.locale('fr')
 
-const email = ref(''),
+const visibleLoadingBakerys = ref(false),
+  visibleLoadingNewsletter = ref(false),
+  email = ref(''),
   firstname = ref(''),
   lastname = ref(''),
   fonction = ref(''),
@@ -1246,9 +1323,13 @@ const email = ref(''),
   cardUserBakery = ref(false),
   cardBannerPlanning = ref(false),
   cardBannerAll = ref(false),
+  cardBakerys = ref(false),
+  cardNewsletter = ref(false),
   activity = ref(0),
   orders = ref(0),
   ordersTable = ref([]),
+  bakerysTable = ref([]),
+  newsletterTable = ref({}),
   activityTable = ref([]),
   tooltipShowDelay = ref(''),
   tooltipHideDelay = ref(''),
@@ -1268,6 +1349,8 @@ const email = ref(''),
 
 // Row Data: The data to be displayed.
 const rowData = ref([]),
+  rowDataBakerys = ref([]),
+  rowDataNewsletter = ref([]),
   paginationPageSize = ref(''),
   paginationPageSizeSelector = ref('')
 
@@ -1530,6 +1613,39 @@ export default defineComponent({
     }, 1000);
 
     return {
+      sendNewsletter (userLength) {
+
+        function showNotif (message) {
+          $q.notify({
+            type: 'success-form',
+            message: message
+          })
+        }
+
+        function errorNotif (message = null) {
+          $q.notify({
+            type: 'error-form',
+            message: message ? message : 'Une erreur est survenu !'
+          })
+        }
+
+        if (admin.value === 1) {
+          axios.get(process.env.WEBSITE + '/newsletter-send/all/null')
+            .then((res) => {
+              console.log(res.data)
+              if (res.data.succes === true) {
+                showNotif('La lettre d\'actualité a bien été envoyer à ' + userLength + ' utilisateurs !');
+              }
+            })
+            .catch((error) => {
+              errorNotif('Une erreur est survenue !');
+            })
+
+        }
+
+      },
+      visibleLoadingBakerys,
+      visibleLoadingNewsletter,
       getAdresseApi () {
 
         var value = $('#reg_location').val()
@@ -1632,6 +1748,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').addClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1640,6 +1758,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1654,6 +1774,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').addClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1662,6 +1784,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1676,6 +1800,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').addClass('active-list');
@@ -1684,6 +1810,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1711,6 +1839,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1719,6 +1849,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1733,6 +1865,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1741,6 +1875,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1756,6 +1892,8 @@ export default defineComponent({
         cardUserBakery.value = true
         cardBannerPlanning.value = false
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1764,6 +1902,8 @@ export default defineComponent({
         $('#card6').addClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1778,6 +1918,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = true
         cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1786,6 +1928,8 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').addClass('active-list');
         $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
@@ -1801,6 +1945,8 @@ export default defineComponent({
         cardUserBakery.value = false
         cardBannerPlanning.value = false
         cardBannerAll.value = true
+        cardBakerys.value = false
+        cardNewsletter.value = false
         $('#card1').removeClass('active-list');
         $('#card2').removeClass('active-list');
         $('#card3').removeClass('active-list');
@@ -1809,10 +1955,142 @@ export default defineComponent({
         $('#card6').removeClass('active-list');
         $('#card7').removeClass('active-list');
         $('#card8').addClass('active-list');
+        $('#card10').removeClass('active-list');
 
         $([document.documentElement, document.body]).animate({
           scrollTop: $('#my-account-profil').offset().top
         }, '200')
+
+      },
+      showBakerys (email) {
+
+        if (visibleLoadingBakerys.value !== false) visibleLoadingBakerys.value = false
+
+        bakerysTable.value = []
+        rowDataBakerys.value = []
+
+        cardProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
+        cardBakerys.value = true
+        cardNewsletter.value = false
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+        $('#card9').addClass('active-list');
+        $('#card10').removeClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+
+        // Bakerys
+        if (admin.value === 1) {
+
+          axios.get(process.env.WEBSITE + '/bakerys-admin/' + email)
+            .then((res) => {
+
+              if (res.data.succes === true) {
+                // Static values
+                bakerysTable.value = res.data.bakerysTable
+
+                res.data.bakerysTable.forEach(element => {
+
+                  rowDataBakerys.value.push({
+                    'Id': element.id,
+                    'Status': (element.active === 1) ? 'tick-in-circle.png' : (element.active === 0) ? 'cross-in-circle.png' : '',
+                    'TooltipStatus': (element.active === 1) ? 'Active' : 'Inactive',
+                    'Nom': element.title,
+                    'Clics': element.clicks_bakery,
+                    'Vues': element.views_bakery,
+                    'Mise à jour': (element.updated_at !== null) ? moment(element.updated_at).format('DD MMMM YYYY à HH:mm') : '/',
+                    'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
+                  })
+
+                  setTimeout(() => {
+                    visibleLoadingBakerys.value = true
+                  }, 1500);
+
+                })
+
+              }
+
+            })
+
+        }
+
+      },
+      showNewsletter (email) {
+
+        if (visibleLoadingNewsletter.value !== false) visibleLoadingNewsletter.value = false
+
+        newsletterTable.value = []
+        rowDataNewsletter.value = []
+
+        cardProfil.value = false
+        cardActivity.value = false
+        cardOrder.value = false
+        cardBudget.value = false
+        cardUserBakery.value = false
+        cardBannerPlanning.value = false
+        cardBannerAll.value = false
+        cardBakerys.value = false
+        cardNewsletter.value = true
+        $('#card1').removeClass('active-list');
+        $('#card2').removeClass('active-list');
+        $('#card3').removeClass('active-list');
+        $('#card4').removeClass('active-list');
+        $('#card5').removeClass('active-list');
+        $('#card6').removeClass('active-list');
+        $('#card7').removeClass('active-list');
+        $('#card8').removeClass('active-list');
+        $('#card9').removeClass('active-list');
+        $('#card10').addClass('active-list');
+
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $('#my-account-profil').offset().top
+        }, '200')
+
+        // Newsletter
+        if (admin.value === 1) {
+
+          axios.get(process.env.WEBSITE + '/newsletter-admin/' + email)
+            .then((res) => {
+
+              if (res.data.succes === true) {
+                // Static values
+                newsletterTable.value = res.data.newsletterTable
+
+                res.data.newsletterTable.forEach(element => {
+
+                  rowDataNewsletter.value.push({
+                    'TooltipStatus': 'Envoyer maintenant',
+                    '#': element.id,
+                    'Email': element.email,
+                    'Envoyé le': (element.deliver_at !== null) ? moment(element.deliver_at).format('DD MMMM YYYY à HH:mm') : '/',
+                    'Crée le': (element.created_at !== null) ? moment(element.created_at).format('DD MMMM YYYY à HH:mm') : '/',
+                  })
+
+                  setTimeout(() => {
+                    visibleLoadingNewsletter.value = true
+                  }, 1500);
+
+                })
+
+              }
+
+            })
+
+        }
 
       },
       deleteAccount () {
@@ -1908,7 +2186,7 @@ export default defineComponent({
       return store.state.show_views
     })
 
-    // Column Definitions: Defines the columns to be displayed.
+    // Column Definitions: Defines the columns to be displayed. << Orders >>
     const colDefs = ref([
       { field: "methode", hide: true },
       { field: "CreatedAt", hide: true },
@@ -1954,6 +2232,61 @@ export default defineComponent({
         }, maxWidth: 100, cellClass: 'cellCenter'
       }
     ]);
+
+    // Column Definitions: Defines the columns to be displayed << Bakerys >>
+    const colDefsBakerys = ref([
+      { field: "Id", hide: true },
+      { field: "Status", hide: true },
+      { field: "TooltipStatus", hide: true },
+
+      { field: "Nom", filter: true, minWidth: 400 },
+      { field: "Clics", filter: true, maxWidth: 110 },
+      { field: "Vues", filter: true, maxWidth: 110 },
+      {
+        field: "Statut", cellRenderer (params) {
+          return '<span class="missionSpan"><img src="' + params.data.Status + '" class="missionIcon"/></span>'
+        }, filter: false, sortable: false, maxWidth: 80, cellClass: 'cellCenter', tooltipValueGetter (p) {
+          return p.data.TooltipStatus
+        }
+      },
+      { field: "Crée le", filter: false },
+      { field: "Mise à jour", filter: true },
+      {
+        field: "Actions", filter: false, sortable: false, cellRenderer (params) {
+
+          var data = ''
+
+          if (params.data.TooltipStatus !== 'Active') {
+            data = '<a id="activeButton" data-email="' + email.value + '" data-active="' + params.data.TooltipStatus + '" data-id="' + params.data.Id + '" class="text-danger cursor-pointer"><i class="fa-solid fa-check"></i></a>'
+          } else {
+            data = '<a id="activeButton" data-email="' + email.value + '" data-active="' + params.data.TooltipStatus + '" data-id="' + params.data.Id + '" class="text-success cursor-pointer me-2"><i class="fa-solid fa-xmark"></i></a>'
+          }
+
+          return data
+        }, maxWidth: 100, cellClass: 'cellCenter'
+      }
+    ])
+
+    const colDefsNewsletter = ref([
+      { field: "TooltipStatus", hide: true },
+      { field: "#", maxWidth: 60, filter: false },
+      { field: "Email", minWidth: 300, filter: true },
+      { field: "Envoyé le", filter: true },
+      { field: "Crée le", filter: false },
+      {
+        field: "Actions", filter: false, sortable: false, cellRenderer (params) {
+
+          var data = ''
+
+          data = '<a id="newsletterButton" data-email="' + email.value + '" class="text-success cursor-pointer me-2"><i class="fa-solid fa-check"></i></a>'
+
+          return data
+
+        }, maxWidth: 100, cellClass: 'cellCenter', tooltipValueGetter (p) {
+          return p.data.TooltipStatus
+        }
+      }
+    ])
 
     return {
       preview: null,
@@ -2158,7 +2491,11 @@ export default defineComponent({
       tooltipHideDelay,
       localeText: AG_GRID_LOCALE_FR,
       rowData,
+      rowDataBakerys,
+      rowDataNewsletter,
       colDefs,
+      colDefsBakerys,
+      colDefsNewsletter,
       email,
       firstname,
       lastname,
@@ -2179,11 +2516,15 @@ export default defineComponent({
       cardUserBakery,
       cardBannerPlanning,
       cardBannerAll,
+      cardBakerys,
+      cardNewsletter,
       v$: useValidate(),
       activity,
       activityTable,
       orders,
       ordersTable,
+      bakerysTable,
+      newsletterTable,
       credits,
       admin,
       subscription,
@@ -2576,6 +2917,8 @@ export default defineComponent({
                 cardUserBakery.value = false
                 cardBannerPlanning.value = false
                 cardBannerAll.value = false
+                cardBakerys.value = false
+                cardNewsletter.value = false
                 $('#card1').removeClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
@@ -2584,6 +2927,8 @@ export default defineComponent({
                 $('#card6').removeClass('active-list');
                 $('#card7').removeClass('active-list');
                 $('#card8').removeClass('active-list');
+                $('#card9').removeClass('active-list');
+                $('#card10').removeClass('active-list');
 
               } else {
 
@@ -2595,6 +2940,8 @@ export default defineComponent({
                 cardUserBakery.value = false
                 cardBannerPlanning.value = false
                 cardBannerAll.value = false
+                cardBakerys.value = false
+                cardNewsletter.value = false
                 $('#card1').addClass('active-list');
                 $('#card2').removeClass('active-list');
                 $('#card3').removeClass('active-list');
@@ -2603,6 +2950,8 @@ export default defineComponent({
                 $('#card6').removeClass('active-list');
                 $('#card7').removeClass('active-list');
                 $('#card8').removeClass('active-list');
+                $('#card9').removeClass('active-list');
+                $('#card10').removeClass('active-list');
 
               }
 
@@ -2903,6 +3252,28 @@ export default defineComponent({
 
                     })
 
+                    $(document).on('click', '#activeButton', function (e) {
+
+                      e.preventDefault()
+
+                      var id = $(this).data('id'),
+                        active = $(this).data('active'),
+                        email = $(this).data('email')
+
+                      changeStatusBakery(id, active, email)
+
+                    })
+
+                    $(document).on('click', '#newsletterButton', function (e) {
+
+                      e.preventDefault()
+
+                      var email = $(this).data('email')
+
+                      sendNewsletterFirstUser(email)
+
+                    })
+
                     // Modal Show Details Establishement
                     function showDetailEstablishement (bakeryId) {
 
@@ -3065,6 +3436,55 @@ export default defineComponent({
                           })
                           .catch((error) => {
                             console.log(error)
+                          })
+
+                      }
+
+                    }
+
+                    // Change statut bakery by id
+                    function changeStatusBakery (id, active, email) {
+
+                      var status = 0
+
+                      if (active === 'Active') {
+                        status = 0
+                      } else {
+                        status = 1
+                      }
+
+                      if (admin.value === 1) {
+                        axios.post(process.env.WEBSITE + '/bakerys-admin-update', {
+                          id,
+                          email,
+                          status
+                        })
+                          .then((res) => {
+                            if (res.data.succes === true) {
+                              showNotif('La boulangerie a bien été modifiée !');
+                            }
+                          })
+                          .catch((error) => {
+                            errorNotif('Une erreur est survenue !');
+                          })
+
+                      }
+
+                    }
+
+                    // Send Newsletter for one user by email
+                    function sendNewsletterFirstUser (email) {
+
+                      if (admin.value === 1) {
+                        axios.get(process.env.WEBSITE + '/newsletter-send/first/' + email)
+                          .then((res) => {
+                            console.log(res.data)
+                            if (res.data.succes === true) {
+                              showNotif('La lettre d\'actualité a bien été envoyer à ' + email + ' !');
+                            }
+                          })
+                          .catch((error) => {
+                            errorNotif('Une erreur est survenue !');
                           })
 
                       }

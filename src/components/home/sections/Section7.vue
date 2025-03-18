@@ -74,6 +74,13 @@
                 <span class="error-text content_error"></span>
               </div>
 
+              <div class="form-group">
+                <label class="recaptcha-label">Code recaptcha : <span class="code">{{ code }}</span></label><br>
+                <label>Code <sup>*</sup></label>
+                <input type="text" v-model="captcha" class="form-control" name="captcha" id="captcha" placeholder="">
+                <span class="error-text code_error"></span>
+              </div>
+
               <div class="form-group submit">
                 <button id="submit_contact" @click="submitContact" type="submit" class="btn btn-bakery">Valider</button>
               </div>
@@ -104,11 +111,12 @@ import axios from 'axios'
 
 export default defineComponent({
   name: 'SectionHome7',
-  setup() {
+  setup () {
 
     const $q = useQuasar()
     const visible = ref(false)
     const showSimulatedReturnData = ref(true)
+    const code = ref(null)
 
     $q.notify.registerType('success-form', {
       icon: 'fa-solid fa-check',
@@ -129,9 +137,10 @@ export default defineComponent({
     })
 
     return {
+      code,
       visible,
       showSimulatedReturnData,
-      showTextLoading() {
+      showTextLoading () {
         visible.value = true
         showSimulatedReturnData.value = false
 
@@ -140,13 +149,13 @@ export default defineComponent({
           showSimulatedReturnData.value = true
         }, 3000)
       },
-      showNotif() {
+      showNotif () {
         $q.notify({
           type: 'success-form',
           message: 'Votre demande de contact nous a été envoyé.'
         })
       },
-      errorNotif() {
+      errorNotif () {
         $q.notify({
           type: 'error-form',
           message: 'Une erreur est survenue dans le formulaire.'
@@ -154,7 +163,7 @@ export default defineComponent({
       }
     }
   },
-  data() {
+  data () {
 
     return {
       v$: useValidate(),
@@ -163,12 +172,12 @@ export default defineComponent({
       email: null,
       phone: null,
       sujet: null,
-      content: null
+      content: null,
+      captcha: null
     }
   },
   methods: {
-
-    submitContact(e) {
+    submitContact (e) {
 
       e.preventDefault();
 
@@ -177,121 +186,136 @@ export default defineComponent({
       let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
       let valid = reg.test(this.email)
 
-      if (valid) {
+      if (valid && !this.v$.$error && this.code === this.captcha) {
 
-        $('.' + 'email' + '_error').removeAttr()
-        $('.' + 'email' + '_error').text("");
+        $('#submit_contact').addClass('disabled')
 
-        if (!this.v$.$error) {
+        $(document).find('.error-text').text('')
+        $(document).find('.error-text').removeAttr()
 
-          axios.post(process.env.WEBSITE + '/contact', { 'firstname': this.firstname, 'lastname': this.lastname, 'email': this.email, 'phone': this.phone, 'sujet': this.sujet, 'content': this.content })
-            .then((res) => {
+        axios.post(process.env.WEBSITE + '/contact', { 'firstname': this.firstname, 'lastname': this.lastname, 'email': this.email, 'phone': this.phone, 'sujet': this.sujet, 'content': this.content })
+          .then((res) => {
 
-              if (res.data.success === true) {
+            this.firstname = null
+            this.lastname = null
+            this.email = null
+            this.phone = null
+            this.sujet = null
+            this.content = null
+            this.captcha = null
+            this.code = this.gencode(8)
 
-                this.showNotif()
+            if (res.data.success === true) {
 
-                setTimeout(() => {
-                  $(document).find('.error-text').text('')
-                  $(document).find('.error-text').removeAttr()
-                  $('#form-contact').find('input').val('')
-                  $('#form-contact').find('textarea').val('')
-                  $('#submit_contact').addClass('disabled')
+              this.showNotif()
 
-                  this.firstname = null
-                  this.lastname = null
-                  this.email = null
-                  this.phone = null
-                  this.sujet = null
-                  this.content = null
+              setTimeout(() => {
+                $('#submit_contact').removeClass('disabled')
+              }, 2500);
 
-                }, 3500);
-
-              } else {
-                this.errorNotif()
-              }
-
-            })
-            .catch((error) => {
+            } else {
               this.errorNotif()
-            })
+              $('#submit_contact').removeClass('disabled')
+            }
 
-        } else {
-
-          if (this.firstname && this.lastname && this.email && this.phone && this.sujet && this.content) {
-
-            return true
-          }
-
-          if (!this.firstname) {
-            $('.' + 'firstname' + '_error').attr('style', 'display: block')
-            $('.' + 'firstname' + '_error').text("Le champs prénom est obligatoire !");
-          } else {
-            $('.' + 'firstname' + '_error').removeAttr()
-            $('.' + 'firstname' + '_error').text("");
-          }
-
-          if (!this.lastname) {
-            $('.' + 'lastname' + '_error').attr('style', 'display: block')
-            $('.' + 'lastname' + '_error').text("Le champs nom est obligatoire !");
-          } else {
-            $('.' + 'lastname' + '_error').removeAttr()
-            $('.' + 'lastname' + '_error').text("");
-          }
-
-          if (!this.email) {
-            $('.' + 'email' + '_error').attr('style', 'display: block')
-            $('.' + 'email' + '_error').text("Le champs adresse email est obligatoire !");
-          } else {
-            $('.' + 'email' + '_error').removeAttr()
-            $('.' + 'email' + '_error').text("");
-          }
-
-          if (!this.phone) {
-            $('.' + 'phone' + '_error').attr('style', 'display: block')
-            $('.' + 'phone' + '_error').text("Le champs téléphone est obligatoire !");
-          } else {
-            $('.' + 'phone' + '_error').removeAttr()
-            $('.' + 'phone' + '_error').text("");
-          }
-
-          if (!this.sujet) {
-            $('.' + 'sujet' + '_error').attr('style', 'display: block')
-            $('.' + 'sujet' + '_error').text("Le champs sujet est obligatoire !");
-          } else {
-            $('.' + 'sujet' + '_error').removeAttr()
-            $('.' + 'sujet' + '_error').text("");
-          }
-
-          if (!this.content) {
-            $('.' + 'content' + '_error').attr('style', 'display: block')
-            $('.' + 'content' + '_error').text("Le champs message est obligatoire !");
-          } else {
-            $('.' + 'content' + '_error').removeAttr()
-            $('.' + 'content' + '_error').text("");
-          }
-
-        }
+          })
+          .catch((error) => {
+            this.errorNotif()
+            $('#submit_contact').removeClass('disabled')
+          })
 
       } else {
 
-        $('.' + 'email' + '_error').attr('style', 'display: block')
-        $('.' + 'email' + '_error').text("Le champs adresse email n'est pas valide !");
+        if (!this.firstname) {
+          $('.' + 'firstname' + '_error').attr('style', 'display: block')
+          $('.' + 'firstname' + '_error').text("Le champs prénom est obligatoire !");
+        } else {
+          $('.' + 'firstname' + '_error').removeAttr()
+          $('.' + 'firstname' + '_error').text("");
+        }
+
+        if (!this.lastname) {
+          $('.' + 'lastname' + '_error').attr('style', 'display: block')
+          $('.' + 'lastname' + '_error').text("Le champs nom est obligatoire !");
+        } else {
+          $('.' + 'lastname' + '_error').removeAttr()
+          $('.' + 'lastname' + '_error').text("");
+        }
+
+        if (!this.email) {
+          $('.' + 'email' + '_error').attr('style', 'display: block')
+          $('.' + 'email' + '_error').text("Le champs adresse email est obligatoire !");
+        } else {
+          $('.' + 'email' + '_error').removeAttr()
+          $('.' + 'email' + '_error').text("");
+        }
+
+        if (!this.phone) {
+          $('.' + 'phone' + '_error').attr('style', 'display: block')
+          $('.' + 'phone' + '_error').text("Le champs téléphone est obligatoire !");
+        } else {
+          $('.' + 'phone' + '_error').removeAttr()
+          $('.' + 'phone' + '_error').text("");
+        }
+
+        if (!this.sujet) {
+          $('.' + 'sujet' + '_error').attr('style', 'display: block')
+          $('.' + 'sujet' + '_error').text("Le champs sujet est obligatoire !");
+        } else {
+          $('.' + 'sujet' + '_error').removeAttr()
+          $('.' + 'sujet' + '_error').text("");
+        }
+
+        if (!this.content) {
+          $('.' + 'content' + '_error').attr('style', 'display: block')
+          $('.' + 'content' + '_error').text("Le champs message est obligatoire !");
+        } else {
+          $('.' + 'content' + '_error').removeAttr()
+          $('.' + 'content' + '_error').text("");
+        }
+
+        if (!valid) {
+          $('.' + 'email' + '_error').attr('style', 'display: block')
+          $('.' + 'email' + '_error').text("Le champs adresse email n'est pas valide !");
+        }
+
+        if (this.code !== this.captcha) {
+          $('.' + 'code' + '_error').attr('style', 'display: block')
+          $('.' + 'code' + '_error').text("Le code n'est pas bon !");
+        } else {
+          $('.' + 'code' + '_error').removeAttr()
+          $('.' + 'code' + '_error').text("");
+        }
 
       }
     },
+    gencode (length) {
+      var result = "";
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      var numbers = "0123456789"
+      var charactersLength = characters.length;
+      for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    },
   },
-  validations() {
+  validations () {
     return {
       firstname: { required },
       lastname: { required },
       email: { required },
       phone: { required },
       sujet: { required },
-      content: { required }
+      content: { required },
+      captcha: { required }
     }
   },
-  mounted() {
+  mounted () {
+
+    this.code = this.gencode(8);
+
   }
 })
 </script>

@@ -8929,6 +8929,12 @@ const paths = [
     path: "/article/comment-definir-une-bonne-boulangerie-sur-my-bakery"
   },
   {
+    path: "/article/marche-de-noel-le-mans-2024",
+  },
+  {
+    path: "/article/decouvrez-en-detail-notre-boutique-sur-my-bakery"
+  },
+  {
     path: "/bakerys-city/acheres/435"
   },
   {
@@ -14695,9 +14701,9 @@ module.exports = configure(function (ctx) {
       // transpileDependencies: [],
 
       // rtl: true, // https://quasar.dev/options/rtl-support
-      // preloadChunks: true,
+      preloadChunks: true,
       // showProgress: false,
-      // gzip: true,
+      gzip: true,
       // analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override

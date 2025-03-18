@@ -9,11 +9,19 @@
 
         <div class="b-breadcrumb">
 
-          <ol class="breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 
-            <li><a @click="this.$router.push('/')">Accueil</a></li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a
+                @click="this.$router.push('/')" itemprop="item" href="https://my-bakery.fr">
+                <span itemprop="name">Accueil</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
 
-            <li class="active">Blog</li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="active">
+              <span itemprop="name">Blog</span>
+              <meta itemprop="position" content="2" />
+            </li>
 
           </ol>
 
@@ -43,22 +51,25 @@
 
                 <div v-if="blogsAllCount >= 1" id="blocGrid" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 
-                  <article v-for="blog in blogsAll" :key="blog.id">
+                  <article itemscope itemtype="https://schema.org/Article" v-for="blog in blogsAll" :key="blog.id">
 
                     <div class="thumbnail">
 
-                      <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'">
-
-                      </div>
+                      <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'"></div>
+                      <img style="display: none;" itemprop="image" :src="'blogs/' + blog.image" alt="">
 
                       <div class="blog-pic-inner">
 
                         <div class="label">{{ blog.name }}</div>
 
                         <ul>
-                          <li>Par <span>{{ blog.author }}</span></li>
-                          <li><i class="fa-solid fa-clock me-1"></i> Créer le {{
-                            moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
+                          <li itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="d-none"
+                              itemprop="url" :content="'https://my-bakery.fr/article/' + blog.url"></span>Par <span
+                              itemprop="name">{{ blog.author }}</span></li>
+                          <li itemprop="datePublished"
+                            :content="moment(blog.created_at).format('YYYY-MM-DDTHH:mm:ss+08:00')"><i
+                              class="fa-solid fa-clock me-1"></i> Créer le {{
+                                moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
                           <li>{{ blog.views }} vues</li>
                         </ul>
 
@@ -69,15 +80,19 @@
                     <div class="content text-start">
 
                       <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title">
-                        <h3 class="title">{{ blog.title }}</h3>
+                        <h3 itemprop="headline" class="title">{{ blog.title }}</h3>
                       </a>
 
-                      <p>{{ substrats(blog.small_content) }}</p>
+                      <p itemprop="text">{{ substrats(blog.small_content) }}</p>
 
                       <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title"
                         class="btn btn-bakery">Lire la
                         suite</a>
 
+                    </div>
+
+                    <div>
+                      <Adsense adStyle="display:block" clientId="ca-pub-1970778156829593" slotId="4678295428"></Adsense>
                     </div>
 
                   </article>
@@ -411,6 +426,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import BannerComponent from 'components/Banner.vue'
 import BannerSquareComponent from 'components/BannerSquare.vue'
+import { Adsense } from 'vue3-google-adsense';
 
 moment.locale('fr')
 
@@ -432,6 +448,7 @@ export default defineComponent({
   components: {
     BannerComponent,
     BannerSquareComponent,
+    Adsense,
   },
   setup () {
     const store = useStore()

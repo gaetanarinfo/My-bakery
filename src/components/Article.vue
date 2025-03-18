@@ -10,13 +10,27 @@
 
         <div class="b-breadcrumb">
 
-          <ol class="breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 
-            <li><a @click="this.$router.push('/')">Accueil</a></li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a
+                @click="this.$router.push('/')" itemprop="item" href="https://my-bakery.fr">
+                <span itemprop="name">Accueil</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
 
-            <li class="before"><a role="button" @click="this.$router.push('/blogs-bakerys')">Blog</a></li>
+            <li class="before" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a role="button" itemscope itemtype="https://schema.org/WebPage" itemprop="item"
+                itemid="https://my-bakery.fr/blogs/bakerys" @click="this.$router.push('/blogs-bakerys')">
+                <span itemprop="name">Blog</span>
+              </a>
+              <meta itemprop="position" content="2" />
+            </li>
 
-            <li class="active">{{ blog.title }}</li>
+            <li class="active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ blog.title }}</span>
+              <meta itemprop="position" content="3" />
+            </li>
 
           </ol>
 
@@ -28,7 +42,7 @@
 
   </div>
 
-  <div class="page-article-blog blog-single section fadeIn3 last-blog">
+  <div itemscope itemtype="https://schema.org/Article" class="page-article-blog blog-single section fadeIn3 last-blog">
 
     <div class="container" v-show="showSimulatedReturnData">
 
@@ -42,18 +56,22 @@
 
               <div class="thumbnail">
 
-                <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'">
-
-                </div>
+                <div class="pic" :style="'background: url(' + 'blogs/' + blog.image + ')'"></div>
+                <img style="display: none;" itemprop="image" :src="'blogs/' + blog.image" :alt="blog.title">
 
                 <div class="blog-pic-inner">
 
                   <div class="label">{{ blog.name }}</div>
 
                   <ul>
-                    <li>Par <span>{{ blog.author }}</span></li>
-                    <li><i class="fa-solid fa-clock me-1"></i> Créer le {{
-                      moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}</li>
+                    <li itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="d-none"
+                        itemprop="url" :content="'https://my-bakery.fr/article/' + blog.url"></span>Par <span
+                        itemprop="name">{{
+                          blog.author }}</span></li>
+                    <li itemprop="datePublished" :content="moment(blog.created_at).format('YYYY-MM-DDTHH:mm:ss+08:00')">
+                      <i class="fa-solid fa-clock me-1"></i> Créer le {{
+                        moment(blog.created_at).format('DD MMMM YYYY à H:mm') }}
+                    </li>
                     <li>{{ blog.views }} vues</li>
                   </ul>
 
@@ -66,10 +84,10 @@
                 <div class="post-container none">
 
                   <a @click="this.$router.push('/article/' + blog.url)" :title="blog.title">
-                    <h3 class="title">{{ blog.title }}</h3>
+                    <h3 itemprop="headline" class="title">{{ blog.title }}</h3>
                   </a>
 
-                  <div class="post-content-inner" v-html="blog.large_description">
+                  <div class="post-content-inner" itemprop="text" v-html="blog.large_description">
                   </div>
 
                   <div class="sharing">

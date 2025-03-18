@@ -10,11 +10,19 @@
 
         <div class="b-breadcrumb">
 
-          <ol class="breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 
-            <li><a @click="this.$router.push('/')">Accueil</a></li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a
+                @click="this.$router.push('/')" itemprop="item" href="https://my-bakery.fr">
+                <span itemprop="name">Accueil</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
 
-            <li class="active">Boulangeries</li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="active">
+              <span itemprop="name">Boulangeries</span>
+              <meta itemprop="position" content="2" />
+            </li>
 
           </ol>
 
@@ -77,6 +85,18 @@
                       <span class="select">
                         <input v-model="location" type="text" class="form-control" placeholder="Entrer une adresse...">
                       </span>
+
+                    </div>
+
+                    <div class="form-group special-select">
+
+                      <label for="">Filtrer par ville</label>
+
+                      <select v-model="city" name="city" class="form-select" id="city">
+                        <option value="" selected>Sélectionner une ville</option>
+                        <option v-for="ville in villesFrance" :value="ville.ville">{{ ville.ville }} ({{ ville.postcode
+                          }})</option>
+                      </select>
 
                     </div>
 
@@ -177,17 +197,28 @@
 
                     </div>
 
+                    <div class="form-group">
+
+                      <label for="">Filtrer par note ({{ note_google }})</label>
+
+                      <input type="range" class="form-range accent" min="0" step="0.1" max="5" v-model="note_google"
+                        name="note_google" id="note_google">
+
+                    </div>
+
                     <hr class="w-100" />
 
                     <div class="form-group validate">
 
-                      <a role="button" class="btn btn-bakery me-3"
-                        @click="chargeBakery(current, search, location, postalCode, true)">Rechercher</a>
+                      <a role="button" class="btn btn-bakery me-3" @click="chargeBakery(current, true)">Rechercher</a>
 
-                      <a role="button" class="btn btn-bakery"
-                        @click="chargeBakery(current, search, location, postalCode, true, true)">Effacer</a>
+                      <a role="button" class="btn btn-bakery" @click="chargeBakery(current, true, true)">Effacer</a>
 
                     </div>
+
+                    <hr class="w-100" />
+
+                    <BannerSquareComponent />
 
                   </div>
 
@@ -195,7 +226,18 @@
 
                 <div v-if="bakerysAllCount >= 1" id="blocGrid" class="col-lg-9 col-md-9 row">
 
-                  <div class="col-lg-4 col-md-4 bakery" v-for="bakery in bakerysAll" :key="bakery.id">
+                  <div itemscope itemtype="https://schema.org/LocalBusiness" class="col-lg-4 col-md-4 bakery"
+                    v-for="bakery in bakerysAll" :key="bakery.id">
+
+                    <div class="d-none" itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+                      <meta itemprop="latitude" :content="bakery.lat" />
+                      <meta itemprop="longitude" :content="bakery.lng" />
+                    </div>
+
+                    <span class="d-none" itemprop="priceRange">1-20 €</span>
+                    <span class="d-none" itemprop="isAccessibleForFree">true</span>
+
+                    <div class="d-none" itemprop="url">https://my-bakery.fr/bakery/{{ bakery.url }}</div>
 
                     <div class="row">
 
@@ -244,6 +286,10 @@
                                   :style="'cursor: pointer; background: url(' + folderPicture + bakery.image + ');width: 100%;height: 211px;border-radius: 6px;background-size: 100% 100%;'">
                                 </div>
 
+                                <img class="d-none" v-if="bakery.image === 'default.jpg'" itemprop="image"
+                                  :src="'bakerys/' + bakery.image" />
+                                <img class="d-none" v-else itemprop="image" :src="folderPicture + bakery.image" />
+
                               </a>
 
                             </div>
@@ -254,6 +300,10 @@
 
                         <a @click="addClick(bakery.id, '/bakery/' + bakery.url)" class="title">{{ bakery.title
                           }}</a>
+
+                        <div class="d-none" itemprop="name">
+                          {{ bakery.title }}
+                        </div>
 
                         <div>
                           <p class="content">{{ bakery.small_content }}</p>
@@ -280,7 +330,7 @@
 
                               <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
                                 Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1)
-                              }}</div>
+                                }}</div>
 
                               <div class="br-current-rating" v-else>0</div>
 
@@ -307,7 +357,7 @@
 
                               <div v-if="bakery.counter_proprete !== 0" class="br-current-rating">{{
                                 Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1)
-                              }}</div>
+                                }}</div>
 
                               <div class="br-current-rating" v-else>0</div>
 
@@ -334,7 +384,7 @@
 
                               <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
                                 Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1)
-                              }}</div>
+                                }}</div>
 
                               <div class="br-current-rating" v-else>0</div>
 
@@ -361,7 +411,7 @@
 
                               <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                                 Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1)
-                              }}</div>
+                                }}</div>
 
                               <div class="br-current-rating" v-else>0</div>
 
@@ -371,9 +421,24 @@
 
                         </div>
 
-                        <p class="location">
-                          <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse }}
-                        </p>
+                        <div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                          <p itemprop="streetAddress" class="location">
+                            <i class="fa-solid fa-map-location me-1"></i> {{ bakery.adresse }}
+                          </p>
+
+                          <span class="d-none" itemprop="addressLocality">{{ bakery.ville }}</span>
+                          <span class="d-none" itemprop="addressCountry">{{ bakery.pays_code }}</span>
+                          <span class="d-none" itemprop="postalCode">{{ bakery.postcode }}</span>
+                        </div>
+
+                        <div class="d-none" v-if="bakery.phone !== null">
+                          <p class="phone">
+                            <span class="d-none" itemprop="telephone">{{ changePhone(bakery.phone) }}</span>
+                            <a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-2"></i><strong>{{
+                              bakery.phone
+                                }}</strong></a>
+                          </p>
+                        </div>
 
                         <div class="text-end">
 
@@ -437,27 +502,44 @@
 
                   <ul class="pagination">
 
-                    <li>
+                    <li style="">
                       <a role="button" v-bind:class="current === 1 ? 'disabled' : ''"
-                        @click="chargeBakery(current - 1, search, location, postalCode)"><i
-                          class="fa fa-angle-left"></i></a>
+                        @click="chargeBakery(current - 1)"><i class="fa fa-angle-left"></i></a>
                     </li>
 
-                    <li v-for="page in max" :key="page" v-bind:class="current === page ? 'active' : ''">
-                      <a role="button" @click="chargeBakery(page, search, location, postalCode)">{{
-                        page }}</a>
+                    <li :style="(current >= 3) ? 'margin-right:25px;' : ''" v-if="current >= 3"
+                      v-bind:class="current === 1 ? 'active' : ''">
+                      <a role="button" @click="chargeBakery(1)">1...</a>
+                    </li>
+
+                    <li :style="(current !== pageMax && current !== pageMax - 1) ? 'margin-right:25px;' : ''"
+                      v-if="current !== 1" v-bind:class="current === 1 ? 'active' : ''">
+                      <a role="button" @click="chargeBakery(current - 1)">{{
+                        current - 1 }}</a>
+                    </li>
+
+                    <li v-if="current !== pageMax" v-bind:class="current ? 'active disabled' : ''"
+                      :style="current !== pageMax ? 'margin-right: 15px;margin-left! 10px;' : ''">
+                      <a role="button" @click="chargeBakery(current)">{{
+                        current }}</a>
+                    </li>
+
+                    <li v-if="current !== pageMax && current !== pageMax - 1"
+                      :style="current !== pageMax ? 'margin-left: 10px;' : ''">
+                      <a role="button" @click="chargeBakery(current + 1)"
+                        v-bind:class="current === Math.round((bakerysAllCount) / 21) ? 'disabled' : ''">{{
+                          current + 1 }}</a>
                     </li>
 
                     <li v-bind:class="current === pageMax ? 'active' : ''">
                       <a role="button" v-bind:class="current === pageMax ? 'disabled' : ''"
-                        @click="chargeBakery(pageMax, search, location, postalCode)">{{
+                        @click="chargeBakery(pageMax)">{{
                           pageMax }}</a>
                     </li>
 
                     <li>
-                      <a role="button" v-bind:class="current === Math.round((bakerysAllCount) / 9) ? 'disabled' : ''"
-                        @click="chargeBakery(current + 1, search, location, postalCode)"><i
-                          class="fa fa-angle-right"></i></a>
+                      <a role="button" v-bind:class="current === Math.round((bakerysAllCount) / 21) ? 'disabled' : ''"
+                        @click="chargeBakery(current + 1)"><i class="fa fa-angle-right"></i></a>
                     </li>
 
                   </ul>
@@ -546,6 +628,14 @@
   display: inline-block;
   margin-right: 15px;
   text-align: center;
+}
+
+.b-pagination .pagination li:first-child {
+  margin-right: 25px;
+}
+
+.b-pagination .pagination li:last-child {
+  margin-right: 0;
 }
 
 @media all and (max-width: 768px) {
@@ -644,6 +734,8 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { Cookies } from 'quasar'
 import BannerComponent from 'components/Banner.vue'
+import BannerSquareComponent from 'components/BannerSquare.vue'
+import { Adsense } from 'vue3-google-adsense';
 
 moment.locale('fr')
 
@@ -652,6 +744,8 @@ var counter = 1
 const search = '',
   location = '',
   postalCode = '',
+  city = '',
+  note_google = ref(0),
   bakerysAll = ref([]),
   bakerysAllCount = ref([]),
   pagination = ref(false),
@@ -669,11 +763,24 @@ export default defineComponent({
   name: 'BakerysComponent',
   components: {
     BannerComponent,
+    BannerSquareComponent,
+    Adsense,
   },
   setup () {
     const store = useStore()
 
+    const villesFrance = computed(() => {
+      return store.state.villesFrance
+    })
+
+    onMounted(() => {
+      store.dispatch('fetchVillesFrance', {
+        limit: 0
+      })
+    })
+
     return {
+      villesFrance,
       addClick (id, url) {
         store.dispatch('fetchClickBakery', { 'bakeryId': id })
         this.$router.push(`${url}`)
@@ -689,6 +796,8 @@ export default defineComponent({
       visible,
       search,
       location,
+      city,
+      note_google,
       postalCode,
       moment: moment,
       showSimulatedReturnData,
@@ -708,6 +817,10 @@ export default defineComponent({
     }
   },
   methods: {
+    changePhone (value) {
+      if (String(value).indexOf('+') <= -1) return '+33' + String(value).replaceAll(' ', '')
+      else return String(value).replaceAll(' ', '')
+    },
     saveBakeryList (id) {
 
       const bakerysList = Cookies.has('bakerysList'),
@@ -762,14 +875,16 @@ export default defineComponent({
       }
 
     },
-    chargeBakery (page, search = null, location = null, postalCode = null, button = false, deletes = false) {
+    chargeBakery (page, button = false, deletes = false) {
 
       if (deletes) {
         current.value = 1
         page = 1
-        search = ''
-        location = '',
-        postalCode = ''
+        this.search = ''
+        this.location = ''
+        this.city = ''
+        note_google.value = 0
+        this.postalCode = ''
         prix.value = 0
         devanture.value = 0
         choix.value = 0
@@ -790,7 +905,7 @@ export default defineComponent({
 
       setTimeout(() => {
 
-        axios.post(process.env.WEBSITE + '/bakerys-page-search', { page, search, location, postalCode, prix: prix.value, devanture: devanture.value, choix: choix.value, proprete: proprete.value })
+        axios.post(process.env.WEBSITE + '/bakerys-page-search', { page, search: this.search, location: this.location, postalCode: this.postalCode, city: this.city, note_google: this.note_google, prix: prix.value, devanture: devanture.value, choix: choix.value, proprete: proprete.value })
           .then((res) => {
 
             current.value = page
@@ -827,11 +942,11 @@ export default defineComponent({
       if (counter <= 1) {
         setTimeout(() => {
 
-          if ((Math.round((data2) / data1.length)) <= 8) max.value = Math.round((data2) / data1.length) - 1;
+          if ((Math.round((data2) / data1.length)) <= 20) max.value = Math.round((data2) / data1.length) - 1;
           else max.value = data1.length
 
-          if ((Math.round((data2) / data1.length)) <= 8) pageMax.value = Math.round((data2) / data1.length);
-          else pageMax.value = Math.round((data2) / 9)
+          if ((Math.round((data2) / data1.length)) <= 20) pageMax.value = Math.round((data2) / data1.length);
+          else pageMax.value = Math.round((data2) / 21)
 
 
           counter++;

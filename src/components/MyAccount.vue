@@ -480,123 +480,130 @@ export default defineComponent({
         $('.' + 'reqEmail' + '_error').removeAttr()
         $('.' + 'reqEmail' + '_error').text("");
 
-        var options = {
-          'email': this.reg_email,
-          'status_legale': this.reg_status_legale,
-          'siret': this.reg_siret,
-          'tva': this.reg_tva,
-          'known': this.reg_known,
-          'budget': this.reg_budget,
-          'firstname': this.reg_firstname,
-          'lastname': this.reg_lastname,
-          'fonction': this.reg_function,
-          'location': reg_location,
-          'pays': reg_pays.value,
-          'pays_code': reg_pays_code.value,
-          'departement': reg_departement.value,
-          'ville': reg_ville.value,
-          'postcode': reg_postcode.value,
-          'department_code': reg_department_code.value,
-          'phone': this.reg_phone,
-          'mobile': this.reg_mobile,
-          'application_id': application_id.value
-        }
+        fetch('https://api.ipify.org?format=json')
+            .then(x => x.json())
+            .then(({ ip }) => {
 
-        if (this.reg_status_legale === '1' && this.reg_email && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
+          var options = {
+            'email': this.reg_email,
+            'status_legale': this.reg_status_legale,
+            'siret': this.reg_siret,
+            'tva': this.reg_tva,
+            'known': this.reg_known,
+            'budget': this.reg_budget,
+            'firstname': this.reg_firstname,
+            'lastname': this.reg_lastname,
+            'fonction': this.reg_function,
+            'location': reg_location,
+            'pays': reg_pays.value,
+            'pays_code': reg_pays_code.value,
+            'departement': reg_departement.value,
+            'ville': reg_ville.value,
+            'postcode': reg_postcode.value,
+            'department_code': reg_department_code.value,
+            'phone': this.reg_phone,
+            'mobile': this.reg_mobile,
+            'application_id': application_id.value,
+            'ip': ip
+          }
 
-          this.showTextLoading()
+          if (this.reg_status_legale === '1' && this.reg_email && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
 
-          axios.post(process.env.WEBSITE + '/register', options)
-            .then((res) => {
+            this.showTextLoading()
 
-              if (res.data.success === true) {
+            axios.post(process.env.WEBSITE + '/register', options)
+              .then((res) => {
 
-                this.showNotif('Votre inscription a bien été pris en compte, un email de validation vous a été adressé !')
+                if (res.data.success === true) {
 
-                setTimeout(() => {
-                  $(document).find('.error-text').text('')
-                  $(document).find('.error-text').removeAttr()
-                  $('#login').find('input').val('')
+                  this.showNotif('Votre inscription a bien été pris en compte, un email de validation vous a été adressé !')
 
-                  this.reg_email = null
-                  this.reg_firstname = null
-                  this.reg_lastname = null
-                  this.reg_function = null
-                  reg_location = null
-                  this.reg_mobile = null
-                  this.reg_phone = null
-                  this.pays.value = null
-                  this.pays_code.value = null
-                  this.departement.value = null
-                  this.ville.value = null
-                  this.postcode.value = null
-                  this.department_code.value = null
-                  this.req_status_legal = 1
-                  this.reg_siret = null
-                  this.reg_tva = null
-                  this.reg_known = null
-                  this.reg_budget = 0
+                  setTimeout(() => {
+                    $(document).find('.error-text').text('')
+                    $(document).find('.error-text').removeAttr()
+                    $('#login').find('input').val('')
 
-                }, 3500);
+                    this.reg_email = null
+                    this.reg_firstname = null
+                    this.reg_lastname = null
+                    this.reg_function = null
+                    reg_location = null
+                    this.reg_mobile = null
+                    this.reg_phone = null
+                    this.pays.value = null
+                    this.pays_code.value = null
+                    this.departement.value = null
+                    this.ville.value = null
+                    this.postcode.value = null
+                    this.department_code.value = null
+                    this.req_status_legal = 1
+                    this.reg_siret = null
+                    this.reg_tva = null
+                    this.reg_known = null
+                    this.reg_budget = 0
 
-              } else {
-                this.errorNotif(res.data.message)
-              }
+                  }, 3500);
 
-            })
-            .catch((error) => {
-              this.errorNotif()
-            })
+                } else {
+                  this.errorNotif(res.data.message)
+                }
 
-        }
+              })
+              .catch((error) => {
+                this.errorNotif()
+              })
 
-        if (this.reg_status_legale === '2' && this.reg_budget && this.reg_siret && this.reg_tva && this.reg_known && this.reg_email && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
+          }
 
-          this.showTextLoading()
+          if (this.reg_status_legale === '2' && this.reg_budget && this.reg_siret && this.reg_tva && this.reg_known && this.reg_email && this.reg_firstname && this.reg_lastname && this.reg_function && reg_location) {
 
-          axios.post(process.env.WEBSITE + '/register', options)
-            .then((res) => {
+            this.showTextLoading()
 
-              if (res.data.success === true) {
+            axios.post(process.env.WEBSITE + '/register', options)
+              .then((res) => {
 
-                this.showNotif('Votre inscription a bien été pris en compte, un email de validation vous a été adressé !')
+                if (res.data.success === true) {
 
-                setTimeout(() => {
-                  $(document).find('.error-text').text('')
-                  $(document).find('.error-text').removeAttr()
-                  $('#login').find('input').val('')
+                  this.showNotif('Votre inscription a bien été pris en compte, un email de validation vous a été adressé !')
 
-                  this.reg_email = null
-                  this.reg_firstname = null
-                  this.reg_lastname = null
-                  this.reg_function = null
-                  reg_location = null
-                  this.reg_mobile = null
-                  this.reg_phone = null
-                  this.pays.value = null
-                  this.pays_code.value = null
-                  this.departement.value = null
-                  this.ville.value = null
-                  this.postcode.value = null
-                  this.department_code.value = null
-                  this.req_status_legal = 1
-                  this.reg_siret = null
-                  this.reg_tva = null
-                  this.reg_known = null
-                  this.reg_budget = 0
+                  setTimeout(() => {
+                    $(document).find('.error-text').text('')
+                    $(document).find('.error-text').removeAttr()
+                    $('#login').find('input').val('')
 
-                }, 3500);
+                    this.reg_email = null
+                    this.reg_firstname = null
+                    this.reg_lastname = null
+                    this.reg_function = null
+                    reg_location = null
+                    this.reg_mobile = null
+                    this.reg_phone = null
+                    this.pays.value = null
+                    this.pays_code.value = null
+                    this.departement.value = null
+                    this.ville.value = null
+                    this.postcode.value = null
+                    this.department_code.value = null
+                    this.req_status_legal = 1
+                    this.reg_siret = null
+                    this.reg_tva = null
+                    this.reg_known = null
+                    this.reg_budget = 0
 
-              } else {
-                this.errorNotif(res.data.message)
-              }
+                  }, 3500);
 
-            })
-            .catch((error) => {
-              this.errorNotif()
-            })
+                } else {
+                  this.errorNotif(res.data.message)
+                }
 
-        }
+              })
+              .catch((error) => {
+                this.errorNotif()
+              })
+
+          }
+
+       })
 
       } else {
 
@@ -694,48 +701,52 @@ export default defineComponent({
 
         if (this.username && this.password) {
 
-          axios.post(process.env.WEBSITE + '/login', { 'username': this.username, 'password': this.password, 'application_id': application_id.value })
-            .then((res) => {
+          fetch('https://api.ipify.org?format=json')
+            .then(x => x.json())
+            .then(({ ip }) => {
 
-              this.showTextLoading('login')
+              axios.post(process.env.WEBSITE + '/login', { 'username': this.username, 'password': this.password, 'application_id': application_id.value, 'ip' : ip })
+                .then((res) => {
 
-              if (res.data.success === true) {
+                  this.showTextLoading('login')
 
-                const token = res.data.token
+                  if (res.data.success === true) {
 
-                this.stateUser.token = token;
+                    const token = res.data.token
 
-                sessionStorage.setItem('token', token)
+                    this.stateUser.token = token;
 
-                this.showNotif('Connection réussie à My Bakery.')
+                    sessionStorage.setItem('token', token)
 
-                setTimeout(() => {
-                  $(document).find('.error-text').text('')
-                  $(document).find('.error-text').removeAttr()
-                  $('#login').find('input').val('')
+                    this.showNotif('Connection réussie à My Bakery.')
 
-                  this.username = null
-                  this.password = null
+                    setTimeout(() => {
+                      $(document).find('.error-text').text('')
+                      $(document).find('.error-text').removeAttr()
+                      $('#login').find('input').val('')
 
-                  if (LocalStorage.has('prev_url')) {
-                    this.$router.push(LocalStorage.getItem('prev_url'));
+                      this.username = null
+                      this.password = null
+
+                      if (LocalStorage.has('prev_url')) {
+                        this.$router.push(LocalStorage.getItem('prev_url'));
+                      } else {
+                        this.$router.push("/my-account-profil")
+                      }
+
+                    }, 3500);
+
                   } else {
-                    this.$router.push("/my-account-profil")
+                    this.errorNotif(res.data.message)
+                    this.showTextLoading()
                   }
 
-                }, 3500);
-
-              } else {
-                this.errorNotif(res.data.message)
-                this.showTextLoading()
-              }
+                })
+                .catch((error) => {
+                  this.errorNotif()
+                })
 
             })
-            .catch((error) => {
-              this.errorNotif()
-            })
-
-          // })
 
         } else {
 

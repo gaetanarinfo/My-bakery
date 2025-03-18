@@ -70,6 +70,8 @@
                   qualité de la boulangerie avant de s'y rendre.
                 </p>
 
+                <div class="mt-3"><a @click="this.$router.push('/application')" class="btn btn-bakery">Télécharger maintenant <i class="ms-2 fa-solid fa-arrow-right"></i></a></div>
+
               </div>
 
             </div>

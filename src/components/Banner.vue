@@ -5,15 +5,28 @@
 
     <div :class="(margin === false) ? 'ads_campaign margin' : (top === true) ? 'ads_campaign top' : 'ads_campaign'">
 
-      <a v-show="showSimulatedReturnDataBanner" v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
+      <a v-show="showSimulatedReturnDataBanner"
+        v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
         @click="addClick(banner.id, '/bakery/' + banner.bakeryUrl, this.$route.path.slice(1))" target="_blank"
         :title="'Boulangerie ' + banner.bakeryTitle">
         <img :src="folderPicture + banner.banner_name" :alt="'Boulangerie ' + banner.bakeryTitle">
       </a>
 
-      <a v-show="showSimulatedReturnDataBanner" v-else @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
-        <img :src="folderPicture + 'default.jpg'" alt="Acheter un emplacement de bannière">
-      </a>
+      <div v-show="showSimulatedReturnDataBanner" v-else>
+
+        <div class="desktop-ads" style="height: 250px !important;">
+          <a @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
+            <img :src="folderPicture + 'default.jpg'" alt="Acheter un emplacement de bannière">
+          </a>
+        </div>
+
+        <div class="mobile-ads" style="height: 250px !important;">
+          <a @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
+            <img :src="folderPicture + 'default-2.jpg'" alt="Acheter un emplacement de bannière">
+          </a>
+        </div>
+
+      </div>
 
       <div class="loadingDiv banner" v-show="visibleBanner">
         <q-spinner-gears size="50px" color="orange" />
@@ -31,10 +44,12 @@ import { defineComponent, computed } from 'vue'
 import moment from 'moment'
 import { useRoute } from 'vue-router';
 import { ref } from 'vue'
+import { Adsense } from 'vue3-google-adsense';
 
 export default defineComponent({
   name: 'BannerComponent',
   components: {
+    Adsense
   },
   setup () {
 

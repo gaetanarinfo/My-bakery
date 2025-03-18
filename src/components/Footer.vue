@@ -138,6 +138,11 @@
                     </li>
 
                     <li>
+                      <a @click="this.$router.push('/products');"><i class="fa-solid fa-chevron-right me-1"></i>
+                        Boutique</a>
+                    </li>
+
+                    <li>
                       <a v-if="!isLoggedIn" @click="this.$router.push('/my-account');"><i
                           class="fa-solid fa-chevron-right me-1"></i> Mon compte</a>
                       <a v-if="isLoggedIn" @click="this.$router.push('/my-account-profil');"><i

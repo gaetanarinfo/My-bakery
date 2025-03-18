@@ -4,7 +4,7 @@
 
     <div class="content">
 
-      <h1>Paiement refusé</h1>
+      <h1>Désinscription à notre lettre d'actualité</h1>
 
       <div class="b-breadcrumb">
 
@@ -14,9 +14,7 @@
 
             <li><a @click="this.$router.push('/')">Accueil</a></li>
 
-            <li class="before"><a @click="this.$router.push('/cart')">Panier</a></li>
-
-            <li class="active">Paiement refusé</li>
+            <li class="active">Désinscription à notre lettre d'actualité</li>
 
           </ol>
 
@@ -32,16 +30,25 @@
 
     <div class="container">
 
-      <div class="u-column1 cartEmpty" v-show="showSimulatedReturnData">
+      <div class="u-column1 cartEmpty" v-show="showSimulatedReturnData" v-if="newsletterUnsubscribe === true">
 
         <img src="bakerys/large-5.jpg" alt="My Bakery">
 
-        <h3>Votre commande a été annulé</h3>
+        <h3>Nous avons bien enregistré votre désinscription à notre lettre d'actualité.</h3>
 
         <p class="mt-1">Nous vous souhaitons un agréable moment sur My Bakery.</p>
 
-        <a class="ps-btn ps-btn-mobile me-2"
-          @click="this.$router.push('/my-account-profil/historique-commandes')">Historique de mes commandes</a>
+        <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
+
+      </div>
+
+      <div class="u-column1 cartEmpty" v-show="showSimulatedReturnData" v-else>
+
+        <img src="bakerys/large-5.jpg" alt="My Bakery">
+
+        <h3>Nous avons déjà enregistré votre désinscription à notre lettre d'actualité.</h3>
+
+        <p class="mt-1">Nous vous souhaitons un agréable moment sur My Bakery.</p>
 
         <a class="ps-btn" @click="this.$router.push('/')">Retour à l'accueil</a>
 
@@ -58,7 +65,6 @@
 </template>
 
 <style lang="css">
-
 .disabled {
   pointer-events: none;
 }
@@ -77,7 +83,6 @@
     min-height: 100%;
   }
 }
-
 </style>
 
 <script>
@@ -85,14 +90,26 @@
 import { LocalStorage, SessionStorage } from 'quasar';
 import { defineComponent, onMounted, computed, ref } from 'vue'
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex'
 import axios from 'axios'
 
 export default defineComponent({
-  name: 'PaiementCancelComponent',
+  name: 'NewsletterComponent',
   setup () {
+    const store = useStore()
     const route = useRoute()
     const showSimulatedReturnData = ref(true)
     const visible = ref(false)
+
+    const newsletterUnsubscribe = computed(() => {
+      return store.state.newsletterUnsubscribe
+    })
+
+    onMounted(() => {
+      store.dispatch('fetchNewsLetterUnsubscribe', {
+        id: route.params.id
+      })
+    })
 
     return {
       showTextLoading (express = null) {
@@ -107,28 +124,13 @@ export default defineComponent({
           }, 2500)
         }
       },
+      newsletterUnsubscribe,
       visible,
       showSimulatedReturnData,
     }
 
   },
   mounted () {
-
-    if (LocalStorage.getItem('shopping_cart') !== null) {
-      LocalStorage.removeItem('shopping_cart_qte')
-      LocalStorage.removeItem('shopping_total_ht')
-      LocalStorage.removeItem('shopping_total_ttc')
-      LocalStorage.removeItem('shopping_cart')
-      LocalStorage.removeItem('shopping_product_id')
-      LocalStorage.removeItem('prev_url')
-      LocalStorage.removeItem('additional_information')
-      LocalStorage.removeItem('banner_date_start')
-      LocalStorage.removeItem('banner_date_end')
-      LocalStorage.removeItem('banner_name')
-      LocalStorage.removeItem('bakery_id_event')
-    } else {
-      this.$router.push('/')
-    }
 
     $([document.documentElement, document.body]).animate({
       scrollTop: $('#cart').offset().top

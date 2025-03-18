@@ -275,7 +275,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      store.dispatch('fetchBakerys', { 'limite': 3 })
+      store.dispatch('fetchBakerys', { 'limite': 6 })
     })
 
     return {

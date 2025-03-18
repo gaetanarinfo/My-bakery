@@ -1925,6 +1925,46 @@ label.btn-bakery:hover {
   font-weight: 500;
 }
 
+#my-account-profil #bakerysCard h3 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+#my-account-profil #bakerysCard {
+  padding: 15px;
+}
+
+#my-account-profil #bakerysCard table tr {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+#my-account-profil #bakerysCard table tr a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#my-account-profil #newslettersCard h3 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+#my-account-profil #newslettersCard {
+  padding: 15px;
+}
+
+#my-account-profil #newslettersCard table tr {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+#my-account-profil #newslettersCard table tr a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
 #my-account-profil #budgetCard h3 {
   font-size: 22px;
   font-weight: 300;
@@ -3310,7 +3350,7 @@ footer.footer .footer-copyright p a:hover {
 #classement .bakery .favorite-bakery-dark:hover,
 #classement-my-bakerys .favorite-bakery:hover,
 #classement .bakery .favorite-bakery:hover,
-  #classement #blocGrid .favorite-bakery:hover {
+#classement #blocGrid .favorite-bakery:hover {
   opacity: 0.6;
 }
 
@@ -3319,7 +3359,7 @@ footer.footer .footer-copyright p a:hover {
 #classement .bakery .favorite-bakery-dark a,
 #classement-my-bakerys .favorite-bakery a,
 #classement .bakery .favorite-bakery a,
-  #classement #blocGrid .favorite-bakery a {
+#classement #blocGrid .favorite-bakery a {
   position: relative;
   width: 100%;
   height: 100%;
@@ -3330,12 +3370,12 @@ footer.footer .footer-copyright p a:hover {
   text-decoration: none;
 }
 
-#classement-my-bakerys  .favorite-bakery-dark a i,
+#classement-my-bakerys .favorite-bakery-dark a i,
 #classement #blocGrid .favorite-bakery-dark a i,
 #classement .bakery .favorite-bakery-dark a i,
 #classement-my-bakerys .favorite-bakery a i,
 #classement .bakery .favorite-bakery a i,
-  #classement #blocGrid .favorite-bakery a i {
+#classement #blocGrid .favorite-bakery a i {
   font-size: 25px;
 }
 
@@ -3615,6 +3655,22 @@ footer.footer .footer-copyright p a:hover {
   -webkit-transition: all 0.4s ease;
   -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
+}
+
+.form-order .form-group select {
+  box-shadow: none;
+  border-color: #cd9b33;
+  border-radius: 16px;
+  height: 50px;
+  width: 100%;
+  font-size: 18px;
+  text-indent: 10px;
+  font-weight: 500;
+  color: #685e5e;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  outline: none;
 }
 
 .form-order .form-group .select::after {
@@ -4946,6 +5002,18 @@ footer.footer .footer-copyright p a:hover {
   flex-flow: row nowrap;
 }
 
+.blog-single .post-detail .post-content-inner ul>li {
+  list-style-type: decimal;
+  margin-bottom: 1rem;
+  text-indent: 0.2em;
+  font-size: 18px;
+}
+
+.blog-single .post-detail .post-content-inner ul>li::marker {
+  font-weight: 500;
+  font-size: 22px;
+}
+
 .blog-single .post-detail,
 .blog-single .post-detail .post-content,
 .blog-single .post-detail .post-container {
@@ -5478,6 +5546,9 @@ footer.footer .footer-copyright p a:hover {
 
 }
 
+.loadingDiv.bakerys-admin {
+  min-height: 515px;
+}
 
 /* Cart */
 
@@ -7841,4 +7912,57 @@ button.ps-btn:hover {
 .mollie-paiement {
   max-width: 190px;
   margin-top: 1rem;
+}
+
+.recaptcha-label {
+  background: #4141416b;
+  border: 1px solid #ff5c5c;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-weight: 500 !important;
+}
+
+.recaptcha-label .code {
+  color: #ff5c5c !important;
+  letter-spacing: 1px;
+}
+
+.chargeVille {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media all and (max-width: 768px) {
+
+  .chargeVille {
+    margin-bottom: 2rem;
+  }
+
+}
+
+// Format ADS
+
+.desktop-ads {
+  display: block;
+  max-width: 970px !important;
+  height: 250px !important;
+}
+
+.mobile-ads {
+  display: none;
+  max-width: 300px !important;
+}
+
+
+@media all and (max-width: 768px) {
+
+  .desktop-ads {
+    display: none;
+  }
+
+  .mobile-ads {
+    display: block;
+  }
+
 }

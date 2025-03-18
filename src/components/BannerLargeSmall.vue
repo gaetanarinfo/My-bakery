@@ -1,24 +1,23 @@
-<template name="BannerSquareComponent">
+<template name="BannerLargeSmallComponent">
 
   <div
-    :class="(margin === false) ? 'container-xl container-square section fadeIn padding' : 'container-xl container-square section fadeIn'">
+    :class="(margin === false) ? 'container-xl container-large section fadeIn padding' : 'container-xl container-large section fadeIn'">
 
-    <div
-      :class="(margin === false) ? 'ads_campaign square margin' : (top === true) ? 'ads_campaign square top' : 'ads_campaign square'">
+    <div :class="(margin === false) ? 'ads_campaign margin' : (top === true) ? 'ads_campaign top' : 'ads_campaign'">
 
-      <a v-show="showSimulatedReturnDataBannerSquare"
+      <a v-show="showSimulatedReturnDataBanner"
         v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
         @click="addClick(banner.id, '/bakery/' + banner.bakeryUrl, this.$route.path.slice(1))" target="_blank"
         :title="'Boulangerie ' + banner.bakeryTitle">
-        <img :src="folderPicture + banner.banner_square_name" :alt="'Boulangerie ' + banner.bakeryTitle">
+        <img :src="folderPicture + banner.banner_name" :alt="'Boulangerie ' + banner.bakeryTitle">
       </a>
 
-      <a v-show="showSimulatedReturnDataBannerSquare" v-else @click="this.$router.push('/products')" target="_blank"
+      <a v-show="showSimulatedReturnDataBanner" v-else @click="this.$router.push('/products')" target="_blank"
         title="Acheter un emplacement de bannière">
-        <img :src="folderPicture + 'default-2.jpg'" alt="Acheter un emplacement de bannière">
+        <img :src="folderPicture + 'default.jpg'" alt="Acheter un emplacement de bannière">
       </a>
 
-      <div class="loadingDiv banner-square" v-show="visibleBannerSquare">
+      <div class="loadingDiv banner" v-show="visibleBanner">
         <q-spinner-gears size="50px" color="orange" />
       </div>
 
@@ -36,15 +35,15 @@ import { useRoute } from 'vue-router';
 import { ref } from 'vue'
 
 export default defineComponent({
-  name: 'BannerSquareComponent',
+  name: 'BannerLargeSmallComponent',
   components: {
   },
   setup () {
 
     const store = useStore()
     const route = useRoute()
-    const visibleBannerSquare = ref(true)
-    const showSimulatedReturnDataBannerSquare = ref(false)
+    const visibleBanner = ref(true)
+    const showSimulatedReturnDataBanner = ref(false)
 
     const banner = computed(() => {
       return store.state.banner
@@ -53,18 +52,18 @@ export default defineComponent({
     store.dispatch('fetchBanner')
 
     return {
-      showSimulatedReturnDataBannerSquare,
-      visibleBannerSquare,
+      showSimulatedReturnDataBanner,
+      visibleBanner,
       moment,
       folderPicture: process.env.WEBSITE + '/banners/images/',
       banner,
       showTextLoading () {
-        visibleBannerSquare.value = true
-        showSimulatedReturnDataBannerSquare.value = false
+        visibleBanner.value = true
+        showSimulatedReturnDataBanner.value = false
 
         setTimeout(() => {
-          visibleBannerSquare.value = false
-          showSimulatedReturnDataBannerSquare.value = true
+          visibleBanner.value = false
+          showSimulatedReturnDataBanner.value = true
         }, 3000);
       },
       addClick (id, url, page) {
@@ -77,7 +76,7 @@ export default defineComponent({
               bannerId: id,
               ip,
               page: page,
-              type: 'square'
+              type: 'large'
             })
 
           }).then(res => {
@@ -115,7 +114,7 @@ export default defineComponent({
             bannerId: this.banner.id,
             ip,
             page: route.path.slice(1),
-            type: 'square'
+            type: 'large'
           })
 
         })

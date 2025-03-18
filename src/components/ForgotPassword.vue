@@ -127,6 +127,10 @@
 .page-forgot-password .section {
   margin-bottom: 0;
 }
+
+.h-blog {
+    min-height: 200px;
+}
 </style>
 
 <script>

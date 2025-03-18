@@ -38,6 +38,17 @@
 
   <script src="js/ScrollMagic.min.js"></script>
 
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MSKP974J');</script>
+  <!-- End Google Tag Manager -->
+
 </head>
 
 <body class="loading">
@@ -83,20 +94,6 @@
     const analytics = getAnalytics(app);
   </script>
 
-  <script>
-    window.axeptioSettings = {
-      clientId: "672cdce7e0d14a3c0bb8abf1",
-      cookiesVersion: "my bakery-fr",
-    };
-
-    (function (d, s) {
-      var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-      e.async = true; e.src = "//static.axept.io/sdk.js";
-      t.parentNode.insertBefore(e, t);
-    })(document, "script");
-  </script>
-
-  <!-- Google tag (gtag.js) -->
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RQGC0HEJN0"></script>
   <script>
@@ -105,6 +102,33 @@
     gtag('js', new Date());
 
     gtag('config', 'G-RQGC0HEJN0');
+  </script>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MSKP974J" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <script>
+    window.axeptioSettings = {
+      clientId: "672cdce7e0d14a3c0bb8abf1",
+      cookiesVersion: "my-bakery-fr-EU",
+      googleConsentMode: {
+        default: {
+          analytics_storage: "allow",
+          ad_storage: "allow",
+          ad_user_data: "allow",
+          ad_personalization: "allow",
+          wait_for_update: 500
+        }
+      }
+    };
+
+    (function (d, s) {
+      var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+      e.async = true; e.src = "//static.axept.io/sdk.js";
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
   </script>
 
   <script src="js/jquery-3.6.4.min.js" crossorigin="anonymous"></script>

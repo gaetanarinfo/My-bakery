@@ -33,6 +33,7 @@ export default createStore({
     markersBakerysHome2: [],
     searchPlace: [],
     viewsBlogs: [],
+    newsletterUnsubscribe: [],
     stateUser: {
       user: null,
       token: null,
@@ -70,6 +71,7 @@ export default createStore({
     getMarkersBakeryHome2: (state) => state.markersBakerysHome2,
     getSearchPlace: (state) => state.searchPlace,
     getBlogsViews: (state) => state.viewsBlogs,
+    getNewsletterUnsubscribe: (state) => state.newsletterUnsubscribe,
     isLoggedIn: (state) => {
 
       if (sessionStorage.getItem('token') === null) {
@@ -181,9 +183,9 @@ export default createStore({
     },
 
     // Vote du site internet
-    async fetchVillesFrance ({ commit }) {
+    async fetchVillesFrance ({ commit, state }, data) {
       try {
-        const getUrl = await axios.get(process.env.WEBSITE + '/villes-france-home')
+        const getUrl = await axios.get(process.env.WEBSITE + '/villes-france-home/' + data.limit)
 
         this.villesFrance = getUrl.data.villesFrance
         commit('SET_VILLES_FRANCE', getUrl.data.villesFrance)
@@ -652,9 +654,29 @@ export default createStore({
         })
 
     },
+    async fetchNewsLetterUnsubscribe ({ commit, state }, data) {
+
+      axios.get(process.env.WEBSITE + '/newsletter-unsubscribe/' + data.id)
+        .then((res) => {
+
+          if (res.data.succes === true) {
+            this.newsletterUnsubscribe = res.data.succes
+            commit('SET_NEWSLETTER_UNSUBSCRIBE', res.data.succes)
+          } else {
+            this.newsletterUnsubscribe = res.data.errors
+            commit('SET_NEWSLETTER_UNSUBSCRIBE', res.data.errors)
+          }
+
+        })
+
+    },
 
   },
   mutations: {
+
+    SET_NEWSLETTER_UNSUBSCRIBE (state, newsletterUnsubscribe) {
+      state.newsletterUnsubscribe = newsletterUnsubscribe
+    },
 
     SET_BLOGS_VIEWS (state, viewsBlogs) {
       state.viewsBlogs = viewsBlogs

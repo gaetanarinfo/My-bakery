@@ -1,4 +1,5 @@
 <template name="BakeryComponent">
+
   <div class="background fadeIn2 bb background7">
 
     <div class="content">
@@ -9,13 +10,27 @@
 
         <div class="b-breadcrumb">
 
-          <ol class="breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 
-            <li><a @click="this.$router.push('/')">Accueil</a></li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a
+                @click="this.$router.push('/')" itemprop="item" href="https://my-bakery.fr">
+                <span itemprop="name">Accueil</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
 
-            <li class="before"><a role="button" @click="this.$router.push('/bakerys-pastry')">Boulangeries</a></li>
+            <li class="before" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a role="button" itemscope itemtype="https://schema.org/WebPage" itemprop="item"
+                itemid="https://my-bakery.fr/bakery-pastry" @click="this.$router.push('/bakerys-pastry')">
+                <span itemprop="name">Boulangeries</span>
+              </a>
+              <meta itemprop="position" content="2" />
+            </li>
 
-            <li class="active">{{ bakery.title }}</li>
+            <li class="active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">{{ bakery.title }}</span>
+              <meta itemprop="position" content="3" />
+            </li>
 
           </ol>
 
@@ -33,7 +48,17 @@
 
       <div class="bakery-detail u-column2" v-show="showSimulatedReturnData">
 
-        <div class="bakery">
+        <div itemscope itemtype="https://schema.org/LocalBusiness" class="bakery">
+
+          <div class="d-none" itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+            <meta itemprop="latitude" :content="bakery.lat" />
+            <meta itemprop="longitude" :content="bakery.lng" />
+          </div>
+
+          <span class="d-none" itemprop="priceRange">1-20 €</span>
+          <span class="d-none" itemprop="isAccessibleForFree">true</span>
+
+          <div class="d-none" itemprop="url">https://my-bakery.fr/bakery/{{ bakery.url }}</div>
 
           <div class="row">
 
@@ -67,11 +92,15 @@
 
                 </div>
 
-
                 <div id="slider_1" class="sliderimgSpec" tabindex="0">
                   <img class="sliderSpec" v-if="bakery.image === 'default.jpg'" :src="'bakerys/' + bakery.image"
                     :alt="bakery.title">
                   <div class="sliderSpec" v-else :style="'background: url(' + folderPicture + bakery.image + ');'">
+
+                    <img class="d-none" v-if="bakery.image === 'default.jpg'" itemprop="image"
+                      :src="'bakerys/' + bakery.image" />
+                    <img class="d-none" v-else itemprop="image" :src="folderPicture + bakery.image" />
+
                   </div>
                 </div>
 
@@ -119,12 +148,14 @@
 
               </div>
 
+              <BannerLargeSmall />
+
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
               <div class="info">
-                <h2>{{ bakery.title }}</h2>
+                <h2 itemprop="name">{{ bakery.title }}</h2>
 
                 <div class="rating last-bakery">
 
@@ -134,13 +165,13 @@
 
                       <a v-if="bakery.user_rating_google !== 0" v-for="note4 in 5" :key="note4"
                         :data-rating-value="note4" :data-rating-text="note4"
-                        v-bind:class="note4 > Math.round(bakery.total_rating_google).toFixed(1) ? '' : 'br-selected'"></a>
+                        v-bind:class="note4 > parseInt(bakery.total_rating_google).toFixed(0) ? '' : 'br-selected'"></a>
 
                       <a :data-rating-value="note4" :data-rating-text="note4" v-if="bakery.user_rating_google === 0"
                         v-for="note4 in 5" :key="note4" class=""></a>
 
                       <div v-if="bakery.user_rating_google !== 0" class="br-current-rating">{{
-                        Math.round(bakery.total_rating_google).toFixed(1)
+                        parseInt(bakery.total_rating_google).toFixed(0)
                       }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
@@ -151,14 +182,22 @@
 
                 </div>
 
-                <div>
-                  <p><strong>{{ bakery.adresse }}</strong></p>
+                <div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                  <p itemprop="streetAddress">
+                    <strong>{{ bakery.adresse }}</strong>
+                    <span class="d-none" itemprop="addressLocality">{{ bakery.ville }}</span>
+                    <span class="d-none" itemprop="addressCountry">{{ bakery.pays_code }}</span>
+                    <span class="d-none" itemprop="postalCode">{{ bakery.postcode }}</span>
+                  </p>
                 </div>
 
                 <div v-if="bakery.phone !== null">
-                  <p class="phone"><a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-2"></i><strong>{{
-                    bakery.phone
-                        }}</strong></a></p>
+                  <p class="phone">
+                    <span class="d-none" itemprop="telephone">{{ changePhone(bakery.phone) }}</span>
+                    <a :href="'tel:' + bakery.phone"><i class="fa-solid fa-phone me-2"></i><strong>{{
+                      bakery.phone
+                        }}</strong></a>
+                  </p>
                 </div>
 
                 <div>
@@ -300,6 +339,8 @@
                   <p><strong>{{ bakery.small_content }}</strong></p>
 
                 </div>
+
+                <BannerSquareComponent />
 
                 <div class="sharing">
 
@@ -1067,6 +1108,8 @@ import { useRoute } from 'vue-router';
 import axios from 'axios'
 import BannerComponent from 'components/Banner.vue'
 import MapComponent from 'components/Map.vue'
+import BannerSquareComponent from 'components/BannerSquare.vue'
+import BannerLargeSmall from 'components/BannerLargeSmall.vue'
 
 moment.locale('fr')
 
@@ -1081,7 +1124,9 @@ export default defineComponent({
   name: 'BakeryComponent',
   components: {
     BannerComponent,
-    MapComponent
+    MapComponent,
+    BannerSquareComponent,
+    BannerLargeSmall
   },
   setup () {
     const route = useRoute();
@@ -1242,6 +1287,10 @@ export default defineComponent({
     }
   },
   methods: {
+    changePhone (value) {
+      if (String(value).indexOf('+') <= -1) return '+33' + String(value).replaceAll(' ', '')
+      else return String(value).replaceAll(' ', '')
+    },
     verifLengthArea (e) {
       setTimeout(() => {
         if (addSmallContent.value.length <= 200) $('.limite-text span').html(addSmallContent.value.length)

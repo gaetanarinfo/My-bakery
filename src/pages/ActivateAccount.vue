@@ -66,42 +66,13 @@
 
 <style lang="scss">
 
-.bb .content {
-  margin: 0 auto;
-  padding: 4rem 0;
-  display: flex;
-  max-width: 1170px;
-  text-align: center;
-  height: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-@media all and (max-width: 768px) {
-  .bb .content {
-    padding: 2rem 2rem;
-  }
-}
-
+.page-activate-account.section,
 .page-activate-account .section {
   margin-bottom: 0;
 }
 
-.h-bakery {
-  min-height: 200px;
-}
-
-@media all and (max-width: 768px) {
-  .h-bakery {
-    min-height: auto;
-  }
-}
-
-@media all and (max-width: 1268px) {
-  .h-bakery {
-    min-height: auto;
-  }
+.h-blog {
+    min-height: 200px;
 }
 
 </style>
