@@ -57,9 +57,8 @@
                   <td>
                     <a class="ps-product--table">
                       <i v-if="product.app === 0" :class="'me-3 ' + product.image"></i>
-                     <div v-html="product.image" class="me-3">
-                     </div>
-                      <strong>{{ product.title }}</strong></a>
+                      <strong>{{ product.title }}</strong>
+                    </a>
                   </td>
 
                   <td>{{ product.price }} €</td>
@@ -138,18 +137,9 @@
               <h3>Prix ​​total TTC <span class="tva">TVA 20%</span> : <span> {{ shopping_total_ttc }} €</span></h3>
 
               <div class="form-check form-switch mb-4">
-                <input class="form-check-input" value="true" v-model="methode" @click="changePaiement(methode)" checked
-                  type="checkbox" role="switch" id="methodePaiement">
-                <label class="form-check-label" for="methodePaiement"><strong>Paypal / Carte bancaire</strong></label>
-              </div>
-
-              <div v-show="carte">
-
-                <a class="ps-btn" @click="createPaiementMobilie()">Passer à la
-                  caisse</a>
-
-                <img class="mollie-paiement" src="paiement-securise-cb.jpeg" alt="Mollie Paiements" />
-
+                <input disabled class="form-check-input" value="true" v-model="methode" @click="changePaiement(methode)"
+                  checked type="checkbox" role="switch" id="methodePaiement">
+                <label class="form-check-label" for="methodePaiement"><strong>Paypal</strong></label>
               </div>
 
               <div v-show="paypal" class="paypal">
@@ -232,9 +222,9 @@ const shopping_total_ht = ref(LocalStorage.getItem('shopping_total_ht')),
   shopping_total_ttc = ref(LocalStorage.getItem('shopping_total_ttc')),
   shopping_cart_qte = ref(LocalStorage.getItem('shopping_cart_qte')),
   user_subscription = ref(false),
-  carte = ref(true),
-  paypal = ref(false),
-  methode = ref(false)
+  carte = ref(false),
+  paypal = ref(true),
+  methode = ref(true)
 
 var verifBanner = ref(false),
   dateS = null,
@@ -268,8 +258,8 @@ export default defineComponent({
       changePaiement (value) {
 
         if (value) {
-          carte.value = true
-          paypal.value = false
+          carte.value = false
+          paypal.value = true
         } else {
           carte.value = false
           paypal.value = true

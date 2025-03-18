@@ -53,7 +53,9 @@
 
             <ul class="plan-features" v-html="product.content"></ul>
 
-            <div class="plan-select"><a @click="(user_subscription && (product.id === 3 || product.id === 4)) ? '' : addCart(product.id)">Ajouter au panier</a></div>
+            <div class="plan-select"><a
+                @click="(user_subscription && (product.id === 3 || product.id === 4)) ? '' : addCart(product.id)">Ajouter
+                au panier</a></div>
 
           </div>
 
@@ -904,7 +906,7 @@ export default defineComponent({
           scrollTop: $('#products').offset().top
         }, '200')
 
-        if (date.value.length >= 1 && additional_information.value.length >= 1 && this.image !== 0 && this.image2 !== 0 && LocalStorage.hasItem('bakery_id_event')) {
+        if (date.value.length >= 1 && additional_information.value.length >= 1 && this.image !== null && this.image2 !== null && LocalStorage.hasItem('bakery_id_event')) {
 
           $(document).find('.error-form-banner').removeClass('error-form-banner')
 
