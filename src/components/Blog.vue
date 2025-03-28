@@ -276,7 +276,7 @@
 
 @media (max-width: 768px) {
 
-  #blog.page-blog .ads_campaign {
+  #blog.page-blog .ban_campaign {
     margin-bottom: 0 !important;
   }
 

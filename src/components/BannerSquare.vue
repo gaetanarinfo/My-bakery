@@ -4,7 +4,7 @@
     :class="(margin === false) ? 'container-xl container-square section fadeIn padding' : 'container-xl container-square section fadeIn'">
 
     <div
-      :class="(margin === false) ? 'ads_campaign square margin' : (top === true) ? 'ads_campaign square top' : 'ads_campaign square'">
+      :class="(margin === false) ? 'ban_campaign square margin' : (top === true) ? 'ban_campaign square top' : 'ban_campaign square'">
 
       <a v-show="showSimulatedReturnDataBannerSquare"
         v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"

@@ -148,8 +148,6 @@
 
               </div>
 
-              <BannerLargeSmall />
-
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -172,7 +170,7 @@
 
                       <div v-if="bakery.user_rating_google !== 0" class="br-current-rating">{{
                         parseInt(bakery.total_rating_google).toFixed(0)
-                      }}</div>
+                        }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -243,7 +241,7 @@
 
                       <div v-if="bakery.counter_devanture !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_devanture / bakery.sum_devanture).toFixed(1)
-                        }}</div>
+                      }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -270,7 +268,7 @@
 
                       <div v-if="bakery.counter_proprete !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_proprete / bakery.sum_proprete).toFixed(1)
-                        }}</div>
+                      }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -297,7 +295,7 @@
 
                       <div v-if="bakery.counter_prix !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_prix / bakery.sum_prix).toFixed(1)
-                        }}</div>
+                      }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -324,7 +322,7 @@
 
                       <div v-if="bakery.counter_choix !== 0" class="br-current-rating">{{
                         Math.round(bakery.counter_choix / bakery.sum_choix).toFixed(1)
-                        }}</div>
+                      }}</div>
 
                       <div class="br-current-rating" v-else>0</div>
 
@@ -425,7 +423,7 @@
 
               <li v-else class="me-0">
 
-                <a @click="this.$router.push('/products')">Revendiquer
+                <a class="cursor-pointer" @click="this.$router.push('/products')">Revendiquer
                   cet
                   établissement</a>
 
@@ -1051,12 +1049,12 @@
 }
 
 @media (max-width: 768px) {
-  .page-bakery-one .ads_campaign {
+  .page-bakery-one .ban_campaign {
     margin-bottom: 0 !important;
     margin-top: 2rem !important;
   }
 
-  .page-bakery-one .ads_campaign.top {
+  .page-bakery-one .ban_campaign.top {
     padding-top: 0 !important;
   }
 }

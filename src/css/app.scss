@@ -7618,18 +7618,18 @@ button.ps-btn:hover {
 
 /* ADS Publicité */
 
-.ads_campaign {
+.ban_campaign {
   display: flex;
   align-items: center;
   justify-content: center;
   max-width: 970px;
 }
 
-#classement .ads_campaign {
+#classement .ban_campaign {
   margin-bottom: 5rem;
 }
 
-.ads_campaign.square {
+.ban_campaign.square {
   margin-bottom: 0;
   display: block;
   max-width: 300px;
@@ -7637,15 +7637,15 @@ button.ps-btn:hover {
 
 @media all and (max-width: 768px) {
 
-  .home .ads_campaign {
+  .home .ban_campaign {
     margin-bottom: 0 !important;
   }
 
-  .ads_campaign {
+  .ban_campaign {
     margin-bottom: 2rem !important;
   }
 
-  .ads_campaign.square {
+  .ban_campaign.square {
     margin-bottom: 0 !important;
     display: flex;
     align-items: center;
@@ -7654,12 +7654,12 @@ button.ps-btn:hover {
 
 }
 
-.ads_campaign a {
+.ban_campaign a {
   max-width: 970px;
   display: block;
 }
 
-.ads_campaign img {
+.ban_campaign img {
   max-width: 970px;
   width: 100%;
   display: block;
@@ -7668,24 +7668,24 @@ button.ps-btn:hover {
   box-shadow: 0 0 20px 0px #0000001c;
 }
 
-.ads_campaign.square img {
+.ban_campaign.square img {
   max-width: 300px;
 }
 
-.ads_campaign.square a {
+.ban_campaign.square a {
   max-width: 300px;
   display: block;
 }
 
-.ads_campaign a {
+.ban_campaign a {
   cursor: pointer;
 }
 
-.ads_campaign.margin {
+.ban_campaign.margin {
   margin: 0 0;
 }
 
-.ads_campaign.top {
+.ban_campaign.top {
   padding-top: 3rem;
   margin-bottom: 0;
 }
@@ -7943,13 +7943,13 @@ button.ps-btn:hover {
 
 // Format ADS
 
-.desktop-ads {
+.desktop-ban {
   display: block;
   max-width: 970px !important;
   height: 250px !important;
 }
 
-.mobile-ads {
+.mobile-ban {
   display: none;
   max-width: 300px !important;
 }
@@ -7957,11 +7957,11 @@ button.ps-btn:hover {
 
 @media all and (max-width: 768px) {
 
-  .desktop-ads {
+  .desktop-ban {
     display: none;
   }
 
-  .mobile-ads {
+  .mobile-ban {
     display: block;
   }
 

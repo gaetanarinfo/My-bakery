@@ -3,7 +3,7 @@
   <div
     :class="(margin === false) ? 'container-xl container-large section fadeIn padding' : 'container-xl container-large section fadeIn'">
 
-    <div :class="(margin === false) ? 'ads_campaign margin' : (top === true) ? 'ads_campaign top' : 'ads_campaign'">
+    <div :class="(margin === false) ? 'ban_campaign margin' : (top === true) ? 'ban_campaign top' : 'ban_campaign'">
 
       <a v-show="showSimulatedReturnDataBanner"
         v-if="(moment().format('YYYY-MM-DD') >= moment(banner.start).format('YYYY-MM-DD') || moment().format('YYYY-MM-DD') <= moment(banner.end).format('YYYY-MM-DD')) && banner.counterId >= 1"
@@ -14,13 +14,13 @@
 
       <div v-show="showSimulatedReturnDataBanner" v-else>
 
-        <div class="desktop-ads" style="height: 250px !important;">
+        <div class="desktop-ban" style="height: 250px !important;">
           <a @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
             <img :src="folderPicture + 'default.jpg'" alt="Acheter un emplacement de bannière">
           </a>
         </div>
 
-        <div class="mobile-ads" style="height: 250px !important;">
+        <div class="mobile-ban" style="height: 250px !important;">
           <a @click="this.$router.push('/products')" target="_blank" title="Acheter un emplacement de bannière">
             <img :src="folderPicture + 'default-2.jpg'" alt="Acheter un emplacement de bannière">
           </a>
